@@ -308,40 +308,6 @@ section{padding:110px 0}
   .vd,.vd *{animation:none!important}
 }
 
-/* maturidade · escada de adoção */
-.mat-scroll{overflow-x:auto}
-.mat,.mat-band{display:grid;grid-template-columns:172px repeat(6,1fr);gap:6px;min-width:1080px}
-.mat{align-items:end}
-.mat-lbl{display:flex;flex-direction:column;gap:3px}
-.mat-lbl div{display:flex;align-items:center;justify-content:flex-end;padding:0 16px;text-align:right}
-.mat-lbl .a{height:60px;background:#E3D3CB;line-height:1.4;
-  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#8F3F2C}
-.mat-lbl .b{height:138px;background:#D9C3B9;font-family:"Spectral",serif;font-size:17px;color:#5E2A1B}
-.mat-lbl .c{height:132px;background:#E3D3CB;font-family:"Spectral",serif;font-size:17px;color:#5E2A1B}
-.mat-lbl .d{height:44px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
-.ms .stack{display:flex;flex-direction:column;gap:3px;padding-top:var(--up,0)}
-.ms .cap{height:60px;clip-path:polygon(50% 0,100% 62%,100% 100%,0 100%,0 62%)}
-.ms .obj{height:138px;padding:14px 16px;font-size:13.5px;line-height:1.45}
-.ms .car{height:132px;padding:14px 16px;font-size:13px;line-height:1.45}
-.ms .lvl{height:44px;display:flex;align-items:center;gap:10px;padding:0 4px}
-.ms .lvl i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--clay)}
-.ms .lvl b{font-size:13.5px;font-weight:500;color:var(--text)}
-.m1 .cap,.m1 .obj{background:#EFEBE1} .m1 .obj{color:var(--ink)} .m1 .car{background:#F5F2EB;color:var(--text-2)}
-.m2 .cap,.m2 .obj{background:#DEE9F2} .m2 .obj{color:var(--ink)} .m2 .car{background:#EAF1F7;color:#3C5A70}
-.m3 .cap,.m3 .obj{background:#C2D8E9} .m3 .obj{color:var(--ink)} .m3 .car{background:#D5E4F0;color:#2E4657}
-.m4 .cap,.m4 .obj{background:#8FB6D8} .m4 .obj{color:#0B2436} .m4 .car{background:#A6C6E1;color:#12303F}
-.m5 .cap,.m5 .obj{background:#3B76AE} .m5 .obj{color:#fff} .m5 .car{background:#4D85BA;color:#E7F0F8}
-.m6 .cap,.m6 .obj{background:#123A5C} .m6 .obj{color:#fff} .m6 .car{background:#1D4A70;color:#C6D8E6}
-.mat-band{margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
-.mat-band .l{display:flex;align-items:center;justify-content:flex-end;padding-right:16px;text-align:right;line-height:1.4;
-  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
-.mat-band .z{grid-column:span 2;background:var(--surface);border:1px solid var(--rule);padding:12px 14px}
-.mat-band .z em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;margin-bottom:6px}
-.mat-band .z p{font-size:13px;line-height:1.45;color:var(--text-2)}
-.mat-band .z1{border-left:2px solid var(--clay)} .mat-band .z1 em{color:var(--clay)}
-.mat-band .z2{border-left:2px solid var(--s1)} .mat-band .z2 em{color:var(--s1)}
-.mat-band .z3{border-left:2px solid var(--navy)} .mat-band .z3 em{color:var(--navy)}
-
 /* colaborações */
 .collab-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
 .cl{background:var(--surface);padding:26px 28px 24px;display:flex;flex-direction:column;gap:14px}
@@ -522,88 +488,6 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
   <div class="n"><b>5 bases</b><em>do SUS integradas por paciente</em></div>
 </div></div></div>
 
-<!-- MATURIDADE · ESCADA DE ADOÇÃO -->
-<section id="maturidade">
-  <div class="wrap">
-    <div class="head">
-      <div><span class="eyebrow">Diagnóstico</span><h2>Antes do projeto, o degrau em que você está.</h2></div>
-      <p>Adoção de tecnologia em saúde não pula etapas. Posicionamos o serviço nesta escada e desenhamos o projeto para subir um degrau por vez — não seis.</p>
-    </div>
-
-    <div class="mat-scroll">
-      <div class="mat">
-        <div class="mat-lbl">
-          <div class="a">Valor para a<br>instituição</div>
-          <div class="b">Objetivo</div>
-          <div class="c">Característica</div>
-          <div class="d">Nível</div>
-        </div>
-
-        <div class="ms m1">
-          <div class="stack" style="--up:100px">
-            <div class="cap"></div>
-            <div class="obj">Registrar em sistema o que ainda vive no papel e na planilha</div>
-            <div class="car">O dado existe em algum sistema, mas isolado e sem padrão entre setores</div>
-          </div>
-          <div class="lvl"><i>01</i><b>Informatização</b></div>
-        </div>
-
-        <div class="ms m2">
-          <div class="stack" style="--up:80px">
-            <div class="cap"></div>
-            <div class="obj">Integrar prontuário, laboratório, faturamento e bases externas</div>
-            <div class="car">As bases conversam e o mesmo paciente é reconhecido em todas elas</div>
-          </div>
-          <div class="lvl"><i>02</i><b>Conectividade</b></div>
-        </div>
-
-        <div class="ms m3">
-          <div class="stack" style="--up:60px">
-            <div class="cap"></div>
-            <div class="obj">Ver o que está acontecendo agora, sem esperar o fechamento do mês</div>
-            <div class="car">Indicadores e painéis atualizados sobre o dado de rotina</div>
-          </div>
-          <div class="lvl"><i>03</i><b>Visibilidade</b></div>
-        </div>
-
-        <div class="ms m4">
-          <div class="stack" style="--up:40px">
-            <div class="cap"></div>
-            <div class="obj">Entender por que acontece — relação entre prática, exposição e desfecho</div>
-            <div class="car">Coortes, séries interrompidas e análise explicativa sobre a base ligada</div>
-          </div>
-          <div class="lvl"><i>04</i><b>Transparência</b></div>
-        </div>
-
-        <div class="ms m5">
-          <div class="stack" style="--up:20px">
-            <div class="cap"></div>
-            <div class="obj">Antecipar risco, demanda e surto antes de eles aparecerem na fila</div>
-            <div class="car">Modelos de risco e simulação de cenário apoiando a decisão</div>
-          </div>
-          <div class="lvl"><i>05</i><b>Previsibilidade</b></div>
-        </div>
-
-        <div class="ms m6">
-          <div class="stack">
-            <div class="cap"></div>
-            <div class="obj">Deixar o sistema agir: alerta e lista de trabalho sem ninguém pedir</div>
-            <div class="car">Rotinas que se ajustam ao que os dados mostram, com auditoria de cada ação</div>
-          </div>
-          <div class="lvl"><i>06</i><b>Adaptabilidade</b></div>
-        </div>
-      </div>
-
-      <div class="mat-band">
-        <div class="l">Onde nosso<br>método atua</div>
-        <div class="z z1"><em>ETAPAS 01–02</em><p>Diagnóstico e fundação: colocar o dado em pé e ligar as bases</p></div>
-        <div class="z z2"><em>ETAPA 03</em><p>Análise: sair do “quanto” para o “por que”, com evidência que reproduz</p></div>
-        <div class="z z3"><em>ETAPA 04</em><p>Automação: previsão e ação rodando sozinhas, com o código na sua mão</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- MÉTODO · CADEIA DE VALOR -->
 <section id="metodo">
   <div class="wrap">
@@ -688,7 +572,7 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
             </div>
           </div>
           <div>
-            <div class="vd-lbl">Leitura de maturidade · <a href="#maturidade">escada completa ↗</a></div>
+            <div class="vd-lbl">Leitura de maturidade</div>
             <div class="ladder">
               <div class="lb"><span class="bar" style="height:34%;background:#EFEBE1"></span><em>01</em></div>
               <div class="lb here">
