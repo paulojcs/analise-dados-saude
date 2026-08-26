@@ -94,59 +94,7 @@ section{padding:110px 0}
 .head h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-.025em;max-width:16ch}
 .head p{font-size:16.5px;color:var(--text-2);max-width:36ch}
 
-/* método · cadeia de valor */
-.vc{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center}
-.vc + .vc{margin-top:14px}
-.vc-lbl{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-3);text-align:right;line-height:1.45}
-.vc .chips{margin-top:0}
-.vc-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.vs{padding:26px 34px 24px 40px;min-width:0;clip-path:polygon(0 0,calc(100% - 22px) 0,100% 50%,calc(100% - 22px) 100%,0 100%,22px 50%)}
-.vs b{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:400;letter-spacing:.13em;margin-bottom:16px}
-.vs h3{font-size:21px;line-height:1.15;letter-spacing:-.01em;margin:0 0 9px}
-.vs p{font-size:14px;line-height:1.5}
-.vs .out{margin-top:18px;padding-top:12px;font-size:12px;line-height:1.4}
-.vs .out span{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
-.vs1{background:#EFEBE1;padding-left:26px}
-.vs1 b{color:var(--clay)}
-.vs1 p{color:var(--text-2)}
-.vs1 .out{border-top:1px solid rgba(14,31,46,.14);color:var(--text-2)}
-.vs1 .out span{color:var(--text-3)}
-.vs2{background:#CFDFEC}
-.vs2 b{color:#8F3F2C}
-.vs2 p{color:#2E4657}
-.vs2 .out{border-top:1px solid rgba(14,31,46,.16);color:#2E4657}
-.vs2 .out span{color:#4E6478}
-.vs3{background:#3B76AE}
-.vs3 b{color:#F0C3B2}
-.vs3 h3{color:#fff}
-.vs3 p{color:#DCE9F4}
-.vs3 .out{border-top:1px solid rgba(255,255,255,.28);color:#DCE9F4}
-.vs3 .out span{color:#A9C8E4}
-.vs4{background:var(--navy);padding-right:30px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,22px 50%)}
-.vs4 b{color:#E08A6C}
-.vs4 h3{color:#fff}
-.vs4 p{color:#B7C7D5}
-.vs4 .out{border-top:1px solid rgba(255,255,255,.22);color:#B7C7D5}
-.vs4 .out span{color:#7C99B2}
-.vc-cross{background:var(--surface);border:1px solid var(--rule);padding:16px 24px;
-  display:flex;flex-wrap:wrap;gap:8px 34px;align-items:center;font-size:13px;color:var(--text-2)}
-.vc-cross b{font-size:13.5px;font-weight:500;color:var(--text)}
-.vc.vc-loop{margin-top:22px}
-.vc-loop-b{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-  border-top:1px dashed #C4BCA9;padding-top:16px;font-size:14px;color:var(--text-2)}
-.vc-loop-b em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
-#metodo .head h2{max-width:19ch}
-@media(max-width:1000px){
-  .vc{grid-template-columns:1fr;gap:10px;align-items:start}
-  .vc + .vc{margin-top:26px}
-  .vc-lbl{text-align:left}
-  .vc-loop .vc-lbl{display:none}
-  .vc-flow{grid-template-columns:1fr 1fr;gap:6px}
-  .vs,.vs1,.vs4{clip-path:none;padding:24px 26px}
-}
-@media(max-width:640px){.vc-flow{grid-template-columns:1fr}}
-/* método · detalhe por etapa (animações) */
-@keyframes om-panel{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* método · cadeia de valor (acordeão) */
 @keyframes om-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes om-pull{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
 @keyframes om-drift{0%,100%{transform:translate(0,0)}50%{transform:translate(7px,-8px)}}
@@ -159,153 +107,239 @@ section{padding:110px 0}
 @keyframes om-spin{to{transform:rotate(360deg)}}
 @keyframes om-flow{0%{opacity:0;transform:translateY(-8px)}30%{opacity:1}100%{opacity:0;transform:translateY(30px)}}
 
-.head-r{max-width:36ch}
-.vc-hint{display:flex;align-items:center;gap:9px;margin-top:14px;
+#metodo{padding:64px 0 56px}
+.mt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:26px}
+.mt-head h2{font-size:30px;line-height:1.05;letter-spacing:-.02em;margin-top:8px}
+.vc-hint{display:flex;align-items:center;gap:9px;
   font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
 .vc-hint i{display:block;width:22px;height:1px;background:var(--clay)}
 
+.vc{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center}
+.vc + .vc{margin-top:14px}
+.vc-lbl{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text-3);text-align:right;line-height:1.45}
+.vc .chips{margin-top:0}
 .vc-stage{position:relative;margin-top:14px}
 .vc-stage + .vc{margin-top:14px}
-.vc-stage .vs{cursor:pointer}
-.vc-stage .vs:focus-visible{outline:2px solid var(--clay);outline-offset:-4px}
+.vc-stage .vc{align-items:stretch}
+.vc-stage .vc-lbl{display:flex;align-items:center;justify-content:flex-end}
 
-.vd{position:absolute;left:-10px;right:-10px;top:-14px;z-index:20;min-height:calc(100% + 28px);
-  background:var(--paper);border:1px solid var(--navy);box-shadow:0 24px 60px -24px rgba(14,31,46,.45);
-  padding:24px 28px 26px;animation:om-panel .28s ease both}
-.vd[hidden]{display:none}
-.vd-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
-  border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:20px}
-.vd-h em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;color:var(--clay)}
-.vd-h h3{font-size:24px;line-height:1.15}
-.vd-h .sub{font-size:13.5px;color:var(--text-2)}
-.vd-h .esc{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9AA4AC}
-.vd-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px}
-.vd-lbl a{color:var(--clay)}
-.vd-note{margin-top:12px;font-size:12.5px;line-height:1.5;color:var(--text-2)}
-.vd-note b{font-weight:600;color:var(--text)}
-.vd-cols{display:grid}
-.vd-cols.c1{grid-template-columns:1.05fr 1fr;gap:28px}
-.vd-cols.c2{grid-template-columns:200px 46px 250px 46px 1fr;align-items:center}
-.vd-cols.c3{grid-template-columns:150px 40px 1fr 1fr;gap:22px;align-items:start}
-.vd-cols.c4{grid-template-columns:186px 1fr;gap:24px;align-items:start}
+/* a faixa: a etapa aberta vira 1fr, as outras encolhem para tiras */
+.vc-band{display:grid;gap:4px;align-items:stretch;min-height:470px;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+  transition:grid-template-columns .55s cubic-bezier(.32,.72,.16,1)}
+.vc-band[data-open="1"]{grid-template-columns:1fr .085fr .085fr .085fr}
+.vc-band[data-open="2"]{grid-template-columns:.085fr 1fr .085fr .085fr}
+.vc-band[data-open="3"]{grid-template-columns:.085fr .085fr 1fr .085fr}
+.vc-band[data-open="4"]{grid-template-columns:.085fr .085fr .085fr 1fr}
 
-/* dispersão de fontes */
-.scat{position:relative;border:1px dashed #C4BCA9;background:#F5F2EB}
-.scat .c{position:absolute;white-space:nowrap;background:var(--surface);border:1px solid var(--rule);
-  padding:6px 11px;font-size:12.5px;color:var(--text);animation-duration:var(--d,7s);
-  animation-timing-function:ease-in-out;animation-iteration-count:infinite}
-.scat.sm .c{padding:4px 8px;font-size:11px;color:var(--text-2)}
-.scat .dr1{animation-name:om-drift}
-.scat .dr2{animation-name:om-drift2}
-.scat .dr3{animation-name:om-drift3}
-.scat .tag{position:absolute;right:10px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:#A79C86}
-.vd-defs{display:flex;gap:26px;margin-top:14px}
-.vd-defs div{font-size:12.5px;line-height:1.45;color:var(--text-2)}
-.vd-defs b{display:block;color:var(--text);font-weight:600}
+.vs{cursor:pointer;overflow:hidden;min-width:0;padding:0;
+  clip-path:polygon(0 0,calc(100% - 22px) 0,100% 50%,calc(100% - 22px) 100%,0 100%,22px 50%)}
+.vs:focus-visible{outline:2px solid var(--clay);outline-offset:-4px}
+.vs1{background:#EFEBE1}
+.vs2{background:#CFDFEC}
+.vs3{background:#3B76AE}
+.vs4{background:var(--navy)}
 
-/* escada compacta dentro do painel 01 */
-.ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;height:222px;align-items:end}
-.lb{position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
-.lb .bar{display:block;transform-origin:bottom;animation:om-bar .5s ease both;animation-delay:var(--i,0s)}
-.lb em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--text-3);margin-top:6px}
-.lb.here em{color:var(--clay)}
-.lb .you{position:absolute;top:0;left:0;right:0;text-align:center;
-  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--clay);animation:om-blink 1.8s ease-in-out infinite}
+/* estado 1 · cartão compacto (nada aberto) */
+.vs-card{padding:26px 34px 24px 40px}
+.vs1 .vs-card{padding-left:26px}
+.vs4 .vs-card{padding-right:30px}
+.vs-card b{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:400;letter-spacing:.13em;margin-bottom:16px}
+.vs-card h3{font-size:21px;line-height:1.15;letter-spacing:-.01em;margin:0 0 9px}
+.vs-card p{font-size:14px;line-height:1.5}
+.vs-card .out{margin-top:18px;padding-top:12px;font-size:12px;line-height:1.4}
+.vs-card .out span{display:block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.vs1 .vs-card b{color:var(--clay)}
+.vs1 .vs-card p{color:var(--text-2)}
+.vs1 .vs-card .out{border-top:1px solid rgba(14,31,46,.14);color:var(--text-2)}
+.vs1 .vs-card .out span{color:var(--text-3)}
+.vs2 .vs-card b{color:#8F3F2C}
+.vs2 .vs-card p{color:#2E4657}
+.vs2 .vs-card .out{border-top:1px solid rgba(14,31,46,.16);color:#2E4657}
+.vs2 .vs-card .out span{color:#4E6478}
+.vs3 .vs-card b{color:#F0C3B2}
+.vs3 .vs-card h3{color:#fff}
+.vs3 .vs-card p{color:#DCE9F4}
+.vs3 .vs-card .out{border-top:1px solid rgba(255,255,255,.28);color:#DCE9F4}
+.vs3 .vs-card .out span{color:#A9C8E4}
+.vs4 .vs-card b{color:#E08A6C}
+.vs4 .vs-card h3{color:#fff}
+.vs4 .vs-card p{color:#B7C7D5}
+.vs4 .vs-card .out{border-top:1px solid rgba(255,255,255,.22);color:#B7C7D5}
+.vs4 .vs-card .out span{color:#7C99B2}
 
-/* pipeline de ingestão */
-.arrows{display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:26px}
-.arrows span{font-size:13px;color:var(--clay);animation:om-flow 2.2s linear infinite;animation-delay:var(--i,0s)}
-.arrows em,.arrow-c em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;
-  text-transform:uppercase;color:#9AA4AC;writing-mode:vertical-rl;margin-top:6px}
-.arrow-r{display:flex;align-items:center;justify-content:center;color:var(--clay);font-size:16px;padding-top:26px}
-.arrow-c{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:44px}
-.arrow-c span{font-size:15px;color:var(--clay)}
-.pipe{display:flex;flex-direction:column;gap:4px}
-.pipe div{background:#CFDFEC;padding:11px 14px;font-size:13px;color:var(--ink);
-  animation:om-pull .45s both;animation-delay:var(--i,0s)}
-.pipe b{font-weight:600}
+/* estado 2 · tira vertical (outra etapa aberta) */
+.vs-strip{flex-direction:column;align-items:center;gap:14px;min-width:0;padding:26px 4px 24px;animation:om-fade .3s both}
+.vs-strip .n{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em}
+.vs-strip .t{writing-mode:vertical-rl;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.6;white-space:nowrap}
+.vs1 .vs-strip .n{color:var(--clay)}
+.vs2 .vs-strip .n{color:#8F3F2C}
+.vs3 .vs-strip .n{color:#F0C3B2}
+.vs4 .vs-strip .n{color:#E08A6C}
+.vs1 .vs-strip .t,.vs2 .vs-strip .t{color:var(--ink)}
+.vs3 .vs-strip .t,.vs4 .vs-strip .t{color:#fff}
 
-/* tabelas mono */
-.dtbl{border:1px solid var(--rule);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:11px}
-.dtbl .hd,.dtbl .r{display:grid;grid-template-columns:repeat(5,1fr)}
-.dtbl .hd{background:var(--navy);color:#fff;letter-spacing:.04em}
-.dtbl .hd span{padding:8px 9px}
-.dtbl .r{border-top:1px solid #EFEBE1;color:var(--text-2);animation:om-fade .4s both;animation-delay:var(--i,0s)}
-.dtbl .r span{padding:7px 9px}
-.dtbl .r.dim{color:#9AA4AC}
-.mtbl{border:1px solid var(--rule);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--text-3)}
-.mtbl .hd,.mtbl .r{display:grid;grid-template-columns:repeat(3,1fr)}
-.mtbl .hd{background:#EFEBE1;color:var(--text-2)}
-.mtbl .hd span{padding:6px 7px}
-.mtbl .r{border-top:1px solid #F1EFE9}
-.mtbl .r span{padding:5px 7px}
+/* que estado aparece */
+.vs-strip,.vd{display:none}
+.vc-band:not([data-open="0"]) .vs-card{display:none}
+.vc-band:not([data-open="0"]) .vs:not(.on) .vs-strip{display:flex}
+.vs.on .vd{display:block}
 
-/* curva e indicador */
-.vd-card{border:1px solid var(--rule);background:var(--surface);padding:12px 14px}
-.draw{animation:om-draw 1.4s ease both;animation-delay:var(--i,0s)}
-.klegend{display:flex;gap:16px;margin-top:8px;font-size:11.5px;color:var(--text-2)}
-.klegend span{display:flex;align-items:center;gap:6px}
-.klegend i{display:block;width:14px;height:2px}
-.hr-box{margin-top:10px;border:1px solid var(--rule);background:var(--surface);padding:10px 14px;
-  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text);animation:om-fade .5s .5s both}
-.hr-box span{color:var(--text-3)}
-.ibars{border:1px solid var(--rule);background:var(--surface);padding:14px;height:154px;
-  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end}
-.ibars span{display:block;transform-origin:bottom;animation:om-bar .5s both;animation-delay:var(--i,0s)}
-
-/* painel 04 · escuro */
-.vd.dark{background:#0E2233;box-shadow:0 24px 60px -24px rgba(14,31,46,.55)}
+/* estado 3 · detalhe dentro da própria etapa */
+.vd{background:var(--paper);border:1px solid rgba(14,31,46,.14);padding:20px 24px 22px;
+  margin:22px 34px 22px 46px;animation:om-fade .32s .06s ease both}
+.vd.dark{background:#0E2233;border-color:rgba(255,255,255,.14)}
+.vd-h{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;
+  border-bottom:1px solid var(--rule);padding-bottom:12px;margin-bottom:18px}
+.vd-h em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;color:var(--clay)}
+.vd-h h3{font-size:22px;line-height:1}
+.vd-h .sub{font-size:12.5px;color:var(--text-2)}
 .vd.dark .vd-h{border-bottom-color:rgba(255,255,255,.16)}
 .vd.dark .vd-h em{color:#E08A6C}
 .vd.dark .vd-h h3{color:#fff}
 .vd.dark .vd-h .sub{color:#9FB4C6}
-.vd.dark .vd-h .esc{color:#6C8399}
+.vd-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:9px}
 .vd.dark .vd-lbl{color:#6C8399}
-.cyc{display:flex;flex-direction:column;gap:4px;font-family:"IBM Plex Mono",monospace;font-size:11px}
-.cyc div{background:#16324A;color:#C6D8E6;padding:9px 11px;animation:om-pull .4s both;animation-delay:var(--i,0s)}
-.cyc div.on{background:#1D4A70;color:#fff}
-.cyc-f{display:flex;align-items:center;gap:9px;margin-top:14px;color:#9FB4C6;font-size:11.5px}
-.cyc-f i{display:inline-block;width:14px;height:14px;border:2px solid #3B76AE;border-top-color:transparent;
-  border-radius:50%;animation:om-spin 1.1s linear infinite}
+
+/* 01 · fontes dispersas + leitura de maturidade */
+.scat{position:relative;height:124px;border:1px dashed #C4BCA9;background:#F5F2EB}
+.scat .c{position:absolute;white-space:nowrap;background:var(--surface);border:1px solid var(--rule);
+  padding:5px 9px;font-size:11.5px;color:var(--text);
+  animation-duration:var(--d,7s);animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+.scat .dr1{animation-name:om-drift}
+.scat .dr2{animation-name:om-drift2}
+.scat .dr3{animation-name:om-drift3}
+.scat .tag{position:absolute;right:9px;bottom:7px;
+  font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;color:#A79C86}
+.vd-defs{display:flex;flex-wrap:wrap;gap:6px 20px;margin:10px 0 14px}
+.vd-defs div{font-size:11.5px;line-height:1.4;color:var(--text-2)}
+.vd-defs b{color:var(--text);font-weight:600}
+.ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;height:84px;align-items:end}
+.lb{position:relative;display:flex;flex-direction:column;height:100%;justify-content:flex-end}
+.lb .bar{display:block;transform-origin:bottom;animation:om-bar .5s both;animation-delay:var(--i,0s)}
+.lb em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--text-3);margin-top:5px}
+.lb.here em{color:var(--clay)}
+.lb .you{position:absolute;top:0;left:0;right:0;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--clay);animation:om-blink 1.8s ease-in-out infinite}
+
+/* 02 · ingestão */
+.src{display:flex;flex-wrap:wrap;gap:6px}
+.src span{background:var(--surface);border:1px solid var(--rule);padding:5px 9px;font-size:11.5px;color:var(--text-2);
+  animation:om-fade .3s both;animation-delay:var(--i,0s)}
+.flowrow{display:flex;align-items:center;gap:8px;margin:12px 0 10px}
+.flowrow i{font-style:normal;font-size:12px;color:var(--clay);animation:om-flow 2.2s linear infinite;animation-delay:var(--i,0s)}
+.flowrow em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;color:#9AA4AC}
+.flowrow .ln{flex:1;height:1px;background:var(--rule)}
+.pipe4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.pipe4 div{background:#EAF1F7;border-top:2px solid #3B76AE;padding:10px 12px;
+  animation:om-pull .45s both;animation-delay:var(--i,0s)}
+.pipe4 b{font-size:12.5px;color:var(--ink)}
+.pipe4 span{display:block;font-size:11px;line-height:1.35;color:#3C5A70;margin-top:4px}
+.dtbl-wrap{overflow-x:auto}
+.dtbl{border:1px solid var(--rule);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:11px}
+.dtbl .hd,.dtbl .r{display:grid;grid-template-columns:repeat(6,1fr)}
+.dtbl .hd{background:var(--navy);color:#fff}
+.dtbl .hd span{padding:7px 9px}
+.dtbl .r{border-top:1px solid #EFEBE1;color:var(--text-2);animation:om-fade .4s both;animation-delay:var(--i,0s)}
+.dtbl .r span{padding:6px 9px}
+.dtbl .r.dim{color:#9AA4AC}
+
+/* 03 · análise */
+.vd-2col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.vd-card{border:1px solid var(--rule);background:var(--surface);padding:12px 14px}
+.draw{animation:om-draw 1.4s ease both;animation-delay:var(--i,0s)}
+.klegend{display:flex;gap:14px;margin-top:7px;font-size:11px;color:var(--text-2)}
+.klegend span{display:flex;align-items:center;gap:5px}
+.klegend i{display:block;width:12px;height:2px}
+.ibars{border:1px solid var(--rule);background:var(--surface);padding:14px;height:143px;
+  display:grid;grid-template-columns:repeat(6,1fr);gap:7px;align-items:end}
+.ibars span{display:block;transform-origin:bottom;animation:om-bar .5s both;animation-delay:var(--i,0s)}
+.stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:16px}
+.stat3 div{border:1px solid var(--rule);background:var(--surface);padding:11px 14px;
+  animation:om-fade .45s both;animation-delay:var(--i,0s)}
+.stat3 em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9px;
+  letter-spacing:.1em;color:var(--text-3);margin-bottom:5px}
+.stat3 b{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:400;color:var(--text)}
+.stat3 b span{font-size:11px;color:var(--text-3)}
+.vd-foot{margin-top:14px;padding-top:12px;border-top:1px dashed #C4BCA9;font-size:12px;color:var(--text-2)}
+.vd-foot b{color:var(--text);font-weight:600}
+
+/* 04 · automação */
+.cyc4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:12px}
+.cyc4 div{background:#16324A;padding:9px 11px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#C6D8E6;
+  animation:om-pull .4s both;animation-delay:var(--i,0s)}
+.cyc4 div.pub{background:#1D4A70;color:#fff}
 .live{border:1px solid rgba(255,255,255,.18);background:#0A1B29}
-.live-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.14)}
-.live-h .on{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;font-size:10px;
+.live-h{display:flex;align-items:center;gap:11px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.14)}
+.live-h .on{display:flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
   letter-spacing:.12em;text-transform:uppercase;color:#7BE0A8}
-.live-h .on i{display:block;width:7px;height:7px;background:#7BE0A8;border-radius:50%;animation:om-blink 1.4s ease-in-out infinite}
-.live-h .t{font-size:13px;color:#fff;font-weight:500}
-.live-h .u{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#6C8399}
+.live-h .on i{display:block;width:6px;height:6px;background:#7BE0A8;border-radius:50%;animation:om-blink 1.4s ease-in-out infinite}
+.live-h .t{font-size:12.5px;color:#fff;font-weight:500}
+.live-h .u{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10px;color:#6C8399}
 .live-k{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.12)}
-.live-k>div{background:#0E2233;padding:14px 16px;animation:om-fade .45s both;animation-delay:var(--i,0s)}
-.live-k em,.live-s em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
-  letter-spacing:.1em;text-transform:uppercase;color:#6C8399;margin-bottom:7px}
-.live-k b{display:block;font-family:"Spectral",serif;font-weight:500;font-size:30px;color:#fff;line-height:1}
-.live-k span{display:block;font-size:11.5px;color:#9FB4C6;margin-top:5px}
+.live-k>div{background:#0E2233;padding:10px 14px;animation:om-fade .45s both;animation-delay:var(--i,0s)}
+.live-k em,.live-s em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;color:#6C8399;margin-bottom:6px}
+.live-k b{display:block;font-family:"Spectral",serif;font-weight:500;font-size:22px;color:#fff;line-height:1}
+.live-k span{display:block;font-size:11px;color:#9FB4C6;margin-top:4px}
 .live-k span.g{color:#7BE0A8}
 .live-k span.o{color:#E08A6C}
-.live-s{padding:14px 16px;border-top:1px solid rgba(255,255,255,.12)}
-.live-s em{margin-bottom:9px}
-.strip{overflow:hidden;height:52px}
-.run{display:flex;align-items:flex-end;gap:3px;height:52px;width:200%;animation:om-scroll 9s linear infinite}
+.live-s{padding:12px 14px;border-top:1px solid rgba(255,255,255,.12)}
+.live-s em{margin-bottom:8px}
+.strip{overflow:hidden;height:40px}
+.run{display:flex;align-items:flex-end;gap:3px;height:40px;width:200%;animation:om-scroll 9s linear infinite}
 .run span{flex:1;display:block;background:#245C8C}
 .run span.hi{background:#3B76AE}
-.live-a{border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column}
-.live-a>div{display:flex;gap:14px;padding:9px 16px;font-size:12px;color:#C6D8E6;
+.live-a{border-top:1px solid rgba(255,255,255,.12)}
+.live-a>div{display:flex;gap:12px;padding:7px 14px;font-size:11.5px;color:#C6D8E6;
   animation:om-fade .4s both;animation-delay:var(--i,0s)}
 .live-a>div+div{border-top:1px solid rgba(255,255,255,.08)}
 .live-a em{font-style:normal;font-family:"IBM Plex Mono",monospace;text-transform:uppercase}
 .live-a em.al{color:#E08A6C}
 .live-a em.ok{color:#7BE0A8}
 .live-a span{margin-left:auto;color:#6C8399}
+.cyc-f{display:flex;align-items:center;gap:9px;margin-top:13px;font-size:11.5px;color:#9FB4C6}
+.cyc-f i{display:inline-block;width:13px;height:13px;border:2px solid #3B76AE;border-top-color:transparent;
+  border-radius:50%;animation:om-spin 1.1s linear infinite}
 
-/* os painéis são uma camada de detalhe do desktop */
-@media(max-width:1000px){
-  .vd{display:none!important}
+/* transversal e ciclo */
+.vc-cross{background:var(--surface);border:1px solid var(--rule);padding:16px 24px;
+  display:flex;flex-wrap:wrap;gap:8px 34px;align-items:center;font-size:13px;color:var(--text-2)}
+.vc-cross b{font-size:13.5px;font-weight:500;color:var(--text)}
+.vc.vc-loop{margin-top:22px}
+.vc-loop-b{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  border-top:1px dashed #C4BCA9;padding-top:16px;font-size:14px;color:var(--text-2)}
+.vc-loop-b em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--clay)}
+
+/* no celular a faixa vira acordeão empilhado */
+@media(max-width:860px){
+  #metodo{padding:56px 0 48px}
+  .vc{grid-template-columns:1fr;gap:10px;align-items:start}
+  .vc + .vc{margin-top:26px}
+  .vc-lbl{text-align:left}
+  .vc-stage .vc-lbl{justify-content:flex-start}
+  .vc-loop .vc-lbl{display:none}
   .vc-hint{display:none}
-  .vc-stage .vs{cursor:default}
+  .vc-band{grid-template-columns:1fr!important;min-height:0;transition:none}
+  .vs{clip-path:none}
+  .vs-card,.vs1 .vs-card,.vs4 .vs-card{padding:24px 26px}
+  .vc-band .vs-card{display:block!important}
+  .vc-band .vs-strip{display:none!important}
+  .vd{margin:0 12px 14px}
+  .vd-2col{grid-template-columns:1fr}
+  .pipe4,.cyc4,.stat3{grid-template-columns:1fr 1fr}
+  .live-k{grid-template-columns:1fr}
+  .dtbl{min-width:520px}
 }
 @media(prefers-reduced-motion:reduce){
-  .vd,.vd *{animation:none!important}
+  .vc-band{transition:none}
+  .vd,.vd *,.vs-strip{animation:none!important}
 }
 
 /* colaborações */
@@ -491,12 +525,9 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 <!-- MÉTODO · CADEIA DE VALOR -->
 <section id="metodo">
   <div class="wrap">
-    <div class="head">
-      <div><span class="eyebrow">Método</span><h2>Da base que você já tem à inteligência que roda sozinha.</h2></div>
-      <div class="head-r">
-        <p>Quatro etapas, sempre nesta ordem. Cada uma fecha com um artefato que sua equipe consegue usar sem nós.</p>
-        <div class="vc-hint"><i></i>passe o mouse em cada etapa</div>
-      </div>
+    <div class="mt-head">
+      <div><span class="eyebrow">Método</span><h2>Do dado à decisão</h2></div>
+      <div class="vc-hint"><i></i>abra cada etapa</div>
     </div>
 
     <!-- o que entra -->
@@ -512,224 +543,197 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
       </div>
     </div>
 
-    <!-- fluxo de informação · passe o mouse em cada etapa -->
+    <!-- fluxo de informação · a etapa aberta expande a coluna -->
     <div class="vc-stage" id="vc-stage">
       <div class="vc">
-        <div class="vc-lbl">Fluxo de informação</div>
-        <div class="vc-flow">
+        <div class="vc-lbl">Fluxo de<br>informação</div>
+        <div class="vc-band" data-open="0">
+
+          <!-- 01 -->
           <div class="vs vs1" tabindex="0" role="button" aria-controls="vd1" aria-expanded="false">
-            <b>01</b>
-            <h3>Entender o dado que existe</h3>
-            <p>Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</p>
-            <div class="out"><span>Entrega</span>Relatório de diagnóstico de dados</div>
+            <div class="vs-strip"><span class="n">01</span><span class="t">Entender o dado</span></div>
+            <div class="vs-card">
+              <b>01</b>
+              <h3>Entender o dado que existe</h3>
+              <p>Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</p>
+              <div class="out"><span>Entrega</span>Relatório de diagnóstico de dados</div>
+            </div>
+            <div class="vd" id="vd1">
+              <div class="vd-h">
+                <em>01</em><h3>Entender o dado que existe</h3>
+                <span class="sub">onde a informação está — e em que degrau o serviço opera</span>
+              </div>
+              <div class="vd-lbl">Ponto de partida · informação dispersa e sem padrão</div>
+              <div class="scat">
+                <span class="c dr1" style="left:4%;top:12%;--d:6s">Prontuário</span>
+                <span class="c dr2" style="left:40%;top:8%;--d:7s">Laboratório · LIS</span>
+                <span class="c dr3" style="left:72%;top:16%;--d:8s">Bases do SUS</span>
+                <span class="c dr2" style="left:10%;top:44%;--d:6.6s">Planilha do setor</span>
+                <span class="c dr1" style="left:48%;top:48%;--d:7.4s">Faturamento · SIH</span>
+                <span class="c dr3" style="left:6%;top:74%;--d:7.1s">PDF de laudo</span>
+                <span class="c dr1" style="left:44%;top:78%;--d:8.2s">Caderno da equipe</span>
+                <span class="tag">SEM LIGAÇÃO ENTRE FONTES</span>
+              </div>
+              <div class="vd-defs">
+                <div><b>Inventário</b> · fontes e cobertura</div>
+                <div><b>Qualidade</b> · falta e duplicata</div>
+                <div><b>Escopo</b> · o que dá para responder já</div>
+              </div>
+              <div class="vd-lbl">Leitura de maturidade</div>
+              <div class="ladder">
+                <div class="lb"><span class="bar" style="height:32%;background:#EFEBE1"></span><em>01 Inform.</em></div>
+                <div class="lb here">
+                  <span class="you">Você está aqui</span>
+                  <span class="bar" style="height:44%;background:#DEE9F2;border:1px solid var(--clay);--i:.08s"></span><em>02 Conect.</em>
+                </div>
+                <div class="lb"><span class="bar" style="height:56%;background:#C2D8E9;--i:.16s"></span><em>03 Visib.</em></div>
+                <div class="lb"><span class="bar" style="height:68%;background:#8FB6D8;--i:.24s"></span><em>04 Transp.</em></div>
+                <div class="lb"><span class="bar" style="height:84%;background:#3B76AE;--i:.32s"></span><em>05 Previs.</em></div>
+                <div class="lb"><span class="bar" style="height:100%;background:#123A5C;--i:.4s"></span><em>06 Adapt.</em></div>
+              </div>
+            </div>
           </div>
+
+          <!-- 02 -->
           <div class="vs vs2" tabindex="0" role="button" aria-controls="vd2" aria-expanded="false">
-            <b>02</b>
-            <h3>Camada de ingestão e organização</h3>
-            <p>Pipeline de ingestão, padronização, ligação de registros verificada e tabelas analíticas versionadas.</p>
-            <div class="out"><span>Entrega</span>Base analítica reprodutível</div>
+            <div class="vs-strip"><span class="n">02</span><span class="t">Ingestão e organização</span></div>
+            <div class="vs-card">
+              <b>02</b>
+              <h3>Camada de ingestão e organização</h3>
+              <p>Pipeline de ingestão, padronização, ligação de registros verificada e tabelas analíticas versionadas.</p>
+              <div class="out"><span>Entrega</span>Base analítica reprodutível</div>
+            </div>
+            <div class="vd" id="vd2">
+              <div class="vd-h">
+                <em>02</em><h3>Camada de ingestão e organização</h3>
+                <span class="sub">o disperso entra, a base analítica sai</span>
+              </div>
+              <div class="vd-lbl">Entra · sete fontes, formatos diferentes</div>
+              <div class="src">
+                <span>EHR · SQL</span>
+                <span style="--i:.05s">LIS · HL7</span>
+                <span style="--i:.1s">SIH · dbf</span>
+                <span style="--i:.15s">planilha · xlsx</span>
+                <span style="--i:.2s">export · csv</span>
+                <span style="--i:.25s">laudo · pdf</span>
+                <span style="--i:.3s">registro · REDCap</span>
+              </div>
+              <div class="flowrow"><i>↓</i><em>Extração programada</em><span class="ln"></span></div>
+              <div class="pipe4">
+                <div><b>Padronizar</b><span>unidades, códigos, datas</span></div>
+                <div style="--i:.1s"><b>Ligar registros</b><span>mesmo paciente, várias bases</span></div>
+                <div style="--i:.2s"><b>Validar</b><span>regras, faixas, duplicatas</span></div>
+                <div style="--i:.3s"><b>Versionar</b><span>base com data e log</span></div>
+              </div>
+              <div class="flowrow"><i style="--i:.6s">↓</i><em>Sai · tabela analítica versionada</em><span class="ln"></span></div>
+              <div class="dtbl-wrap">
+                <div class="dtbl">
+                  <div class="hd"><span>id_pac</span><span>data</span><span>unidade</span><span>exame</span><span>exposição</span><span>desfecho</span></div>
+                  <div class="r" style="--i:.1s"><span>A-0192</span><span>03-04</span><span>UTI-2</span><span>hemocult</span><span>1</span><span>alta</span></div>
+                  <div class="r" style="--i:.22s"><span>A-0193</span><span>03-04</span><span>CC-1</span><span>PCR</span><span>0</span><span>alta</span></div>
+                  <div class="r" style="--i:.34s"><span>A-0194</span><span>03-05</span><span>UTI-1</span><span>cultura</span><span>1</span><span>óbito</span></div>
+                  <div class="r dim" style="--i:.46s"><span>…</span><span>…</span><span>…</span><span>…</span><span>…</span><span>…</span></div>
+                </div>
+              </div>
+              <div class="vd-foot" style="border-top:0;padding-top:0;margin-top:11px">Uma base, um dicionário, uma versão — tudo que vem depois lê daqui.</div>
+            </div>
           </div>
+
+          <!-- 03 -->
           <div class="vs vs3" tabindex="0" role="button" aria-controls="vd3" aria-expanded="false">
-            <b>03</b>
-            <h3>Análise que responde a pergunta</h3>
-            <p>Coorte, indicador, modelo de risco, avaliação de intervenção — código de análise e figuras rodando sobre a mesma base.</p>
-            <div class="out"><span>Entrega</span>Resultados, figuras e interpretação</div>
+            <div class="vs-strip"><span class="n">03</span><span class="t">Análise</span></div>
+            <div class="vs-card">
+              <b>03</b>
+              <h3>Análise que responde a pergunta</h3>
+              <p>Coorte, indicador, modelo de risco, avaliação de intervenção — código de análise e figuras rodando sobre a mesma base.</p>
+              <div class="out"><span>Entrega</span>Resultados, figuras e interpretação</div>
+            </div>
+            <div class="vd" id="vd3">
+              <div class="vd-h">
+                <em>03</em><h3>Análise que responde a pergunta</h3>
+                <span class="sub">a mesma base virando curva, efeito e indicador</span>
+              </div>
+              <div class="vd-2col">
+                <div>
+                  <div class="vd-lbl">Sobrevida · protocolo vs. usual</div>
+                  <div class="vd-card">
+                    <svg viewBox="0 0 260 118" style="width:100%;height:96px;display:block" aria-hidden="true">
+                      <line x1="24" y1="6" x2="24" y2="102" stroke="#DCD6C9"></line>
+                      <line x1="24" y1="102" x2="254" y2="102" stroke="#DCD6C9"></line>
+                      <polyline class="draw" points="24,12 66,20 96,26 130,42 170,50 212,62 252,68" fill="none" stroke="#3B76AE" stroke-width="2" stroke-dasharray="520"></polyline>
+                      <polyline class="draw" style="--i:.25s" points="24,12 66,30 96,48 130,64 170,78 212,88 252,94" fill="none" stroke="#B0533A" stroke-width="2" stroke-dasharray="520"></polyline>
+                    </svg>
+                    <div class="klegend">
+                      <span><i style="background:#3B76AE"></i>protocolo novo</span>
+                      <span><i style="background:#B0533A"></i>cuidado usual</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="vd-lbl">Indicador por unidade</div>
+                  <div class="ibars">
+                    <span style="height:36%;background:#CFDFEC"></span>
+                    <span style="height:60%;background:#CFDFEC;--i:.08s"></span>
+                    <span style="height:88%;background:#3B76AE;--i:.16s"></span>
+                    <span style="height:46%;background:#CFDFEC;--i:.24s"></span>
+                    <span style="height:54%;background:#CFDFEC;--i:.32s"></span>
+                    <span style="height:28%;background:#CFDFEC;--i:.4s"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="stat3">
+                <div style="--i:.4s"><em>Efeito estimado</em><b>HR 0,74 <span>IC95% 0,61–0,90</span></b></div>
+                <div style="--i:.5s"><em>Coorte</em><b>4.812 <span>internações · 2022–25</span></b></div>
+                <div style="--i:.6s"><em>Reprodução</em><b>1 comando <span>base → figura</span></b></div>
+              </div>
+              <div class="vd-foot">Resultado ainda <b>estático</b> — figura, tabela, relatório ou manuscrito. Responde a pergunta de hoje; não acompanha o amanhã.</div>
+            </div>
           </div>
+
+          <!-- 04 -->
           <div class="vs vs4" tabindex="0" role="button" aria-controls="vd4" aria-expanded="false">
-            <b>04</b>
-            <h3>Automação e painel vivo</h3>
-            <p>A análise passa a rodar sozinha: atualização programada, alertas e um painel ligado à rotina de quem decide.</p>
-            <div class="out"><span>Entrega</span>Painel vivo e código transferido</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 01 · o ponto de partida -->
-      <div class="vd" id="vd1" hidden>
-        <div class="vd-h">
-          <em>01</em>
-          <h3>Entender o dado que existe</h3>
-          <span class="sub">Onde a informação está hoje — e em que degrau de maturidade o serviço opera</span>
-          <span class="esc">saia do quadro para fechar</span>
-        </div>
-        <div class="vd-cols c1">
-          <div>
-            <div class="vd-lbl">Ponto de partida · informação dispersa</div>
-            <div class="scat" style="height:222px">
-              <span class="c dr1" style="left:6%;top:12%;--d:6s">Prontuário eletrônico</span>
-              <span class="c dr2" style="left:52%;top:6%;--d:7s">Laboratório · LIS</span>
-              <span class="c dr3" style="left:14%;top:37%;--d:8s">Planilha do setor</span>
-              <span class="c dr1" style="left:58%;top:39%;--d:7.5s">Faturamento · SIH</span>
-              <span class="c dr2" style="left:4%;top:66%;--d:6.5s">PDF de laudo</span>
-              <span class="c dr3" style="left:41%;top:70%;--d:7.2s">Caderno da equipe</span>
-              <span class="c dr1" style="left:71%;top:66%;--d:8.4s">Bases do SUS</span>
-              <span class="tag">SEM PADRÃO · SEM LIGAÇÃO</span>
+            <div class="vs-strip"><span class="n">04</span><span class="t">Automação e painel vivo</span></div>
+            <div class="vs-card">
+              <b>04</b>
+              <h3>Automação e painel vivo</h3>
+              <p>A análise passa a rodar sozinha: atualização programada, alertas e um painel ligado à rotina de quem decide.</p>
+              <div class="out"><span>Entrega</span>Painel vivo e código transferido</div>
             </div>
-            <div class="vd-defs">
-              <div><b>Inventário</b>fontes, volume, cobertura</div>
-              <div><b>Qualidade</b>falta, duplicata, consistência</div>
-              <div><b>Escopo</b>o que dá para responder já</div>
-            </div>
-          </div>
-          <div>
-            <div class="vd-lbl">Leitura de maturidade</div>
-            <div class="ladder">
-              <div class="lb"><span class="bar" style="height:34%;background:#EFEBE1"></span><em>01</em></div>
-              <div class="lb here">
-                <span class="you">Você está aqui</span>
-                <span class="bar" style="height:46%;background:#DEE9F2;border:1px solid var(--clay);--i:.08s"></span><em>02</em>
+            <div class="vd dark" id="vd4">
+              <div class="vd-h">
+                <em>04</em><h3>Automação e painel vivo</h3>
+                <span class="sub">a mesma análise rodando sozinha, ligada à rotina</span>
               </div>
-              <div class="lb"><span class="bar" style="height:58%;background:#C2D8E9;--i:.16s"></span><em>03</em></div>
-              <div class="lb"><span class="bar" style="height:70%;background:#8FB6D8;--i:.24s"></span><em>04</em></div>
-              <div class="lb"><span class="bar" style="height:84%;background:#3B76AE;--i:.32s"></span><em>05</em></div>
-              <div class="lb"><span class="bar" style="height:100%;background:#123A5C;--i:.4s"></span><em>06</em></div>
-            </div>
-            <div class="vd-note" style="margin-top:14px">Informatização · Conectividade · Visibilidade · Transparência · Previsibilidade · Adaptabilidade — o projeto é desenhado para subir um degrau por vez.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 02 · ingestão -->
-      <div class="vd" id="vd2" hidden>
-        <div class="vd-h">
-          <em>02</em>
-          <h3>Camada de ingestão e organização</h3>
-          <span class="sub">O disperso entra, a base analítica sai</span>
-          <span class="esc">saia do quadro para fechar</span>
-        </div>
-        <div class="vd-cols c2">
-          <div>
-            <div class="vd-lbl">Entra</div>
-            <div class="scat sm" style="height:206px">
-              <span class="c dr1" style="left:8%;top:10%;--d:6s">EHR</span>
-              <span class="c dr2" style="left:52%;top:20%;--d:7s">LIS</span>
-              <span class="c dr3" style="left:16%;top:44%;--d:7.6s">xlsx</span>
-              <span class="c dr1" style="left:56%;top:56%;--d:8s">SIH</span>
-              <span class="c dr2" style="left:22%;top:74%;--d:6.6s">csv</span>
-            </div>
-          </div>
-          <div class="arrows">
-            <span>↓</span><span style="--i:.5s">↓</span><span style="--i:1s">↓</span>
-            <em>Extração</em>
-          </div>
-          <div>
-            <div class="vd-lbl">Pipeline</div>
-            <div class="pipe">
-              <div><b>Padronizar</b> — unidades, códigos, datas</div>
-              <div style="--i:.12s"><b>Ligar registros</b> — mesmo paciente, várias bases</div>
-              <div style="--i:.24s"><b>Validar</b> — regras, faixas, duplicatas</div>
-              <div style="--i:.36s"><b>Versionar</b> — base com data e log</div>
-            </div>
-          </div>
-          <div class="arrow-r">→</div>
-          <div>
-            <div class="vd-lbl">Sai · tabela analítica</div>
-            <div class="dtbl">
-              <div class="hd"><span>id_pac</span><span>data</span><span>unidade</span><span>exame</span><span>desfecho</span></div>
-              <div class="r" style="--i:.1s"><span>A-0192</span><span>03-04</span><span>UTI-2</span><span>hemocult</span><span>alta</span></div>
-              <div class="r" style="--i:.22s"><span>A-0193</span><span>03-04</span><span>CC-1</span><span>PCR</span><span>alta</span></div>
-              <div class="r" style="--i:.34s"><span>A-0194</span><span>03-05</span><span>UTI-1</span><span>cultura</span><span>óbito</span></div>
-              <div class="r" style="--i:.46s"><span>A-0195</span><span>03-05</span><span>ENF-3</span><span>hemocult</span><span>alta</span></div>
-              <div class="r dim" style="--i:.58s"><span>…</span><span>…</span><span>…</span><span>…</span><span>…</span></div>
-            </div>
-            <div class="vd-note">Uma base, um dicionário, uma versão — tudo que vem depois lê daqui.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 03 · análise -->
-      <div class="vd" id="vd3" hidden>
-        <div class="vd-h">
-          <em>03</em>
-          <h3>Análise que responde a pergunta</h3>
-          <span class="sub">A mesma base virando indicador, curva e efeito estimado</span>
-          <span class="esc">saia do quadro para fechar</span>
-        </div>
-        <div class="vd-cols c3">
-          <div>
-            <div class="vd-lbl">Base analítica</div>
-            <div class="mtbl">
-              <div class="hd"><span>id</span><span>exp</span><span>y</span></div>
-              <div class="r"><span>0192</span><span>1</span><span>0</span></div>
-              <div class="r"><span>0193</span><span>0</span><span>0</span></div>
-              <div class="r"><span>0194</span><span>1</span><span>1</span></div>
-              <div class="r"><span>0195</span><span>0</span><span>0</span></div>
-              <div class="r"><span>…</span><span>…</span><span>…</span></div>
-            </div>
-            <div class="vd-note" style="margin-top:10px">n = 4.812 internações · 2022–2025</div>
-          </div>
-          <div class="arrow-c"><span>→</span><em>Modelo</em></div>
-          <div>
-            <div class="vd-lbl">Curva de sobrevida</div>
-            <div class="vd-card">
-              <svg viewBox="0 0 260 120" style="width:100%;height:120px;display:block" aria-hidden="true">
-                <line x1="26" y1="6" x2="26" y2="104" stroke="#DCD6C9" stroke-width="1"></line>
-                <line x1="26" y1="104" x2="254" y2="104" stroke="#DCD6C9" stroke-width="1"></line>
-                <polyline class="draw" points="26,12 66,20 96,26 130,44 170,52 210,64 252,70" fill="none" stroke="#3B76AE" stroke-width="2" stroke-dasharray="520"></polyline>
-                <polyline class="draw" style="--i:.25s" points="26,12 66,30 96,48 130,66 170,80 210,90 252,96" fill="none" stroke="#B0533A" stroke-width="2" stroke-dasharray="520"></polyline>
-              </svg>
-              <div class="klegend">
-                <span><i style="background:#3B76AE"></i>protocolo novo</span>
-                <span><i style="background:#B0533A"></i>cuidado usual</span>
+              <div class="cyc4">
+                <div>01 · extrai</div>
+                <div style="--i:.1s">02 · padroniza e liga</div>
+                <div style="--i:.2s">03 · recalcula</div>
+                <div class="pub" style="--i:.3s">04 · publica</div>
               </div>
-            </div>
-            <div class="hr-box">HR 0,74 &nbsp;<span>IC95% 0,61–0,90</span></div>
-          </div>
-          <div>
-            <div class="vd-lbl">Indicador por unidade</div>
-            <div class="ibars">
-              <span style="height:38%;background:#CFDFEC"></span>
-              <span style="height:62%;background:#CFDFEC;--i:.08s"></span>
-              <span style="height:88%;background:#3B76AE;--i:.16s"></span>
-              <span style="height:47%;background:#CFDFEC;--i:.24s"></span>
-              <span style="height:55%;background:#CFDFEC;--i:.32s"></span>
-              <span style="height:29%;background:#CFDFEC;--i:.4s"></span>
-            </div>
-            <div class="vd-note" style="margin-top:10px">Resultado ainda <b>estático</b>: figura, tabela, relatório ou manuscrito — vale para a decisão de hoje.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 04 · automação -->
-      <div class="vd dark" id="vd4" hidden>
-        <div class="vd-h">
-          <em>04</em>
-          <h3>Automação e painel vivo</h3>
-          <span class="sub">A mesma análise, agora rodando sozinha e ligada à rotina</span>
-          <span class="esc">saia do quadro para fechar</span>
-        </div>
-        <div class="vd-cols c4">
-          <div>
-            <div class="vd-lbl">Ciclo automático</div>
-            <div class="cyc">
-              <div>01 · extrai</div>
-              <div style="--i:.1s">02 · padroniza e liga</div>
-              <div style="--i:.2s">03 · recalcula análise</div>
-              <div class="on" style="--i:.3s">04 · publica no painel</div>
-            </div>
-            <div class="cyc-f"><i></i>a cada 6 horas, sem ninguém pedir</div>
-          </div>
-          <div class="live">
-            <div class="live-h">
-              <span class="on"><i></i>Ao vivo</span>
-              <span class="t">Infecção associada à assistência · rede</span>
-              <span class="u">atualizado há 4 min</span>
-            </div>
-            <div class="live-k">
-              <div><em>Densidade / 1.000 pac-dia</em><b>3,8</b><span class="g">↓ 0,6 vs. mês anterior</span></div>
-              <div style="--i:.12s"><em>Casos em aberto</em><b>17</b><span class="o">4 novos hoje</span></div>
-              <div style="--i:.24s"><em>Risco alto próx. 7 dias</em><b>42</b><span>lista enviada à CCIH</span></div>
-            </div>
-            <div class="live-s">
-              <em>Série contínua</em>
-              <div class="strip"><div class="run">
-                <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
-                <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
-              </div></div>
-            </div>
-            <div class="live-a">
-              <div style="--i:.3s"><em class="al">Alerta</em>UTI-2 acima do limite há 3 dias<span>09:12</span></div>
-              <div style="--i:.45s"><em class="ok">OK</em>Base atualizada · 12.402 registros<span>08:00</span></div>
+              <div class="live">
+                <div class="live-h">
+                  <span class="on"><i></i>Ao vivo</span>
+                  <span class="t">Infecção associada à assistência · rede</span>
+                  <span class="u">há 4 min</span>
+                </div>
+                <div class="live-k">
+                  <div><em>Densidade /1.000 pac-dia</em><b>3,8</b><span class="g">↓ 0,6 vs. mês anterior</span></div>
+                  <div style="--i:.12s"><em>Casos em aberto</em><b>17</b><span class="o">4 novos hoje</span></div>
+                  <div style="--i:.24s"><em>Risco alto · 7 dias</em><b>42</b><span>lista enviada à CCIH</span></div>
+                </div>
+                <div class="live-s">
+                  <em>Série contínua · atualiza a cada 6 h</em>
+                  <div class="strip"><div class="run">
+                    <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
+                    <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
+                  </div></div>
+                </div>
+                <div class="live-a">
+                  <div style="--i:.3s"><em class="al">Alerta</em>UTI-2 acima do limite há 3 dias<span>09:12</span></div>
+                  <div style="--i:.45s"><em class="ok">OK</em>Base atualizada · 12.402 registros<span>08:00</span></div>
+                </div>
+              </div>
+              <div class="cyc-f"><i></i>roda sem ninguém pedir · código e orquestração entregues ao cliente</div>
             </div>
           </div>
         </div>
@@ -1169,32 +1173,40 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 })();
 </script>
 <script>
-/* método · painel de detalhe por etapa (hover / foco) */
+/* método · acordeão de etapas (hover no desktop, toque no celular) */
 (function(){
   var stage=document.getElementById('vc-stage'); if(!stage) return;
-  var steps=[].slice.call(stage.querySelectorAll('.vs'));
-  var panels=[].slice.call(stage.querySelectorAll('.vd'));
-  var wide=window.matchMedia('(min-width:1001px)');
+  var band=stage.querySelector('.vc-band');
+  var steps=[].slice.call(band.querySelectorAll('.vs'));
+  var narrow=window.matchMedia('(max-width:860px)');
   var open=0;
   function show(n){
-    if(!wide.matches) n=0;
     if(n===open) return;
     open=n;
-    panels.forEach(function(p,i){p.hidden=(i+1!==n);});
-    steps.forEach(function(s,i){s.setAttribute('aria-expanded',String(i+1===n));});
+    band.setAttribute('data-open',String(n));
+    steps.forEach(function(s,i){
+      var on=(i+1===n);
+      s.classList.toggle('on',on);
+      s.setAttribute('aria-expanded',String(on));
+    });
   }
+  function toggle(n){ show(open===n?0:n); }
   steps.forEach(function(s,i){
-    s.addEventListener('mouseenter',function(){show(i+1);});
-    s.addEventListener('focus',function(){show(i+1);});
-    s.addEventListener('click',function(){show(open===i+1?0:i+1);});
+    s.addEventListener('mouseenter',function(){ if(!narrow.matches) show(i+1); });
+    s.addEventListener('focus',function(){ show(i+1); });
+    s.addEventListener('click',function(e){
+      /* clique dentro do detalhe aberto não fecha o painel */
+      if(e.target.closest && e.target.closest('.vd')) return;
+      if(narrow.matches) toggle(i+1); else show(i+1);
+    });
     s.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();show(open===i+1?0:i+1);}
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(i+1); }
     });
   });
-  stage.addEventListener('mouseleave',function(){show(0);});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')show(0);});
-  (wide.addEventListener?wide.addEventListener.bind(wide,'change'):wide.addListener.bind(wide))(function(){
-    if(!wide.matches) show(0);
+  stage.addEventListener('mouseleave',function(){ if(!narrow.matches) show(0); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') show(0); });
+  (narrow.addEventListener?narrow.addEventListener.bind(narrow,'change'):narrow.addListener.bind(narrow))(function(){
+    show(0);
   });
 })();
 
