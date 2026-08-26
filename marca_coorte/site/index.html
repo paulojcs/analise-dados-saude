@@ -56,28 +56,28 @@ header.solid .navlinks a{color:var(--text-2)}
 /* hero */
 .hero{background:var(--navy-deep);color:#fff;padding:190px 0 84px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(1100px 620px at 78% 12%, rgba(42,111,176,.34), transparent 62%),
-             radial-gradient(760px 520px at 8% 96%, rgba(176,83,58,.20), transparent 66%)}
+  background:radial-gradient(1100px 620px at calc(50% + min(22vw,340px)) 12%, rgba(42,111,176,.34), transparent 62%),
+             radial-gradient(760px 520px at calc(50% - min(38vw,560px)) 96%, rgba(176,83,58,.20), transparent 66%)}
 .hero .wrap{position:relative;z-index:2}
-.hero-art{position:absolute;top:8%;right:-3vw;width:min(760px,56vw);height:88%;z-index:1;
-  pointer-events:none;animation:coorte-drift 30s ease-in-out infinite;will-change:transform}
+/* a arte fica ancorada na coluna de conteúdo, não na borda da janela */
+.hero-stage{position:absolute;top:0;bottom:0;left:50%;z-index:1;pointer-events:none;
+  width:min(100%,calc(var(--maxw) + 160px));margin-left:calc(min(100%,calc(var(--maxw) + 160px)) * -.5)}
+.hero-art{position:absolute;top:8%;right:0;width:min(760px,56vw);height:88%;z-index:2;
+  animation:coorte-drift 30s ease-in-out infinite;will-change:transform}
 .hero-art svg{width:100%;height:100%;display:block}
-.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+.hero-veil{position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(90deg,#08192A 4%,rgba(8,25,42,.88) 32%,rgba(8,25,42,0) 62%)}
 @keyframes coorte-drift{
   0%{transform:translate3d(0,0,0)}
   50%{transform:translate3d(0,-16px,0)}
   100%{transform:translate3d(0,0,0)}}
 @media (prefers-reduced-motion: reduce){.hero-art{animation:none}}
-@media(max-width:900px){.hero-art,.hero-veil{display:none}}
+@media(max-width:900px){.hero-stage,.hero-veil{display:none}}
 .hero h1{color:#fff;font-size:clamp(52px,9.4vw,124px);line-height:.94;letter-spacing:-.035em;margin:26px 0 0}
 .hero h1 span{color:#8FBBE4;font-style:italic}
 .hero .sub{margin-top:34px;font-size:20px;color:#B7C7D5;max-width:47ch;line-height:1.5}
 .hero .acts{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
 .hero .eyebrow{color:#7C99B2}
-.instbar{margin-top:96px;padding-top:26px;border-top:1px solid rgba(255,255,255,.15);
-  display:flex;gap:40px;flex-wrap:wrap;align-items:center}
-.instbar span{font-size:13.5px;color:#7F94A6;letter-spacing:.02em}
 @media(max-width:900px){.hero{padding:140px 0 60px}.hero .sub{font-size:18px}}
 
 /* números */
@@ -145,6 +145,218 @@ section{padding:110px 0}
   .vs,.vs1,.vs4{clip-path:none;padding:24px 26px}
 }
 @media(max-width:640px){.vc-flow{grid-template-columns:1fr}}
+/* método · detalhe por etapa (animações) */
+@keyframes om-panel{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes om-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes om-pull{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes om-drift{0%,100%{transform:translate(0,0)}50%{transform:translate(7px,-8px)}}
+@keyframes om-drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-9px,6px)}}
+@keyframes om-drift3{0%,100%{transform:translate(0,0)}50%{transform:translate(5px,9px)}}
+@keyframes om-bar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes om-draw{from{stroke-dashoffset:520}to{stroke-dashoffset:0}}
+@keyframes om-blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes om-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes om-spin{to{transform:rotate(360deg)}}
+@keyframes om-flow{0%{opacity:0;transform:translateY(-8px)}30%{opacity:1}100%{opacity:0;transform:translateY(30px)}}
+
+.head-r{max-width:36ch}
+.vc-hint{display:flex;align-items:center;gap:9px;margin-top:14px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
+.vc-hint i{display:block;width:22px;height:1px;background:var(--clay)}
+
+.vc-stage{position:relative;margin-top:14px}
+.vc-stage + .vc{margin-top:14px}
+.vc-stage .vs{cursor:pointer}
+.vc-stage .vs:focus-visible{outline:2px solid var(--clay);outline-offset:-4px}
+
+.vd{position:absolute;left:-10px;right:-10px;top:-14px;z-index:20;min-height:calc(100% + 28px);
+  background:var(--paper);border:1px solid var(--navy);box-shadow:0 24px 60px -24px rgba(14,31,46,.45);
+  padding:24px 28px 26px;animation:om-panel .28s ease both}
+.vd[hidden]{display:none}
+.vd-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:20px}
+.vd-h em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;color:var(--clay)}
+.vd-h h3{font-size:24px;line-height:1.15}
+.vd-h .sub{font-size:13.5px;color:var(--text-2)}
+.vd-h .esc{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9AA4AC}
+.vd-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px}
+.vd-lbl a{color:var(--clay)}
+.vd-note{margin-top:12px;font-size:12.5px;line-height:1.5;color:var(--text-2)}
+.vd-note b{font-weight:600;color:var(--text)}
+.vd-cols{display:grid}
+.vd-cols.c1{grid-template-columns:1.05fr 1fr;gap:28px}
+.vd-cols.c2{grid-template-columns:200px 46px 250px 46px 1fr;align-items:center}
+.vd-cols.c3{grid-template-columns:150px 40px 1fr 1fr;gap:22px;align-items:start}
+.vd-cols.c4{grid-template-columns:186px 1fr;gap:24px;align-items:start}
+
+/* dispersão de fontes */
+.scat{position:relative;border:1px dashed #C4BCA9;background:#F5F2EB}
+.scat .c{position:absolute;white-space:nowrap;background:var(--surface);border:1px solid var(--rule);
+  padding:6px 11px;font-size:12.5px;color:var(--text);animation-duration:var(--d,7s);
+  animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+.scat.sm .c{padding:4px 8px;font-size:11px;color:var(--text-2)}
+.scat .dr1{animation-name:om-drift}
+.scat .dr2{animation-name:om-drift2}
+.scat .dr3{animation-name:om-drift3}
+.scat .tag{position:absolute;right:10px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:#A79C86}
+.vd-defs{display:flex;gap:26px;margin-top:14px}
+.vd-defs div{font-size:12.5px;line-height:1.45;color:var(--text-2)}
+.vd-defs b{display:block;color:var(--text);font-weight:600}
+
+/* escada compacta dentro do painel 01 */
+.ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;height:222px;align-items:end}
+.lb{position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.lb .bar{display:block;transform-origin:bottom;animation:om-bar .5s ease both;animation-delay:var(--i,0s)}
+.lb em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--text-3);margin-top:6px}
+.lb.here em{color:var(--clay)}
+.lb .you{position:absolute;top:0;left:0;right:0;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--clay);animation:om-blink 1.8s ease-in-out infinite}
+
+/* pipeline de ingestão */
+.arrows{display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:26px}
+.arrows span{font-size:13px;color:var(--clay);animation:om-flow 2.2s linear infinite;animation-delay:var(--i,0s)}
+.arrows em,.arrow-c em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#9AA4AC;writing-mode:vertical-rl;margin-top:6px}
+.arrow-r{display:flex;align-items:center;justify-content:center;color:var(--clay);font-size:16px;padding-top:26px}
+.arrow-c{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:44px}
+.arrow-c span{font-size:15px;color:var(--clay)}
+.pipe{display:flex;flex-direction:column;gap:4px}
+.pipe div{background:#CFDFEC;padding:11px 14px;font-size:13px;color:var(--ink);
+  animation:om-pull .45s both;animation-delay:var(--i,0s)}
+.pipe b{font-weight:600}
+
+/* tabelas mono */
+.dtbl{border:1px solid var(--rule);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:11px}
+.dtbl .hd,.dtbl .r{display:grid;grid-template-columns:repeat(5,1fr)}
+.dtbl .hd{background:var(--navy);color:#fff;letter-spacing:.04em}
+.dtbl .hd span{padding:8px 9px}
+.dtbl .r{border-top:1px solid #EFEBE1;color:var(--text-2);animation:om-fade .4s both;animation-delay:var(--i,0s)}
+.dtbl .r span{padding:7px 9px}
+.dtbl .r.dim{color:#9AA4AC}
+.mtbl{border:1px solid var(--rule);background:var(--surface);font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--text-3)}
+.mtbl .hd,.mtbl .r{display:grid;grid-template-columns:repeat(3,1fr)}
+.mtbl .hd{background:#EFEBE1;color:var(--text-2)}
+.mtbl .hd span{padding:6px 7px}
+.mtbl .r{border-top:1px solid #F1EFE9}
+.mtbl .r span{padding:5px 7px}
+
+/* curva e indicador */
+.vd-card{border:1px solid var(--rule);background:var(--surface);padding:12px 14px}
+.draw{animation:om-draw 1.4s ease both;animation-delay:var(--i,0s)}
+.klegend{display:flex;gap:16px;margin-top:8px;font-size:11.5px;color:var(--text-2)}
+.klegend span{display:flex;align-items:center;gap:6px}
+.klegend i{display:block;width:14px;height:2px}
+.hr-box{margin-top:10px;border:1px solid var(--rule);background:var(--surface);padding:10px 14px;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text);animation:om-fade .5s .5s both}
+.hr-box span{color:var(--text-3)}
+.ibars{border:1px solid var(--rule);background:var(--surface);padding:14px;height:154px;
+  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end}
+.ibars span{display:block;transform-origin:bottom;animation:om-bar .5s both;animation-delay:var(--i,0s)}
+
+/* painel 04 · escuro */
+.vd.dark{background:#0E2233;box-shadow:0 24px 60px -24px rgba(14,31,46,.55)}
+.vd.dark .vd-h{border-bottom-color:rgba(255,255,255,.16)}
+.vd.dark .vd-h em{color:#E08A6C}
+.vd.dark .vd-h h3{color:#fff}
+.vd.dark .vd-h .sub{color:#9FB4C6}
+.vd.dark .vd-h .esc{color:#6C8399}
+.vd.dark .vd-lbl{color:#6C8399}
+.cyc{display:flex;flex-direction:column;gap:4px;font-family:"IBM Plex Mono",monospace;font-size:11px}
+.cyc div{background:#16324A;color:#C6D8E6;padding:9px 11px;animation:om-pull .4s both;animation-delay:var(--i,0s)}
+.cyc div.on{background:#1D4A70;color:#fff}
+.cyc-f{display:flex;align-items:center;gap:9px;margin-top:14px;color:#9FB4C6;font-size:11.5px}
+.cyc-f i{display:inline-block;width:14px;height:14px;border:2px solid #3B76AE;border-top-color:transparent;
+  border-radius:50%;animation:om-spin 1.1s linear infinite}
+.live{border:1px solid rgba(255,255,255,.18);background:#0A1B29}
+.live-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.14)}
+.live-h .on{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:#7BE0A8}
+.live-h .on i{display:block;width:7px;height:7px;background:#7BE0A8;border-radius:50%;animation:om-blink 1.4s ease-in-out infinite}
+.live-h .t{font-size:13px;color:#fff;font-weight:500}
+.live-h .u{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#6C8399}
+.live-k{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.12)}
+.live-k>div{background:#0E2233;padding:14px 16px;animation:om-fade .45s both;animation-delay:var(--i,0s)}
+.live-k em,.live-s em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:#6C8399;margin-bottom:7px}
+.live-k b{display:block;font-family:"Spectral",serif;font-weight:500;font-size:30px;color:#fff;line-height:1}
+.live-k span{display:block;font-size:11.5px;color:#9FB4C6;margin-top:5px}
+.live-k span.g{color:#7BE0A8}
+.live-k span.o{color:#E08A6C}
+.live-s{padding:14px 16px;border-top:1px solid rgba(255,255,255,.12)}
+.live-s em{margin-bottom:9px}
+.strip{overflow:hidden;height:52px}
+.run{display:flex;align-items:flex-end;gap:3px;height:52px;width:200%;animation:om-scroll 9s linear infinite}
+.run span{flex:1;display:block;background:#245C8C}
+.run span.hi{background:#3B76AE}
+.live-a{border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column}
+.live-a>div{display:flex;gap:14px;padding:9px 16px;font-size:12px;color:#C6D8E6;
+  animation:om-fade .4s both;animation-delay:var(--i,0s)}
+.live-a>div+div{border-top:1px solid rgba(255,255,255,.08)}
+.live-a em{font-style:normal;font-family:"IBM Plex Mono",monospace;text-transform:uppercase}
+.live-a em.al{color:#E08A6C}
+.live-a em.ok{color:#7BE0A8}
+.live-a span{margin-left:auto;color:#6C8399}
+
+/* os painéis são uma camada de detalhe do desktop */
+@media(max-width:1000px){
+  .vd{display:none!important}
+  .vc-hint{display:none}
+  .vc-stage .vs{cursor:default}
+}
+@media(prefers-reduced-motion:reduce){
+  .vd,.vd *{animation:none!important}
+}
+
+/* maturidade · escada de adoção */
+.mat-scroll{overflow-x:auto}
+.mat,.mat-band{display:grid;grid-template-columns:172px repeat(6,1fr);gap:6px;min-width:1080px}
+.mat{align-items:end}
+.mat-lbl{display:flex;flex-direction:column;gap:3px}
+.mat-lbl div{display:flex;align-items:center;justify-content:flex-end;padding:0 16px;text-align:right}
+.mat-lbl .a{height:60px;background:#E3D3CB;line-height:1.4;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#8F3F2C}
+.mat-lbl .b{height:138px;background:#D9C3B9;font-family:"Spectral",serif;font-size:17px;color:#5E2A1B}
+.mat-lbl .c{height:132px;background:#E3D3CB;font-family:"Spectral",serif;font-size:17px;color:#5E2A1B}
+.mat-lbl .d{height:44px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+.ms .stack{display:flex;flex-direction:column;gap:3px;padding-top:var(--up,0)}
+.ms .cap{height:60px;clip-path:polygon(50% 0,100% 62%,100% 100%,0 100%,0 62%)}
+.ms .obj{height:138px;padding:14px 16px;font-size:13.5px;line-height:1.45}
+.ms .car{height:132px;padding:14px 16px;font-size:13px;line-height:1.45}
+.ms .lvl{height:44px;display:flex;align-items:center;gap:10px;padding:0 4px}
+.ms .lvl i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--clay)}
+.ms .lvl b{font-size:13.5px;font-weight:500;color:var(--text)}
+.m1 .cap,.m1 .obj{background:#EFEBE1} .m1 .obj{color:var(--ink)} .m1 .car{background:#F5F2EB;color:var(--text-2)}
+.m2 .cap,.m2 .obj{background:#DEE9F2} .m2 .obj{color:var(--ink)} .m2 .car{background:#EAF1F7;color:#3C5A70}
+.m3 .cap,.m3 .obj{background:#C2D8E9} .m3 .obj{color:var(--ink)} .m3 .car{background:#D5E4F0;color:#2E4657}
+.m4 .cap,.m4 .obj{background:#8FB6D8} .m4 .obj{color:#0B2436} .m4 .car{background:#A6C6E1;color:#12303F}
+.m5 .cap,.m5 .obj{background:#3B76AE} .m5 .obj{color:#fff} .m5 .car{background:#4D85BA;color:#E7F0F8}
+.m6 .cap,.m6 .obj{background:#123A5C} .m6 .obj{color:#fff} .m6 .car{background:#1D4A70;color:#C6D8E6}
+.mat-band{margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
+.mat-band .l{display:flex;align-items:center;justify-content:flex-end;padding-right:16px;text-align:right;line-height:1.4;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3)}
+.mat-band .z{grid-column:span 2;background:var(--surface);border:1px solid var(--rule);padding:12px 14px}
+.mat-band .z em{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;margin-bottom:6px}
+.mat-band .z p{font-size:13px;line-height:1.45;color:var(--text-2)}
+.mat-band .z1{border-left:2px solid var(--clay)} .mat-band .z1 em{color:var(--clay)}
+.mat-band .z2{border-left:2px solid var(--s1)} .mat-band .z2 em{color:var(--s1)}
+.mat-band .z3{border-left:2px solid var(--navy)} .mat-band .z3 em{color:var(--navy)}
+
+/* colaborações */
+.collab-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.cl{background:var(--surface);padding:26px 28px 24px;display:flex;flex-direction:column;gap:14px}
+.cl .logo{height:44px;display:flex;align-items:center}
+.cl .logo img{max-height:44px;max-width:180px;width:auto;height:auto;display:block}
+.cl .logo .wm{font-family:"Spectral",serif;font-size:26px;line-height:1;letter-spacing:-.01em;color:var(--navy)}
+.cl .logo .wm.sm{font-size:19px;letter-spacing:0}
+.cl .logo .wm i{font-style:normal;color:var(--clay)}
+.cl h3{font-size:16.5px;line-height:1.25}
+.cl p{font-size:13.5px;line-height:1.5;color:var(--text-2)}
+.cl .role{margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+@media(max-width:900px){.collab-g{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.collab-g{grid-template-columns:1fr}}
+
 /* ---------- dashboards ---------- */
 .case{margin-bottom:96px}
 .case:last-child{margin-bottom:0}
@@ -287,7 +499,9 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-art"><svg id="mesh" viewBox="0 0 700 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
+  <div class="hero-stage">
+    <div class="hero-art"><svg id="mesh" viewBox="0 0 700 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
+  </div>
   <div class="hero-veil"></div>
   <div class="wrap">
     <span class="eyebrow">Ciência de dados em saúde</span>
@@ -296,9 +510,6 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
     <div class="acts">
       <a class="btn btn-light" href="#contato">Falar com a gente</a>
       <a class="btn btn-outline" href="#casos">Ver os casos</a>
-    </div>
-    <div class="instbar">
-      <span>HCFMUSP</span><span>Prefeitura de São Caetano do Sul</span><span>FMUSP</span><span>MRC · UKRI</span><span>FAPESP</span><span>CAMO-Net</span>
     </div>
   </div>
 </div>
@@ -311,12 +522,97 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
   <div class="n"><b>5 bases</b><em>do SUS integradas por paciente</em></div>
 </div></div></div>
 
+<!-- MATURIDADE · ESCADA DE ADOÇÃO -->
+<section id="maturidade">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Diagnóstico</span><h2>Antes do projeto, o degrau em que você está.</h2></div>
+      <p>Adoção de tecnologia em saúde não pula etapas. Posicionamos o serviço nesta escada e desenhamos o projeto para subir um degrau por vez — não seis.</p>
+    </div>
+
+    <div class="mat-scroll">
+      <div class="mat">
+        <div class="mat-lbl">
+          <div class="a">Valor para a<br>instituição</div>
+          <div class="b">Objetivo</div>
+          <div class="c">Característica</div>
+          <div class="d">Nível</div>
+        </div>
+
+        <div class="ms m1">
+          <div class="stack" style="--up:100px">
+            <div class="cap"></div>
+            <div class="obj">Registrar em sistema o que ainda vive no papel e na planilha</div>
+            <div class="car">O dado existe em algum sistema, mas isolado e sem padrão entre setores</div>
+          </div>
+          <div class="lvl"><i>01</i><b>Informatização</b></div>
+        </div>
+
+        <div class="ms m2">
+          <div class="stack" style="--up:80px">
+            <div class="cap"></div>
+            <div class="obj">Integrar prontuário, laboratório, faturamento e bases externas</div>
+            <div class="car">As bases conversam e o mesmo paciente é reconhecido em todas elas</div>
+          </div>
+          <div class="lvl"><i>02</i><b>Conectividade</b></div>
+        </div>
+
+        <div class="ms m3">
+          <div class="stack" style="--up:60px">
+            <div class="cap"></div>
+            <div class="obj">Ver o que está acontecendo agora, sem esperar o fechamento do mês</div>
+            <div class="car">Indicadores e painéis atualizados sobre o dado de rotina</div>
+          </div>
+          <div class="lvl"><i>03</i><b>Visibilidade</b></div>
+        </div>
+
+        <div class="ms m4">
+          <div class="stack" style="--up:40px">
+            <div class="cap"></div>
+            <div class="obj">Entender por que acontece — relação entre prática, exposição e desfecho</div>
+            <div class="car">Coortes, séries interrompidas e análise explicativa sobre a base ligada</div>
+          </div>
+          <div class="lvl"><i>04</i><b>Transparência</b></div>
+        </div>
+
+        <div class="ms m5">
+          <div class="stack" style="--up:20px">
+            <div class="cap"></div>
+            <div class="obj">Antecipar risco, demanda e surto antes de eles aparecerem na fila</div>
+            <div class="car">Modelos de risco e simulação de cenário apoiando a decisão</div>
+          </div>
+          <div class="lvl"><i>05</i><b>Previsibilidade</b></div>
+        </div>
+
+        <div class="ms m6">
+          <div class="stack">
+            <div class="cap"></div>
+            <div class="obj">Deixar o sistema agir: alerta e lista de trabalho sem ninguém pedir</div>
+            <div class="car">Rotinas que se ajustam ao que os dados mostram, com auditoria de cada ação</div>
+          </div>
+          <div class="lvl"><i>06</i><b>Adaptabilidade</b></div>
+        </div>
+      </div>
+
+      <div class="mat-band">
+        <div class="l">Onde nosso<br>método atua</div>
+        <div class="z z1"><em>ETAPAS 01–02</em><p>Diagnóstico e fundação: colocar o dado em pé e ligar as bases</p></div>
+        <div class="z z2"><em>ETAPA 03</em><p>Análise: sair do “quanto” para o “por que”, com evidência que reproduz</p></div>
+        <div class="z z3"><em>ETAPA 04</em><p>Automação: previsão e ação rodando sozinhas, com o código na sua mão</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MÉTODO · CADEIA DE VALOR -->
 <section id="metodo">
   <div class="wrap">
     <div class="head">
       <div><span class="eyebrow">Método</span><h2>Da base que você já tem à inteligência que roda sozinha.</h2></div>
-      <p>Quatro etapas, sempre nesta ordem. Cada uma fecha com um artefato que sua equipe consegue usar sem nós.</p>
+      <div class="head-r">
+        <p>Quatro etapas, sempre nesta ordem. Cada uma fecha com um artefato que sua equipe consegue usar sem nós.</p>
+        <div class="vc-hint"><i></i>passe o mouse em cada etapa</div>
+      </div>
     </div>
 
     <!-- o que entra -->
@@ -332,33 +628,226 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
       </div>
     </div>
 
-    <!-- fluxo de informação -->
-    <div class="vc">
-      <div class="vc-lbl">Fluxo de informação</div>
-      <div class="vc-flow">
-        <div class="vs vs1">
-          <b>01</b>
+    <!-- fluxo de informação · passe o mouse em cada etapa -->
+    <div class="vc-stage" id="vc-stage">
+      <div class="vc">
+        <div class="vc-lbl">Fluxo de informação</div>
+        <div class="vc-flow">
+          <div class="vs vs1" tabindex="0" role="button" aria-controls="vd1" aria-expanded="false">
+            <b>01</b>
+            <h3>Entender o dado que existe</h3>
+            <p>Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</p>
+            <div class="out"><span>Entrega</span>Relatório de diagnóstico de dados</div>
+          </div>
+          <div class="vs vs2" tabindex="0" role="button" aria-controls="vd2" aria-expanded="false">
+            <b>02</b>
+            <h3>Camada de ingestão e organização</h3>
+            <p>Pipeline de ingestão, padronização, ligação de registros verificada e tabelas analíticas versionadas.</p>
+            <div class="out"><span>Entrega</span>Base analítica reprodutível</div>
+          </div>
+          <div class="vs vs3" tabindex="0" role="button" aria-controls="vd3" aria-expanded="false">
+            <b>03</b>
+            <h3>Análise que responde a pergunta</h3>
+            <p>Coorte, indicador, modelo de risco, avaliação de intervenção — código de análise e figuras rodando sobre a mesma base.</p>
+            <div class="out"><span>Entrega</span>Resultados, figuras e interpretação</div>
+          </div>
+          <div class="vs vs4" tabindex="0" role="button" aria-controls="vd4" aria-expanded="false">
+            <b>04</b>
+            <h3>Automação e painel vivo</h3>
+            <p>A análise passa a rodar sozinha: atualização programada, alertas e um painel ligado à rotina de quem decide.</p>
+            <div class="out"><span>Entrega</span>Painel vivo e código transferido</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 01 · o ponto de partida -->
+      <div class="vd" id="vd1" hidden>
+        <div class="vd-h">
+          <em>01</em>
           <h3>Entender o dado que existe</h3>
-          <p>Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</p>
-          <div class="out"><span>Entrega</span>Relatório de diagnóstico de dados</div>
+          <span class="sub">Onde a informação está hoje — e em que degrau de maturidade o serviço opera</span>
+          <span class="esc">saia do quadro para fechar</span>
         </div>
-        <div class="vs vs2">
-          <b>02</b>
+        <div class="vd-cols c1">
+          <div>
+            <div class="vd-lbl">Ponto de partida · informação dispersa</div>
+            <div class="scat" style="height:222px">
+              <span class="c dr1" style="left:6%;top:12%;--d:6s">Prontuário eletrônico</span>
+              <span class="c dr2" style="left:52%;top:6%;--d:7s">Laboratório · LIS</span>
+              <span class="c dr3" style="left:14%;top:37%;--d:8s">Planilha do setor</span>
+              <span class="c dr1" style="left:58%;top:39%;--d:7.5s">Faturamento · SIH</span>
+              <span class="c dr2" style="left:4%;top:66%;--d:6.5s">PDF de laudo</span>
+              <span class="c dr3" style="left:41%;top:70%;--d:7.2s">Caderno da equipe</span>
+              <span class="c dr1" style="left:71%;top:66%;--d:8.4s">Bases do SUS</span>
+              <span class="tag">SEM PADRÃO · SEM LIGAÇÃO</span>
+            </div>
+            <div class="vd-defs">
+              <div><b>Inventário</b>fontes, volume, cobertura</div>
+              <div><b>Qualidade</b>falta, duplicata, consistência</div>
+              <div><b>Escopo</b>o que dá para responder já</div>
+            </div>
+          </div>
+          <div>
+            <div class="vd-lbl">Leitura de maturidade · <a href="#maturidade">escada completa ↗</a></div>
+            <div class="ladder">
+              <div class="lb"><span class="bar" style="height:34%;background:#EFEBE1"></span><em>01</em></div>
+              <div class="lb here">
+                <span class="you">Você está aqui</span>
+                <span class="bar" style="height:46%;background:#DEE9F2;border:1px solid var(--clay);--i:.08s"></span><em>02</em>
+              </div>
+              <div class="lb"><span class="bar" style="height:58%;background:#C2D8E9;--i:.16s"></span><em>03</em></div>
+              <div class="lb"><span class="bar" style="height:70%;background:#8FB6D8;--i:.24s"></span><em>04</em></div>
+              <div class="lb"><span class="bar" style="height:84%;background:#3B76AE;--i:.32s"></span><em>05</em></div>
+              <div class="lb"><span class="bar" style="height:100%;background:#123A5C;--i:.4s"></span><em>06</em></div>
+            </div>
+            <div class="vd-note" style="margin-top:14px">Informatização · Conectividade · Visibilidade · Transparência · Previsibilidade · Adaptabilidade — o projeto é desenhado para subir um degrau por vez.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 · ingestão -->
+      <div class="vd" id="vd2" hidden>
+        <div class="vd-h">
+          <em>02</em>
           <h3>Camada de ingestão e organização</h3>
-          <p>Pipeline de ingestão, padronização, ligação de registros verificada e tabelas analíticas versionadas.</p>
-          <div class="out"><span>Entrega</span>Base analítica reprodutível</div>
+          <span class="sub">O disperso entra, a base analítica sai</span>
+          <span class="esc">saia do quadro para fechar</span>
         </div>
-        <div class="vs vs3">
-          <b>03</b>
+        <div class="vd-cols c2">
+          <div>
+            <div class="vd-lbl">Entra</div>
+            <div class="scat sm" style="height:206px">
+              <span class="c dr1" style="left:8%;top:10%;--d:6s">EHR</span>
+              <span class="c dr2" style="left:52%;top:20%;--d:7s">LIS</span>
+              <span class="c dr3" style="left:16%;top:44%;--d:7.6s">xlsx</span>
+              <span class="c dr1" style="left:56%;top:56%;--d:8s">SIH</span>
+              <span class="c dr2" style="left:22%;top:74%;--d:6.6s">csv</span>
+            </div>
+          </div>
+          <div class="arrows">
+            <span>↓</span><span style="--i:.5s">↓</span><span style="--i:1s">↓</span>
+            <em>Extração</em>
+          </div>
+          <div>
+            <div class="vd-lbl">Pipeline</div>
+            <div class="pipe">
+              <div><b>Padronizar</b> — unidades, códigos, datas</div>
+              <div style="--i:.12s"><b>Ligar registros</b> — mesmo paciente, várias bases</div>
+              <div style="--i:.24s"><b>Validar</b> — regras, faixas, duplicatas</div>
+              <div style="--i:.36s"><b>Versionar</b> — base com data e log</div>
+            </div>
+          </div>
+          <div class="arrow-r">→</div>
+          <div>
+            <div class="vd-lbl">Sai · tabela analítica</div>
+            <div class="dtbl">
+              <div class="hd"><span>id_pac</span><span>data</span><span>unidade</span><span>exame</span><span>desfecho</span></div>
+              <div class="r" style="--i:.1s"><span>A-0192</span><span>03-04</span><span>UTI-2</span><span>hemocult</span><span>alta</span></div>
+              <div class="r" style="--i:.22s"><span>A-0193</span><span>03-04</span><span>CC-1</span><span>PCR</span><span>alta</span></div>
+              <div class="r" style="--i:.34s"><span>A-0194</span><span>03-05</span><span>UTI-1</span><span>cultura</span><span>óbito</span></div>
+              <div class="r" style="--i:.46s"><span>A-0195</span><span>03-05</span><span>ENF-3</span><span>hemocult</span><span>alta</span></div>
+              <div class="r dim" style="--i:.58s"><span>…</span><span>…</span><span>…</span><span>…</span><span>…</span></div>
+            </div>
+            <div class="vd-note">Uma base, um dicionário, uma versão — tudo que vem depois lê daqui.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 · análise -->
+      <div class="vd" id="vd3" hidden>
+        <div class="vd-h">
+          <em>03</em>
           <h3>Análise que responde a pergunta</h3>
-          <p>Coorte, indicador, modelo de risco, avaliação de intervenção — código de análise e figuras rodando sobre a mesma base.</p>
-          <div class="out"><span>Entrega</span>Resultados, figuras e interpretação</div>
+          <span class="sub">A mesma base virando indicador, curva e efeito estimado</span>
+          <span class="esc">saia do quadro para fechar</span>
         </div>
-        <div class="vs vs4">
-          <b>04</b>
+        <div class="vd-cols c3">
+          <div>
+            <div class="vd-lbl">Base analítica</div>
+            <div class="mtbl">
+              <div class="hd"><span>id</span><span>exp</span><span>y</span></div>
+              <div class="r"><span>0192</span><span>1</span><span>0</span></div>
+              <div class="r"><span>0193</span><span>0</span><span>0</span></div>
+              <div class="r"><span>0194</span><span>1</span><span>1</span></div>
+              <div class="r"><span>0195</span><span>0</span><span>0</span></div>
+              <div class="r"><span>…</span><span>…</span><span>…</span></div>
+            </div>
+            <div class="vd-note" style="margin-top:10px">n = 4.812 internações · 2022–2025</div>
+          </div>
+          <div class="arrow-c"><span>→</span><em>Modelo</em></div>
+          <div>
+            <div class="vd-lbl">Curva de sobrevida</div>
+            <div class="vd-card">
+              <svg viewBox="0 0 260 120" style="width:100%;height:120px;display:block" aria-hidden="true">
+                <line x1="26" y1="6" x2="26" y2="104" stroke="#DCD6C9" stroke-width="1"></line>
+                <line x1="26" y1="104" x2="254" y2="104" stroke="#DCD6C9" stroke-width="1"></line>
+                <polyline class="draw" points="26,12 66,20 96,26 130,44 170,52 210,64 252,70" fill="none" stroke="#3B76AE" stroke-width="2" stroke-dasharray="520"></polyline>
+                <polyline class="draw" style="--i:.25s" points="26,12 66,30 96,48 130,66 170,80 210,90 252,96" fill="none" stroke="#B0533A" stroke-width="2" stroke-dasharray="520"></polyline>
+              </svg>
+              <div class="klegend">
+                <span><i style="background:#3B76AE"></i>protocolo novo</span>
+                <span><i style="background:#B0533A"></i>cuidado usual</span>
+              </div>
+            </div>
+            <div class="hr-box">HR 0,74 &nbsp;<span>IC95% 0,61–0,90</span></div>
+          </div>
+          <div>
+            <div class="vd-lbl">Indicador por unidade</div>
+            <div class="ibars">
+              <span style="height:38%;background:#CFDFEC"></span>
+              <span style="height:62%;background:#CFDFEC;--i:.08s"></span>
+              <span style="height:88%;background:#3B76AE;--i:.16s"></span>
+              <span style="height:47%;background:#CFDFEC;--i:.24s"></span>
+              <span style="height:55%;background:#CFDFEC;--i:.32s"></span>
+              <span style="height:29%;background:#CFDFEC;--i:.4s"></span>
+            </div>
+            <div class="vd-note" style="margin-top:10px">Resultado ainda <b>estático</b>: figura, tabela, relatório ou manuscrito — vale para a decisão de hoje.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 · automação -->
+      <div class="vd dark" id="vd4" hidden>
+        <div class="vd-h">
+          <em>04</em>
           <h3>Automação e painel vivo</h3>
-          <p>A análise passa a rodar sozinha: atualização programada, alertas e um painel ligado à rotina de quem decide.</p>
-          <div class="out"><span>Entrega</span>Painel vivo e código transferido</div>
+          <span class="sub">A mesma análise, agora rodando sozinha e ligada à rotina</span>
+          <span class="esc">saia do quadro para fechar</span>
+        </div>
+        <div class="vd-cols c4">
+          <div>
+            <div class="vd-lbl">Ciclo automático</div>
+            <div class="cyc">
+              <div>01 · extrai</div>
+              <div style="--i:.1s">02 · padroniza e liga</div>
+              <div style="--i:.2s">03 · recalcula análise</div>
+              <div class="on" style="--i:.3s">04 · publica no painel</div>
+            </div>
+            <div class="cyc-f"><i></i>a cada 6 horas, sem ninguém pedir</div>
+          </div>
+          <div class="live">
+            <div class="live-h">
+              <span class="on"><i></i>Ao vivo</span>
+              <span class="t">Infecção associada à assistência · rede</span>
+              <span class="u">atualizado há 4 min</span>
+            </div>
+            <div class="live-k">
+              <div><em>Densidade / 1.000 pac-dia</em><b>3,8</b><span class="g">↓ 0,6 vs. mês anterior</span></div>
+              <div style="--i:.12s"><em>Casos em aberto</em><b>17</b><span class="o">4 novos hoje</span></div>
+              <div style="--i:.24s"><em>Risco alto próx. 7 dias</em><b>42</b><span>lista enviada à CCIH</span></div>
+            </div>
+            <div class="live-s">
+              <em>Série contínua</em>
+              <div class="strip"><div class="run">
+                <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
+                <span style="height:44%"></span><span style="height:61%"></span><span style="height:38%"></span><span style="height:72%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:66%"></span><span style="height:35%"></span><span style="height:58%"></span><span style="height:70%"></span><span class="hi" style="height:52%"></span><span class="hi" style="height:64%"></span>
+              </div></div>
+            </div>
+            <div class="live-a">
+              <div style="--i:.3s"><em class="al">Alerta</em>UTI-2 acima do limite há 3 dias<span>09:12</span></div>
+              <div style="--i:.45s"><em class="ok">OK</em>Base atualizada · 12.402 registros<span>08:00</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -617,12 +1106,6 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
         </div>
       </div>
 
-      <div class="case-facts">
-        <div class="fact"><span class="fv">11 extrações</span><span class="fl">de três sistemas do hospital: SIGH, MV e HCMED</span></div>
-        <div class="fact"><span class="fv">2013–2026</span><span class="fl">janela de prontuário reconstruída</span></div>
-        <div class="fact"><span class="fv">875</span><span class="fl">pacientes em seguimento, 68 mil escores de pesquisa</span></div>
-        <div class="fact"><span class="fv">Em operação</span><span class="fl">o painel é o sistema de registro da equipe</span></div>
-      </div>
     </div>
 
     <p style="font-size:13px;color:var(--text-3);border-left:2px solid var(--clay);padding-left:14px;margin-top:44px;max-width:66ch">
@@ -653,6 +1136,65 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
       <div>Manuscritos, pareceres e submissão a comitê de ética<span>12</span></div>
       <div>Pipelines reprodutíveis e transferência de código<span>13</span></div>
       <div>Instalação local, LGPD e trilha de auditoria<span>14</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLABORAÇÕES -->
+<section id="colaboracoes" style="background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Colaborações</span><h2>Com quem trabalhamos.</h2></div>
+      <p>Serviços, universidades, redes de pesquisa e agências de fomento com os quais construímos os projetos desta página.</p>
+    </div>
+
+    <!--
+      Logos oficiais: coloque os arquivos em marca_coorte/site/logos/ e troque
+      <span class="wm">…</span> por <img src="logos/<arquivo>.svg" alt="<nome>">.
+      Enquanto não houver arquivo, o wordmark tipográfico abaixo é usado.
+    -->
+    <div class="collab-g">
+      <div class="cl">
+        <div class="logo"><span class="wm">HC<i>FMUSP</i></span></div>
+        <h3>Hospital das Clínicas da FMUSP</h3>
+        <p>Complexo hospitalar terciário onde reanalisamos uma década de microbiologia hospitalar.</p>
+        <div class="role">Serviço de saúde</div>
+      </div>
+
+      <div class="cl">
+        <div class="logo"><span class="wm sm">São Caetano do Sul</span></div>
+        <h3>Prefeitura de São Caetano do Sul</h3>
+        <p>Rede municipal de saúde: coorte ligada no nível do paciente a partir das bases da própria rede.</p>
+        <div class="role">Rede pública</div>
+      </div>
+
+      <div class="cl">
+        <div class="logo"><span class="wm">FMUSP</span></div>
+        <h3>Faculdade de Medicina da USP</h3>
+        <p>Vínculo acadêmico das análises: desenho de estudo, orientação e publicação.</p>
+        <div class="role">Universidade</div>
+      </div>
+
+      <div class="cl">
+        <div class="logo"><span class="wm">MRC<i> · </i>UKRI</span></div>
+        <h3>Medical Research Council · UKRI</h3>
+        <p>Agência britânica de fomento à pesquisa, financiadora de projetos de que participamos.</p>
+        <div class="role">Fomento</div>
+      </div>
+
+      <div class="cl">
+        <div class="logo"><span class="wm">FAPESP</span></div>
+        <h3>Fundação de Amparo à Pesquisa do Estado de São Paulo</h3>
+        <p>Fomento à pesquisa no estado de São Paulo, apoiando parte do trabalho científico da equipe.</p>
+        <div class="role">Fomento</div>
+      </div>
+
+      <div class="cl">
+        <div class="logo"><span class="wm">CAMO<i>-</i>Net</span></div>
+        <h3>Rede internacional de pesquisa em antimicrobianos</h3>
+        <p>Colaboração em pesquisa multicêntrica sobre uso e otimização de antimicrobianos.</p>
+        <div class="role">Rede de pesquisa</div>
+      </div>
     </div>
   </div>
 </section>
@@ -698,7 +1240,7 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 <footer>
   <div class="wrap foot">
     <div>© 2026 Coorte · Ciência de dados em saúde</div>
-    <div class="lk"><a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="sobre.html">Sobre</a><a href="#contato">Contato</a></div>
+    <div class="lk"><a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="#colaboracoes">Colaborações</a><a href="sobre.html">Sobre</a><a href="#contato">Contato</a></div>
     <div>Telas de demonstração com dados fictícios.</div>
   </div>
 </footer>
@@ -743,6 +1285,35 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 })();
 </script>
 <script>
+/* método · painel de detalhe por etapa (hover / foco) */
+(function(){
+  var stage=document.getElementById('vc-stage'); if(!stage) return;
+  var steps=[].slice.call(stage.querySelectorAll('.vs'));
+  var panels=[].slice.call(stage.querySelectorAll('.vd'));
+  var wide=window.matchMedia('(min-width:1001px)');
+  var open=0;
+  function show(n){
+    if(!wide.matches) n=0;
+    if(n===open) return;
+    open=n;
+    panels.forEach(function(p,i){p.hidden=(i+1!==n);});
+    steps.forEach(function(s,i){s.setAttribute('aria-expanded',String(i+1===n));});
+  }
+  steps.forEach(function(s,i){
+    s.addEventListener('mouseenter',function(){show(i+1);});
+    s.addEventListener('focus',function(){show(i+1);});
+    s.addEventListener('click',function(){show(open===i+1?0:i+1);});
+    s.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();show(open===i+1?0:i+1);}
+    });
+  });
+  stage.addEventListener('mouseleave',function(){show(0);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')show(0);});
+  (wide.addEventListener?wide.addEventListener.bind(wide,'change'):wide.addListener.bind(wide))(function(){
+    if(!wide.matches) show(0);
+  });
+})();
+
 const hd=document.getElementById('hd');
 const onScroll=()=>hd.classList.toggle('solid',window.scrollY>60);
 onScroll();addEventListener('scroll',onScroll,{passive:true});
