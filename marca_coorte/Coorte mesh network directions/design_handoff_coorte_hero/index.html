@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coorte · Ciência de dados em saúde</title>
+<meta name="description" content="Epidemiologia, análise de dados e produtos digitais para hospitais, redes públicas de saúde e indústria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --navy:#123A5C; --navy-deep:#08192A; --ink:#0E1F2E;
+  --text:#16232E; --text-2:#4E5C68; --text-3:#7C8892;
+  --paper:#FBFAF7; --surface:#FFFFFF; --sand:#EEE9DE; --rule:#DCD6C9;
+  --clay:#B0533A;
+  --s1:#2A6FB0; --s2:#D2694A; --s3:#2FA38C; --s4:#C79A16;
+  --grid:#E9E5DB;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Spectral",Georgia,serif;font-weight:500;letter-spacing:-.015em;color:var(--ink);margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 36px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:500}
+
+/* nav */
+header{position:fixed;top:0;left:0;right:0;z-index:60;transition:.25s}
+header.solid{background:rgba(251,250,247,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:11px}
+.bn{font-family:"Spectral",serif;font-size:22px;letter-spacing:.02em;color:#fff;transition:.25s}
+header.solid .bn{color:var(--ink)}
+.mark rect.a{fill:#fff;transition:.25s} .mark rect.b{stroke:#fff;transition:.25s}
+header.solid .mark rect.a{fill:#123A5C} header.solid .mark rect.b{stroke:#123A5C}
+.mark rect.c{fill:#C9765C}
+header.solid .mark rect.c{fill:#B0533A}
+.navlinks{display:flex;gap:32px}
+.navlinks a{font-size:14.5px;color:rgba(255,255,255,.82);transition:.25s}
+header.solid .navlinks a{color:var(--text-2)}
+.navlinks a:hover{opacity:.6}
+.btn{display:inline-block;padding:12px 24px;font-size:14.5px;font-weight:500;border-radius:2px;
+  border:1px solid var(--navy);background:var(--navy);color:#fff;transition:.15s;cursor:pointer}
+.btn:hover{background:var(--navy-deep);border-color:var(--navy-deep)}
+.btn-light{background:#fff;color:var(--navy-deep);border-color:#fff}
+.btn-light:hover{background:var(--sand);border-color:var(--sand);color:var(--navy-deep)}
+.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.45)}
+.btn-outline:hover{background:rgba(255,255,255,.1);border-color:#fff}
+@media(max-width:900px){.navlinks{display:none}}
+
+/* hero */
+.hero{background:var(--navy-deep);color:#fff;padding:190px 0 84px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(1100px 620px at 78% 12%, rgba(42,111,176,.34), transparent 62%),
+             radial-gradient(760px 520px at 8% 96%, rgba(176,83,58,.20), transparent 66%)}
+.hero .wrap{position:relative;z-index:2}
+.hero-art{position:absolute;top:8%;right:-3vw;width:min(760px,56vw);height:88%;z-index:1;
+  pointer-events:none;animation:coorte-drift 30s ease-in-out infinite;will-change:transform}
+.hero-art svg{width:100%;height:100%;display:block}
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,#08192A 4%,rgba(8,25,42,.88) 32%,rgba(8,25,42,0) 62%)}
+@keyframes coorte-drift{
+  0%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-16px,0)}
+  100%{transform:translate3d(0,0,0)}}
+@media (prefers-reduced-motion: reduce){.hero-art{animation:none}}
+@media(max-width:900px){.hero-art,.hero-veil{display:none}}
+.hero h1{color:#fff;font-size:clamp(52px,9.4vw,124px);line-height:.94;letter-spacing:-.035em;margin:26px 0 0}
+.hero h1 span{color:#8FBBE4;font-style:italic}
+.hero .sub{margin-top:34px;font-size:20px;color:#B7C7D5;max-width:47ch;line-height:1.5}
+.hero .acts{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+.hero .eyebrow{color:#7C99B2}
+.instbar{margin-top:96px;padding-top:26px;border-top:1px solid rgba(255,255,255,.15);
+  display:flex;gap:40px;flex-wrap:wrap;align-items:center}
+.instbar span{font-size:13.5px;color:#7F94A6;letter-spacing:.02em}
+@media(max-width:900px){.hero{padding:140px 0 60px}.hero .sub{font-size:18px}}
+
+/* números */
+.nums{border-bottom:1px solid var(--rule);background:var(--surface)}
+.nums-g{display:grid;grid-template-columns:repeat(4,1fr)}
+.n{padding:44px 30px;border-right:1px solid var(--rule)}
+.n:last-child{border-right:0}
+.n b{display:block;font-family:"Spectral",serif;font-weight:500;font-size:46px;line-height:1;color:var(--navy);letter-spacing:-.02em}
+.n em{display:block;font-style:normal;font-size:13.5px;color:var(--text-2);margin-top:12px;line-height:1.4}
+@media(max-width:860px){.nums-g{grid-template-columns:1fr 1fr}.n{border-bottom:1px solid var(--rule)}.n:nth-child(2n){border-right:0}}
+
+section{padding:110px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px;flex-wrap:wrap}
+.head h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-.025em;max-width:16ch}
+.head p{font-size:16.5px;color:var(--text-2);max-width:36ch}
+
+/* método */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule)}
+.st{padding:34px 30px 34px 0;border-right:1px solid var(--rule)}
+.st:last-child{border-right:0;padding-right:0}
+.st:not(:first-child){padding-left:30px}
+.st b{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--clay);letter-spacing:.12em;display:block;margin-bottom:20px}
+.st h3{font-size:23px;margin-bottom:10px}
+.st p{font-size:15px;color:var(--text-2);line-height:1.5}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}.st{border-bottom:1px solid var(--rule)}.st:nth-child(2n){border-right:0}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}.st{border-right:0;padding-left:0!important}}
+
+/* ---------- dashboards ---------- */
+.case{margin-bottom:96px}
+.case:last-child{margin-bottom:0}
+.case-top{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:26px;flex-wrap:wrap}
+.case-top .who{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
+.case-top h3{font-size:30px;line-height:1.15;margin-top:10px;max-width:20ch}
+.case-top p{font-size:16px;color:var(--text-2);max-width:44ch}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--rule);background:var(--surface);color:var(--text-2)}
+
+.app{border:1px solid var(--rule);background:var(--surface);box-shadow:0 1px 0 var(--rule),0 24px 48px -30px rgba(14,31,46,.35)}
+.appbar{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#F4F1EA;border-bottom:1px solid var(--rule)}
+.dots{display:flex;gap:6px}
+.dots i{width:9px;height:9px;border-radius:50%;background:#CFC8B9;display:block}
+.apptitle{font-size:13px;color:var(--text-2);font-weight:500}
+.appbar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.pill{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--rule);background:#fff;color:var(--text-3)}
+.pill.warn{border-color:#E2C6BD;background:#FBF2EF;color:var(--clay)}
+.appbody{display:grid;grid-template-columns:170px 1fr}
+.side{border-right:1px solid var(--rule);padding:20px 0;background:#FCFBF8}
+.side a{display:block;padding:9px 20px;font-size:13.5px;color:var(--text-2)}
+.side a.on{color:var(--navy);font-weight:600;box-shadow:inset 2px 0 0 var(--navy);background:#fff}
+.side .grp{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);padding:16px 20px 6px}
+.main{padding:26px 28px 30px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
+.kpi{background:#fff;padding:16px 18px}
+.kpi .l{font-size:12.5px;color:var(--text-2);line-height:1.35}
+.kpi .v{font-size:30px;font-weight:600;color:var(--ink);margin-top:8px;line-height:1;letter-spacing:-.02em}
+.kpi .d{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);margin-top:7px}
+.kpi .d.up{color:var(--clay)} .kpi .d.ok{color:#1F7A5E}
+.panel-t{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.panel-s{font-size:12.5px;color:var(--text-3);margin-bottom:16px}
+.split{display:grid;grid-template-columns:1.35fr 1fr;gap:26px}
+table.d{width:100%;border-collapse:collapse;font-size:13px}
+table.d th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-3);font-weight:500;padding:0 10px 8px 0;border-bottom:1px solid var(--rule)}
+table.d td{padding:10px 10px 10px 0;border-bottom:1px solid #EFEBE2;color:var(--text-2)}
+table.d td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;padding-right:0}
+table.d td b{color:var(--ink);font-weight:600}
+.badge{font-size:11px;padding:3px 8px;white-space:nowrap;border:1px solid}
+.badge.hi{border-color:#E2C6BD;background:#FBF2EF;color:#8F3F2C}
+.badge.md{border-color:#E7DCBE;background:#FBF7EA;color:#8A6A16}
+.badge.lo{border-color:#DDE4E9;background:#F4F7F9;color:#3C5A70}
+.hbars{display:flex;flex-direction:column;gap:11px}
+.hb{display:grid;grid-template-columns:104px 1fr 44px;align-items:center;gap:12px;font-size:12.5px;color:var(--text-2)}
+.hb .track{display:block;height:16px;background:#F1EEE6;position:relative}
+.hb .fill{display:block;height:16px;background:var(--s1);border-radius:0 4px 4px 0}
+.hb .fill.warn{background:var(--s2)}
+.hb .meta{display:block;position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--clay)}
+.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+.legend{display:flex;gap:18px;font-size:12px;color:var(--text-2);margin-top:14px;flex-wrap:wrap}
+.legend i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+@media(max-width:920px){.appbody{grid-template-columns:1fr}.side{display:none}.split{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
+
+/* serviços */
+.svc{background:var(--navy-deep);color:#fff}
+.svc h2{color:#fff}
+.svc .head p{color:#9DB0C0}
+.svc .eyebrow{color:#7C99B2}
+.svclist{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;border-top:1px solid rgba(255,255,255,.16)}
+.svclist div{padding:17px 0;border-bottom:1px solid rgba(255,255,255,.11);font-size:17px;color:#DCE6EE;display:flex;justify-content:space-between;gap:20px}
+.svclist div span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#5F7A91;letter-spacing:.1em}
+@media(max-width:760px){.svclist{grid-template-columns:1fr;gap:0}}
+
+/* contato */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.contact h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-.025em}
+.contact .lead{font-size:17px;color:var(--text-2);margin-top:22px;max-width:38ch}
+.contact .direct{margin-top:34px;padding-top:24px;border-top:1px solid var(--rule);font-size:15px;color:var(--text-2)}
+.contact .direct b{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;font-weight:500}
+form{display:grid;gap:14px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--rule);background:var(--surface);
+  font-family:inherit;font-size:15px;color:var(--text);border-radius:2px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy)}
+textarea{resize:vertical;min-height:96px}
+@media(max-width:860px){.contact{grid-template-columns:1fr;gap:44px}.f2{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(--text-3)}
+.foot{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--text-2)}
+.foot .lk{display:flex;gap:22px}
+</style>
+</head>
+<body>
+
+<header id="hd">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg class="mark" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <rect class="b" x="1" y="1" width="24" height="24" stroke="#fff" stroke-width="1.4"/>
+        <rect class="a" x="6" y="7" width="14" height="2.4" fill="#fff"/>
+        <rect class="c" x="6" y="12" width="9.5" height="2.4"/>
+        <rect class="a" x="6" y="17" width="5.5" height="2.4" fill="#fff" opacity=".5"/>
+      </svg>
+      <span class="bn">Coorte</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#metodo">Método</a>
+      <a href="#casos">Casos</a>
+      <a href="#servicos">Serviços</a>
+      <a href="sobre.html">Sobre</a>
+    </nav>
+    <a class="btn" href="#contato">Contato</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-art"><svg id="mesh" viewBox="0 0 700 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg></div>
+  <div class="hero-veil"></div>
+  <div class="wrap">
+    <span class="eyebrow">Ciência de dados em saúde</span>
+    <h1>Do dado bruto<br><span>à decisão</span><br>em saúde.</h1>
+    <p class="sub">Epidemiologia, análise de dados e produtos digitais para hospitais, redes públicas de saúde e indústria.</p>
+    <div class="acts">
+      <a class="btn btn-light" href="#contato">Falar com a gente</a>
+      <a class="btn btn-outline" href="#casos">Ver os casos</a>
+    </div>
+    <div class="instbar">
+      <span>HCFMUSP</span><span>Prefeitura de São Caetano do Sul</span><span>FMUSP</span><span>MRC · UKRI</span><span>FAPESP</span><span>CAMO-Net</span>
+    </div>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<div class="nums"><div class="wrap" style="padding:0"><div class="nums-g">
+  <div class="n"><b>10 anos</b><em>de microbiologia hospitalar reanalisados</em></div>
+  <div class="n"><b>~1 milhão</b><em>de hemoculturas processadas</em></div>
+  <div class="n"><b>64 mil</b><em>episódios em coorte municipal ligada</em></div>
+  <div class="n"><b>5 bases</b><em>do SUS integradas por paciente</em></div>
+</div></div></div>
+
+<!-- MÉTODO -->
+<section id="metodo">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Método</span><h2>Quatro etapas, sempre nesta ordem.</h2></div>
+      <p>Nenhuma análise começa antes de a fundação de dados estar verificada.</p>
+    </div>
+    <div class="steps">
+      <div class="st"><b>01</b><h3>Diagnóstico</h3><p>O que existe, o que está quebrado e o que já dá para responder.</p></div>
+      <div class="st"><b>02</b><h3>Fundação</h3><p>Ingestão, ligação de registros verificada e dicionário de dados.</p></div>
+      <div class="st"><b>03</b><h3>Análise</h3><p>Coorte, indicador, modelo de risco, avaliação de intervenção.</p></div>
+      <div class="st"><b>04</b><h3>Entrega</h3><p>Painel, relatório, lista de trabalho ou sistema — com o código.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS -->
+<section id="casos" style="background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Casos</span><h2>O que entregamos, na tela de quem usa.</h2></div>
+      <p>Dois ambientes, uma mesma arquitetura: um complexo hospitalar terciário e uma rede municipal inteira.</p>
+    </div>
+
+    <!-- CASO 1 -->
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <div class="who">Hospital das Clínicas · FMUSP</div>
+          <h3>Vigilância microbiológica sobre dez anos de culturas</h3>
+          <div class="chips"><span class="chip">Resistência antimicrobiana</span><span class="chip">Detecção de surto</span><span class="chip">Qualidade laboratorial</span></div>
+        </div>
+        <p>Da extração bruta do laboratório e do equipamento até um painel que sinaliza aglomerado por unidade, com relatório institucional e protótipo de sistema.</p>
+      </div>
+
+      <div class="app">
+        <div class="appbar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="apptitle">Coorte · Vigilância microbiológica</div>
+          <div class="right"><span class="pill">jan–dez 2025</span><span class="pill warn">dados fictícios</span></div>
+        </div>
+        <div class="appbody">
+          <div class="side">
+            <div class="grp">Vigilância</div>
+            <a class="on">Visão geral</a><a>Alertas de aglomerado</a><a>Resistência</a><a>Tempo até detecção</a>
+            <div class="grp">Qualidade</div>
+            <a>Contaminação</a><a>Recoleta</a>
+            <div class="grp">Relatórios</div>
+            <a>Antibiograma cumulativo</a><a>Exportar ANVISA</a>
+          </div>
+          <div class="main">
+            <div class="kpis">
+              <div class="kpi"><div class="l">Culturas processadas no mês</div><div class="v">4.812</div><div class="d">+3,1% vs. mês anterior</div></div>
+              <div class="kpi"><div class="l">Positividade</div><div class="v">12,4%</div><div class="d ok">dentro da faixa esperada</div></div>
+              <div class="kpi"><div class="l">Tempo mediano até detecção</div><div class="v">17,2 h</div><div class="d up">+1,4 h vs. trimestre anterior</div></div>
+            </div>
+
+            <div class="split">
+              <div>
+                <div class="panel-t">Positividade mensal</div>
+                <div class="panel-s">Percentual de culturas positivas, por mês de coleta.</div>
+                <svg viewBox="0 0 566 194" width="100%" role="img" aria-label="Colunas de positividade mensal ao longo de doze meses, entre 10,8% e 13,4%">
+                  <g stroke="#E9E5DB" stroke-width="1">
+                    <line x1="36" y1="168" x2="556" y2="168"/><line x1="36" y1="129.5" x2="556" y2="129.5"/>
+                    <line x1="36" y1="91" x2="556" y2="91"/><line x1="36" y1="52.5" x2="556" y2="52.5"/>
+                  </g>
+                  <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#7C8892" text-anchor="end">
+                    <text x="28" y="171">0</text><text x="28" y="132.5">4</text><text x="28" y="94">8</text><text x="28" y="55.5">12%</text>
+                  </g>
+                  <rect x="45.7" y="60.2" width="24" height="107.8" rx="4" fill="#2A6FB0"/><rect x="45.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="89.0" y="64.0" width="24" height="104.0" rx="4" fill="#2A6FB0"/><rect x="89.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="132.3" y="57.3" width="24" height="110.7" rx="4" fill="#2A6FB0"/><rect x="132.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="175.7" y="51.5" width="24" height="116.5" rx="4" fill="#2A6FB0"/><rect x="175.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="219.0" y="55.4" width="24" height="112.6" rx="4" fill="#2A6FB0"/><rect x="219.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="262.3" y="48.6" width="24" height="119.4" rx="4" fill="#2A6FB0"/><rect x="262.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="305.7" y="42.9" width="24" height="125.1" rx="4" fill="#2A6FB0"/><rect x="305.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="349.0" y="46.7" width="24" height="121.3" rx="4" fill="#2A6FB0"/><rect x="349.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="392.3" y="50.6" width="24" height="117.4" rx="4" fill="#2A6FB0"/><rect x="392.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="435.7" y="43.8" width="24" height="124.2" rx="4" fill="#2A6FB0"/><rect x="435.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="479.0" y="39.0" width="24" height="129.0" rx="4" fill="#2A6FB0"/><rect x="479.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="522.3" y="48.6" width="24" height="119.4" rx="4" fill="#2A6FB0"/><rect x="522.3" y="164.0" width="24" height="4" fill="#2A6FB0"/>
+                  <text x="491" y="30" font-family="Inter, sans-serif" font-size="11.5" font-weight="600" fill="#16232E" text-anchor="middle">13,4%</text>
+                  <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#7C8892" text-anchor="middle">
+                    <text x="57.7" y="184">J</text><text x="101.0" y="184">F</text><text x="144.3" y="184">M</text><text x="187.7" y="184">A</text><text x="231.0" y="184">M</text><text x="274.3" y="184">J</text><text x="317.7" y="184">J</text><text x="361.0" y="184">A</text><text x="404.3" y="184">S</text><text x="447.7" y="184">O</text><text x="491.0" y="184">N</text><text x="534.3" y="184">D</text>
+                  </g>
+                </svg>
+              </div>
+              <div>
+                <div class="panel-t">Sinais de aglomerado em aberto</div>
+                <div class="panel-s">Unidades acima do esperado nos últimos 14 dias.</div>
+                <table class="d">
+                  <thead><tr><th>Unidade</th><th>Agente</th><th style="text-align:right">Casos</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td><b>UTI Adulto 2</b></td><td>K. pneumoniae</td><td class="num">4</td><td><span class="badge hi">alto</span></td></tr>
+                    <tr><td><b>UTI Neonatal</b></td><td>C. parapsilosis</td><td class="num">3</td><td><span class="badge hi">alto</span></td></tr>
+                    <tr><td><b>Enfermaria 7</b></td><td>S. aureus</td><td class="num">3</td><td><span class="badge md">revisar</span></td></tr>
+                    <tr><td><b>Hemodiálise</b></td><td>E. faecalis</td><td class="num">2</td><td><span class="badge lo">baixo</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 2 -->
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <div class="who">Prefeitura de São Caetano do Sul</div>
+          <h3>A rede municipal ligada no nível do paciente</h3>
+          <div class="chips"><span class="chip">Atenção primária</span><span class="chip">Infecção urinária</span><span class="chip">Equidade territorial</span></div>
+        </div>
+        <p>Cinco bases integradas e verificadas sustentam a coorte, os indicadores da atenção primária e as listas de busca ativa que a rede usa todo mês.</p>
+      </div>
+
+      <div class="app">
+        <div class="appbar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="apptitle">Coorte · Indicadores da atenção primária</div>
+          <div class="right"><span class="pill">4º trimestre</span><span class="pill warn">dados fictícios</span></div>
+        </div>
+        <div class="appbody">
+          <div class="side">
+            <div class="grp">Indicadores</div>
+            <a class="on">Rastreamento</a><a>Crônicos</a><a>ICSAP</a><a>Gestantes</a>
+            <div class="grp">Território</div>
+            <a>Por unidade</a><a>Por bairro</a><a>Equidade</a>
+            <div class="grp">Ação</div>
+            <a>Listas de busca ativa</a><a>Auditoria clínica</a>
+          </div>
+          <div class="main">
+            <div class="kpis">
+              <div class="kpi"><div class="l">Cobertura de citologia · 25 a 64 anos</div><div class="v">72,6%</div><div class="d up">meta 80% · 3 unidades abaixo</div></div>
+              <div class="kpi"><div class="l">Diabéticos com HbA1c em dia</div><div class="v">54,2%</div><div class="d ok">+4,8 p.p. no trimestre</div></div>
+              <div class="kpi"><div class="l">Internações sensíveis à APS</div><div class="v">8,7%</div><div class="d ok">−0,9 p.p. no trimestre</div></div>
+            </div>
+
+            <div class="split">
+              <div>
+                <div class="panel-t">Cobertura de citologia por unidade</div>
+                <div class="panel-s">Barra em laranja: abaixo da meta municipal de 80%.</div>
+                <div class="hbars">
+                  <div class="hb"><span>UBS Centro</span><span class="track"><span class="fill" style="width:84%"></span><span class="meta" style="left:80%"></span></span><span class="v">84%</span></div>
+                  <div class="hb"><span>UBS Fundação</span><span class="track"><span class="fill" style="width:81%"></span><span class="meta" style="left:80%"></span></span><span class="v">81%</span></div>
+                  <div class="hb"><span>UBS Santa Maria</span><span class="track"><span class="fill warn" style="width:76%"></span><span class="meta" style="left:80%"></span></span><span class="v">76%</span></div>
+                  <div class="hb"><span>UBS Prosperidade</span><span class="track"><span class="fill warn" style="width:68%"></span><span class="meta" style="left:80%"></span></span><span class="v">68%</span></div>
+                  <div class="hb"><span>UBS Boa Vista</span><span class="track"><span class="fill warn" style="width:59%"></span><span class="meta" style="left:80%"></span></span><span class="v">59%</span></div>
+                </div>
+                <div class="legend">
+                  <span><i style="background:#2A6FB0"></i>Na meta ou acima</span>
+                  <span><i style="background:#D2694A"></i>Abaixo da meta</span>
+                  <span><i style="background:#B0533A;width:2px;height:12px"></i>Meta 80%</span>
+                </div>
+              </div>
+              <div>
+                <div class="panel-t">Lista de busca ativa</div>
+                <div class="panel-s">Gerada toda segunda-feira, por unidade.</div>
+                <table class="d">
+                  <thead><tr><th>Unidade</th><th>Motivo</th><th style="text-align:right">Pessoas</th></tr></thead>
+                  <tbody>
+                    <tr><td><b>UBS Boa Vista</b></td><td>Citologia em atraso</td><td class="num">214</td></tr>
+                    <tr><td><b>UBS Prosperidade</b></td><td>Sem HbA1c há 12 meses</td><td class="num">187</td></tr>
+                    <tr><td><b>UBS Santa Maria</b></td><td>Mamografia em atraso</td><td class="num">143</td></tr>
+                    <tr><td><b>UBS Centro</b></td><td>Hipertensão não controlada</td><td class="num">96</td></tr>
+                    <tr><td><b>UBS Fundação</b></td><td>Diabetes sem tratamento</td><td class="num">61</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-3);border-left:2px solid var(--clay);padding-left:14px;margin-top:44px;max-width:66ch">
+      As telas acima reproduzem o formato das entregas com <strong>dados fictícios</strong>. Nenhum número corresponde a instituição, unidade ou paciente real.
+    </p>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="svc">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Serviços</span><h2>O que sabemos fazer.</h2></div>
+      <p>Contratado como projeto, como parceria de pesquisa ou como desenvolvimento de produto.</p>
+    </div>
+    <div class="svclist">
+      <div>Ligação de registros e fundação de dados<span>01</span></div>
+      <div>Coortes retrospectivas com dados de rotina<span>02</span></div>
+      <div>Vigilância epidemiológica e detecção de surto<span>03</span></div>
+      <div>Resistência antimicrobiana e stewardship<span>04</span></div>
+      <div>Indicadores de atenção primária e ICSAP<span>05</span></div>
+      <div>Painéis e listas de busca ativa<span>06</span></div>
+      <div>Séries temporais interrompidas<span>07</span></div>
+      <div>Modelos de risco e predição de desfecho<span>08</span></div>
+      <div>Análise de equidade e georreferenciamento<span>09</span></div>
+      <div>Real-world evidence para indústria<span>10</span></div>
+      <div>Auditoria clínica e adesão a diretriz<span>11</span></div>
+      <div>Manuscritos, pareceres e submissão a comitê de ética<span>12</span></div>
+      <div>Pipelines reprodutíveis e transferência de código<span>13</span></div>
+      <div>Instalação local, LGPD e trilha de auditoria<span>14</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="wrap contact">
+    <div>
+      <span class="eyebrow">Contato</span>
+      <h2 style="margin-top:16px">Comece pelo diagnóstico de dados.</h2>
+      <p class="lead">Duas a três semanas sobre uma amostra das suas bases. Você recebe um relatório do que existe, do que está quebrado e do que já dá para responder.</p>
+      <div class="direct">
+        <b>Direto</b>
+        contato@coorte.com.br<br>São Paulo · Brasil
+      </div>
+    </div>
+    <form onsubmit="event.preventDefault();this.querySelector('.ok').style.display='block'">
+      <div class="f2">
+        <div><label for="n">Nome</label><input id="n" required></div>
+        <div><label for="e">E-mail</label><input id="e" type="email" required></div>
+      </div>
+      <div class="f2">
+        <div><label for="i">Instituição</label><input id="i"></div>
+        <div><label for="s">Tipo</label>
+          <select id="s">
+            <option>Hospital ou laboratório</option>
+            <option>Secretaria de saúde</option>
+            <option>Indústria</option>
+            <option>Grupo de pesquisa</option>
+            <option>Outro</option>
+          </select>
+        </div>
+      </div>
+      <div><label for="m">O que você quer resolver</label><textarea id="m"></textarea></div>
+      <div><button class="btn" type="submit">Enviar</button></div>
+      <p class="ok" style="display:none;font-size:14px;color:#1F7A5E">Mensagem registrada. (Formulário de demonstração — conectar ao e-mail ou CRM.)</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>© 2026 Coorte · Ciência de dados em saúde</div>
+    <div class="lk"><a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="sobre.html">Sobre</a><a href="#contato">Contato</a></div>
+    <div>Telas de demonstração com dados fictícios.</div>
+  </div>
+</footer>
+
+
+<script>
+/* Hero: ligação de registros — cinco trilhas (bases), traços (registros),
+   curvas unindo registros da mesma pessoa. Geometria gerada com semente fixa. */
+(function(){
+  var svg=document.getElementById('mesh'); if(!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+  var r=rng(9), rails=[110,255,400,545,668], recs=rails.map(function(){return[];}), out=[];
+  function el(tag,attrs){var n=document.createElementNS(NS,tag);for(var k in attrs)n.setAttribute(k,attrs[k]);return n;}
+  rails.forEach(function(x,ri){for(var i=0;i<32;i++){recs[ri].push({x:x,y:26+i*21.5+(r()-0.5)*9,used:false});}});
+  var chains=[];
+  for(var n=0;n<46;n++){
+    var present=rails.map(function(_,i){return i;}).filter(function(){return r()<0.55;});
+    if(present.length<2) continue;
+    var picks=present.map(function(ri){
+      var pool=recs[ri].filter(function(o){return !o.used;});
+      if(!pool.length) return null;
+      var o=pool[Math.floor(r()*pool.length)]; o.used=true; return o;
+    }).filter(Boolean);
+    if(picks.length>1) chains.push({picks:picks,full:picks.length===5});
+  }
+  var hi=0;
+  chains.forEach(function(c){
+    var lit=c.full&&hi<3; if(lit) hi++;
+    for(var i=0;i<c.picks.length-1;i++){
+      var a=c.picks[i],b=c.picks[i+1],mx=(a.x+b.x)/2;
+      out.push(el('path',{d:'M'+a.x+' '+a.y+' C'+mx+' '+a.y+' '+mx+' '+b.y+' '+b.x+' '+b.y,
+        fill:'none',stroke:lit?'#C9765C':'#7FA9CF','stroke-width':lit?1.3:0.9,opacity:lit?0.6:0.15}));
+    }
+    if(lit) c.picks.forEach(function(p){out.push(el('circle',{cx:p.x,cy:p.y,r:2.6,fill:'#E08A6C',opacity:0.95}));});
+  });
+  recs.forEach(function(col,ri){
+    out.push(el('line',{x1:rails[ri],y1:10,x2:rails[ri],y2:700,stroke:'#7FA9CF','stroke-width':1,opacity:0.13}));
+    col.forEach(function(o){out.push(el('line',{x1:o.x-7,y1:o.y,x2:o.x+7,y2:o.y,stroke:'#A9C8E4','stroke-width':1.6,opacity:o.used?0.5:0.2}));});
+  });
+  var f=document.createDocumentFragment(); out.forEach(function(e){f.appendChild(e);}); svg.appendChild(f);
+})();
+</script>
+<script>
+const hd=document.getElementById('hd');
+const onScroll=()=>hd.classList.toggle('solid',window.scrollY>60);
+onScroll();addEventListener('scroll',onScroll,{passive:true});
+</script>
+</body>
+</html>
