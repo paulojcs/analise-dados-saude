@@ -125,9 +125,11 @@ section{padding:110px 0}
 .vc-stage .vc-lbl{display:flex;align-items:center;justify-content:flex-end}
 
 /* a faixa: a etapa aberta vira 1fr, as outras encolhem para tiras */
-.vc-band{display:grid;gap:4px;align-items:stretch;min-height:470px;
+/* a altura é travada pelo JS na do painel mais alto, então nunca muda ao
+   abrir ou fechar; só as colunas animam */
+.vc-band{display:grid;gap:4px;align-items:stretch;height:470px;
   grid-template-columns:1fr 1fr 1fr 1fr;
-  transition:grid-template-columns .55s cubic-bezier(.32,.72,.16,1),height .55s cubic-bezier(.32,.72,.16,1)}
+  transition:grid-template-columns .55s cubic-bezier(.32,.72,.16,1)}
 .vc-band[data-open="1"]{grid-template-columns:1fr .085fr .085fr .085fr}
 .vc-band[data-open="2"]{grid-template-columns:.085fr 1fr .085fr .085fr}
 .vc-band[data-open="3"]{grid-template-columns:.085fr .085fr 1fr .085fr}
@@ -142,7 +144,7 @@ section{padding:110px 0}
 .vs4{background:var(--navy)}
 
 /* estado 1 · cartão compacto (nada aberto) */
-.vs-card{padding:26px 34px 24px 40px}
+.vs-card{padding:26px 34px 24px 40px;width:var(--card-w,auto)}
 .vs1 .vs-card{padding-left:26px}
 .vs4 .vs-card{padding-right:30px}
 .vs-card b{display:block;font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:400;letter-spacing:.13em;margin-bottom:16px}
@@ -190,7 +192,7 @@ section{padding:110px 0}
 
 /* estado 3 · detalhe dentro da própria etapa */
 .vd{background:var(--paper);border:1px solid rgba(14,31,46,.14);padding:20px 24px 22px;
-  margin:22px 34px 22px 46px;animation:om-fade .32s .06s ease both}
+  margin:22px 34px 22px 46px;height:calc(100% - 44px);animation:om-fade .32s .06s ease both}
 .vd.dark{background:#0E2233;border-color:rgba(255,255,255,.14)}
 .vd-h{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;
   border-bottom:1px solid var(--rule);padding-bottom:12px;margin-bottom:18px}
@@ -201,8 +203,11 @@ section{padding:110px 0}
 .vd.dark .vd-h em{color:#E08A6C}
 .vd.dark .vd-h h3{color:#fff}
 .vd.dark .vd-h .sub{color:#9FB4C6}
-.vd-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+.vd-lbl{display:block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--text-3);margin-bottom:9px}
+.vd-lblrow{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px}
+.vd-lblrow .vd-lbl{margin-bottom:0}
+.vd-lblrow .niv{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--clay)}
 .vd.dark .vd-lbl{color:#6C8399}
 
 /* 01 · fontes dispersas + leitura de maturidade */
@@ -213,7 +218,7 @@ section{padding:110px 0}
 .scat .dr1{animation-name:om-drift}
 .scat .dr2{animation-name:om-drift2}
 .scat .dr3{animation-name:om-drift3}
-.scat .tag{position:absolute;right:9px;bottom:7px;
+.scat .tag{position:absolute;right:9px;top:6px;
   font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;color:#A79C86}
 .vd-defs{display:flex;flex-wrap:wrap;gap:6px 20px;margin:10px 0 14px}
 .vd-defs div{font-size:11.5px;line-height:1.4;color:var(--text-2)}
@@ -317,8 +322,8 @@ section{padding:110px 0}
 .vc-loop-b em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--clay)}
 
-/* no celular a faixa vira acordeão empilhado */
-@media(max-width:860px){
+/* abaixo de 1150px a faixa vira acordeão empilhado (breakpoint do desenho) */
+@media(max-width:1149px){
   #metodo{padding:56px 0 48px}
   .vc{grid-template-columns:1fr;gap:10px;align-items:start}
   .vc + .vc{margin-top:26px}
@@ -326,16 +331,18 @@ section{padding:110px 0}
   .vc-stage .vc-lbl{justify-content:flex-start}
   .vc-loop .vc-lbl{display:none}
   .vc-hint{display:none}
-  .vc-band{grid-template-columns:1fr!important;min-height:0;transition:none}
+  .vc-band{grid-template-columns:1fr!important;height:auto;transition:none}
   .vs{clip-path:none}
-  .vs-card,.vs1 .vs-card,.vs4 .vs-card{padding:24px 26px}
+  .vs-card,.vs1 .vs-card,.vs4 .vs-card{padding:24px 26px;width:auto}
   .vc-band .vs-card{display:block!important}
   .vc-band .vs-strip{display:none!important}
-  .vd{margin:0 12px 14px}
+  .vd{margin:0 12px 14px;height:auto}
   .vs.on .vd{width:auto}
+}
+@media(max-width:760px){
   .vd-2col{grid-template-columns:1fr}
-  .pipe4,.cyc4,.stat3{grid-template-columns:1fr 1fr}
-  .live-k{grid-template-columns:1fr}
+  .pipe4,.cyc4{grid-template-columns:1fr 1fr}
+  .stat3,.live-k{grid-template-columns:1fr}
   .dtbl{min-width:520px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -547,7 +554,7 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
     <!-- fluxo de informação · a etapa aberta expande a coluna -->
     <div class="vc-stage" id="vc-stage">
       <div class="vc">
-        <div class="vc-lbl">Fluxo de<br>informação</div>
+        <div class="vc-lbl">Fluxo de informação</div>
         <div class="vc-band" data-open="0">
 
           <!-- 01 -->
@@ -580,7 +587,7 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
                 <div><b>Qualidade</b> · falta e duplicata</div>
                 <div><b>Escopo</b> · o que dá para responder já</div>
               </div>
-              <div class="vd-lbl">Leitura de maturidade</div>
+              <div class="vd-lblrow"><span class="vd-lbl">Leitura de maturidade</span><span class="niv">seis níveis</span></div>
               <div class="ladder">
                 <div class="lb"><span class="bar" style="height:32%;background:#EFEBE1"></span><em>01 Inform.</em></div>
                 <div class="lb here">
@@ -1179,41 +1186,54 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
   var stage=document.getElementById('vc-stage'); if(!stage) return;
   var band=stage.querySelector('.vc-band');
   var steps=[].slice.call(band.querySelectorAll('.vs'));
-  var narrow=window.matchMedia('(max-width:860px)');
+  var panels=[].slice.call(band.querySelectorAll('.vd'));
+  var narrow=window.matchMedia('(max-width:1149px)');
   var canHover=window.matchMedia('(hover:hover) and (pointer:fine)');
   var open=0;
   var TRACK=1+3*0.085;   /* soma dos fr das quatro colunas */
+  var GAP=4, MARGENS=80; /* margens laterais do painel: 46 + 34 */
+  var PISO=470;          /* altura da faixa no desenho */
 
   /* abrir no hover só onde existe mouse de verdade: no toque, o mouseenter
      sintético deixaria a etapa presa aberta */
   function hoverMode(){ return canHover.matches && !narrow.matches; }
 
-  /* o painel já nasce com a largura que vai ter no fim da animação; sem isso
-     ele é diagramado na coluna estreita do começo e fica altíssimo */
-  function sizePanels(){
-    if(narrow.matches){ band.style.removeProperty('--vd-w'); return; }
-    var free=band.clientWidth-12;   /* três vãos de 4px */
-    band.style.setProperty('--vd-w',Math.round(free/TRACK-80)+'px');
+  /* Cartões e painel são diagramados na largura que vão ter no FIM da
+     animação, e a faixa é travada na altura do painel mais alto. Sem isso o
+     conteúdo é diagramado na largura da coluna do começo da animação, fica
+     altíssimo e a seção inteira pula. */
+  function layout(){
+    if(narrow.matches){
+      band.style.removeProperty('--vd-w');
+      band.style.removeProperty('--card-w');
+      band.style.removeProperty('height');
+      return;
+    }
+    var livre=band.clientWidth-GAP*3;
+    var painel=Math.round(livre/TRACK-MARGENS);
+    band.style.setProperty('--vd-w',painel+'px');
+    band.style.setProperty('--card-w',Math.round(livre/4)+'px');
+
+    var maior=0;
+    panels.forEach(function(pn){
+      var antes=pn.getAttribute('style')||'';
+      pn.setAttribute('style',antes+';display:block;position:absolute;visibility:hidden;'
+        +'left:-9999px;top:0;height:auto;width:'+painel+'px');
+      if(pn.offsetHeight>maior) maior=pn.offsetHeight;
+      if(antes) pn.setAttribute('style',antes); else pn.removeAttribute('style');
+    });
+    band.style.height=Math.max(PISO,maior+44)+'px';
   }
 
   function show(n){
     if(n===open) return;
     open=n;
-    sizePanels();
-    var from=band.offsetHeight;   /* altura atual, mesmo no meio de uma animação */
-    band.style.height='';
     band.setAttribute('data-open',String(n));
     steps.forEach(function(s,i){
       var on=(i+1===n);
       s.classList.toggle('on',on);
       s.setAttribute('aria-expanded',String(on));
     });
-    var to=band.offsetHeight;
-    if(!narrow.matches && from!==to){
-      band.style.height=from+'px';
-      void band.offsetHeight;
-      band.style.height=to+'px';
-    }
   }
   function toggle(n){ show(open===n?0:n); }
 
@@ -1229,18 +1249,18 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
     });
   });
 
-  band.addEventListener('transitionend',function(e){
-    if(e.target===band && e.propertyName==='height') band.style.height='';
-  });
-  addEventListener('resize',function(){ band.style.height=''; sizePanels(); },{passive:true});
-  sizePanels();
   stage.addEventListener('mouseleave',function(){ if(hoverMode()) show(0); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') show(0); });
+
+  var t;
+  addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(layout,120); },{passive:true});
   (narrow.addEventListener?narrow.addEventListener.bind(narrow,'change'):narrow.addListener.bind(narrow))(function(){
-    band.style.height='';
-    show(0);
-    sizePanels();
+    show(0); layout();
   });
+
+  layout();
+  /* as fontes mudam a altura do painel, então mede de novo quando carregarem */
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 })();
 
 const hd=document.getElementById('hd');
