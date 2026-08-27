@@ -127,7 +127,7 @@ section{padding:110px 0}
 /* a faixa: a etapa aberta vira 1fr, as outras encolhem para tiras */
 .vc-band{display:grid;gap:4px;align-items:stretch;min-height:470px;
   grid-template-columns:1fr 1fr 1fr 1fr;
-  transition:grid-template-columns .55s cubic-bezier(.32,.72,.16,1)}
+  transition:grid-template-columns .55s cubic-bezier(.32,.72,.16,1),height .55s cubic-bezier(.32,.72,.16,1)}
 .vc-band[data-open="1"]{grid-template-columns:1fr .085fr .085fr .085fr}
 .vc-band[data-open="2"]{grid-template-columns:.085fr 1fr .085fr .085fr}
 .vc-band[data-open="3"]{grid-template-columns:.085fr .085fr 1fr .085fr}
@@ -186,7 +186,7 @@ section{padding:110px 0}
 .vs-strip,.vd{display:none}
 .vc-band:not([data-open="0"]) .vs-card{display:none}
 .vc-band:not([data-open="0"]) .vs:not(.on) .vs-strip{display:flex}
-.vs.on .vd{display:block}
+.vs.on .vd{display:block;width:var(--vd-w,auto)}
 
 /* estado 3 · detalhe dentro da própria etapa */
 .vd{background:var(--paper);border:1px solid rgba(14,31,46,.14);padding:20px 24px 22px;
@@ -332,6 +332,7 @@ section{padding:110px 0}
   .vc-band .vs-card{display:block!important}
   .vc-band .vs-strip{display:none!important}
   .vd{margin:0 12px 14px}
+  .vs.on .vd{width:auto}
   .vd-2col{grid-template-columns:1fr}
   .pipe4,.cyc4,.stat3{grid-template-columns:1fr 1fr}
   .live-k{grid-template-columns:1fr}
@@ -1179,34 +1180,66 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
   var band=stage.querySelector('.vc-band');
   var steps=[].slice.call(band.querySelectorAll('.vs'));
   var narrow=window.matchMedia('(max-width:860px)');
+  var canHover=window.matchMedia('(hover:hover) and (pointer:fine)');
   var open=0;
+  var TRACK=1+3*0.085;   /* soma dos fr das quatro colunas */
+
+  /* abrir no hover só onde existe mouse de verdade: no toque, o mouseenter
+     sintético deixaria a etapa presa aberta */
+  function hoverMode(){ return canHover.matches && !narrow.matches; }
+
+  /* o painel já nasce com a largura que vai ter no fim da animação; sem isso
+     ele é diagramado na coluna estreita do começo e fica altíssimo */
+  function sizePanels(){
+    if(narrow.matches){ band.style.removeProperty('--vd-w'); return; }
+    var free=band.clientWidth-12;   /* três vãos de 4px */
+    band.style.setProperty('--vd-w',Math.round(free/TRACK-80)+'px');
+  }
+
   function show(n){
     if(n===open) return;
     open=n;
+    sizePanels();
+    var from=band.offsetHeight;   /* altura atual, mesmo no meio de uma animação */
+    band.style.height='';
     band.setAttribute('data-open',String(n));
     steps.forEach(function(s,i){
       var on=(i+1===n);
       s.classList.toggle('on',on);
       s.setAttribute('aria-expanded',String(on));
     });
+    var to=band.offsetHeight;
+    if(!narrow.matches && from!==to){
+      band.style.height=from+'px';
+      void band.offsetHeight;
+      band.style.height=to+'px';
+    }
   }
   function toggle(n){ show(open===n?0:n); }
+
   steps.forEach(function(s,i){
-    s.addEventListener('mouseenter',function(){ if(!narrow.matches) show(i+1); });
-    s.addEventListener('focus',function(){ show(i+1); });
+    s.addEventListener('mouseenter',function(){ if(hoverMode()) show(i+1); });
     s.addEventListener('click',function(e){
       /* clique dentro do detalhe aberto não fecha o painel */
       if(e.target.closest && e.target.closest('.vd')) return;
-      if(narrow.matches) toggle(i+1); else show(i+1);
+      if(hoverMode()) show(i+1); else toggle(i+1);
     });
     s.addEventListener('keydown',function(e){
       if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(i+1); }
     });
   });
-  stage.addEventListener('mouseleave',function(){ if(!narrow.matches) show(0); });
+
+  band.addEventListener('transitionend',function(e){
+    if(e.target===band && e.propertyName==='height') band.style.height='';
+  });
+  addEventListener('resize',function(){ band.style.height=''; sizePanels(); },{passive:true});
+  sizePanels();
+  stage.addEventListener('mouseleave',function(){ if(hoverMode()) show(0); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') show(0); });
   (narrow.addEventListener?narrow.addEventListener.bind(narrow,'change'):narrow.addListener.bind(narrow))(function(){
+    band.style.height='';
     show(0);
+    sizePanels();
   });
 })();
 
