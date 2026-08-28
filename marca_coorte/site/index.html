@@ -23,7 +23,7 @@
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--text);
   font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:"Spectral",Georgia,serif;font-weight:500;letter-spacing:-.015em;color:var(--ink);margin:0}
+h1,h2,h3,h4{font-family:"Spectral",Georgia,serif;font-weight:500;letter-spacing:-.015em;color:var(--ink);margin:0}
 p{margin:0}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 36px}
@@ -350,90 +350,66 @@ section{padding:110px 0}
   .vd,.vd *,.vs-strip{animation:none!important}
 }
 
-/* ---------- dashboards ---------- */
-.case{margin-bottom:96px}
-.case:last-child{margin-bottom:0}
-.case-top{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:26px;flex-wrap:wrap}
+/* ---------- casos ---------- */
+.case{margin-bottom:92px}
+.case:last-of-type{margin-bottom:0}
+.case-top{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:24px;flex-wrap:wrap}
 .case-top .who{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
 .case-top h3{font-size:30px;line-height:1.15;margin-top:10px;max-width:20ch}
-.case-top p{font-size:16px;color:var(--text-2);max-width:44ch}
+.case-top p{font-size:16px;color:var(--text-2);max-width:44ch;text-wrap:pretty}
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}
 .chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--rule);background:var(--surface);color:var(--text-2)}
 
-.app{border:1px solid var(--rule);background:var(--surface);box-shadow:0 1px 0 var(--rule),0 24px 48px -30px rgba(14,31,46,.35)}
-.appbar{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#F4F1EA;border-bottom:1px solid var(--rule)}
-.dots{display:flex;gap:6px}
-.dots i{width:9px;height:9px;border-radius:50%;background:#CFC8B9;display:block}
-.apptitle{font-size:13px;color:var(--text-2);font-weight:500}
-.appbar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
-.pill{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--rule);background:#fff;color:var(--text-3)}
-.pill.warn{border-color:#E2C6BD;background:#FBF2EF;color:var(--clay)}
-.appbody{display:grid;grid-template-columns:170px 1fr}
-.side{border-right:1px solid var(--rule);padding:20px 0;background:#FCFBF8}
-.side a{display:block;padding:9px 20px;font-size:13.5px;color:var(--text-2)}
-.side a.on{color:var(--navy);font-weight:600;box-shadow:inset 2px 0 0 var(--navy);background:#fff}
-.side .grp{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);padding:16px 20px 6px}
-.main{padding:26px 28px 30px;min-width:0}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
-.kpi{background:#fff;padding:16px 18px}
-.kpi .l{font-size:12.5px;color:var(--text-2);line-height:1.35}
-.kpi .v{font-size:30px;font-weight:600;color:var(--ink);margin-top:8px;line-height:1;letter-spacing:-.02em}
-.kpi .d{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);margin-top:7px}
-.kpi .d.up{color:var(--clay)} .kpi .d.ok{color:#1F7A5E}
-.panel-t{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
-.panel-s{font-size:12.5px;color:var(--text-3);margin-bottom:16px}
-.split{display:grid;grid-template-columns:1.35fr 1fr;gap:26px}
-table.d{width:100%;border-collapse:collapse;font-size:13px}
-table.d th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--text-3);font-weight:500;padding:0 10px 8px 0;border-bottom:1px solid var(--rule)}
-table.d td{padding:10px 10px 10px 0;border-bottom:1px solid #EFEBE2;color:var(--text-2)}
-table.d td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;padding-right:0}
-table.d td b{color:var(--ink);font-weight:600}
-.badge{font-size:11px;padding:3px 8px;white-space:nowrap;border:1px solid}
-.badge.hi{border-color:#E2C6BD;background:#FBF2EF;color:#8F3F2C}
-.badge.md{border-color:#E7DCBE;background:#FBF7EA;color:#8A6A16}
-.badge.lo{border-color:#DDE4E9;background:#F4F7F9;color:#3C5A70}
-.hbars{display:flex;flex-direction:column;gap:11px}
-.hb{display:grid;grid-template-columns:104px 1fr 44px;align-items:center;gap:12px;font-size:12.5px;color:var(--text-2)}
-.hb .track{display:block;height:16px;background:#F1EEE6;position:relative}
-.hb .fill{display:block;height:16px;background:var(--s1);border-radius:0 4px 4px 0}
-.hb .fill.warn{background:var(--s2)}
-.hb .meta{display:block;position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--clay)}
-.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
-.legend{display:flex;gap:18px;font-size:12px;color:var(--text-2);margin-top:14px;flex-wrap:wrap}
-.legend i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
-@media(max-width:920px){.appbody{grid-template-columns:1fr}.side{display:none}.split{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
-/* --- caso ambulatorial: mapa de coletas e flowsheet --- */
-.main .cap{font-size:13.5px;color:var(--text-3);margin-bottom:18px}
-.lm-row{display:grid;grid-template-columns:132px 1fr 78px 108px;align-items:center;gap:12px;padding:5px 0}
-.lm-name{font-size:12.5px;color:var(--text-2)}
-.lm-track{display:block;color:var(--s1);min-width:0}
-.lm-when{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);text-align:right}
-.badge-ok,.badge-warn,.badge-bad{font-family:"IBM Plex Mono",monospace;font-size:10px;
-  padding:2px 7px;border:1px solid;white-space:nowrap;display:inline-block;text-align:center}
-.badge-ok{border-color:#C6DFD0;background:#EBF3EE;color:#1F6B4D}
-.badge-warn{border-color:#E6DBB8;background:#F8F3E3;color:#8A6A16}
-.badge-bad{border-color:#E7CBC1;background:#F9ECE7;color:#9C3A28}
-.risk{padding:11px 0;border-bottom:1px solid #EFEBE2}
-.risk:last-child{border-bottom:0}
-.risk b{font-size:13.5px;color:var(--ink)}
-.risk .q{display:block;font-size:12.5px;color:var(--text-2);margin-top:5px;line-height:1.45}
-.risk .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--text-3)}
-table.flow{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
-table.flow th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--text-3);font-weight:500;text-align:right;padding:0 8px 8px 0;border-bottom:1px solid var(--rule)}
-table.flow th:first-child{text-align:left}
-table.flow tbody th{font-family:inherit;font-size:12.5px;letter-spacing:0;text-transform:none;
-  color:var(--ink);font-weight:600;text-align:left;padding:8px 8px 8px 0;border-bottom:1px solid #EFEBE2}
-table.flow td{padding:8px 8px 8px 0;border-bottom:1px solid #EFEBE2;text-align:right;color:var(--text-2)}
-table.flow td.alto{color:#9C3A28;font-weight:600}
-table.flow td.spk{padding-right:0;width:110px}
-table.flow .un{font-weight:400;color:var(--text-3);font-size:11.5px}
-.table-scroll{overflow-x:auto}
-table.flow{min-width:640px}
-@media(max-width:920px){.lm-row{grid-template-columns:100px 1fr 82px}.lm-row .badge-ok,
-  .lm-row .badge-warn,.lm-row .badge-bad{display:none}}
+/* figura: artboard nativo de 1180×720, escalado para a largura da coluna */
+/* .figpan carrega, em pixels de layout, a largura já escalada da figura: é ela
+   que dá a extensão certa de rolagem quando a tela é estreita demais */
+.figwrap{position:relative;overflow-x:auto;overflow-y:hidden;border:1px solid var(--rule);background:var(--paper);
+  box-shadow:0 1px 0 var(--rule),0 24px 48px -30px rgba(14,31,46,.35)}
+.figpan{overflow:hidden}
+.figscale{transform-origin:0 0;width:1180px;height:720px}
+.figcap{padding:11px 18px;border:1px solid var(--rule);border-top:0;background:var(--surface);
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--navy)}
+.figcap .pan{display:none}
+/* sem cursor não há hover a sugerir; o que ajuda é saber que a figura desliza */
+@media(hover:none){.figcap .hint{display:none}.figcap .pan{display:inline}}
 
+/* publicações */
+.pubs{margin-top:96px;padding-top:48px;border-top:1px solid var(--ink)}
+.pubs-top{display:flex;justify-content:space-between;align-items:end;gap:36px;flex-wrap:wrap;margin-bottom:44px}
+.pubs-top h3{font-size:30px;line-height:1.15;margin-top:10px;max-width:19ch}
+.pubs-top p{font-size:15.5px;color:var(--text-2);max-width:38ch;text-wrap:pretty}
+.tier{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);
+  display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.tier i{flex:1;height:1px;background:var(--rule);font-style:normal}
+.bycase{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.bycase>div{padding:24px 26px 26px 0;border-right:1px solid var(--rule)}
+.bycase>div:last-child{border-right:0}
+.bycase>div:not(:first-child){padding-left:26px}
+.bc-h{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.bc-h b{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--clay)}
+.bycase h4{font-size:19px;line-height:1.2;margin-bottom:16px}
+.ref{display:block;padding:12px 0;border-top:1px solid var(--rule);transition:.15s}
+.ref .t{font-size:14.5px;line-height:1.38;color:var(--text);text-wrap:pretty}
+.ref .m{display:flex;justify-content:space-between;gap:12px;margin-top:6px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--text-3)}
+.ref .m em{font-style:normal;color:var(--text-2)}
+.ref:hover .t{color:var(--navy)}
+.ref:hover .m em{color:var(--clay)}
+.cap{margin-top:64px}
+.capgrid{display:grid;grid-template-columns:280px 1fr;gap:0 40px;border-top:1px solid var(--ink)}
+.capgrid>div{padding:26px 0;border-bottom:1px solid var(--rule)}
+.capgrid .why h4{font-size:19px;line-height:1.2;margin-bottom:8px}
+.capgrid .why p{font-size:13.5px;line-height:1.5;color:var(--text-2);max-width:32ch;text-wrap:pretty}
+.capgrid .list .ref:first-child{border-top:0;padding-top:0}
+.pubnote{margin-top:34px;font-size:13px;color:var(--text-3);border-left:2px solid var(--rule);padding-left:14px;max-width:64ch}
+@media(max-width:900px){
+  .case{margin-bottom:68px}
+  .pubs{margin-top:72px}
+  .bycase{grid-template-columns:1fr}
+  .bycase>div{border-right:0;border-bottom:1px solid var(--rule);padding:22px 0!important}
+  .capgrid{grid-template-columns:1fr}
+  .capgrid .why{border-bottom:0;padding-bottom:8px}
+}
 /* serviços */
 .svc{background:var(--navy-deep);color:#fff}
 .svc h2{color:#fff}
@@ -763,239 +739,158 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 <section id="casos" style="background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">
   <div class="wrap">
     <div class="head">
-      <div><span class="eyebrow">Casos</span><h2>O que entregamos, na tela de quem usa.</h2></div>
-      <p>Um complexo hospitalar terciário, uma rede municipal inteira e um serviço ambulatorial — a mesma fundação de dados nos três.</p>
+      <div><span class="eyebrow">Casos</span><h2>Três telas.</h2></div>
+      <p>Um complexo hospitalar, uma rede municipal e um serviço ambulatorial — a mesma arquitetura nos três. As figuras representam o formato do que entregamos; todos os dados são fictícios.</p>
     </div>
 
     <!-- CASO 1 -->
     <div class="case">
       <div class="case-top">
         <div>
-          <div class="who">Complexo hospitalar terciário</div>
-          <h3>Vigilância microbiológica sobre dez anos de culturas</h3>
-          <div class="chips"><span class="chip">Resistência antimicrobiana</span><span class="chip">Detecção de surto</span><span class="chip">Qualidade laboratorial</span></div>
+          <div class="who">Complexo hospitalar terciário · microbiologia</div>
+          <h3>Um dado, três decisões</h3>
+          <div class="chips"><span class="chip">Detecção de aglomerado</span><span class="chip">Qualidade de coleta</span><span class="chip">Resistência antimicrobiana</span></div>
         </div>
-        <p>Da extração bruta do laboratório e do equipamento até um painel que sinaliza aglomerado por unidade, com relatório institucional e protótipo de sistema.</p>
+        <p>Cada faixa de tempo termina em uma decisão, não em um número.</p>
       </div>
-
-      <div class="app">
-        <div class="appbar">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <div class="apptitle">Coorte · Vigilância microbiológica</div>
-          <div class="right"><span class="pill">jan–dez 2025</span><span class="pill warn">dados fictícios</span></div>
-        </div>
-        <div class="appbody">
-          <div class="side">
-            <div class="grp">Vigilância</div>
-            <a class="on">Visão geral</a><a>Alertas de aglomerado</a><a>Resistência</a><a>Tempo até detecção</a>
-            <div class="grp">Qualidade</div>
-            <a>Contaminação</a><a>Recoleta</a>
-            <div class="grp">Relatórios</div>
-            <a>Antibiograma cumulativo</a><a>Exportar ANVISA</a>
-          </div>
-          <div class="main">
-            <div class="kpis">
-              <div class="kpi"><div class="l">Culturas processadas no mês</div><div class="v">4.812</div><div class="d">+3,1% vs. mês anterior</div></div>
-              <div class="kpi"><div class="l">Positividade</div><div class="v">12,4%</div><div class="d ok">dentro da faixa esperada</div></div>
-              <div class="kpi"><div class="l">Tempo mediano até detecção</div><div class="v">17,2 h</div><div class="d up">+1,4 h vs. trimestre anterior</div></div>
-            </div>
-
-            <div class="split">
-              <div>
-                <div class="panel-t">Positividade mensal</div>
-                <div class="panel-s">Percentual de culturas positivas, por mês de coleta.</div>
-                <svg viewBox="0 0 566 194" width="100%" role="img" aria-label="Colunas de positividade mensal ao longo de doze meses, entre 10,8% e 13,4%">
-                  <g stroke="#E9E5DB" stroke-width="1">
-                    <line x1="36" y1="168" x2="556" y2="168"/><line x1="36" y1="129.5" x2="556" y2="129.5"/>
-                    <line x1="36" y1="91" x2="556" y2="91"/><line x1="36" y1="52.5" x2="556" y2="52.5"/>
-                  </g>
-                  <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#7C8892" text-anchor="end">
-                    <text x="28" y="171">0</text><text x="28" y="132.5">4</text><text x="28" y="94">8</text><text x="28" y="55.5">12%</text>
-                  </g>
-                  <rect x="45.7" y="60.2" width="24" height="107.8" rx="4" fill="#2A6FB0"/><rect x="45.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="89.0" y="64.0" width="24" height="104.0" rx="4" fill="#2A6FB0"/><rect x="89.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="132.3" y="57.3" width="24" height="110.7" rx="4" fill="#2A6FB0"/><rect x="132.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="175.7" y="51.5" width="24" height="116.5" rx="4" fill="#2A6FB0"/><rect x="175.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="219.0" y="55.4" width="24" height="112.6" rx="4" fill="#2A6FB0"/><rect x="219.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="262.3" y="48.6" width="24" height="119.4" rx="4" fill="#2A6FB0"/><rect x="262.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="305.7" y="42.9" width="24" height="125.1" rx="4" fill="#2A6FB0"/><rect x="305.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="349.0" y="46.7" width="24" height="121.3" rx="4" fill="#2A6FB0"/><rect x="349.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="392.3" y="50.6" width="24" height="117.4" rx="4" fill="#2A6FB0"/><rect x="392.3" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="435.7" y="43.8" width="24" height="124.2" rx="4" fill="#2A6FB0"/><rect x="435.7" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="479.0" y="39.0" width="24" height="129.0" rx="4" fill="#2A6FB0"/><rect x="479.0" y="164.0" width="24" height="4" fill="#2A6FB0"/><rect x="522.3" y="48.6" width="24" height="119.4" rx="4" fill="#2A6FB0"/><rect x="522.3" y="164.0" width="24" height="4" fill="#2A6FB0"/>
-                  <text x="491" y="30" font-family="Inter, sans-serif" font-size="11.5" font-weight="600" fill="#16232E" text-anchor="middle">13,4%</text>
-                  <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#7C8892" text-anchor="middle">
-                    <text x="57.7" y="184">J</text><text x="101.0" y="184">F</text><text x="144.3" y="184">M</text><text x="187.7" y="184">A</text><text x="231.0" y="184">M</text><text x="274.3" y="184">J</text><text x="317.7" y="184">J</text><text x="361.0" y="184">A</text><text x="404.3" y="184">S</text><text x="447.7" y="184">O</text><text x="491.0" y="184">N</text><text x="534.3" y="184">D</text>
-                  </g>
-                </svg>
-              </div>
-              <div>
-                <div class="panel-t">Sinais de aglomerado em aberto</div>
-                <div class="panel-s">Unidades acima do esperado nos últimos 14 dias.</div>
-                <table class="d">
-                  <thead><tr><th>Unidade</th><th>Agente</th><th style="text-align:right">Casos</th><th></th></tr></thead>
-                  <tbody>
-                    <tr><td><b>UTI Adulto 2</b></td><td>K. pneumoniae</td><td class="num">4</td><td><span class="badge hi">alto</span></td></tr>
-                    <tr><td><b>UTI Neonatal</b></td><td>C. parapsilosis</td><td class="num">3</td><td><span class="badge hi">alto</span></td></tr>
-                    <tr><td><b>Enfermaria 7</b></td><td>S. aureus</td><td class="num">3</td><td><span class="badge md">revisar</span></td></tr>
-                    <tr><td><b>Hemodiálise</b></td><td>E. faecalis</td><td class="num">2</td><td><span class="badge lo">baixo</span></td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="figwrap"><div class="figpan"><div class="figscale" id="fig-c1"></div></div></div>
+      <div class="figcap"><span class="hint">Cursor sobre uma unidade</span><span class="pan">Arraste a figura para o lado</span></div>
     </div>
 
     <!-- CASO 2 -->
     <div class="case">
       <div class="case-top">
         <div>
-          <div class="who">Rede municipal de saúde</div>
-          <h3>A rede municipal ligada no nível do paciente</h3>
-          <div class="chips"><span class="chip">Atenção primária</span><span class="chip">Infecção urinária</span><span class="chip">Equidade territorial</span></div>
+          <div class="who">Rede municipal · atenção primária</div>
+          <h3>A nota vira repasse</h3>
+          <div class="chips"><span class="chip">Indicadores de APS</span><span class="chip">Equidade territorial</span><span class="chip">Financiamento por desempenho</span></div>
         </div>
-        <p>Cinco bases integradas e verificadas sustentam a coorte, os indicadores da atenção primária e as listas de busca ativa que a rede usa todo mês.</p>
+        <p>Cada faixa de classificação tem um preço por equipe — o mapa mostra o que a rede deixa de receber.</p>
       </div>
-
-      <div class="app">
-        <div class="appbar">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <div class="apptitle">Coorte · Indicadores da atenção primária</div>
-          <div class="right"><span class="pill">4º trimestre</span><span class="pill warn">dados fictícios</span></div>
-        </div>
-        <div class="appbody">
-          <div class="side">
-            <div class="grp">Indicadores</div>
-            <a class="on">Rastreamento</a><a>Crônicos</a><a>ICSAP</a><a>Gestantes</a>
-            <div class="grp">Território</div>
-            <a>Por unidade</a><a>Por bairro</a><a>Equidade</a>
-            <div class="grp">Ação</div>
-            <a>Listas de busca ativa</a><a>Auditoria clínica</a>
-          </div>
-          <div class="main">
-            <div class="kpis">
-              <div class="kpi"><div class="l">Cobertura de citologia · 25 a 64 anos</div><div class="v">72,6%</div><div class="d up">meta 80% · 3 unidades abaixo</div></div>
-              <div class="kpi"><div class="l">Diabéticos com HbA1c em dia</div><div class="v">54,2%</div><div class="d ok">+4,8 p.p. no trimestre</div></div>
-              <div class="kpi"><div class="l">Internações sensíveis à APS</div><div class="v">8,7%</div><div class="d ok">−0,9 p.p. no trimestre</div></div>
-            </div>
-
-            <div class="split">
-              <div>
-                <div class="panel-t">Cobertura de citologia por unidade</div>
-                <div class="panel-s">Barra em laranja: abaixo da meta municipal de 80%.</div>
-                <div class="hbars">
-                  <div class="hb"><span>UBS Centro</span><span class="track"><span class="fill" style="width:84%"></span><span class="meta" style="left:80%"></span></span><span class="v">84%</span></div>
-                  <div class="hb"><span>UBS Fundação</span><span class="track"><span class="fill" style="width:81%"></span><span class="meta" style="left:80%"></span></span><span class="v">81%</span></div>
-                  <div class="hb"><span>UBS Santa Maria</span><span class="track"><span class="fill warn" style="width:76%"></span><span class="meta" style="left:80%"></span></span><span class="v">76%</span></div>
-                  <div class="hb"><span>UBS Prosperidade</span><span class="track"><span class="fill warn" style="width:68%"></span><span class="meta" style="left:80%"></span></span><span class="v">68%</span></div>
-                  <div class="hb"><span>UBS Boa Vista</span><span class="track"><span class="fill warn" style="width:59%"></span><span class="meta" style="left:80%"></span></span><span class="v">59%</span></div>
-                </div>
-                <div class="legend">
-                  <span><i style="background:#2A6FB0"></i>Na meta ou acima</span>
-                  <span><i style="background:#D2694A"></i>Abaixo da meta</span>
-                  <span><i style="background:#B0533A;width:2px;height:12px"></i>Meta 80%</span>
-                </div>
-              </div>
-              <div>
-                <div class="panel-t">Lista de busca ativa</div>
-                <div class="panel-s">Gerada toda segunda-feira, por unidade.</div>
-                <table class="d">
-                  <thead><tr><th>Unidade</th><th>Motivo</th><th style="text-align:right">Pessoas</th></tr></thead>
-                  <tbody>
-                    <tr><td><b>UBS Boa Vista</b></td><td>Citologia em atraso</td><td class="num">214</td></tr>
-                    <tr><td><b>UBS Prosperidade</b></td><td>Sem HbA1c há 12 meses</td><td class="num">187</td></tr>
-                    <tr><td><b>UBS Santa Maria</b></td><td>Mamografia em atraso</td><td class="num">143</td></tr>
-                    <tr><td><b>UBS Centro</b></td><td>Hipertensão não controlada</td><td class="num">96</td></tr>
-                    <tr><td><b>UBS Fundação</b></td><td>Diabetes sem tratamento</td><td class="num">61</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="figwrap"><div class="figpan"><div class="figscale" id="fig-c2"></div></div></div>
+      <div class="figcap"><span class="hint">Cursor sobre um território · clique fixa</span><span class="pan">Arraste a figura para o lado · toque em um território</span></div>
     </div>
 
     <!-- CASO 3 -->
     <div class="case">
       <div class="case-top">
         <div>
-          <div class="who">Serviço ambulatorial especializado</div>
-          <h3>O prontuário de um serviço inteiro, legível em uma tela</h3>
-          <div class="chips"><span class="chip">Dependência química</span><span class="chip">Prontuário eletrônico</span><span class="chip">Extração de texto clínico</span></div>
+          <div class="who">Serviço ambulatorial de especialidades</div>
+          <h3>Quatro fontes, um paciente</h3>
+          <div class="chips"><span class="chip">Prontuário eletrônico</span><span class="chip">Laboratório e farmácia</span><span class="chip">Regulação</span></div>
         </div>
-        <p>Onze extrações de três sistemas do serviço viram uma ficha por paciente — com procedência em cada linha, e sem confundir menção negada com ausência de menção.</p>
+        <p>A lista não para no status: cada linha termina em uma ação.</p>
       </div>
-
-      <div class="app">
-        <div class="appbar">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <div class="apptitle">Coorte · Ficha clínica do serviço</div>
-          <div class="right"><span class="pill">REG 41-8823-7</span><span class="pill warn">dados fictícios</span></div>
-        </div>
-        <div class="appbody">
-          <div class="side">
-            <div class="grp">Paciente</div>
-            <a class="on">Ficha</a><a>Linha do tempo</a><a>Projeto terapêutico</a>
-            <div class="grp">Prontuário</div>
-            <a>Diagnósticos</a><a>Medicação</a><a>Exames</a><a>Texto clínico</a>
-            <div class="grp">Seguimento</div>
-            <a>Presenças</a><a>Convocações</a>
-          </div>
-          <div class="main">
-            <div class="kpis">
-              <div class="kpi"><div class="l">Pacientes com prontuário integrado</div><div class="v">173</div><div class="d">de 875 no seguimento</div></div>
-              <div class="kpi"><div class="l">Notas clínicas lidas</div><div class="v">7.609</div><div class="d">12,9 mi de caracteres</div></div>
-              <div class="kpi"><div class="l">Conceitos extraídos do texto</div><div class="v">23</div><div class="d ok">com polaridade e sujeito</div></div>
-            </div>
-
-            <div class="split">
-              <div>
-                <div class="panel-t">Quando cada painel foi coletado</div>
-                <div class="cap">Um ponto por dia de coleta, eixo do tempo compartilhado, terminando hoje.</div>
-                <div class="labmap">
-            <div class="lm-row"><span class="lm-name">Hemograma</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/><circle cx="542" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="491" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="440" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="390" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="342" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="243" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="144" cy="6" r="2.4" fill="currentColor" opacity=".8"/></svg></span><span class="lm-when">12/04/2026</span><span class="badge-ok">há 2 meses</span></div>
-            <div class="lm-row"><span class="lm-name">Função renal</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/><circle cx="542" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="491" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="440" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="390" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="293" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="193" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="94" cy="6" r="2.4" fill="currentColor" opacity=".8"/></svg></span><span class="lm-when">12/04/2026</span><span class="badge-ok">há 2 meses</span></div>
-            <div class="lm-row"><span class="lm-name">Hepático</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/><circle cx="440" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="293" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="144" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="28" cy="6" r="2.4" fill="currentColor" opacity=".8"/></svg></span><span class="lm-when">03/09/2025</span><span class="badge-warn">há 9 meses</span></div>
-            <div class="lm-row"><span class="lm-name">Glicemia e lipídios</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/><circle cx="390" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="193" cy="6" r="2.4" fill="currentColor" opacity=".8"/><circle cx="28" cy="6" r="2.4" fill="currentColor" opacity=".8"/></svg></span><span class="lm-when">21/01/2025</span><span class="badge-warn">há 17 meses</span></div>
-            <div class="lm-row"><span class="lm-name">Sorologias</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/><circle cx="94" cy="6" r="2.4" fill="currentColor" opacity=".8"/></svg></span><span class="lm-when">08/03/2022</span><span class="badge-bad">há 4 anos</span></div>
-            <div class="lm-row"><span class="lm-name">TSH</span><span class="lm-track"><svg width="100%" height="12" viewBox="0 0 560 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="552" y2="6" stroke="currentColor" stroke-width="1" opacity=".18"/></svg></span><span class="lm-when">—</span><span class="badge-bad">nunca coletado</span></div>
-                </div>
-              </div>
-              <div>
-                <div class="panel-t">Leitura do texto clínico</div>
-                <div class="cap">Menção negada não acende alerta.</div>
-                <div class="risk"><b>Ideação suicida</b> <span class="badge-ok">sem registro afirmado</span>
-                  <span class="q"><span class="src">evolução ambulatorial · 12/05/2026</span><br>“Nega ideação suicida no momento.”</span></div>
-                <div class="risk"><b>Recaída</b> <span class="badge-warn">3 afirmados</span>
-                  <span class="q"><span class="src">evolução ambulatorial · 04/03/2026</span><br>“Relata uso de álcool em dois finais de semana no último mês.”</span></div>
-                <div class="risk"><b>Violência por parceiro íntimo</b> <span class="badge-warn">1 afirmado</span>
-                  <span class="q"><span class="src">evolução de psicologia · 18/11/2025</span><br>“Orientada quanto à rede de proteção.”</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="app" style="margin-top:24px">
-        <div class="appbar">
-          <div class="dots"><i></i><i></i><i></i></div>
-          <div class="apptitle">Exames · série das últimas sete coletas</div>
-          <div class="right"><span class="pill">98 analitos</span><span class="pill warn">dados fictícios</span></div>
-        </div>
-        <div class="main" style="padding:24px 28px 26px">
-          <div class="table-scroll"><table class="flow">
-            <thead><tr><th>Exame</th><th>mar/23</th><th>set/23</th><th>fev/24</th><th>ago/24</th><th>jan/25</th><th>set/25</th><th>abr/26</th><th>Série</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Hemoglobina <span class="un">g/dL</span></th><td class="num">11,2</td><td class="num">10,8</td><td class="num">11,6</td><td class="num">12,1</td><td class="num">12,4</td><td class="num">12,0</td><td class="num">12,6</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,14.4 18.7,18.0 35.3,10.9 52.0,6.4 68.7,3.8 85.3,7.3 102.0,2.0" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="2.0" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-              <tr><th scope="row">Leucócitos <span class="un">/mm³</span></th><td class="num">9.400</td><td class="num">8.100</td><td class="num">7.600</td><td class="num">8.900</td><td class="num">7.200</td><td class="num">6.800</td><td class="num">7.100</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,2.0 18.7,10.0 35.3,13.1 52.0,5.1 68.7,15.5 85.3,18.0 102.0,16.2" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="16.2" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-              <tr><th scope="row">Creatinina <span class="un">mg/dL</span></th><td class="num">0,90</td><td class="num">0,85</td><td class="num">0,88</td><td class="num">0,92</td><td class="num">0,87</td><td class="num">0,90</td><td class="num">0,88</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,6.6 18.7,18.0 35.3,11.1 52.0,2.0 68.7,13.4 85.3,6.6 102.0,11.1" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="11.1" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-              <tr><th scope="row">AST <span class="un">U/L</span></th><td class="num alto">64</td><td class="num alto">58</td><td class="num alto">71</td><td class="num">49</td><td class="num">42</td><td class="num">38</td><td class="num">36</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,5.2 18.7,7.9 35.3,2.0 52.0,12.1 68.7,15.3 85.3,17.1 102.0,18.0" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="18.0" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-              <tr><th scope="row">ALT <span class="un">U/L</span></th><td class="num alto">72</td><td class="num alto">66</td><td class="num alto">80</td><td class="num">55</td><td class="num">47</td><td class="num">41</td><td class="num">39</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,5.1 18.7,7.5 35.3,2.0 52.0,11.8 68.7,14.9 85.3,17.2 102.0,18.0" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="18.0" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-              <tr><th scope="row">GGT <span class="un">U/L</span></th><td class="num alto">186</td><td class="num alto">154</td><td class="num alto">203</td><td class="num alto">121</td><td class="num">88</td><td class="num">71</td><td class="num">64</td><td class="spk"><svg width="104" height="20" viewBox="0 0 104 20" aria-hidden="true"><polyline points="2.0,4.0 18.7,7.6 35.3,2.0 52.0,11.4 68.7,15.2 85.3,17.2 102.0,18.0" fill="none" stroke="#2A6FB0" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="102.0" cy="18.0" r="2.4" fill="#2A6FB0" stroke="#fff" stroke-width="1.5"/></svg></td></tr>
-            </tbody>
-          </table></div>
-          <p style="font-size:12.5px;color:var(--text-3);margin-top:14px">Em <span style="color:#9C3A28;font-weight:600">vermelho</span>: valor acima da faixa de referência do laboratório.</p>
-        </div>
-      </div>
-
+      <div class="figwrap"><div class="figpan"><div class="figscale" id="fig-c3"></div></div></div>
+      <div class="figcap"><span class="hint">Cursor sobre um paciente · clique fixa</span><span class="pan">Arraste a figura para o lado · toque em um paciente</span></div>
     </div>
 
-    <p style="font-size:13px;color:var(--text-3);border-left:2px solid var(--clay);padding-left:14px;margin-top:44px;max-width:66ch">
-      As telas acima reproduzem o formato das entregas com <strong>dados fictícios</strong>. Nenhum número corresponde a instituição, unidade ou paciente real.
-    </p>
+    <!-- PUBLICAÇÕES -->
+    <div class="pubs">
+      <div class="pubs-top">
+        <div>
+          <span class="eyebrow">Publicações</span>
+          <h3>O mesmo método, revisado por pares.</h3>
+        </div>
+        <p>Alguns exemplos publicados do trabalho por trás dessas telas.</p>
+      </div>
+
+      <div class="tier"><span>Por trás de cada tela</span><i></i></div>
+      <div class="bycase">
+        <div>
+          <div class="bc-h"><b>Caso 01</b></div>
+          <h4>Hospital, microbiologia e resistência</h4>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/39320520/" target="_blank" rel="noopener">
+            <span class="t">Colonisation by multidrug-resistant organisms in health workers in primary care: narrow spectrum oral antimicrobials are a risk factor</span>
+            <span class="m"><em>Eur J Clin Microbiol Infect Dis</em>2024 · 39320520</span>
+          </a>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/42019365/" target="_blank" rel="noopener">
+            <span class="t">Insights of bacterial community structure and occurrence of antibiotic resistance and antimicrobial compounds in an urban stream in the megacity of São Paulo, Brazil</span>
+            <span class="m"><em>Braz J Infect Dis</em>2026 · 42019365</span>
+          </a>
+        </div>
+        <div>
+          <div class="bc-h"><b>Caso 02</b></div>
+          <h4>Rede municipal de atenção primária</h4>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/33436471/" target="_blank" rel="noopener">
+            <span class="t">Clinical features and natural history of the first 2073 suspected COVID-19 cases in the Corona São Caetano primary care programme: a prospective cohort study</span>
+            <span class="m"><em>BMJ Open</em>2021 · 33436471</span>
+          </a>
+        </div>
+        <div>
+          <div class="bc-h"><b>Caso 03</b></div>
+          <h4>Serviço ambulatorial de especialidades</h4>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/41521395/" target="_blank" rel="noopener">
+            <span class="t">Gone Too Soon: Higher Pretreatment and Treatment Dropout Among Emerging Adults in a Women-Specific Outpatient Treatment Service for Substance Use Disorders in Brazil</span>
+            <span class="m"><em>Early Interv Psychiatry</em>2026 · 41521395</span>
+          </a>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/40782139/" target="_blank" rel="noopener">
+            <span class="t">Expanding gender-sensitive and equitable substance use care models: treatment retention analysis of the women's drug dependent treatment program (PROMUD) replication in psychosocial units in Brazil</span>
+            <span class="m"><em>Arch Womens Ment Health</em>2025 · 40782139</span>
+          </a>
+          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/39748905/" target="_blank" rel="noopener">
+            <span class="t">Case report: Additional grounds for tighter regulation? A case series of five women with zolpidem dependence from a Brazilian women-specific substance use disorder outpatient service</span>
+            <span class="m"><em>Front Psychiatry</em>2024 · 39748905</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="cap">
+        <div class="tier"><span>Capacidades que atravessam as três telas</span><i></i></div>
+        <div class="capgrid">
+          <div class="why">
+            <h4>Vigilância em tempo real</h4>
+            <p>Coletar, sequenciar e devolver resultado em campo — o mesmo relógio do caso 01.</p>
+          </div>
+          <div class="list">
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/27683027/" target="_blank" rel="noopener">
+              <span class="t">Mobile real-time surveillance of Zika virus in Brazil</span>
+              <span class="m"><em>Faria NR, … Sabino EC · Genome Med</em>2016 · 27683027</span>
+            </a>
+          </div>
+
+          <div class="why">
+            <h4>Predição a partir de dado de rotina</h4>
+            <p>Prontuário, exame e prescrição como já existem, sem coleta nova, viram modelo de risco.</p>
+          </div>
+          <div class="list">
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/35843930/" target="_blank" rel="noopener">
+              <span class="t">Predicting the outcome for COVID-19 patients by applying time series classification to electronic health records</span>
+              <span class="m"><em>Rodrigues DS, … Sabino EC · BMC Med Inform Decis Mak</em>2022 · 35843930</span>
+            </a>
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/36131274/" target="_blank" rel="noopener">
+              <span class="t">Correlating drug prescriptions with prognosis in severe COVID-19: first step towards resource management</span>
+              <span class="m"><em>Sabino EC, et al. · BMC Med Inform Decis Mak</em>2022 · 36131274</span>
+            </a>
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/35421085/" target="_blank" rel="noopener">
+              <span class="t">Two-year death prediction models among patients with Chagas Disease using machine learning-based methods</span>
+              <span class="m"><em>PLoS Negl Trop Dis</em>2022 · 35421085</span>
+            </a>
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/34433816/" target="_blank" rel="noopener">
+              <span class="t">Deep neural network-estimated electrocardiographic age as a mortality predictor</span>
+              <span class="m"><em>Nat Commun</em>2021 · 34433816</span>
+            </a>
+          </div>
+
+          <div class="why">
+            <h4>Fenótipo e saúde mental em escala</h4>
+            <p>Separar quadros que a classificação clínica confunde e ler o efeito de um choque populacional.</p>
+          </div>
+          <div class="list">
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/34911001/" target="_blank" rel="noopener">
+              <span class="t">Examining the impact of the COVID-19 pandemic through the lens of the network approach to psychopathology: Analysis of the Brazilian Longitudinal Study of Health (ELSA-Brasil) cohort over a 12-year timespan</span>
+              <span class="m"><em>Suen PJC, et al. · J Anxiety Disord</em>2021 · 34911001</span>
+            </a>
+            <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/33307387/" target="_blank" rel="noopener">
+              <span class="t">Classification of unipolar and bipolar depression using machine learning techniques</span>
+              <span class="m"><em>Suen PJC, … Brunoni AR · Psychiatry Res</em>2020 · 33307387</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <p class="pubnote">Publicações em que a equipe participou do desenho, da análise ou da construção da base. Cada linha abre o registro no PubMed.</p>
+    </div>
   </div>
 </section>
 
@@ -1208,6 +1103,942 @@ footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(
 const hd=document.getElementById('hd');
 const onScroll=()=>hd.classList.toggle('solid',window.scrollY>60);
 onScroll();addEventListener('scroll',onScroll,{passive:true});
+</script>
+<script>
+(function(){
+/* ===================================================================
+   HELPERS
+   =================================================================== */
+const f1 = n => +n.toFixed(1);
+const d1 = n => n.toFixed(1).replace('.', ',');
+const brl = n => n.toLocaleString('pt-BR');
+const num = (n, d) => {
+  const s = Number(n).toFixed(d).split('.');
+  return s[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (s[1] ? ',' + s[1] : '');
+};
+const MONO = "'IBM Plex Mono',monospace";
+/* rótulo absoluto sobre um SVG, ancorado como um <text> */
+const lb = (x, y, txt, size, color, anchor) => {
+  const tr = anchor === 'middle' ? 'translate(-50%,-100%)' : anchor === 'end' ? 'translate(-100%,-100%)' : 'translate(0,-100%)';
+  return '<div style="position:absolute;font-family:' + MONO + ';line-height:1;white-space:nowrap;pointer-events:none;left:' + x + 'px;top:' + y + 'px;transform:' + tr + ';font-size:' + (size || 10) + 'px;color:' + (color || '#16232E') + '">' + txt + '</div>';
+};
+
+/* ===================================================================
+   CASO 01 · hemocultura · semana / trimestre / década
+   =================================================================== */
+const C1 = (() => {
+  const CL = ['#E7EFF7', '#B9D0E6', '#7FA9CE', '#1B4E7E'];
+  const UNITS = ['UTI clínica', 'UTI cirúrgica', 'Enfermaria A', 'Enfermaria B', 'Transplante', 'Emergência'];
+
+  const clusterRows = UNITS.map((u, r) => {
+    const cells = [];
+    for (let w = 0; w < 12; w++) {
+      let n = Math.max(0, Math.round(1.1 + Math.sin(r * 2.3 + w * 1.7) * 1.2) - 1);
+      if (r === 1 && w >= 8) n = w === 8 ? 2 : 3;
+      const flagged = r === 1 && w >= 9;
+      cells.push('background:' + CL[Math.min(3, n)] + (flagged ? ';box-shadow:inset 0 0 0 1.5px #B0533A' : ''));
+    }
+    return { unit: u, cells, flag: r === 1 ? '4 em 6 dias · limiar 3' : '' };
+  });
+
+  const LAB = [['UTI clín.', 2.1], ['UTI cir.', 4.6], ['Enf. A', 1.8], ['Enf. B', 5.2], ['Transpl.', 2.4], ['Emerg.', 3.0]];
+  const labRows = LAB.map(l => {
+    const over = l[1] > 3.0;
+    return {
+      unit: l[0], raw: l[1], over,
+      val: d1(l[1]) + '%',
+      h: Math.max(4, l[1] / 6 * 62).toFixed(1),
+      fill: over ? '#1B4E7E' : '#B9D0E6',
+      vcol: over ? '#B0533A' : '#4E5C68'
+    };
+  });
+
+  const series = (a, b, seed) => {
+    const out = [];
+    for (let i = 0; i < 10; i++) {
+      const t = i / 9;
+      const noise = Math.sin(seed * 1.7 + i * 1.9) * 2.6 + Math.sin(seed * 0.6 + i * 3.4) * 1.4;
+      out.push(Math.max(0, Math.min(80, a + (b - a) * t + noise)));
+    }
+    out[0] = a; out[9] = b;
+    return out;
+  };
+  const DEC = [
+    ['K. pneumoniae', 'meropeném', 7, 24], ['A. baumannii', 'meropeném', 38, 66],
+    ['E. coli', 'ceftriaxona', 22, 29], ['P. aeruginosa', 'meropeném', 19, 29],
+    ['S. aureus', 'oxacilina', 49, 43]
+  ];
+  const decRows = DEC.map((d, i) => {
+    const vs = series(d[2], d[3], 40 + i);
+    const y = v => (70 - (v / 80) * 64).toFixed(1);
+    const delta = d[3] - d[2], worse = delta >= 5, better = delta <= -5;
+    return {
+      org: d[0], drug: d[1],
+      pts: vs.map((v, k) => (k * (112 / 9)).toFixed(1) + ',' + y(v)).join(' '),
+      ey: y(d[3]),
+      dot: worse ? '#B0533A' : better ? '#2FA38C' : '#7C8892',
+      range: d[2] + ' → ' + d[3] + ' %R',
+      dcol: worse ? '#B0533A' : better ? '#2FA38C' : '#7C8892'
+    };
+  });
+
+  const NOTE_SEM = 'Decisão · isolamento e busca ativa na unidade';
+  const NOTE_TRI = 'Decisão · treinamento de coleta nas duas unidades acima';
+
+  function render(host) {
+    host.innerHTML =
+    '<div style="width:1180px;height:720px;background:#FBFAF7;padding:30px 40px 24px;display:flex;flex-direction:column;overflow:hidden">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
+        '<div>' +
+          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7C8892;margin-bottom:6px">Caso 01 · hemocultura · complexo hospitalar terciário</div>' +
+          '<h2 style="font-family:Spectral,serif;font-weight:500;font-size:26px;line-height:1.05;color:#0E1F2E;margin:0">Um dado, três decisões</h2>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="display:inline-block;border:1px solid #B0533A;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Figuras ilustrativas · dados fictícios</div>' +
+          '<div style="font-family:' + MONO + ';font-size:10.5px;color:#4E5C68;margin-top:8px">1.043.712 frascos · 2016–2025</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="height:1px;background:#0E1F2E;opacity:.85;margin:16px 0 0"></div>' +
+      '<div style="display:grid;grid-template-columns:1fr 372px;gap:26px;flex:1;min-height:0">' +
+
+        '<div style="display:flex;flex-direction:column;justify-content:space-between;min-width:0">' +
+
+          /* ---- SEMANA ---- */
+          '<div style="display:grid;grid-template-columns:84px 1fr;gap:16px;padding:16px 0 14px;border-bottom:1px solid #DCD6C9;align-items:start">' +
+            '<div>' +
+              '<div style="font-family:' + MONO + ';font-size:12.5px;color:#2A6FB0">SEMANA</div>' +
+              '<div style="font-family:' + MONO + ';font-size:9.5px;color:#7C8892;margin-top:3px">recalcula 6 h</div>' +
+            '</div>' +
+            '<div style="min-width:0">' +
+              '<div style="display:flex;justify-content:space-between;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:6px"><span>UNIDADE × SEMANA · ISOLADOS DO MESMO CLONE</span><span>12 semanas →</span></div>' +
+              clusterRows.map((r, i) =>
+                '<div class="c1row" data-i="' + i + '" style="display:flex;align-items:center;gap:6px;margin-bottom:3px;cursor:pointer;transition:opacity .12s">' +
+                  '<span class="c1rowlab" style="width:78px;font-family:' + MONO + ';font-size:9.5px;color:#4E5C68;text-align:right">' + r.unit + '</span>' +
+                  '<div style="display:flex;gap:2px">' +
+                    r.cells.map(c => '<span style="width:18px;height:16px;border-radius:2px;' + c + '"></span>').join('') +
+                  '</div>' +
+                  '<span style="font-family:' + MONO + ';font-size:9px;color:#B0533A;white-space:nowrap">' + r.flag + '</span>' +
+                '</div>').join('') +
+              '<div style="display:flex;gap:12px;margin-top:7px;font-family:' + MONO + ';font-size:9px;color:#4E5C68;align-items:center">' +
+                '<span style="display:flex;align-items:center;gap:4px"><span style="width:11px;height:9px;background:#E7EFF7;border-radius:2px"></span>0</span>' +
+                '<span style="display:flex;align-items:center;gap:4px"><span style="width:11px;height:9px;background:#B9D0E6;border-radius:2px"></span>1</span>' +
+                '<span style="display:flex;align-items:center;gap:4px"><span style="width:11px;height:9px;background:#7FA9CE;border-radius:2px"></span>2</span>' +
+                '<span style="display:flex;align-items:center;gap:4px"><span style="width:11px;height:9px;background:#1B4E7E;border-radius:2px"></span>3+</span>' +
+                '<span style="display:flex;align-items:center;gap:4px;color:#B0533A"><span style="width:11px;height:9px;border:1.5px solid #B0533A;border-radius:2px"></span>acima do limiar</span>' +
+                '<span id="c1-note-sem" style="margin-left:auto;color:#16232E">' + NOTE_SEM + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* ---- TRIMESTRE ---- */
+          '<div style="display:grid;grid-template-columns:84px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid #DCD6C9;align-items:start">' +
+            '<div>' +
+              '<div style="font-family:' + MONO + ';font-size:12.5px;color:#2A6FB0">TRIMESTRE</div>' +
+              '<div style="font-family:' + MONO + ';font-size:9.5px;color:#7C8892;margin-top:3px">painel fixo</div>' +
+            '</div>' +
+            '<div style="min-width:0">' +
+              '<div style="display:flex;justify-content:space-between;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:4px"><span>CONTAMINAÇÃO DE HEMOCULTURA POR UNIDADE · % DOS FRASCOS</span><span style="color:#B0533A">— — linha tracejada · meta 3,0%</span></div>' +
+              '<div style="display:flex;gap:8px;margin-bottom:5px">' +
+                labRows.map((l, i) => '<div class="c1val" data-i="' + i + '" style="flex:1;min-width:0;font-family:' + MONO + ';font-size:10px;text-align:center;color:' + l.vcol + ';transition:opacity .12s">' + l.val + '</div>').join('') +
+              '</div>' +
+              '<div style="position:relative">' +
+                '<div style="position:absolute;left:0;right:0;top:53px;border-top:1px dashed #B0533A"></div>' +
+                '<div style="display:flex;gap:8px;align-items:flex-end">' +
+                  labRows.map((l, i) =>
+                    '<div class="c1bar" data-i="' + i + '" style="flex:1;min-width:0;cursor:pointer;transition:opacity .12s">' +
+                      '<div style="height:84px;display:flex;flex-direction:column;justify-content:flex-end">' +
+                        '<div class="c1barfill" style="border-radius:2px 2px 0 0;height:' + l.h + 'px;background:' + l.fill + '"></div>' +
+                      '</div>' +
+                      '<div style="border-top:1px solid #DCD6C9;font-family:' + MONO + ';font-size:9px;text-align:center;color:#4E5C68;padding-top:4px">' + l.unit + '</div>' +
+                    '</div>').join('') +
+                '</div>' +
+              '</div>' +
+              '<div style="display:flex;gap:14px;font-family:' + MONO + ';font-size:9px;color:#4E5C68;align-items:center;margin-top:2px">' +
+                '<span style="display:flex;align-items:center;gap:4px;color:#B0533A"><span style="width:11px;height:9px;background:#1B4E7E;border-radius:2px"></span>acima da meta</span>' +
+                '<span id="c1-note-tri" style="margin-left:auto;color:#16232E">' + NOTE_TRI + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          /* ---- DÉCADA ---- */
+          '<div style="display:grid;grid-template-columns:84px 1fr;gap:16px;padding:14px 0 0;align-items:start">' +
+            '<div>' +
+              '<div style="font-family:' + MONO + ';font-size:12.5px;color:#2A6FB0">DÉCADA</div>' +
+              '<div style="font-family:' + MONO + ';font-size:9.5px;color:#7C8892;margin-top:3px">2016–2025</div>' +
+            '</div>' +
+            '<div style="min-width:0">' +
+              '<div style="display:flex;justify-content:space-between;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:6px"><span>RESISTÊNCIA POR PAR ORGANISMO–ANTIMICROBIANO · %R</span><span>eixo 0–80 %R</span></div>' +
+              '<div style="display:flex;gap:10px">' +
+                decRows.map(d =>
+                  '<div style="flex:1;min-width:0">' +
+                    '<div style="font-family:Spectral,serif;font-style:italic;font-size:12px;color:#16232E;line-height:1.15">' + d.org + '</div>' +
+                    '<div style="font-family:' + MONO + ';font-size:9px;color:#7C8892;margin:1px 0 4px">' + d.drug + '</div>' +
+                    '<svg viewBox="0 0 112 72" style="width:100%;height:72px;display:block;overflow:visible">' +
+                      '<line x1="0" y1="70" x2="112" y2="70" stroke="#DCD6C9"></line>' +
+                      '<line x1="0" y1="4" x2="112" y2="4" stroke="#EEE9DE" stroke-dasharray="2 3"></line>' +
+                      '<polyline points="' + d.pts + '" fill="none" stroke="#2A6FB0" stroke-width="1.6" stroke-linejoin="round"></polyline>' +
+                      '<circle cx="112" cy="' + d.ey + '" r="2.8" fill="' + d.dot + '"></circle>' +
+                    '</svg>' +
+                    '<div style="font-family:' + MONO + ';font-size:10px;margin-top:4px;color:' + d.dcol + '">' + d.range + '</div>' +
+                  '</div>').join('') +
+              '</div>' +
+              '<div style="display:flex;gap:14px;font-family:' + MONO + ';font-size:9px;color:#4E5C68;align-items:center;margin-top:8px">' +
+                '<span style="display:flex;align-items:center;gap:4px;color:#B0533A"><span style="width:8px;height:8px;border-radius:50%;background:#B0533A"></span>piora ≥ 5 pp</span>' +
+                '<span style="display:flex;align-items:center;gap:4px;color:#2FA38C"><span style="width:8px;height:8px;border-radius:50%;background:#2FA38C"></span>melhora ≥ 5 pp</span>' +
+                '<span style="margin-left:auto;color:#16232E">Decisão · esquema empírico por unidade</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        /* ---- coluna da antecipação ---- */
+        '<div style="display:flex;flex-direction:column;gap:10px;border-left:1px solid #DCD6C9;padding:16px 0 0 24px;min-height:0">' +
+          '<div style="font-family:' + MONO + ';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#B0533A">O que a antecipação evita</div>' +
+          '<div style="font-family:Spectral,serif;font-size:20px;line-height:1.15;color:#0E1F2E">Sinal no dia 4, e não na revisão do mês</div>' +
+          '<div style="border:1px solid #DCD6C9;background:#FFFFFF;padding:10px 12px 8px">' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">' +
+              '<span style="width:64px;font-family:' + MONO + ';font-size:9px;color:#7C8892;text-align:right">hoje</span>' +
+              '<span style="flex:1;height:9px;background:linear-gradient(to right,#B9D0E6 0 18%,#EEE9DE 18% 82%,#B0533A 82% 100%);border-radius:2px"></span>' +
+              '<span style="font-family:' + MONO + ';font-size:9.5px;color:#7C8892">dia 24</span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px">' +
+              '<span style="width:64px;font-family:' + MONO + ';font-size:9px;color:#2A6FB0;text-align:right">com a camada</span>' +
+              '<span style="flex:1;height:9px;background:linear-gradient(to right,#B9D0E6 0 28%,#2A6FB0 28% 62%,#B0533A 62% 100%);border-radius:2px;max-width:25%"></span>' +
+              '<span style="font-family:' + MONO + ';font-size:9.5px;color:#B0533A">dia 6</span>' +
+            '</div>' +
+            '<div style="font-family:' + MONO + ';font-size:9px;color:#4E5C68;margin-top:7px;padding-top:6px;border-top:1px solid #EEE9DE">coleta → resultado → sinal → ação na unidade</div>' +
+          '</div>' +
+          '<svg viewBox="0 0 364 344" style="width:100%;display:block;overflow:visible">' +
+            '<defs><pattern id="hc-hatch3" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">' +
+              '<line x1="0" y1="0" x2="0" y2="6" stroke="#B0533A" stroke-width="1.1" opacity=".45"></line>' +
+            '</pattern></defs>' +
+            '<line x1="26" y1="300" x2="336" y2="300" stroke="#DCD6C9"></line>' +
+            '<line x1="26" y1="20" x2="26" y2="300" stroke="#DCD6C9"></line>' +
+            '<line x1="26" y1="90" x2="336" y2="90" stroke="#EEE9DE" stroke-dasharray="2 4"></line>' +
+            '<line x1="26" y1="195" x2="336" y2="195" stroke="#EEE9DE" stroke-dasharray="2 4"></line>' +
+            '<text x="21" y="24" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C8892">12</text>' +
+            '<text x="21" y="94" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C8892">8</text>' +
+            '<text x="21" y="199" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C8892">4</text>' +
+            '<text x="21" y="304" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C8892">0</text>' +
+            '<path d="M26 300 L78 277 L130 226 L182 121 L234 70 L286 148 L336 226 L336 300 Z" fill="url(#hc-hatch3)" stroke="none"></path>' +
+            '<polyline points="26,300 78,277 130,226 182,121 234,70 286,148 336,226" fill="none" stroke="#7C8892" stroke-width="1.7" stroke-dasharray="5 4"></polyline>' +
+            '<polyline points="26,300 78,277 130,250 182,273 234,286 286,300 336,300" fill="none" stroke="#2A6FB0" stroke-width="2.2"></polyline>' +
+            '<line x1="130" y1="20" x2="130" y2="300" stroke="#B0533A" stroke-width="1.2"></line>' +
+            '<circle cx="130" cy="250" r="3.2" fill="#B0533A"></circle>' +
+            '<text x="136" y="30" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#B0533A">sinal · dia 4</text>' +
+            '<text x="246" y="62" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#7C8892">sem vigilância</text>' +
+            '<text x="206" y="318" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#2A6FB0">com vigilância</text>' +
+            '<text x="26" y="334" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7C8892">semanas do aglomerado →</text>' +
+          '</svg>' +
+          '<div style="display:flex;gap:8px">' +
+            '<div style="flex:1;border:1px solid #DCD6C9;background:#FFFFFF;padding:9px 12px">' +
+              '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">CASOS EVITADOS</div>' +
+              '<div style="font-family:' + MONO + ';font-size:16px;color:#16232E;margin-top:3px">11 de 19</div>' +
+            '</div>' +
+            '<div style="flex:1;border:1px solid #DCD6C9;background:#FFFFFF;padding:9px 12px">' +
+              '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">DIA-LEITO DE UTI</div>' +
+              '<div style="font-family:' + MONO + ';font-size:16px;color:#16232E;margin-top:3px">≈ 74</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="margin-top:auto;font-family:' + MONO + ';font-size:9px;line-height:1.5;color:#7C8892;text-wrap:pretty">Área hachurada e números são cenário ilustrativo, não resultado medido.</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+    /* cruzamento semana ↔ trimestre: a mesma unidade nas duas escalas */
+    const rows = [...host.querySelectorAll('.c1row')];
+    const bars = [...host.querySelectorAll('.c1bar')];
+    const vals = [...host.querySelectorAll('.c1val')];
+    const noteS = host.querySelector('#c1-note-sem');
+    const noteT = host.querySelector('#c1-note-tri');
+    let pinned = null;
+
+    const paint = i => {
+      rows.forEach((r, k) => {
+        r.style.opacity = (i === null || k === i) ? '1' : '.34';
+        r.querySelector('.c1rowlab').style.color = (i === k) ? '#0E1F2E' : '#4E5C68';
+      });
+      bars.forEach((b, k) => {
+        b.style.opacity = (i === null || k === i) ? '1' : '.34';
+        const fill = b.querySelector('.c1barfill');
+        fill.style.outline = (i === k) ? '1.5px solid #B0533A' : 'none';
+        fill.style.outlineOffset = '1px';
+      });
+      vals.forEach((v, k) => { v.style.opacity = (i === null || k === i) ? '1' : '.34'; });
+      if (i === null) { noteS.textContent = NOTE_SEM; noteT.textContent = NOTE_TRI; return; }
+      const u = clusterRows[i], l = labRows[i];
+      noteS.textContent = u.unit + ' · ' + (u.flag ? '4 isolados do mesmo clone em 6 dias · acima do limiar' : 'sem aglomerado aberto nas 12 semanas');
+      noteT.textContent = l.unit + ' · ' + l.val + ' dos frascos · ' + (l.over ? 'acima' : 'dentro') + ' da meta de 3,0%';
+    };
+
+    const wire = (nodes) => nodes.forEach(n => {
+      const i = +n.dataset.i;
+      n.addEventListener('mouseenter', () => { if (pinned === null) paint(i); });
+      n.addEventListener('mouseleave', () => { if (pinned === null) paint(null); });
+      n.addEventListener('click', () => { pinned = (pinned === i) ? null : i; paint(pinned); });
+    });
+    wire(rows); wire(bars);
+  }
+  return { render };
+})();
+
+/* ===================================================================
+   CASO 02 · rede municipal · mapa navegável
+   =================================================================== */
+const C2 = (() => {
+  const BAIRROS = [
+    { id:'t01', d:'M92.9 57.7 93.4 65.4 95.9 75.9 95.6 95.0 125.5 132.3 134.3 140.8 144.7 148.5 167.8 159.4 210.9 175.1 277.5 201.6 365.4 233.6 459.9 269.9 459.6 250.4 454.6 234.0 449.9 223.2 447.2 219.8 438.6 221.0 434.3 220.5 427.3 217.8 306.2 136.3 289.1 123.1 271.3 106.6 163.1 33.4 152.8 29.0 137.7 27.3 129.0 24.9 99.5 8.0 103.4 24.8 103.0 30.4 101.4 36.2 93.8 49.8 92.9 57.7Z' },
+    { id:'t02', d:'M447.2 219.8 449.9 223.2 454.6 234.0 459.6 250.4 459.9 269.9 522.6 294.1 531.4 298.5 534.4 293.3 537.5 290.3 544.1 287.8 549.0 288.0 572.4 293.7 579.3 293.8 620.7 284.5 613.8 250.8 609.3 207.5 610.0 204.6 612.6 202.5 632.0 200.0 580.1 119.9 574.5 115.3 565.5 111.1 556.0 110.7 546.7 113.1 540.8 117.5 501.6 164.0 497.1 171.9 490.3 189.5 487.2 194.0 484.5 196.5 454.0 216.3 447.2 219.8Z' },
+    { id:'t03', d:'M426.8 372.8 459.6 456.1 461.3 461.9 462.7 472.6 484.1 455.8 507.9 439.6 558.5 517.0 561.1 501.4 562.7 497.5 568.4 488.3 582.3 470.6 607.5 446.0 627.3 432.5 578.9 344.9 571.1 333.2 558.6 318.6 550.8 311.6 531.4 298.5 526.2 305.9 426.8 372.8Z' },
+    { id:'t04', d:'M440.4 651.3 440.8 663.2 444.0 680.0 446.1 686.3 452.8 700.8 466.7 726.1 472.9 739.5 475.1 751.2 475.2 762.3 525.0 734.7 517.5 726.0 524.7 675.8 538.5 665.8 543.5 628.7 550.9 560.7 558.5 517.0 507.9 439.6 484.1 455.8 458.2 475.5 451.0 482.7 446.4 491.6 444.8 500.4 445.5 510.6 449.9 520.2 472.1 559.8 473.9 571.7 473.1 577.2 471.2 582.1 458.1 598.3 448.6 615.2 442.6 632.6 440.4 651.3Z' },
+    { id:'t05', d:'M319.9 682.5 328.8 682.4 334.6 685.8 341.7 695.9 356.2 712.6 369.6 742.3 377.2 749.7 399.5 765.8 427.9 791.5 431.7 798.0 440.8 826.3 444.2 832.4 449.0 838.1 460.2 846.0 466.4 832.3 475.2 762.3 475.3 753.7 473.5 741.7 470.9 734.7 452.8 700.8 446.1 686.3 444.0 680.0 441.7 670.4 440.5 655.8 441.2 642.0 442.6 632.6 415.6 634.5 323.6 636.0 320.7 648.0 320.6 680.6 319.9 682.5Z' },
+    { id:'t06', d:'M184.0 684.0 259.4 683.0 258.1 819.9 274.4 853.0 276.0 863.4 282.1 865.1 299.5 835.3 321.3 807.2 354.6 790.4 361.1 785.5 383.7 754.5 374.8 747.6 369.6 742.3 356.2 712.6 341.7 695.9 334.6 685.8 328.8 682.4 319.9 682.5 320.6 680.6 320.7 648.0 323.6 636.0 304.2 635.9 301.3 634.9 293.6 629.7 292.4 630.3 285.5 640.3 281.7 642.0 280.0 641.3 271.6 630.1 263.2 636.6 215.8 637.7 211.5 645.5 188.9 672.9 184.0 684.0Z' },
+    { id:'t07', d:'M85.7 760.7 143.2 826.1 166.9 859.6 174.5 866.9 181.8 870.5 186.0 871.6 195.4 871.2 198.0 870.0 214.4 853.8 220.4 850.6 224.1 850.0 232.6 850.8 276.0 863.4 274.4 853.0 258.1 819.9 259.4 683.0 184.0 684.0 174.1 704.8 168.1 715.2 165.8 717.6 102.0 751.1 85.7 760.7Z' },
+    { id:'t08', d:'M8.0 606.8 9.1 618.8 13.2 638.7 32.7 712.2 40.9 722.6 66.0 741.3 85.7 760.7 102.0 751.1 160.5 720.8 165.8 717.6 168.1 715.2 174.1 704.8 184.0 684.0 184.5 681.3 183.7 679.0 167.4 663.3 144.0 642.7 129.6 625.9 116.5 613.5 107.6 606.7 88.8 590.1 65.6 568.3 53.6 561.2 50.7 560.8 45.7 567.4 25.4 580.7 12.5 592.4 8.0 606.8Z' },
+    { id:'t09', d:'M50.7 560.8 53.6 561.2 65.6 568.3 88.8 590.1 107.6 606.7 116.5 613.5 129.6 625.9 144.0 642.7 182.9 677.9 184.3 680.0 184.5 682.4 188.9 672.9 205.6 653.1 214.6 640.8 222.0 623.9 228.0 599.9 229.6 597.3 232.6 595.2 222.9 595.2 234.0 578.1 240.5 562.0 189.4 541.9 186.5 539.6 182.1 533.8 181.3 535.1 180.3 534.9 173.1 544.2 115.3 506.3 113.0 503.9 103.9 502.4 112.0 519.0 109.6 522.5 84.3 506.5 63.0 502.5 62.9 508.8 53.1 555.2 50.7 560.8Z' },
+    { id:'t10', d:'M215.8 637.7 263.2 636.6 271.6 630.1 280.0 641.3 281.7 642.0 285.5 640.3 292.4 630.3 293.6 629.7 301.3 634.9 304.2 635.9 323.6 636.0 328.3 623.7 329.4 603.6 321.4 577.3 335.2 577.4 335.5 554.6 336.9 551.8 336.2 506.6 333.0 506.8 332.6 497.2 331.9 388.6 249.2 389.2 251.1 566.2 240.5 562.0 234.0 578.1 222.9 595.2 232.6 595.2 229.6 597.3 228.0 599.9 222.0 623.9 215.8 637.7Z' },
+    { id:'t11', d:'M321.4 577.3 329.4 603.6 328.3 623.7 323.6 636.0 415.6 634.5 442.6 632.6 445.6 622.4 452.0 608.3 458.1 598.3 467.6 587.2 471.7 581.0 473.6 574.7 474.0 569.5 472.1 559.8 449.9 520.2 445.5 510.6 444.8 500.4 446.1 492.6 448.0 487.6 452.8 480.4 462.7 472.6 461.3 461.9 459.6 456.1 441.0 407.8 432.1 387.3 331.9 388.6 332.6 497.2 333.0 506.8 336.2 506.6 336.9 551.8 335.5 554.6 335.2 577.4 321.4 577.3Z' },
+    { id:'t12', d:'M36.9 455.1 37.8 463.5 41.1 471.7 57.8 489.3 60.9 494.8 63.0 502.5 84.3 506.5 109.6 522.5 112.0 519.0 103.9 502.4 113.0 503.9 115.3 506.3 173.1 544.2 180.3 534.9 181.3 535.1 182.1 533.8 186.5 539.6 189.4 541.9 251.1 566.2 249.2 389.2 167.6 389.4 47.4 388.2 36.9 455.1Z' },
+    { id:'t13', d:'M47.4 388.2 167.6 389.4 249.2 389.2 248.5 292.6 209.2 292.2 202.0 290.7 136.8 289.2 138.4 274.0 123.1 273.8 123.4 239.2 114.2 239.2 111.0 238.3 95.3 228.7 75.1 219.4 70.5 243.8 47.4 388.2Z' },
+    { id:'t14', d:'M247.2 212.5 248.0 231.2 249.2 389.2 432.1 387.3 426.8 372.8 526.2 305.9 531.4 298.5 522.6 294.1 498.7 284.7 365.4 233.6 247.3 189.9 247.2 212.5Z' },
+    { id:'t15', d:'M75.1 219.4 95.3 228.7 111.0 238.3 114.2 239.2 123.4 239.2 123.1 273.8 138.4 274.0 136.8 289.2 202.0 290.7 209.2 292.2 248.5 292.6 247.3 189.9 210.9 175.1 167.8 159.4 144.7 148.5 134.3 140.8 125.5 132.3 95.6 95.0 90.7 120.0 91.0 126.7 87.4 138.1 85.1 157.6 75.1 219.4Z' }
+  ];
+  const ANCH = {
+    t01:{ lx:-14, ly:38, anchor:'end', lead:'245,140 245,44 -8,44' },
+    t02:{ lx:545, ly:206, anchor:'start', lead:'545,215 652,215' },
+    t03:{ lx:528, ly:392, anchor:'start', lead:'528,400 652,400' },
+    't04':{ lx:505, ly:592, anchor:'start', lead:'497,594 652,594' },
+    't05':{ lx:410, ly:712, anchor:'start', lead:'408,714 600,772 652,772' },
+    't06':{ lx:300, ly:742, anchor:'end', lead:'293,730 120,762 -8,762' },
+    t07:{ lx:190, ly:774 }, 't08':{ lx:88, ly:658, anchor:'end', lead:'86,664 -8,664' },
+    't09':{ lx:152, ly:580, anchor:'end', lead:'149,581 40,590 -8,590' },
+    't10':{ lx:290, ly:512, anchor:'end', lead:'287,518 -8,518' },
+    t11:{ lx:398, ly:520 }, t12:{ lx:156, ly:456 },
+    't13':{ lx:148, ly:322 }, 't14':{ lx:358, ly:300 }, t15:{ lx:165, ly:212 }
+  };
+  const CODE = { t01:'T01', t02:'T02', t03:'T03', 't04':'T04', 't05':'T05',
+    't06':'T06', t07:'T07', 't08':'T08', 't09':'T09', 't10':'T10',
+    t11:'T11', t12:'T12', 't13':'T13', 't14':'T14', t15:'T15' };
+  const MAPC = ['#DCE8F3', '#B4CDE4', '#7FAAD1', '#2A6FB0', '#17456F'];
+  const BANDC = ['#DCE8F3', '#9FC0DC', '#4A85BC', '#17456F'];
+  const VBX = -210, VBY = -14, VBW = 1080, VBH = 912;
+
+  const TERR = [
+    ['t01', 6800, 1, 71, 74, 62, 14.2], ['t02', 9200, 2, 88, 91, 84, 6.1],
+    ['t03', 8100, 2, 84, 86, 79, 7.4], ['t04', 12400, 3, 58, 63, 51, 18.6],
+    ['t05', 10900, 2, 62, 68, 57, 16.3], ['t06', 14600, 3, 54, 59, 48, 21.1],
+    ['t07', 12100, 3, 61, 66, 55, 17.4], ['t08', 7400, 2, 73, 78, 69, 11.2],
+    ['t09', 8600, 2, 69, 74, 64, 12.8], ['t10', 9800, 2, 77, 81, 72, 9.6],
+    ['t11', 11200, 2, 80, 84, 75, 8.5], ['t12', 10400, 2, 75, 79, 70, 10.4],
+    ['t13', 9100, 2, 82, 85, 77, 7.9], ['t14', 7900, 1, 90, 93, 86, 5.4],
+    ['t15', 8300, 2, 86, 88, 81, 6.8]
+  ];
+  const BANDS = [
+    { max:4.99, name:'Regular', val:6700 }, { max:6.99, name:'Suficiente', val:10100 },
+    { max:8.49, name:'Bom', val:13400 }, { max:99, name:'Ótimo', val:16800 }
+  ];
+  const METAS = [
+    { key:'vin', name:'Cadastro e vínculo', meta:'85%', unit:'%', goal:85, inv:false },
+    { key:'vac', name:'Vacinação infantil', meta:'95%', unit:'%', goal:95, inv:false },
+    { key:'pre', name:'Pré-natal (6 consultas · sífilis/HIV)', meta:'80%', unit:'%', goal:80, inv:false },
+    { key:'ics', name:'Internações sensíveis à APS', meta:'≤ 8,0', unit:'/1.000', goal:8, inv:true }
+  ];
+  const mBrks = [69.9, 84.9, 94.9, 99.9];
+  const pctMeta = (v, m) => Math.min(120, m.inv ? m.goal / v * 100 : v / m.goal * 100);
+
+  const terr = TERR.map(t => {
+    const [id, pop, eq, vin, vac, pre, ics] = t;
+    const score = +(0.35 * vin / 10 + 0.25 * vac / 10 + 0.25 * pre / 10 + 0.15 * Math.max(0, (25 - ics) / 25 * 10)).toFixed(1);
+    const bi = BANDS.findIndex(b => score <= b.max);
+    return { id, code: CODE[id], pop, eq, vin, vac, pre, ics, score, bi, band: BANDS[bi].name, val: BANDS[bi].val,
+      d: BAIRROS.find(b => b.id === id).d };
+  });
+  const byId = {}; terr.forEach(t => byId[t.id] = t);
+
+  let un = 0; const ubs = [];
+  terr.forEach(t => {
+    const n = Math.ceil(t.eq / 2);
+    for (let i = 0; i < n; i++) {
+      un++;
+      const dd = n > 1 ? (i === 0 ? 2.4 : -2.4) : 0;
+      ubs.push({
+        code: 'UBS ' + String(un).padStart(2, '0'), terr: t.code,
+        eq: i === 0 ? Math.ceil(t.eq / n) : t.eq - Math.ceil(t.eq / n),
+        vin: Math.round(t.vin + dd), vac: Math.round(t.vac + dd * 1.1),
+        pre: Math.round(t.pre + dd * 1.4), ics: +(t.ics - dd * 0.6).toFixed(1)
+      });
+    }
+  });
+
+  const eqTot = terr.reduce((s, t) => s + t.eq, 0);
+  const popTot = terr.reduce((s, t) => s + t.pop, 0);
+  const capt = terr.reduce((s, t) => s + t.eq * t.val, 0);
+  const potenc = eqTot * 16800;
+  const money = {
+    eq: eqTot, pop: brl(popTot), ubs: ubs.length,
+    capt: brl(capt), pot: brl(potenc), gap: brl(potenc - capt), gapAno: brl((potenc - capt) * 12),
+    pct: Math.round(capt / potenc * 100) + '%'
+  };
+  const ladder = BANDS.map((b, i) => {
+    const rows = terr.filter(t => t.bi === i);
+    const eq = rows.reduce((s, t) => s + t.eq, 0);
+    return {
+      name: b.name, val: 'R$ ' + brl(b.val), eq: eq + (eq === 1 ? ' equipe' : ' equipes'),
+      codes: rows.map(t => t.code).join(' · ') || '—',
+      sw: 'background:' + BANDC[i],
+      bw: 'width:' + (eq / eqTot * 100).toFixed(1) + '%;background:' + BANDC[i],
+      share: Math.round(eq / eqTot * 100) + '%',
+      faixa: i === 0 ? 'até 4,9' : i === 1 ? '5,0 – 6,9' : i === 2 ? '7,0 – 8,4' : '8,5 – 10,0'
+    };
+  }).reverse();
+  const legScore = [
+    { sw:'background:' + BANDC[3], label:'Ótimo · 8,5–10,0', val:'R$ 16.800' },
+    { sw:'background:' + BANDC[2], label:'Bom · 7,0–8,4', val:'R$ 13.400' },
+    { sw:'background:' + BANDC[1], label:'Suficiente · 5,0–6,9', val:'R$ 10.100' },
+    { sw:'background:' + BANDC[0], label:'Regular · até 4,9', val:'R$ 6.700' }
+  ];
+
+  /* rótulos e leaders do mapa (largura de referência 530px) */
+  const W = 530, k = W / VBW;
+  const labels = BAIRROS.map(b => {
+    const a = ANCH[b.id], t = byId[b.id];
+    const anch = a.anchor || 'middle';
+    const shift = anch === 'end' ? '-100%' : anch === 'start' ? '0%' : '-50%';
+    return {
+      id: b.id, name: CODE[b.id], val: d1(t.score),
+      st: 'left:' + ((a.lx - VBX) / VBW * 100).toFixed(2) + '%;'
+        + 'top:' + ((a.ly + 11 - VBY) / VBH * 100).toFixed(2) + '%;'
+        + 'transform:translate(' + shift + ',-50%);'
+        + 'text-align:' + (anch === 'end' ? 'right' : anch === 'start' ? 'left' : 'center') + ';'
+        + 'color:' + ((t.bi >= 2 && !a.lead) ? '#FFFFFF' : '#16232E') + ';'
+        + 'font-size:' + Math.max(9.5, 21 * k).toFixed(1) + 'px'
+    };
+  });
+  const leaders = BAIRROS.filter(b => ANCH[b.id].lead).map(b => {
+    const p = ANCH[b.id].lead.split(' ')[0].split(',');
+    return { pts: ANCH[b.id].lead, cx: p[0], cy: p[1] };
+  });
+
+  /* amostragem geométrica: pontos internos com folga, para as microáreas */
+  let geo = null;
+  function sampleGeo(host, tries) {
+    setTimeout(() => {
+      const ps = [...host.querySelectorAll('#hovmap path[data-t]')];
+      if (!ps.length || !ps[0].getBBox().width) { if (tries < 40) sampleGeo(host, tries + 1); return; }
+      const out = {};
+      const DIRS = [[1,0],[0,1],[-1,0],[0,-1],[.71,.71],[-.71,.71],[.71,-.71],[-.71,-.71]];
+      ps.forEach(p => {
+        const svg = p.ownerSVGElement, bb = p.getBBox(), inside = [];
+        const q = svg.createSVGPoint();
+        const hit = (x, y) => { q.x = x; q.y = y; return p.isPointInFill(q); };
+        for (let x = bb.x + 4; x < bb.x + bb.width; x += 8)
+          for (let y = bb.y + 4; y < bb.y + bb.height; y += 8) {
+            if (!hit(x, y)) continue;
+            let clr = 0;
+            for (let t = 4; t <= 40; t += 4) {
+              let ok = true;
+              for (let i = 0; i < 8; i++) if (!hit(x + DIRS[i][0] * t, y + DIRS[i][1] * t)) { ok = false; break; }
+              if (!ok) break;
+              clr = t;
+            }
+            inside.push([x, y, clr]);
+          }
+        out[p.dataset.t] = { pts: inside, bb: [bb.x, bb.y, bb.width, bb.height] };
+      });
+      geo = out;
+      if (state.active) paintDetail();
+    }, tries ? 120 : 0);
+  }
+
+  const pickSpread = (arr, n) => {
+    if (!arr || !arr.length) return [];
+    const cx = arr.reduce((s, p) => s + p[0], 0) / arr.length, cy = arr.reduce((s, p) => s + p[1], 0) / arr.length;
+    let seedP = arr[0], sd = Infinity;
+    arr.forEach(p => { const d = (p[0] - cx) ** 2 + (p[1] - cy) ** 2; if (d < sd) { sd = d; seedP = p; } });
+    const out = [seedP];
+    while (out.length < n && out.length < arr.length) {
+      let best = null, bd = -1;
+      arr.forEach(p => {
+        let d = Infinity;
+        out.forEach(o => { const dd = (o[0] - p[0]) ** 2 + (o[1] - p[1]) ** 2; if (dd < d) d = dd; });
+        if (d > bd) { bd = d; best = p; }
+      });
+      out.push(best);
+    }
+    return out;
+  };
+
+  function detailOf(id) {
+    const t = byId[id], us = ubs.filter(u => u.terr === t.code);
+    const nA = Math.min(8, Math.max(4, t.eq * 2));
+    const g = geo && geo[id];
+    let cand = (g && g.pts) || [];
+    const roomy = cand.filter(p => p[2] >= 8);
+    if (roomy.length >= nA) cand = roomy;
+    else cand = cand.slice().sort((a, b) => b[2] - a[2]).slice(0, Math.max(nA, Math.ceil(cand.length * 0.35)));
+    const pts = pickSpread(cand, nA);
+    const cadTot = Math.round(t.pop * (100 - t.vin) / 100 * 0.18);
+    const vacTot = Math.round(t.pop * 0.014 * (100 - t.vac) / 100);
+    const preTot = Math.round(t.pop * 0.011 * (100 - t.pre) / 100);
+    const w = pts.map((_, i) => 1 + 0.32 * Math.sin(i * 2.3 + t.score));
+    const ws = w.reduce((s, x) => s + x, 0) || 1;
+    const cads = w.map(x => Math.round(cadTot * x / ws));
+    const maxCad = Math.max(1, ...cads);
+    const bb = g ? g.bb : [0, 0, 640, 880];
+    const side = Math.max(bb[2], bb[3]) * 1.12;
+    const vb = [bb[0] + bb[2] / 2 - side / 2, bb[1] + bb[3] / 2 - side / 2, side, side];
+    const rBase = side * 0.062;
+    const acs = pts.map((p, i) => ({
+      name: 'ACS ' + (i + 1), idx: i + 1, cx: p[0].toFixed(1), cy: p[1].toFixed(1),
+      r: Math.max(4, Math.min(rBase * (0.62 + 0.55 * cads[i] / maxCad), (p[2] || 6) * 0.92)).toFixed(1),
+      cad: cads[i], vac: Math.round(vacTot * w[i] / ws), pre: Math.round(preTot * w[i] / ws),
+      lx: ((p[0] - vb[0]) / vb[2] * 100).toFixed(2) + '%',
+      ly: ((p[1] - vb[1]) / vb[3] * 100).toFixed(2) + '%',
+      bw: 'width:' + (cads[i] / maxCad * 100).toFixed(1) + '%;background:#2A6FB0'
+    }));
+    const cells = METAS.map(m => {
+      const raw = t[m.key], p = pctMeta(raw, m);
+      let i = mBrks.findIndex(x => p <= x); if (i < 0) i = 4;
+      return { txt: m.inv ? d1(raw) : raw + '%', st: 'background:' + MAPC[i] + ';color:' + (i >= 3 ? '#FFFFFF' : '#16232E') };
+    });
+    const next = BANDS[Math.min(3, t.bi + 1)];
+    return {
+      code: t.code, band: t.band, score: d1(t.score), pop: brl(t.pop),
+      eqTxt: t.eq + (t.eq === 1 ? ' equipe' : ' equipes'),
+      nubs: us.length, nacs: acs.length, d: t.d,
+      vb: vb.map(n => n.toFixed(1)).join(' '), cells, acs,
+      cadTot: brl(cads.reduce((s, x) => s + x, 0)), vacTot: brl(vacTot), preTot: brl(preTot),
+      valNow: 'R$ ' + brl(t.val), topo: t.bi === 3,
+      nextName: next.name,
+      falta: t.bi === 3 ? '—' : d1(+(BANDS[t.bi].max + 0.01 - t.score).toFixed(1)),
+      ganho: t.bi === 3 ? 'no teto' : 'R$ ' + brl((next.val - t.val) * t.eq) + ' / mês',
+      ganhoAno: t.bi === 3 ? 'já recebe R$ 16.800 por equipe' : 'R$ ' + brl((next.val - t.val) * t.eq * 12) + ' no ano',
+      ubsRows: us.map(u => ({ code: u.code, eq: u.eq, vin: u.vin + '%', vac: u.vac + '%', pre: u.pre + '%', ics: d1(u.ics) }))
+    };
+  }
+
+  const state = { hover: null, pin: null, active: null };
+  let panel, mapPaths, mapLabels;
+
+  const restHTML = () =>
+    '<div style="display:flex;flex-direction:column;gap:12px;height:100%;min-height:0">' +
+      '<div style="display:flex;gap:10px">' +
+        '<div style="flex:1;border:1px solid #DCD6C9;background:#FFFFFF;padding:11px 14px">' +
+          '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">RECEBIDO HOJE · MÊS</div>' +
+          '<div style="font-family:' + MONO + ';font-size:19px;color:#16232E;margin-top:4px">R$ ' + money.capt + '</div>' +
+          '<div style="font-family:' + MONO + ';font-size:9.5px;color:#4E5C68;margin-top:2px">' + money.pct + ' do teto</div>' +
+        '</div>' +
+        '<div style="flex:1;border:1px solid #DCD6C9;background:#FFFFFF;padding:11px 14px">' +
+          '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">TETO · TODAS EM ÓTIMO</div>' +
+          '<div style="font-family:' + MONO + ';font-size:19px;color:#16232E;margin-top:4px">R$ ' + money.pot + '</div>' +
+          '<div style="font-family:' + MONO + ';font-size:9.5px;color:#4E5C68;margin-top:2px">' + money.eq + ' equipes × R$ 16.800</div>' +
+        '</div>' +
+        '<div style="flex:1;border:1px solid #B0533A;background:#FFFFFF;padding:11px 14px">' +
+          '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#B0533A">DEIXADO NA MESA · MÊS</div>' +
+          '<div style="font-family:' + MONO + ';font-size:19px;color:#B0533A;margin-top:4px">R$ ' + money.gap + '</div>' +
+          '<div style="font-family:' + MONO + ';font-size:9.5px;color:#4E5C68;margin-top:2px">R$ ' + money.gapAno + ' no ano</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="border:1px solid #DCD6C9;background:#FFFFFF;padding:14px 16px 12px;flex:1;min-height:0;display:flex;flex-direction:column">' +
+        '<div style="display:flex;justify-content:space-between;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:10px"><span>ESCADA DE CLASSIFICAÇÃO · ONDE ESTÃO AS ' + money.eq + ' EQUIPES</span><span>NOTA → FAIXA → R$</span></div>' +
+        ladder.map(b =>
+          '<div style="display:grid;grid-template-columns:96px 74px 92px 62px 1fr;gap:10px;align-items:center;padding:9px 0;border-top:1px solid #EEE9DE">' +
+            '<div style="display:flex;align-items:center;gap:7px"><span style="width:14px;height:14px;' + b.sw + '"></span>' +
+              '<span style="font-family:' + MONO + ';font-size:12px;color:#16232E">' + b.name + '</span></div>' +
+            '<span style="font-family:' + MONO + ';font-size:10.5px;color:#7C8892">nota ' + b.faixa + '</span>' +
+            '<span style="font-family:' + MONO + ';font-size:12.5px;color:#2A6FB0">' + b.val + '</span>' +
+            '<span style="font-family:' + MONO + ';font-size:11px;color:#16232E">' + b.eq + '</span>' +
+            '<div><div style="height:9px;' + b.bw + '"></div>' +
+              '<div style="font-family:' + MONO + ';font-size:9.5px;color:#7C8892;margin-top:4px">' + b.share + ' das equipes · ' + b.codes + '</div></div>' +
+          '</div>').join('') +
+        '<div style="margin-top:auto;padding-top:10px;display:flex;gap:12px;align-items:baseline">' +
+          '<span style="font-family:' + MONO + ';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Como ler</span>' +
+          '<span style="font-size:12.5px;line-height:1.45;color:#16232E">Passe o mouse sobre um território para ver os quatro indicadores, as UBS que ele agrega e as microáreas com pendências.</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  const detHTML = (det) =>
+    '<div style="display:flex;flex-direction:column;gap:10px;height:100%;min-height:0">' +
+      '<div style="display:flex;align-items:baseline;gap:14px">' +
+        '<span style="flex:none;white-space:nowrap;font-family:' + MONO + ';font-size:22px;color:#0E1F2E">' + det.code + '</span>' +
+        '<span style="flex:none;white-space:nowrap;font-family:' + MONO + ';font-size:13px;color:#2A6FB0">faixa ' + det.band + ' · nota ' + det.score + '</span>' +
+        '<span style="flex:1;min-width:0;font-family:' + MONO + ';font-size:10.5px;color:#4E5C68">' + det.pop + ' pessoas · ' + det.eqTxt + ' · ' + det.nubs + ' UBS · ' + det.nacs + ' microáreas</span>' +
+        '<span style="flex:none;white-space:nowrap;margin-left:auto;font-family:' + MONO + ';font-size:9.5px;color:#7C8892">' + det.valNow + ' / equipe · mês</span>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
+        METAS.map(m => '<div style="font-family:' + MONO + ';font-size:9px;color:#16232E;line-height:1.25">' + m.name + '<span style="display:block;color:#7C8892">meta ' + m.meta + ' · ' + m.unit + '</span></div>').join('') +
+        det.cells.map(c => '<div style="height:30px;display:flex;align-items:center;justify-content:center;font-family:' + MONO + ';font-size:15px;border-radius:2px;' + c.st + '">' + c.txt + '</div>').join('') +
+      '</div>' +
+      '<div style="border:1px solid #DCD6C9;background:#FFFFFF;padding:9px 12px">' +
+        '<div style="display:grid;grid-template-columns:70px 34px 1fr 1fr 1fr 1fr;gap:8px;font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892;padding-bottom:4px"><span>UBS</span><span>EQ.</span><span>VÍNCULO</span><span>VACINA</span><span>PRÉ-NATAL</span><span>ICSAB</span></div>' +
+        det.ubsRows.map(u =>
+          '<div style="display:grid;grid-template-columns:70px 34px 1fr 1fr 1fr 1fr;gap:8px;border-top:1px solid #EEE9DE;padding:4px 0;font-family:' + MONO + ';font-size:11px;color:#16232E">' +
+            '<span>' + u.code + '</span><span style="color:#4E5C68">' + u.eq + '</span><span>' + u.vin + '</span><span>' + u.vac + '</span><span>' + u.pre + '</span><span>' + u.ics + '</span>' +
+          '</div>').join('') +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:212px 1fr;gap:14px;flex:1;min-height:0">' +
+        '<div style="display:flex;flex-direction:column;min-width:0">' +
+          '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892;margin-bottom:3px">MICROÁREAS · N.º = AGENTE · ABAIXO = CADASTROS A ATUALIZAR</div>' +
+          '<div style="position:relative;width:212px;height:212px">' +
+            '<svg viewBox="' + det.vb + '" preserveAspectRatio="xMidYMid meet" style="width:212px;height:212px;display:block">' +
+              '<path d="' + det.d + '" fill="#DCE8F3" stroke="#123A5C" stroke-width="2"></path>' +
+              det.acs.map(a => '<circle cx="' + a.cx + '" cy="' + a.cy + '" r="' + a.r + '" fill="#2A6FB0" fill-opacity="0.26" stroke="#2A6FB0" stroke-width="1.4"></circle>').join('') +
+            '</svg>' +
+            det.acs.map(a =>
+              '<div style="position:absolute;transform:translate(-50%,-50%);text-align:center;font-family:' + MONO + ';line-height:1.05;pointer-events:none;left:' + a.lx + ';top:' + a.ly + '">' +
+                '<div style="font-size:11px;color:#0E1F2E">' + a.idx + '</div>' +
+                '<div style="font-size:8.5px;color:#B0533A">' + a.cad + '</div>' +
+              '</div>').join('') +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;min-width:0">' +
+          '<div style="display:grid;grid-template-columns:46px 1fr 54px 54px 54px;gap:6px;font-family:' + MONO + ';font-size:8.5px;letter-spacing:.08em;color:#7C8892;padding-bottom:3px"><span>AGENTE</span><span>CADASTROS A ATUALIZAR</span><span style="text-align:right">CADAST.</span><span style="text-align:right">VACINA</span><span style="text-align:right">GESTAN.</span></div>' +
+          det.acs.map(a =>
+            '<div style="display:grid;grid-template-columns:46px 1fr 54px 54px 54px;gap:6px;align-items:center;border-top:1px solid #EEE9DE;padding:3px 0;font-family:' + MONO + ';font-size:10.5px;color:#16232E">' +
+              '<span>' + a.name + '</span><div style="height:9px;border-radius:2px;' + a.bw + '"></div>' +
+              '<span style="text-align:right">' + a.cad + '</span><span style="text-align:right">' + a.vac + '</span><span style="text-align:right">' + a.pre + '</span>' +
+            '</div>').join('') +
+          '<div style="display:grid;grid-template-columns:46px 1fr 54px 54px 54px;gap:6px;border-top:1px solid #0E1F2E;padding-top:4px;margin-top:2px;font-family:' + MONO + ';font-size:10.5px;color:#0E1F2E">' +
+            '<span>total</span><span style="font-size:9px;color:#7C8892">lista nominal fica no prontuário</span>' +
+            '<span style="text-align:right">' + det.cadTot + '</span><span style="text-align:right">' + det.vacTot + '</span><span style="text-align:right">' + det.preTot + '</span>' +
+          '</div>' +
+          '<div style="margin-top:auto;padding-top:8px;border-top:1px solid #DCD6C9">' +
+            (det.topo
+              ? '<div style="display:flex;align-items:baseline;gap:12px">' +
+                  '<span style="font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#2A6FB0;white-space:nowrap">NO TETO DO COFINANCIAMENTO</span>' +
+                  '<span style="flex:none;white-space:nowrap;font-family:' + MONO + ';font-size:14px;color:#2A6FB0">R$ 16.800 / equipe · mês</span>' +
+                  '<span style="flex:1;min-width:0;font-family:' + MONO + ';font-size:9.5px;color:#4E5C68">manter a faixa é o objetivo aqui</span></div>'
+              : '<div style="display:flex;align-items:baseline;gap:12px">' +
+                  '<span style="font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#B0533A;white-space:nowrap">SUBIR PARA ' + det.nextName + '</span>' +
+                  '<span style="flex:none;white-space:nowrap;font-family:' + MONO + ';font-size:14px;color:#B0533A">' + det.ganho + '</span>' +
+                  '<span style="flex:1;min-width:0;font-family:' + MONO + ';font-size:9.5px;color:#4E5C68">falta ' + det.falta + ' ponto · ' + det.ganhoAno + '</span></div>') +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  function paintDetail() {
+    const id = state.pin || state.hover;
+    state.active = id;
+    panel.innerHTML = id ? detHTML(detailOf(id)) : restHTML();
+    mapPaths.forEach(p => {
+      const on = p.dataset.t === id;
+      p.setAttribute('stroke', on ? '#B0533A' : '#FBFAF7');
+      p.setAttribute('stroke-width', on ? 3.2 : 2.2);
+    });
+    mapLabels.forEach(l => { l.style.fontWeight = (l.dataset.t === id) ? '600' : '400'; });
+  }
+
+  function render(host) {
+    host.innerHTML =
+    '<div style="width:1180px;height:720px;background:#FBFAF7;padding:28px 40px 22px;display:flex;flex-direction:column;overflow:hidden">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
+        '<div>' +
+          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7C8892;margin-bottom:6px">Caso 02 · rede municipal · atenção primária</div>' +
+          '<h2 style="font-family:Spectral,serif;font-weight:500;font-size:26px;line-height:1.05;color:#0E1F2E;margin:0">A nota vira repasse</h2>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="display:inline-block;border:1px solid #B0533A;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Município demonstrativo · dados fictícios</div>' +
+          '<div style="font-family:' + MONO + ';font-size:10.5px;color:#4E5C68;margin-top:8px">' + money.pop + ' pessoas · ' + money.eq + ' equipes · ' + money.ubs + ' UBS</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="height:1px;background:#0E1F2E;opacity:.85;margin:14px 0 0"></div>' +
+      '<div style="display:grid;grid-template-columns:500px 1fr;gap:28px;flex:1;min-height:0;padding-top:14px">' +
+        '<div style="display:flex;flex-direction:column;min-width:0">' +
+          '<div style="display:flex;justify-content:space-between;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:2px"><span>NOTA DE QUALIDADE POR TERRITÓRIO · QUADRIMESTRE</span><span>PASSE O MOUSE · CLIQUE FIXA</span></div>' +
+          '<div style="position:relative;width:100%">' +
+            '<svg id="hovmap" viewBox="-210 -14 1080 912" style="width:100%;display:block">' +
+              BAIRROS.map(b => '<path data-t="' + b.id + '" d="' + b.d + '" fill="' + BANDC[byId[b.id].bi] + '" stroke="#FBFAF7" stroke-width="2.2" style="cursor:pointer"></path>').join('') +
+              leaders.map(l => '<g><polyline points="' + l.pts + '" fill="none" stroke="#7C8892" stroke-width="1.4"></polyline><circle cx="' + l.cx + '" cy="' + l.cy + '" r="4" fill="#7C8892"></circle></g>').join('') +
+            '</svg>' +
+            labels.map(t =>
+              '<div class="c2lab" data-t="' + t.id + '" style="position:absolute;font-family:' + MONO + ';line-height:1.2;white-space:nowrap;pointer-events:none;' + t.st + '">' +
+                '<div>' + t.name + '</div><div>' + t.val + '</div></div>').join('') +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:3px;margin-top:8px">' +
+            legScore.map(s =>
+              '<div style="display:flex;align-items:center;gap:8px;font-family:' + MONO + ';font-size:10px;color:#16232E">' +
+                '<span style="width:24px;height:11px;' + s.sw + '"></span><span style="flex:1">' + s.label + '</span>' +
+                '<span style="color:#2A6FB0">' + s.val + '</span><span style="color:#7C8892">/ equipe · mês</span></div>').join('') +
+          '</div>' +
+        '</div>' +
+        '<div id="c2panel" style="display:flex;flex-direction:column;min-width:0;border-left:1px solid #DCD6C9;padding-left:24px"></div>' +
+      '</div>' +
+      '<div style="margin-top:10px;padding-top:9px;border-top:1px solid #DCD6C9;display:flex;justify-content:space-between;gap:28px;font-family:' + MONO + ';font-size:9.5px;color:#7C8892">' +
+        '<span>Estado de repouso mostra a cidade; o detalhe só aparece sob demanda, sem tirar o mapa da tela.</span>' +
+        '<span>Território, UBS e valores fictícios; nada corresponde a município, unidade ou pessoa real.</span>' +
+      '</div>' +
+    '</div>';
+
+    panel = host.querySelector('#c2panel');
+    mapPaths = [...host.querySelectorAll('#hovmap path[data-t]')];
+    mapLabels = [...host.querySelectorAll('.c2lab')];
+    mapPaths.forEach(p => {
+      const id = p.dataset.t;
+      p.addEventListener('mouseenter', () => { if (!geo) sampleGeo(host, 0); if (!state.pin) { state.hover = id; paintDetail(); } });
+      p.addEventListener('mouseleave', () => { if (!state.pin) { state.hover = null; paintDetail(); } });
+      p.addEventListener('click', () => { state.pin = state.pin === id ? null : id; state.hover = id; paintDetail(); });
+    });
+    paintDetail();
+    sampleGeo(host, 0);
+  }
+  return { render };
+})();
+
+/* ===================================================================
+   CASO 03 · ambulatório · lista + dossiê
+   =================================================================== */
+const C3 = (() => {
+  let sd = 33771;
+  const rnd = () => ((sd = (sd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+
+  const DX = [
+    { dx:'Diabetes tipo 2', ex:'Hemoglobina glicada', un:'%', ref:'meta < 7,0', lo:6.2, hi:10.4, d:1, cut:7, bad:'hi', med:'Metformina 850 mg' },
+    { dx:'Hipertensão', ex:'PA sistólica', un:'mmHg', ref:'meta < 140', lo:116, hi:172, d:0, cut:140, bad:'hi', med:'Enalapril 20 mg' },
+    { dx:'Doença renal crônica', ex:'Creatinina', un:'mg/dL', ref:'ref 0,6–1,1', lo:0.8, hi:2.6, d:2, cut:1.1, bad:'hi', med:'Losartana 50 mg' },
+    { dx:'Insuficiência cardíaca', ex:'Peso', un:'kg', ref:'variação < 2 kg/sem', lo:61, hi:99, d:0, cut:90, bad:'hi', med:'Furosemida 40 mg' },
+    { dx:'DPOC', ex:'Saturação', un:'%', ref:'ref ≥ 94', lo:87, hi:98, d:0, cut:94, bad:'lo', med:'Formoterol inalatório' },
+    { dx:'Depressão maior', ex:'Escala de humor', un:'pontos', ref:'remissão ≤ 4', lo:2, hi:21, d:0, cut:10, bad:'hi', med:'Sertralina 100 mg' },
+    { dx:'Epilepsia', ex:'Crises', un:'por mês', ref:'meta 0', lo:0, hi:6, d:0, cut:1, bad:'hi', med:'Carbamazepina 600 mg' },
+    { dx:'Artrite reumatoide', ex:'PCR', un:'mg/L', ref:'ref < 5', lo:1.5, hi:29, d:1, cut:5, bad:'hi', med:'Metotrexato 15 mg' },
+    { dx:'Hipotireoidismo', ex:'TSH', un:'mUI/L', ref:'ref 0,4–4,0', lo:0.6, hi:9.8, d:1, cut:4, bad:'hi', med:'Levotiroxina 75 mcg' },
+    { dx:'Doença falciforme', ex:'Ferritina', un:'ng/mL', ref:'meta < 1.000', lo:320, hi:2900, d:0, cut:1000, bad:'hi', med:'Hidroxiureia 1 g' }
+  ];
+  const ADD = ['Obesidade', 'Dislipidemia', 'Tabagismo', 'Osteoartrose', 'Anemia ferropriva', 'Transtorno de ansiedade', 'Refluxo', 'Enxaqueca'];
+
+  const mk = i => {
+    const D = DX[Math.floor(rnd() * DX.length)];
+    const nAdd = Math.floor(rnd() * 2.4);
+    const adds = [];
+    while (adds.length < nAdd) { const a = ADD[Math.floor(rnd() * ADD.length)]; if (!adds.includes(a)) adds.push(a); }
+    const s = [];
+    let v = D.lo + rnd() * (D.hi - D.lo);
+    for (let j = 0; j < 8; j++) { v += (rnd() - 0.5) * (D.hi - D.lo) * 0.3; v = Math.max(D.lo, Math.min(D.hi, v)); s.push(v); }
+    const last = s[7];
+    const fora = D.bad === 'hi' ? last > D.cut : last < D.cut;
+    const gap = rnd() < 0.22 ? 6 + Math.floor(rnd() * 5) : Math.floor(rnd() * 4);
+    const alta = rnd() < 0.16;
+    const st = gap >= 6 ? { lab:'sem contato há ' + gap + ' meses', col:'#7C8892', act:'busca ativa' }
+      : alta ? { lab:'alta hospitalar recente', col:'#C79A16', act:'consulta em 7 dias' }
+        : fora ? { lab:D.ex.toLowerCase() + ' fora da meta', col:'#D2694A', act:'revisar conduta' }
+          : { lab:'em meta', col:'#2FA38C', act:'manter plano' };
+    const cons = [];
+    for (let m = 1; m < 24; m += 2 + Math.floor(rnd() * 3)) cons.push(m);
+    const inter = rnd() < 0.45 ? [{ a: 3 + Math.floor(rnd() * 15), len: 3 + Math.floor(rnd() * 9) }] : [];
+    const swm = 8 + Math.floor(rnd() * 9);
+    const meds = [
+      { a:0, b:swm, name:D.med },
+      { a:swm, b:24, name: rnd() < 0.5 ? D.med + ' · dose ajustada' : DX[Math.floor(rnd() * DX.length)].med }
+    ];
+    const labs = [
+      { n:D.ex, v:num(last, D.d), u:D.un, r:D.ref, ok:!fora },
+      { n:'Creatinina', v:num(0.7 + rnd() * 1.1, 2), u:'mg/dL', r:'ref 0,6–1,1', ok:rnd() > .4 },
+      { n:'Hemoglobina', v:num(10.4 + rnd() * 4, 1), u:'g/dL', r:'ref 12,0–16,0', ok:rnd() > .4 },
+      { n:'Potássio', v:num(3.4 + rnd() * 1.6, 1), u:'mEq/L', r:'ref 3,5–5,1', ok:rnd() > .3 }
+    ].map(l => ({ ...l, stLab: l.ok ? 'na faixa' : 'fora da faixa', stCol: l.ok ? '#2FA38C' : '#D2694A' }));
+    return {
+      i, D, s, last, fora, st, cons, inter, meds, labs,
+      code: 'PT-' + (2100 + i * 137 + Math.floor(rnd() * 60)),
+      idade: 26 + Math.floor(rnd() * 52), sexo: rnd() < .5 ? 'F' : 'M',
+      dxTxt: [D.dx].concat(adds).join(' · '),
+      nDx: 1 + adds.length,
+      regs: 120 + Math.floor(rnd() * 380)
+    };
+  };
+  const PATS = []; for (let i = 0; i < 14; i++) PATS.push(mk(i));
+
+  const plSum = [
+    { lab:'em meta', col:'#2FA38C' }, { lab:'medida fora da meta', col:'#D2694A' },
+    { lab:'alta hospitalar recente', col:'#C79A16' }, { lab:'sem contato há 6 meses ou mais', col:'#7C8892' }
+  ].map(r => {
+    const n = PATS.filter(p => p.st.col === r.col).length;
+    return { ...r, n, sw:'width:13px;height:13px;background:' + r.col, bw:'height:8px;width:' + f1(n / 14 * 100) + '%;background:' + r.col };
+  });
+
+  const FONTES = [
+    { n:'Prontuário eletrônico', d:'consultas, diagnósticos, evoluções', q:'4.180 registros' },
+    { n:'Laboratório', d:'resultados com unidade e faixa', q:'1.964 resultados' },
+    { n:'Farmácia', d:'dispensação e trocas de esquema', q:'873 dispensações' },
+    { n:'Regulação e internação', d:'altas, encaminhamentos, leitos', q:'221 episódios' }
+  ];
+
+  const DX0 = 100, DX1 = 508;
+  const dxm = m => f1(DX0 + m * (DX1 - DX0) / 24);
+
+  function dossier(p) {
+    const D = p.D, rg = (D.hi - D.lo) || 1;
+    const ey = v => f1(88 - (v - D.lo) / rg * 70);
+    const cutY = ey(Math.max(D.lo, Math.min(D.hi, D.cut)));
+    const meds = p.meds.map(m => ({ x: dxm(m.a), w: f1(dxm(m.b) - dxm(m.a)), tx: f1(dxm(m.a) + 7), name: m.name }));
+    const inter = p.inter.map(v => ({ x: dxm(v.a), w: f1(dxm(v.a + v.len / 4.3) - dxm(v.a)), lab:'internação · ' + v.len + ' dias', tx: f1(dxm(v.a) + 4) }));
+    const lastX = f1(dxm(24) - 2), lastY = f1(ey(p.last) - 8), lastV = num(p.last, D.d);
+    const lbls = [
+      lb(0, 20, 'MEDIDA-CHAVE', 9.5, '#16232E', 'start'),
+      lb(0, 33, D.ex + ' · ' + D.un, 9, '#7C8892', 'start'),
+      lb(0, 45, D.ref, 9, '#7C8892', 'start'),
+      lb(lastX, lastY, lastV, 11, '#123A5C', 'end')
+    ].concat(
+      meds.map(m => lb(m.tx, 126, m.name, 9.5, '#123A5C', 'start')),
+      inter.map(v => lb(v.tx, 166, v.lab, 9, '#B0533A', 'start')),
+      [0, 6, 12, 18, 24].map(m => lb(dxm(m), 204, String(m), 9.5, '#4E5C68', 'middle'))
+    ).join('');
+    return { p, D, ey, cutY, meds, inter, lbls,
+      bandY: D.bad === 'hi' ? 14 : cutY, bandH: D.bad === 'hi' ? f1(cutY - 14) : f1(90 - cutY),
+      pts: p.s.map((v, j) => dxm(j * 24 / 7) + ',' + ey(v)).join(' '),
+      dots: p.s.map((v, j) => ({ x: dxm(j * 24 / 7), y: ey(v) })) };
+  }
+
+  const restHTML = () =>
+    '<div style="display:flex;flex-direction:column;height:100%;min-height:0">' +
+      '<div style="font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:10px">O QUE ENTRA NA FIGURA · QUATRO FONTES, UMA LINHA DO TEMPO</div>' +
+      FONTES.map(f =>
+        '<div style="display:grid;grid-template-columns:190px 1fr 128px;gap:12px;align-items:baseline;padding:11px 0;border-top:1px solid #EEE9DE">' +
+          '<span style="font-family:' + MONO + ';font-size:12px;color:#0E1F2E">' + f.n + '</span>' +
+          '<span style="font-size:12px;color:#4E5C68">' + f.d + '</span>' +
+          '<span style="font-family:' + MONO + ';font-size:11px;color:#2A6FB0;text-align:right">' + f.q + '</span>' +
+        '</div>').join('') +
+      '<div style="margin-top:22px;font-family:' + MONO + ';font-size:9px;letter-spacing:.1em;color:#7C8892;margin-bottom:8px">COMO OS 14 SE DISTRIBUEM</div>' +
+      plSum.map(s =>
+        '<div style="display:grid;grid-template-columns:210px 34px 1fr;gap:10px;align-items:center;padding:7px 0;border-top:1px solid #EEE9DE">' +
+          '<span style="font-size:12px;color:#16232E">' + s.lab + '</span>' +
+          '<span style="font-family:' + MONO + ';font-size:12px;color:#123A5C">' + s.n + '</span>' +
+          '<span style="' + s.bw + '"></span>' +
+        '</div>').join('') +
+      '<div style="margin-top:auto;padding-top:12px;display:flex;gap:12px;align-items:baseline">' +
+        '<span style="font-family:' + MONO + ';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Como ler</span>' +
+        '<span style="font-size:12.5px;line-height:1.45;color:#16232E">Passe o cursor sobre um paciente da lista: este painel vira a história clínica dele — medida-chave contra a faixa de referência, medicação, contatos e exames.</span>' +
+      '</div>' +
+    '</div>';
+
+  const detHTML = (dd) => {
+    const p = dd.p, D = dd.D;
+    return '<div style="display:flex;flex-direction:column;height:100%;min-height:0">' +
+      '<div style="display:flex;align-items:baseline;gap:14px">' +
+        '<span style="flex:none;white-space:nowrap;font-family:' + MONO + ';font-size:20px;color:#0E1F2E">' + p.code + '</span>' +
+        '<span style="flex:1;min-width:0;font-family:' + MONO + ';font-size:10.5px;color:#4E5C68">' + p.idade + ' anos · ' + p.sexo + ' · ' + p.regs + ' registros · 4 fontes</span>' +
+        '<span style="flex:none;margin-left:auto;display:flex;align-items:center;gap:6px;font-family:' + MONO + ';font-size:10px;color:#16232E"><span style="flex:none;width:11px;height:11px;background:' + p.st.col + '"></span>' + p.st.lab + '</span>' +
+      '</div>' +
+      '<div style="margin-top:8px;padding:8px 0;border-top:1px solid #EEE9DE;border-bottom:1px solid #EEE9DE">' +
+        '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">' + p.nDx + (p.nDx === 1 ? ' diagnóstico ativo' : ' diagnósticos ativos') + '</div>' +
+        '<div style="font-size:13px;color:#16232E;margin-top:3px">' + p.dxTxt + '</div>' +
+      '</div>' +
+      '<div style="position:relative;width:527px;margin-top:8px">' +
+        '<svg viewBox="0 0 527 214" style="width:527px;display:block">' +
+          '<rect x="100" y="' + dd.bandY + '" width="408" height="' + dd.bandH + '" fill="#FBF0EB"></rect>' +
+          '<line x1="100" x2="508" y1="' + dd.cutY + '" y2="' + dd.cutY + '" stroke="#D2694A" stroke-width="1" stroke-dasharray="4 3"></line>' +
+          '<polyline points="' + dd.pts + '" fill="none" stroke="#2A6FB0" stroke-width="2"></polyline>' +
+          dd.dots.map(d => '<circle cx="' + d.x + '" cy="' + d.y + '" r="2.6" fill="#2A6FB0"></circle>').join('') +
+          '<line x1="0" x2="508" y1="104" y2="104" stroke="#EEE9DE" stroke-width="1"></line>' +
+          '<text x="0" y="126" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#16232E">MEDICAÇÃO</text>' +
+          dd.meds.map(m => '<rect x="' + m.x + '" y="112" width="' + m.w + '" height="20" fill="#DCE8F4" stroke="#2A6FB0" stroke-width="1"></rect>').join('') +
+          '<line x1="0" x2="508" y1="144" y2="144" stroke="#EEE9DE" stroke-width="1"></line>' +
+          '<text x="0" y="166" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#16232E">CONTATOS</text>' +
+          dd.inter.map(v => '<rect x="' + v.x + '" y="152" width="' + v.w + '" height="20" fill="#F5DDD3" stroke="#D2694A" stroke-width="1"></rect>').join('') +
+          p.cons.map(m => '<rect x="' + dxm(m) + '" y="156" width="3" height="12" fill="#2A6FB0"></rect>').join('') +
+          '<line x1="100" x2="508" y1="186" y2="186" stroke="#0E1F2E" stroke-width="1"></line>' +
+          '<text x="92" y="190" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#7C8892">MESES</text>' +
+        '</svg>' + dd.lbls +
+      '</div>' +
+      '<div style="margin-top:6px">' +
+        '<div style="font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892;padding-bottom:4px">EXAMES · ÚLTIMO RESULTADO CONTRA A FAIXA DE REFERÊNCIA</div>' +
+        p.labs.map(l =>
+          '<div style="display:grid;grid-template-columns:1fr 92px 118px 104px;gap:10px;align-items:baseline;padding:6px 0;border-top:1px solid #EEE9DE">' +
+            '<span style="font-size:12px;color:#16232E">' + l.n + '</span>' +
+            '<span style="font-family:' + MONO + ';font-size:12px;color:#123A5C">' + l.v + ' ' + l.u + '</span>' +
+            '<span style="font-family:' + MONO + ';font-size:10px;color:#7C8892">' + l.r + '</span>' +
+            '<span style="display:flex;align-items:center;gap:6px;font-family:' + MONO + ';font-size:9.5px;color:#16232E"><span style="width:10px;height:10px;background:' + l.stCol + '"></span>' + l.stLab + '</span>' +
+          '</div>').join('') +
+      '</div>' +
+      '<div style="margin-top:auto;padding-top:10px;border-top:1px solid #DCD6C9;display:flex;gap:12px;align-items:baseline">' +
+        '<span style="font-family:' + MONO + ';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Próxima ação</span>' +
+        '<span style="font-size:12.5px;line-height:1.45;color:#16232E">' + p.st.act + '</span>' +
+      '</div>' +
+    '</div>';
+  };
+
+  const state = { pat: null, pin: null };
+  let panel, rows;
+
+  function paint() {
+    const a = state.pin != null ? state.pin : state.pat;
+    panel.innerHTML = a != null ? detHTML(dossier(PATS[a])) : restHTML();
+    rows.forEach((r, i) => { r.style.background = (a === i) ? '#F1F5F9' : 'transparent'; });
+  }
+
+  function render(host) {
+    host.innerHTML =
+    '<div style="width:1180px;height:720px;background:#FBFAF7;padding:28px 40px 22px;display:flex;flex-direction:column;overflow:hidden">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
+        '<div>' +
+          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7C8892;margin-bottom:6px">Caso 03 · ambulatório de especialidades · serviço demonstrativo</div>' +
+          '<h2 style="font-family:Spectral,serif;font-weight:500;font-size:26px;line-height:1.05;color:#0E1F2E;margin:0">Quatro fontes, um paciente</h2>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="display:inline-block;border:1px solid #B0533A;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Serviço fictício · dados sintéticos</div>' +
+          '<div style="font-family:' + MONO + ';font-size:10.5px;color:#4E5C68;margin-top:8px">248 pacientes ativos · 14 na tela · 4 fontes integradas</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="height:1px;background:#0E1F2E;opacity:.85;margin:14px 0 12px"></div>' +
+      '<div style="display:grid;grid-template-columns:520px 1fr;gap:28px;flex:1;min-height:0">' +
+        '<div style="display:flex;flex-direction:column;min-width:0">' +
+          '<div style="display:grid;grid-template-columns:66px 42px 1fr 82px 96px;gap:8px;padding:0 8px 5px;font-family:' + MONO + ';font-size:8.5px;letter-spacing:.1em;color:#7C8892">' +
+            '<span>PACIENTE</span><span>IDADE</span><span>CONDIÇÕES ATIVAS</span><span>MEDIDA-CHAVE</span><span>ESTADO</span></div>' +
+          PATS.map((p, i) =>
+            '<div class="c3row" data-i="' + i + '" style="display:grid;grid-template-columns:66px 42px 1fr 82px 96px;gap:8px;align-items:center;padding:6px 8px;cursor:pointer;border-top:1px solid #EEE9DE">' +
+              '<span style="font-family:' + MONO + ';font-size:11px;color:#123A5C">' + p.code + '</span>' +
+              '<span style="font-family:' + MONO + ';font-size:10px;color:#4E5C68">' + p.idade + 'a ' + p.sexo + '</span>' +
+              '<span style="font-size:11.5px;color:#16232E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + p.dxTxt + '</span>' +
+              '<span style="font-family:' + MONO + ';font-size:10.5px;color:#16232E">' + num(p.last, p.D.d) + ' ' + p.D.un + '</span>' +
+              '<span style="display:flex;align-items:center;gap:6px;font-family:' + MONO + ';font-size:8.5px;color:#16232E;line-height:1.15">' +
+                '<span style="width:10px;height:10px;flex:none;background:' + p.st.col + '"></span>' + p.st.lab + '</span>' +
+            '</div>').join('') +
+          '<div style="margin-top:auto;padding-top:10px;border-top:1px solid #DCD6C9;display:flex;flex-wrap:wrap;gap:6px 16px;font-family:' + MONO + ';font-size:9.5px;color:#16232E">' +
+            plSum.map(s => '<span style="display:flex;align-items:center;gap:6px"><span style="' + s.sw + '"></span>' + s.lab + ' · ' + s.n + '</span>').join('') +
+          '</div>' +
+        '</div>' +
+        '<div id="c3panel" style="display:flex;flex-direction:column;min-width:0;border-left:1px solid #DCD6C9;padding-left:24px"></div>' +
+      '</div>' +
+      '<div style="border-top:1px solid #DCD6C9;margin-top:12px;padding-top:10px;display:flex;gap:12px;align-items:baseline">' +
+        '<span style="font-family:' + MONO + ';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:#B0533A;white-space:nowrap">Decisão</span>' +
+        '<span style="font-size:12.5px;line-height:1.45;color:#16232E">Quem chamar primeiro: a lista ordena o serviço por estado, e o dossiê responde, no mesmo lugar, o que mudou desde o último contato.</span>' +
+      '</div>' +
+    '</div>';
+
+    panel = host.querySelector('#c3panel');
+    rows = [...host.querySelectorAll('.c3row')];
+    rows.forEach(r => {
+      const i = +r.dataset.i;
+      r.addEventListener('mouseenter', () => { state.pat = i; paint(); });
+      r.addEventListener('mouseleave', () => { state.pat = state.pin != null ? state.pin : null; paint(); });
+      r.addEventListener('click', () => { state.pin = state.pin === i ? null : i; state.pat = i; paint(); });
+    });
+    paint();
+  }
+  return { render };
+})();
+
+/* ===================================================================
+   MONTAGEM · escala do artboard para a largura da coluna
+   =================================================================== */
+C1.render(document.getElementById('fig-c1'));
+C2.render(document.getElementById('fig-c2'));
+C3.render(document.getElementById('fig-c3'));
+
+const FIG_MIN = 700;   /* abaixo disso o texto do artboard fica ilegível */
+function fitFigures() {
+  document.querySelectorAll('.figwrap').forEach(w => {
+    const s = Math.max(w.clientWidth, FIG_MIN) / 1180;
+    const pan = w.querySelector('.figpan');
+    pan.style.width = (1180 * s) + 'px';
+    pan.style.height = (720 * s) + 'px';
+    w.querySelector('.figscale').style.transform = 'scale(' + s + ')';
+    w.style.height = (720 * s) + 'px';
+  });
+}
+fitFigures();
+addEventListener('resize', fitFigures);
+})();
 </script>
 </body>
 </html>
