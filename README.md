@@ -15,15 +15,24 @@ marca_coorte/
   Coorte_Prompt_ClaudeDesign.md
   Coorte mesh network directions/   # explorações de identidade visual
   index.html                  # versão anterior da home (histórico)
-.github/workflows/pages.yml   # publicação automática no GitHub Pages
+wrangler.jsonc                # configuração do Worker que serve o site
 ```
 
 ## Publicação
 
 O site é estático — dois arquivos HTML sem build, sem dependências além do
-Google Fonts. Todo push para `main` republica `marca_coorte/site` via GitHub Pages.
+Google Fonts. Ele é servido por um Worker de assets estáticos chamado `coorte`,
+descrito em `wrangler.jsonc`, no domínio <https://coorte.io>.
 
-Para ativar (uma vez): **Settings → Pages → Source: GitHub Actions**.
+O deploy é feito pelo Cloudflare Workers Builds: o repositório está conectado ao
+Worker e todo push em `main` gera uma nova versão automaticamente. Não há
+GitHub Action envolvida.
+
+Para publicar da máquina local, fora do fluxo automático:
+
+```bash
+npx wrangler deploy
+```
 
 ## Rodar localmente
 
@@ -36,5 +45,5 @@ python -m http.server 8000
 ## Pendências de conteúdo
 
 - `sobre.html` — parágrafos de "Quem somos" ainda em placeholder.
-- Retratos da equipe (4:3), sobrenome e LinkedIn do Henrique, Lattes/ORCID do Paulo.
+- Retrato do Henrique (4:3), mais sobrenome e LinkedIn dele; Lattes/ORCID do Paulo.
 - Confirmar com Ester Cerdeira Sabino como quer ser descrita e qual vínculo declarar.

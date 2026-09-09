@@ -1,0 +1,9 @@
+{
+  // Worker de assets estáticos: sem script, só o conteúdo de marca_coorte/site.
+  // Mantém em versionamento o que hoje só existe nas build settings do painel.
+  "name": "coorte",
+  "compatibility_date": "2026-09-09",
+  "assets": {
+    "directory": "marca_coorte/site"
+  }
+}
