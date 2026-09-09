@@ -12,3 +12,11 @@ Desktop.ini
 *.tmp
 *.bak
 *~
+
+# Exports do Claude Design: fonte dos desenhos, não do site.
+# Sem barra inicial, o padrão pega a pasta em qualquer nível
+# — a cópia da raiz e a de marca_coorte/.
+Coorte mesh network directions/
+
+# Documentos de trabalho
+*.docx
