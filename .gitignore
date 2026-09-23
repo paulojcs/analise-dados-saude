@@ -13,10 +13,12 @@ Desktop.ini
 *.bak
 *~
 
-# Exports do Claude Design: fonte dos desenhos, não do site.
-# Sem barra inicial, o padrão pega a pasta em qualquer nível
-# — a cópia da raiz e a de marca_coorte/.
-Coorte mesh network directions/
+# Cache local do Wrangler
+.wrangler/
+
+# Material de trabalho (protótipos, explorações do Claude Design, fotos
+# originais, revisões de texto): fica só na máquina, o site não depende dele.
+referencias/
 
 # Documentos de trabalho
 *.docx

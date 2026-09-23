@@ -11,13 +11,17 @@ marca_coorte/
     index.html                # home (hero, sobre, método, casos, publicações, serviços, contato)
     sobre.html                # quem somos, equipe, compromissos
     img/                      # retratos da equipe
+  logo/                       # marca (SVG da opção 02, "CO" entrelaçado)
   Coorte_Marca_e_Linguagem.md # guia de marca e tom de voz
   Coorte_Pitch.md             # pitch
   Coorte_Prompt_ClaudeDesign.md
-  Coorte mesh network directions/   # explorações de identidade visual
   index.html                  # versão anterior da home (histórico)
 wrangler.jsonc                # configuração do Worker que serve o site
 ```
+
+A pasta `referencias/` (fora do git) guarda o material de trabalho: o
+protótipo da v2, as explorações de identidade visual do Claude Design, as
+opções de logo, fotos originais e revisões de texto.
 
 ## Publicação
 
