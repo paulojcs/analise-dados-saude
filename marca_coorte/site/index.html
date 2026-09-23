@@ -47,9 +47,6 @@ section,[id]{scroll-margin-top:56px}
 .logo .lg-b{stroke:var(--ink)}
 .brand{gap:14px}
 /* sobre o azul, a marca inteira fica clara */
-.contato .logo{height:34px;align-self:flex-start}
-.contato .logo .lg-a,.contato .logo .lg-b{stroke:var(--on-klein)}
-.contato .logo .lg-a{opacity:.62}
 .brand .tag{font:400 12px/1 var(--mono);letter-spacing:.1em;color:var(--t3)}
 .nav{display:flex;align-items:center;gap:26px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .nav a{color:var(--t2)}
@@ -81,7 +78,7 @@ section,[id]{scroll-margin-top:56px}
   font:400 12px/1.7 var(--mono);letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .hero-foot b{font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--klein)}
 .ticker{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--rule);background:var(--klein);color:var(--on-klein)}
-.ticker div{flex:1 1 auto;padding:12px 14px;border-right:1px solid rgba(238,242,250,.22);font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.ticker div{flex:1 1 auto;text-align:center;padding:12px 14px;border-right:1px solid rgba(238,242,250,.22);font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .ticker div:last-child{border-right:0}
 
 @media(max-width:900px){
@@ -176,7 +173,7 @@ section,[id]{scroll-margin-top:56px}
 .vd-lblrow .niv{font:400 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--signal)}
 .vd.dark .vd-lbl{color:#7F95D4}
 
-.scat{position:relative;height:124px;border:1px dashed rgba(16,19,24,.25);background:var(--bg)}
+.scat{position:relative;overflow:hidden;height:124px;border:1px dashed rgba(16,19,24,.25);background:var(--bg)}
 .scat .c{position:absolute;white-space:nowrap;background:var(--bg-hi);border:1px solid var(--rule);padding:5px 9px;font-size:13px;color:var(--ink);
   animation-duration:var(--d,7s);animation-timing-function:ease-in-out;animation-iteration-count:infinite}
 .scat .dr1{animation-name:om-drift}
@@ -393,40 +390,45 @@ section,[id]{scroll-margin-top:56px}
   .gov .r h4{padding-bottom:6px}
 }
 
-/* ---------- contato ---------- */
-.contato{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);background:var(--klein);color:var(--on-klein)}
-.contato a{color:var(--on-klein)}
-.contato a:hover{color:#fff;text-decoration:underline}
-.ct-l{padding:60px 32px 46px 34px;display:flex;flex-direction:column;gap:30px}
+/* ---------- contato: uma seção como as outras ---------- */
+.ct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.ct-l{padding:44px 32px;border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:space-between;gap:34px}
 .ct-l h2{font-size:clamp(40px,4.8vw,76px);line-height:.94;letter-spacing:-.015em}
-.ct-r{border-left:1px solid rgba(238,242,250,.25);padding:60px 30px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:34px}
-form{display:grid;gap:14px;max-width:640px}
+.ct-direct{display:flex;flex-direction:column;gap:10px;font:400 13px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.ct-r{padding:44px 32px}
+.ct-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+form{display:grid;gap:16px;max-width:640px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.contato label,.contato legend{font:400 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(238,242,250,.72);display:block;margin-bottom:7px;padding:0}
-.contato input,.contato textarea{width:100%;padding:12px 14px;border:1px solid rgba(238,242,250,.4);background:rgba(255,255,255,.06);
-  font:inherit;font-size:17px;color:#fff;border-radius:0}
-.contato input:focus,.contato textarea:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.1)}
-.contato textarea{resize:vertical;min-height:96px}
+.ct label,.ct legend{font:400 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:8px;padding:0}
+.ct input,.ct textarea{width:100%;padding:12px 14px;border:1px solid var(--rule);background:var(--bg-hi);font:inherit;font-size:16px;color:var(--ink);border-radius:0}
+.ct input:focus,.ct textarea:focus{outline:none;border-color:var(--klein);background:#fff}
+.ct textarea{resize:vertical;min-height:110px}
 fieldset{border:0;margin:0;padding:0}
 .tipos{display:flex;flex-wrap:wrap;gap:8px}
 .tipos label{margin:0;cursor:pointer}
 .tipos input{position:absolute;opacity:0;width:1px;height:1px}
-.tipos span{display:inline-block;border:1px solid rgba(238,242,250,.4);padding:8px 11px;font:400 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(238,242,250,.85);transition:.15s}
-.tipos input:checked+span{background:var(--on-klein);color:var(--klein);border-color:var(--on-klein)}
-.tipos input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
-.btn.light{background:var(--on-klein);color:var(--klein);border-color:var(--on-klein)}
-.btn.light:hover{background:#fff;border-color:#fff;color:var(--klein-deep)}
-.form-ok{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#fff}
-.ct-direct{display:flex;flex-direction:column;gap:14px;font:400 13px/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase}
-.ct-direct span{opacity:.6}
-.ct-links{display:flex;flex-wrap:wrap;gap:8px 20px;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.ct-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font:400 11px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+.tipos span{display:inline-block;border:1px solid rgba(0,47,167,.3);padding:8px 11px;font:400 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein);transition:.15s}
+.tipos input:checked+span{background:var(--klein);color:var(--on-klein);border-color:var(--klein)}
+.tipos input:focus-visible+span{outline:2px solid var(--klein);outline-offset:2px}
+.form-ok{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
 @media(max-width:900px){
-  .contato{grid-template-columns:minmax(0,1fr)}
-  .ct-l{padding:44px 20px 34px}
-  .ct-r{border-left:0;border-top:1px solid rgba(238,242,250,.25);padding:30px 20px 26px}
+  .ct{grid-template-columns:minmax(0,1fr)}
+  .ct-l{border-right:0;border-bottom:1px solid var(--rule-2);padding:28px 20px}
+  .ct-r{padding:28px 20px}
   .f2{grid-template-columns:1fr}
 }
+
+/* ---------- rodapé: faixa fina ---------- */
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;padding:16px 28px;
+  background:var(--klein);color:var(--on-klein);font:400 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.foot a{color:var(--on-klein)}
+.foot a:hover{color:#fff;text-decoration:underline}
+.foot nav{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot .note{opacity:.65}
+.foot .logo{height:16px}
+.foot .logo .lg-a,.foot .logo .lg-b{stroke:var(--on-klein)}
+.foot .logo .lg-a{opacity:.62}
+@media(max-width:760px){.foot{padding:16px 20px;justify-content:flex-start}}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -884,36 +886,50 @@ fieldset{border:0;margin:0;padding:0}
   </div>
 </section>
 
-<!-- CONTATO -->
-<section class="contato" id="contato">
-  <div class="ct-l">
-    <h2>Fale com<br>a gente.</h2>
-    <form id="ct-form">
-      <div class="f2">
-        <div><label for="n">Nome</label><input id="n" required autocomplete="name"></div>
-        <div><label for="e">E-mail</label><input id="e" type="email" required autocomplete="email"></div>
+<!-- 07 CONTATO -->
+<section class="row" id="contato">
+  <div class="rail"><div class="no">07</div><div class="k">Contato</div><div class="dash"></div></div>
+  <div class="ct">
+    <div class="ct-l">
+      <h2>Fale com<br>a gente.</h2>
+      <div class="ct-direct">
+        <span>Direto</span>
+        <a href="mailto:contato@coorte.com.br">contato@coorte.com.br</a>
+        <span>São Paulo · Brasil</span>
       </div>
-      <div><label for="i">Instituição</label><input id="i" autocomplete="organization"></div>
-      <fieldset>
-        <legend>Tipo</legend>
-        <div class="tipos">
-          <label><input type="radio" name="tipo" value="Hospital ou laboratório" checked><span>Hospital ou laboratório</span></label>
-          <label><input type="radio" name="tipo" value="Secretaria de saúde"><span>Secretaria de saúde</span></label>
-          <label><input type="radio" name="tipo" value="Indústria"><span>Indústria</span></label>
-          <label><input type="radio" name="tipo" value="Grupo de pesquisa"><span>Grupo de pesquisa</span></label>
-          <label><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
+    </div>
+    <div class="ct-r">
+      <form id="ct-form">
+        <div class="f2">
+          <div><label for="n">Nome</label><input id="n" required autocomplete="name"></div>
+          <div><label for="e">E-mail</label><input id="e" type="email" required autocomplete="email"></div>
         </div>
-      </fieldset>
-      <div><label for="m">O que você quer resolver</label><textarea id="m"></textarea></div>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
-        <button class="btn light" type="submit">Enviar mensagem →</button>
-        <a class="btn ghost" href="#casos" style="background:transparent;border-color:rgba(238,242,250,.45);color:var(--on-klein)">Ver os casos</a>
-      </div>
-      <p class="form-ok">Mensagem registrada. (Formulário de demonstração — conectar ao e-mail ou CRM.)</p>
-    </form>
+        <div><label for="i">Instituição</label><input id="i" autocomplete="organization"></div>
+        <fieldset>
+          <legend>Tipo</legend>
+          <div class="tipos">
+            <label><input type="radio" name="tipo" value="Hospital ou laboratório" checked><span>Hospital ou laboratório</span></label>
+            <label><input type="radio" name="tipo" value="Secretaria de saúde"><span>Secretaria de saúde</span></label>
+            <label><input type="radio" name="tipo" value="Indústria"><span>Indústria</span></label>
+            <label><input type="radio" name="tipo" value="Grupo de pesquisa"><span>Grupo de pesquisa</span></label>
+            <label><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
+          </div>
+        </fieldset>
+        <div><label for="m">O que você quer resolver</label><textarea id="m"></textarea></div>
+        <div class="ct-btns">
+          <button class="btn" type="submit">Enviar mensagem →</button>
+          <a class="btn ghost" href="#casos">Ver os casos</a>
+        </div>
+        <p class="form-ok">Mensagem registrada. (Formulário de demonstração — conectar ao e-mail ou CRM.)</p>
+      </form>
+    </div>
   </div>
-  <div class="ct-r">
-    <svg class="logo" viewBox="108 28 570 104" aria-hidden="true">
+</section>
+
+</main>
+
+<footer class="foot">
+  <a href="#topo" aria-label="Coorte · início"><svg class="logo" viewBox="108 28 570 104" aria-hidden="true">
       <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
         <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
         <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
@@ -922,23 +938,11 @@ fieldset{border:0;margin:0;padding:0}
         <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
         <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
       </g>
-    </svg>
-    <div class="ct-direct">
-      <span>Direto</span>
-      <a href="mailto:contato@coorte.com.br">contato@coorte.com.br</a>
-      <span>São Paulo · Brasil</span>
-    </div>
-    <nav class="ct-links" aria-label="Rodapé">
-      <a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="sobre.html">Sobre</a>
-    </nav>
-    <div class="ct-foot">
-      <span>© 2026 Coorte<br>Ciência de dados em saúde<br>Telas de demonstração com dados fictícios.</span>
-      <span>006</span>
-    </div>
-  </div>
-</section>
-
-</main>
+    </svg></a>
+  <nav aria-label="Rodapé"><a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="sobre.html">Sobre</a><a href="#contato">Contato</a></nav>
+  <span>© 2026 Coorte · Ciência de dados em saúde</span>
+  <span class="note">Telas de demonstração com dados fictícios.</span>
+</footer>
 
 <script>
 /* Hero: rede acoplada — núcleo denso, hubs em anel, folhas em leque.
