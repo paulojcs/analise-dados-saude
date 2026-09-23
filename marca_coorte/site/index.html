@@ -94,6 +94,7 @@ section,[id]{scroll-margin-top:56px}
 .row{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);border-bottom:1px solid var(--rule)}
 .rail{padding:40px 20px;border-right:1px solid var(--rule)}
 .rail .no{font:700 61.5px/.85 var(--narrow);margin-bottom:10px}
+.rail .k{font-size:11px;letter-spacing:.08em;line-height:1.45}
 .rail .dash{width:26px;height:1px;background:var(--klein);margin-top:10px}
 .rail .note{margin-top:14px;font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
 .rail h2.side{margin-top:16px;font-size:20px;line-height:1.05;hyphens:auto;-webkit-hyphens:auto}
@@ -260,9 +261,6 @@ section,[id]{scroll-margin-top:56px}
 .cyc-f{display:flex;align-items:center;gap:9px;margin-top:13px;font-size:13px;color:#A9B9E6}
 .cyc-f i{display:inline-block;width:13px;height:13px;border:2px solid var(--klein-2);border-top-color:transparent;border-radius:50%;animation:om-spin 1.1s linear infinite}
 
-.ciclo{display:grid;grid-template-columns:78px minmax(0,1fr);background:rgba(0,47,167,.04)}
-.ciclo b{padding:18px 0 18px 30px;font:400 11px/1.6 var(--mono);letter-spacing:.12em;color:var(--klein)}
-.ciclo p{padding:18px 26px 18px 0;font-size:14.5px;line-height:1.6;color:var(--t2)}
 
 @media(max-width:900px){
   .st-h{grid-template-columns:52px minmax(0,1fr) 40px}
@@ -272,10 +270,7 @@ section,[id]{scroll-margin-top:56px}
   .st-c{grid-column:3;grid-row:1;padding:16px 16px 0 0;justify-content:flex-end}
   .st-c span{display:none}
   .st-pad{padding:0 16px 22px 20px}
-  .ciclo{grid-template-columns:minmax(0,1fr)}
-  .ciclo b{padding:16px 16px 0 20px}
-  .ciclo p{padding:6px 16px 16px 20px}
-}
+      }
 @media(max-width:760px){
   .vd{padding:16px}
   .vd-2col{grid-template-columns:1fr}
@@ -514,8 +509,8 @@ fieldset{border:0;margin:0;padding:0}
     <div class="note">Abra cada etapa</div>
   </div>
   <div class="metodo">
-    <div class="st on play">
-      <button class="st-h" type="button" aria-expanded="true" aria-controls="st1-b">
+    <div class="st">
+      <button class="st-h" type="button" aria-expanded="false" aria-controls="st1-b">
         <span class="st-n">01</span><span class="st-t">Entender o dado que existe</span><span class="st-d">Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</span>
         <span class="st-c"><span>ETAPA / 01</span><i aria-hidden="true">+</i></span>
       </button>
@@ -690,7 +685,6 @@ fieldset{border:0;margin:0;padding:0}
             </div>
       </div></div></div></div>
     </div>
-    <div class="ciclo"><b>CICLO</b><p>O painel vivo devolve a próxima pergunta — e a etapa 03 recomeça sem refazer a fundação.</p></div>
   </div>
 </section>
 
@@ -728,7 +722,7 @@ fieldset{border:0;margin:0;padding:0}
         <h3>Quatro fontes, um paciente</h3>
         <div class="chips"><span class="chip">Prontuário eletrônico</span><span class="chip">Laboratório e farmácia</span><span class="chip">Regulação</span></div>
         <p>A lista não para no status: cada linha termina em uma ação.</p>
-        <div class="cs-foot"><span>3 publicações</span><button type="button" aria-expanded="false" aria-controls="cs3-p">Ver figura <i aria-hidden="true">+</i></button></div>
+        <div class="cs-foot"><span>2 publicações</span><button type="button" aria-expanded="false" aria-controls="cs3-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
     <div class="cs-p" id="cs1-p" role="region" aria-label="Figura do caso 01"><div class="cs-in"><div class="cs-pad">
@@ -786,10 +780,6 @@ fieldset{border:0;margin:0;padding:0}
         <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/40782139/" target="_blank" rel="noopener">
           <span class="t">Expanding gender-sensitive and equitable substance use care models: treatment retention analysis of the women's drug dependent treatment program (PROMUD) replication in psychosocial units in Brazil</span>
           <span class="m"><em>Arch Womens Ment Health</em>2025 · 40782139</span>
-        </a>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/39748905/" target="_blank" rel="noopener">
-          <span class="t">Case report: Additional grounds for tighter regulation? A case series of five women with zolpidem dependence from a Brazilian women-specific substance use disorder outpatient service</span>
-          <span class="m"><em>Front Psychiatry</em>2024 · 39748905</span>
         </a>
       </div>
     </div>
@@ -856,7 +846,6 @@ fieldset{border:0;margin:0;padding:0}
 <section class="row" id="servicos">
   <div class="rail">
     <div class="no">05</div><div class="k">Serviços</div><div class="dash"></div>
-    <h2 class="side">O que fazemos.</h2>
   </div>
   <div class="svc">
     <div>
@@ -885,11 +874,11 @@ fieldset{border:0;margin:0;padding:0}
 
 <!-- 06 GOVERNANÇA -->
 <section class="row" id="governanca">
-  <div class="rail"><div class="no">06</div><div class="k">Em todas as etapas</div><div class="dash"></div><div class="note">Governança e reprodutibilidade</div></div>
+  <div class="rail"><div class="no">06</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
   <div class="gov">
     <div class="big" aria-hidden="true">4</div>
     <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Governança e reprodutibilidade em todas as etapas.</p></div>
-    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Uma base, um dicionário, uma versão — tudo que vem depois lê daqui.</p></div>
+    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Uma base, um dicionário, uma versão: tudo que vem depois lê daqui.</p></div>
     <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Código e orquestração entregues ao cliente.</p></div>
     <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O pipeline roda dentro da sua infraestrutura.</p></div>
   </div>
