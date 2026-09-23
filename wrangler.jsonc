@@ -5,5 +5,10 @@
   "compatibility_date": "2026-09-09",
   "assets": {
     "directory": "marca_coorte/site"
-  }
+  },
+
+  // O site é servido pelo custom domain coorte.io. Sem esta linha o padrão é
+  // `true`, e um deploy religaria coorte.paulosuen.workers.dev — um segundo
+  // hostname público com o mesmo conteúdo.
+  "workers_dev": false
 }
