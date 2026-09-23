@@ -8,8 +8,9 @@ e produtos digitais para hospitais, redes públicas de saúde e indústria.
 ```
 marca_coorte/
   site/                       # site publicado
-    index.html                # home (hero, método, casos, serviços, contato)
-    sobre.html                # sobre + equipe
+    index.html                # home (hero, sobre, método, casos, publicações, serviços, contato)
+    sobre.html                # quem somos, equipe, compromissos
+    img/                      # retratos da equipe
   Coorte_Marca_e_Linguagem.md # guia de marca e tom de voz
   Coorte_Pitch.md             # pitch
   Coorte_Prompt_ClaudeDesign.md
@@ -44,6 +45,6 @@ python -m http.server 8000
 
 ## Pendências de conteúdo
 
-- `sobre.html` — parágrafos de "Quem somos" ainda em placeholder.
-- Retrato do Henrique (4:3), mais sobrenome e LinkedIn dele; Lattes/ORCID do Paulo.
 - Confirmar com Ester Cerdeira Sabino como quer ser descrita e qual vínculo declarar.
+- Retrato do Henrique em resolução maior (o atual tem 400×399 px).
+- O formulário de contato ainda é demonstração: falta ligar a e-mail ou CRM.

@@ -7,327 +7,462 @@
 <meta name="description" content="Quem é a Coorte: medicina, epidemiologia e engenharia de dados no mesmo núcleo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ---------- tokens ---------- */
+/* fundo "gelo": frio e levemente azulado, no lugar do off-white quente do protótipo */
 :root{
   color-scheme:light;
-  --navy:#123A5C; --navy-deep:#08192A; --ink:#0E1F2E;
-  --text:#16232E; --text-2:#4E5C68; --text-3:#7C8892;
-  --paper:#FBFAF7; --surface:#FFFFFF; --sand:#EEE9DE; --rule:#DCD6C9;
-  --clay:#B0533A;
-  --s1:#2A6FB0; --s2:#D2694A; --s3:#2FA38C; --s4:#C79A16;
-  --grid:#E9E5DB;
-  --maxw:1180px;
+  --bg:#EDF1F5; --bg-2:#E2E8EF; --bg-hi:#F6F8FA;
+  --ink:#101318;
+  --t2:rgba(16,19,24,.68); --t3:rgba(16,19,24,.46); --t4:rgba(16,19,24,.34);
+  --rule:rgba(16,19,24,.14); --rule-2:rgba(16,19,24,.09);
+  --klein:#002FA7; --klein-deep:#00207A; --klein-2:#2F5BD3; --klein-tint:#C9D5EF; --klein-wash:rgba(0,47,167,.05);
+  --on-klein:#EEF2FA;
+  --signal:#D9482B; --ok:#1F9A7E;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --narrow:"Archivo Narrow","Archivo",sans-serif;
+  --rail:172px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--text);
-  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:"Spectral",Georgia,serif;font-weight:500;letter-spacing:-.015em;color:var(--ink);margin:0}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:"Archivo",Helvetica,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .3s}
+h1,h2,h3,h4{font-family:var(--narrow);font-weight:700;margin:0;text-transform:uppercase;letter-spacing:-.005em}
 p{margin:0}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 36px}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:500}
+a{color:var(--klein);text-decoration:none}
+a:hover{color:var(--klein-deep)}
+section,[id]{scroll-margin-top:56px}
+.k{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein)}
+.mono{font-family:var(--mono)}
 
-/* nav */
-header{position:fixed;top:0;left:0;right:0;z-index:60;transition:.25s}
-header.solid{background:rgba(251,250,247,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-.brand{display:flex;align-items:center;gap:11px}
-.bn{font-family:"Spectral",serif;font-size:22px;letter-spacing:.02em;color:#fff;transition:.25s}
-header.solid .bn{color:var(--ink)}
-.mark rect.a{fill:#fff;transition:.25s} .mark rect.b{stroke:#fff;transition:.25s}
-header.solid .mark rect.a{fill:#123A5C} header.solid .mark rect.b{stroke:#123A5C}
-.mark rect.c{fill:#C9765C}
-header.solid .mark rect.c{fill:#B0533A}
-.navlinks{display:flex;gap:32px}
-.navlinks a{font-size:14.5px;color:rgba(255,255,255,.82);transition:.25s}
-header.solid .navlinks a{color:var(--text-2)}
-.navlinks a:hover{opacity:.6}
-.btn{display:inline-block;padding:12px 24px;font-size:14.5px;font-weight:500;border-radius:2px;
-  border:1px solid var(--navy);background:var(--navy);color:#fff;transition:.15s;cursor:pointer}
-.btn:hover{background:var(--navy-deep);border-color:var(--navy-deep)}
-.btn-light{background:#fff;color:var(--navy-deep);border-color:#fff}
-.btn-light:hover{background:var(--sand);border-color:var(--sand);color:var(--navy-deep)}
-.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.45)}
-.btn-outline:hover{background:rgba(255,255,255,.1);border-color:#fff}
-@media(max-width:900px){.navlinks{display:none}}
+/* ---------- topo ---------- */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:12px 28px;border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
+.brand:hover{color:var(--ink)}
+/* marca: coorte-opcao-02-mono.svg, recortada ao desenho; as cores vêm dos tokens */
+.logo{display:block;height:22px;width:auto;aspect-ratio:570/104}
+.logo .lg-a{stroke:var(--klein)}
+.logo .lg-b{stroke:var(--ink)}
+.brand{gap:14px}
+/* sobre o azul, a marca inteira fica clara */
+.contato .logo{height:34px;align-self:flex-start}
+.contato .logo .lg-a,.contato .logo .lg-b{stroke:var(--on-klein)}
+.contato .logo .lg-a{opacity:.62}
+.brand .tag{font:400 12px/1 var(--mono);letter-spacing:.1em;color:var(--t3)}
+.nav{display:flex;align-items:center;gap:26px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.nav a{color:var(--t2)}
+.nav a:hover{color:var(--klein)}
+.nav a.cta{display:flex;align-items:center;gap:8px;background:var(--klein);color:var(--on-klein);padding:10px 14px}
+.nav a.cta:hover{background:var(--klein-deep);color:var(--on-klein)}
+@media(max-width:1000px){.brand .tag{display:none}}
+@media(max-width:760px){.nav a:not(.cta){display:none}.top{padding:10px 16px}}
 
-/* hero */
-.hero{background:var(--navy-deep);color:#fff;padding:190px 0 84px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(1100px 620px at 78% 12%, rgba(42,111,176,.34), transparent 62%),
-             radial-gradient(760px 520px at 8% 96%, rgba(176,83,58,.20), transparent 66%)}
-.hero .wrap{position:relative;z-index:2}
-.hero h1{color:#fff;font-size:clamp(52px,9.4vw,124px);line-height:.94;letter-spacing:-.035em;margin:26px 0 0}
-.hero h1 span{color:#8FBBE4;font-style:italic}
-.hero .sub{margin-top:34px;font-size:20px;color:#B7C7D5;max-width:47ch;line-height:1.5}
-.hero .acts{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
-.hero .eyebrow{color:#7C99B2}
-.instbar{margin-top:96px;padding-top:26px;border-top:1px solid rgba(255,255,255,.15);
-  display:flex;gap:40px;flex-wrap:wrap;align-items:center}
-.instbar span{font-size:13.5px;color:#7F94A6;letter-spacing:.02em}
-@media(max-width:900px){.hero{padding:140px 0 60px}.hero .sub{font-size:18px}}
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;font:500 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--klein);background:var(--klein);color:var(--on-klein);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--klein-deep);border-color:var(--klein-deep);color:var(--on-klein)}
+.btn.ghost{background:color-mix(in srgb,var(--bg) 65%,transparent);border-color:rgba(16,19,24,.3);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--klein);color:var(--klein)}
 
-/* números */
-.nums{border-bottom:1px solid var(--rule);background:var(--surface)}
-.nums-g{display:grid;grid-template-columns:repeat(4,1fr)}
-.n{padding:44px 30px;border-right:1px solid var(--rule)}
-.n:last-child{border-right:0}
-.n b{display:block;font-family:"Spectral",serif;font-weight:500;font-size:46px;line-height:1;color:var(--navy);letter-spacing:-.02em}
-.n em{display:block;font-style:normal;font-size:13.5px;color:var(--text-2);margin-top:12px;line-height:1.4}
-@media(max-width:860px){.nums-g{grid-template-columns:1fr 1fr}.n{border-bottom:1px solid var(--rule)}.n:nth-child(2n){border-right:0}}
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);background:var(--bg)}
+.hero canvas{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-g{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:600px;pointer-events:none}
+.hero-g a,.hero-g button{pointer-events:auto}
+.hero-l{display:flex;flex-direction:column;justify-content:center;gap:48px;padding:64px 40px 34px 28px;position:relative}
+.hero-l .inner{padding-left:0}
+.hero h1{font-size:clamp(48px,5.8vw,92px);line-height:.92;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 span{color:var(--klein)}
+.hero .sub{margin:22px 0 0;max-width:30ch;font-size:18.5px;line-height:1.5;color:var(--t2)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-left:0;
+  font:400 12px/1.7 var(--mono);letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
+.hero-foot b{font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--klein)}
+.ticker{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--rule);background:var(--klein);color:var(--on-klein)}
+.ticker div{flex:1 1 auto;padding:12px 14px;border-right:1px solid rgba(238,242,250,.22);font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.ticker div:last-child{border-right:0}
 
-section{padding:110px 0}
-.head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:56px;flex-wrap:wrap}
-.head h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-.025em;max-width:16ch}
-.head p{font-size:16.5px;color:var(--text-2);max-width:36ch}
+@media(max-width:900px){
+  .hero-g{grid-template-columns:minmax(0,1fr);min-height:0}
+  .hero-l{padding:48px 20px 28px;gap:36px}
+  .hero-r{min-height:240px}
+}
 
-/* método */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule)}
-.st{padding:34px 30px 34px 0;border-right:1px solid var(--rule)}
-.st:last-child{border-right:0;padding-right:0}
-.st:not(:first-child){padding-left:30px}
-.st b{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--clay);letter-spacing:.12em;display:block;margin-bottom:20px}
-.st h3{font-size:23px;margin-bottom:10px}
-.st p{font-size:15px;color:var(--text-2);line-height:1.5}
-@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}.st{border-bottom:1px solid var(--rule)}.st:nth-child(2n){border-right:0}}
-@media(max-width:560px){.steps{grid-template-columns:1fr}.st{border-right:0;padding-left:0!important}}
+/* ---------- faixa com trilho de rótulo (o esqueleto do v2) ---------- */
+.row{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+.rail{padding:40px 20px;border-right:1px solid var(--rule)}
+.rail .no{font:700 61.5px/.85 var(--narrow);margin-bottom:10px}
+.rail .dash{width:26px;height:1px;background:var(--klein);margin-top:10px}
+.rail .note{margin-top:14px;font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.rail h2.side{margin-top:16px;font-size:20px;line-height:1.05;hyphens:auto;-webkit-hyphens:auto}
+@media(max-width:900px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .rail{border-right:0;border-bottom:1px solid var(--rule);padding:22px 20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .rail .no{font-size:36px;margin:0}
+  .rail .dash{display:none}
+  .rail .note{margin:0;flex-basis:100%}
+  .rail h2.side{margin:0;flex-basis:100%;font-size:27px}
+}
 
-/* ---------- dashboards ---------- */
-.case{margin-bottom:96px}
-.case:last-child{margin-bottom:0}
-.case-top{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:26px;flex-wrap:wrap}
-.case-top .who{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
-.case-top h3{font-size:30px;line-height:1.15;margin-top:10px;max-width:20ch}
-.case-top p{font-size:16px;color:var(--text-2);max-width:44ch}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}
-.chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--rule);background:var(--surface);color:var(--text-2)}
 
-.app{border:1px solid var(--rule);background:var(--surface);box-shadow:0 1px 0 var(--rule),0 24px 48px -30px rgba(14,31,46,.35)}
-.appbar{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#F4F1EA;border-bottom:1px solid var(--rule)}
-.dots{display:flex;gap:6px}
-.dots i{width:9px;height:9px;border-radius:50%;background:#CFC8B9;display:block}
-.apptitle{font-size:13px;color:var(--text-2);font-weight:500}
-.appbar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
-.pill{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--rule);background:#fff;color:var(--text-3)}
-.pill.warn{border-color:#E2C6BD;background:#FBF2EF;color:var(--clay)}
-.appbody{display:grid;grid-template-columns:170px 1fr}
-.side{border-right:1px solid var(--rule);padding:20px 0;background:#FCFBF8}
-.side a{display:block;padding:9px 20px;font-size:13.5px;color:var(--text-2)}
-.side a.on{color:var(--navy);font-weight:600;box-shadow:inset 2px 0 0 var(--navy);background:#fff}
-.side .grp{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);padding:16px 20px 6px}
-.main{padding:26px 28px 30px;min-width:0}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:26px}
-.kpi{background:#fff;padding:16px 18px}
-.kpi .l{font-size:12.5px;color:var(--text-2);line-height:1.35}
-.kpi .v{font-size:30px;font-weight:600;color:var(--ink);margin-top:8px;line-height:1;letter-spacing:-.02em}
-.kpi .d{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);margin-top:7px}
-.kpi .d.up{color:var(--clay)} .kpi .d.ok{color:#1F7A5E}
-.panel-t{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
-.panel-s{font-size:12.5px;color:var(--text-3);margin-bottom:16px}
-.split{display:grid;grid-template-columns:1.35fr 1fr;gap:26px}
-table.d{width:100%;border-collapse:collapse;font-size:13px}
-table.d th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--text-3);font-weight:500;padding:0 10px 8px 0;border-bottom:1px solid var(--rule)}
-table.d td{padding:10px 10px 10px 0;border-bottom:1px solid #EFEBE2;color:var(--text-2)}
-table.d td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600;padding-right:0}
-table.d td b{color:var(--ink);font-weight:600}
-.badge{font-size:11px;padding:3px 8px;white-space:nowrap;border:1px solid}
-.badge.hi{border-color:#E2C6BD;background:#FBF2EF;color:#8F3F2C}
-.badge.md{border-color:#E7DCBE;background:#FBF7EA;color:#8A6A16}
-.badge.lo{border-color:#DDE4E9;background:#F4F7F9;color:#3C5A70}
-.hbars{display:flex;flex-direction:column;gap:11px}
-.hb{display:grid;grid-template-columns:104px 1fr 44px;align-items:center;gap:12px;font-size:12.5px;color:var(--text-2)}
-.hb .track{height:16px;background:#F1EEE6;position:relative}
-.hb .fill{height:16px;background:var(--s1);border-radius:0 4px 4px 0}
-.hb .fill.warn{background:var(--s2)}
-.hb .meta{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--clay)}
-.hb .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
-.legend{display:flex;gap:18px;font-size:12px;color:var(--text-2);margin-top:14px;flex-wrap:wrap}
-.legend i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
-@media(max-width:920px){.appbody{grid-template-columns:1fr}.side{display:none}.split{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
-
-/* serviços */
-.svc{background:var(--navy-deep);color:#fff}
-.svc h2{color:#fff}
-.svc .head p{color:#9DB0C0}
-.svc .eyebrow{color:#7C99B2}
-.svclist{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;border-top:1px solid rgba(255,255,255,.16)}
-.svclist div{padding:17px 0;border-bottom:1px solid rgba(255,255,255,.11);font-size:17px;color:#DCE6EE;display:flex;justify-content:space-between;gap:20px}
-.svclist div span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#5F7A91;letter-spacing:.1em}
-@media(max-width:760px){.svclist{grid-template-columns:1fr;gap:0}}
-
-/* contato */
-.contact{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-.contact h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-.025em}
-.contact .lead{font-size:17px;color:var(--text-2);margin-top:22px;max-width:38ch}
-.contact .direct{margin-top:34px;padding-top:24px;border-top:1px solid var(--rule);font-size:15px;color:var(--text-2)}
-.contact .direct b{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;font-weight:500}
-form{display:grid;gap:14px}
+/* ---------- contato ---------- */
+.contato{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);background:var(--klein);color:var(--on-klein)}
+.contato a{color:var(--on-klein)}
+.contato a:hover{color:#fff;text-decoration:underline}
+.ct-l{padding:60px 32px 46px 34px;display:flex;flex-direction:column;gap:30px}
+.ct-l h2{font-size:clamp(40px,4.8vw,76px);line-height:.94;letter-spacing:-.015em}
+.ct-r{border-left:1px solid rgba(238,242,250,.25);padding:60px 30px 34px;display:flex;flex-direction:column;justify-content:space-between;gap:34px}
+form{display:grid;gap:14px;max-width:640px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);display:block;margin-bottom:6px}
-input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--rule);background:var(--surface);
-  font-family:inherit;font-size:15px;color:var(--text);border-radius:2px}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy)}
-textarea{resize:vertical;min-height:96px}
-@media(max-width:860px){.contact{grid-template-columns:1fr;gap:44px}.f2{grid-template-columns:1fr}}
+.contato label,.contato legend{font:400 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(238,242,250,.72);display:block;margin-bottom:7px;padding:0}
+.contato input,.contato textarea{width:100%;padding:12px 14px;border:1px solid rgba(238,242,250,.4);background:rgba(255,255,255,.06);
+  font:inherit;font-size:17px;color:#fff;border-radius:0}
+.contato input:focus,.contato textarea:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.1)}
+.contato textarea{resize:vertical;min-height:96px}
+fieldset{border:0;margin:0;padding:0}
+.tipos{display:flex;flex-wrap:wrap;gap:8px}
+.tipos label{margin:0;cursor:pointer}
+.tipos input{position:absolute;opacity:0;width:1px;height:1px}
+.tipos span{display:inline-block;border:1px solid rgba(238,242,250,.4);padding:8px 11px;font:400 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(238,242,250,.85);transition:.15s}
+.tipos input:checked+span{background:var(--on-klein);color:var(--klein);border-color:var(--on-klein)}
+.tipos input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
+.btn.light{background:var(--on-klein);color:var(--klein);border-color:var(--on-klein)}
+.btn.light:hover{background:#fff;border-color:#fff;color:var(--klein-deep)}
+.form-ok{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.ct-direct{display:flex;flex-direction:column;gap:14px;font:400 13px/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.ct-direct span{opacity:.6}
+.ct-links{display:flex;flex-wrap:wrap;gap:8px 20px;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.ct-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font:400 11px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+@media(max-width:900px){
+  .contato{grid-template-columns:minmax(0,1fr)}
+  .ct-l{padding:44px 20px 34px}
+  .ct-r{border-left:0;border-top:1px solid rgba(238,242,250,.25);padding:30px 20px 26px}
+  .f2{grid-template-columns:1fr}
+}
 
-footer{border-top:1px solid var(--rule);padding:44px 0;font-size:14px;color:var(--text-3)}
-.foot{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:center}
-.foot a{color:var(--text-2)}
-.foot .lk{display:flex;gap:22px}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ---------- sobre: abertura ---------- */
+.hero-g.sb{min-height:520px}
+.hero h1.sb-h{font-size:clamp(40px,4.6vw,76px);line-height:.95}
+.nav a[aria-current]{color:var(--klein)}
+
+/* ---------- 01 quem somos ---------- */
+.prose{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.prose>div{padding:44px 32px}
+.prose>div:first-child{border-right:1px solid var(--rule)}
+.prose h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04}
+.prose p{font-size:17px;line-height:1.65;color:var(--t2);text-wrap:pretty;max-width:62ch}
+.prose p+p{margin-top:18px}
+.prose p strong{color:var(--ink);font-weight:600}
+
+/* ---------- 02 equipe ---------- */
+.people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.person{display:flex;flex-direction:column;border-right:1px solid var(--rule-2)}
+.person:last-child{border-right:0}
+.person .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-2);border-bottom:1px solid var(--rule-2)}
+.person .ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.02);transition:filter .5s ease}
+.person:hover .ph img{filter:none}
+.person .bd{padding:24px 26px 30px;display:flex;flex-direction:column;gap:12px;flex:1}
+.person .no{font:500 11.5px/1 var(--mono);letter-spacing:.12em;color:var(--klein)}
+.person h3{font-size:24px;line-height:1.05}
+.person .role{font:500 11.5px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein)}
+.person p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+
+/* ---------- 03 como trabalhamos ---------- */
+.vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.vals>div{padding:40px 26px;border-right:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
+.vals>div:last-child{border-right:0}
+.vals .num{font:700 47px/.85 var(--narrow)}
+.vals h3{font-size:20px;line-height:1.12;letter-spacing:.01em}
+.vals h3:after{content:"";display:block;width:26px;height:1px;background:var(--klein);margin-top:14px}
+.vals p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+
+.ct-l .btns{display:flex;flex-wrap:wrap;gap:12px}
+
+@media(max-width:900px){
+  .hero-g.sb{min-height:0}
+  .prose{grid-template-columns:minmax(0,1fr)}
+  .prose>div{padding:28px 20px}
+  .prose>div:first-child{border-right:0;border-bottom:1px solid var(--rule-2)}
+  .people,.vals{grid-template-columns:minmax(0,1fr)}
+  .person,.vals>div{border-right:0;border-bottom:1px solid var(--rule-2)}
+  .vals>div{padding:28px 20px}
+}
 </style>
-
-<style>
-.subhero{background:var(--navy-deep);color:#fff;padding:170px 0 84px;position:relative;overflow:hidden}
-.subhero::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(900px 520px at 82% 8%, rgba(42,111,176,.32), transparent 62%)}
-.subhero .wrap{position:relative;z-index:2}
-.subhero h1{color:#fff;font-size:clamp(44px,7.2vw,92px);line-height:.98;letter-spacing:-.035em;margin:24px 0 0}
-.subhero .sub{margin-top:28px;font-size:19px;color:#B7C7D5;max-width:48ch;line-height:1.5}
-.subhero .eyebrow{color:#7C99B2}
-.prose{display:grid;grid-template-columns:1fr 1.25fr;gap:64px}
-.prose h2{font-size:clamp(30px,3.8vw,44px);line-height:1.06;letter-spacing:-.025em;max-width:14ch}
-.prose p{font-size:17.5px;color:var(--text-2);margin-bottom:20px;line-height:1.62}
-.prose p:last-child{margin-bottom:0}
-.prose p strong{color:var(--text);font-weight:600}
-.people{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.person{background:var(--surface);padding:0 0 30px}
-.person .ph{aspect-ratio:4/3;background:var(--sand);display:flex;align-items:center;justify-content:center;
-  color:var(--text-3);font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;border-bottom:1px solid var(--rule)}
-.person .ph img{width:100%;height:100%;object-fit:cover;display:block;flex:none}
-.person .bd{padding:26px 28px 0}
-.person h3{font-size:22px}
-.person .role{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin:8px 0 14px}
-.person p{font-size:14.5px;color:var(--text-2);line-height:1.55}
-.person .todo{margin-top:14px;font-size:12.5px;color:var(--text-3);border-left:2px solid var(--rule);padding-left:10px}
-.vals{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
-.val h3{font-size:21px;margin-bottom:10px}
-.val p{font-size:15.5px;color:#B9C7D3}
-.val .bar{width:38px;height:2px;background:var(--clay);margin-bottom:18px}
-.val h3{color:#fff}
-@media(max-width:900px){.prose{grid-template-columns:1fr;gap:28px}.people{grid-template-columns:1fr}.vals{grid-template-columns:1fr;gap:30px}.subhero{padding:130px 0 60px}}
-</style>
-
 </head>
 <body>
 
-<header id="hd">
-  <div class="wrap nav">
-    <a class="brand" href="index.html">
-      <svg class="mark" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <rect class="b" x="1" y="1" width="24" height="24" stroke="#fff" stroke-width="1.4"/>
-        <rect class="a" x="6" y="7" width="14" height="2.4" fill="#fff"/>
-        <rect class="c" x="6" y="12" width="9.5" height="2.4"/>
-        <rect class="a" x="6" y="17" width="5.5" height="2.4" fill="#fff" opacity=".5"/>
-      </svg>
-      <span class="bn">Coorte</span>
-    </a>
-    <nav class="navlinks">
-      <a href="index.html#metodo">Método</a>
-      <a href="index.html#casos">Casos</a>
-      <a href="index.html#servicos">Serviços</a>
-      <a href="sobre.html" style="opacity:.6">Sobre</a>
-    </nav>
-    <a class="btn" href="index.html#contato">Contato</a>
-  </div>
-</header>
+<div class="top">
+  <a class="brand" href="index.html" aria-label="Coorte · início">
+    <!-- marca: coorte-opcao-02-mono.svg -->
+    <svg class="logo" viewBox="108 28 570 104" role="img" aria-label="Coorte">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-top"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-top)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg>
+    <span class="tag">| CIÊNCIA DE DADOS EM SAÚDE</span>
+  </a>
+  <nav class="nav" aria-label="Seções">
+    <a href="index.html#metodo">Método</a>
+    <a href="index.html#casos">Casos</a>
+    <a href="index.html#servicos">Serviços</a>
+    <a href="sobre.html" aria-current="page">Sobre</a>
+    <a class="cta" href="index.html#contato">Contato <span aria-hidden="true">→</span></a>
+  </nav>
+</div>
 
-<main>
+<main id="topo">
 
-<div class="subhero">
-  <div class="wrap">
-    <span class="eyebrow">Sobre</span>
-    <h1>Medicina, epidemiologia<br>e engenharia de dados<br>na mesma sala.</h1>
-    <p class="sub">É o que evita a análise tecnicamente correta e clinicamente irrelevante — e o contrário.</p>
+<div class="hero" id="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="hero-g sb">
+    <div class="hero-l">
+      <div class="inner">
+        <div class="k" style="margin-bottom:22px">Sobre</div>
+        <h1 class="sb-h">Medicina, epidemiologia<br>e engenharia de dados<br><span>na mesma sala.</span></h1>
+        <p class="sub" style="max-width:40ch">É o que evita a análise tecnicamente correta e clinicamente irrelevante.</p>
+      </div>
+    </div>
+    <div class="hero-r" aria-hidden="true"></div>
   </div>
 </div>
 
-<section>
-  <div class="wrap prose">
-    <h2>Quem somos</h2>
+<div class="ticker" aria-hidden="true">
+  <div>Medicina</div><div>Epidemiologia</div><div>Engenharia de dados</div><div>Pesquisa</div><div>Governança</div>
+</div>
+
+<!-- 01 QUEM SOMOS -->
+<section class="row" id="quem-somos">
+  <div class="rail"><div class="no">01</div><div class="k">Quem somos</div></div>
+  <div class="prose">
     <div>
-      <p><strong>A Coorte nasceu dentro de projetos de pesquisa reais</strong>, não de um plano de negócios. Ao buscar resolver problemas concretos de pesquisa, desenvolvemos ferramentas para análise de dados epidemiológicos em tempo real.</p>
-      <p>Dois médicos-pesquisadores, de gerações diferentes, unem IA de ponta a décadas de experiência resolvendo problemas reais de pesquisa. O resultado são soluções que evoluem para negócios.</p>
-      <p>A capacidade de analisar dados em tempo real transforma a forma como as empresas detectam problemas e ajustam seus objetivos. À medida que esses dados se acumulam e passam a ser compreendidos em profundidade, tornam possível desenvolver algoritmos preditivos robustos — moldados ao contexto específico de cada empresa.</p>
+      <h2>Nascida dentro<br>da pesquisa.</h2>
+    </div>
+    <div>
+      <p><strong>A Coorte nasceu dentro de projetos de pesquisa reais.</strong> Ao buscar resolver problemas concretos da saúde, desenvolvemos ferramentas para análise de dados em tempo real.</p>
+      <p>Médicos, pesquisadores e empreendedores de gerações diferentes unem metodologia e experiência para resolver problemas reais. O resultado são soluções que evoluem para tomada de decisões seguras.</p>
     </div>
   </div>
 </section>
 
-<section style="background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-top:88px">
-  <div class="wrap">
-    <div class="head"><div><span class="eyebrow">Equipe</span><h2>Quem faz.</h2></div></div>
-    <div class="people">
-
-      <div class="person">
-        <div class="ph"><img src="img/paulo-suen-637x478.jpg" width="637" height="478" loading="lazy" decoding="async" alt="Retrato de Paulo Suen"></div>
-        <div class="bd">
-          <h3>Paulo Jeng Chian Suen</h3>
-          <div class="role">Direção científica · MD, PhD</div>
-          <p>Engenheiro, médico e cientista de dados, com doutorado pela Faculdade de Medicina da USP. Atua na fronteira entre clínica, epidemiologia e engenharia de dados.</p>
-          <p style="margin-top:12px">Passou por redes municipais de saúde, complexos hospitalares terciários e pesquisa acadêmica, com prática forte em integração de dados de prontuário, laboratório, microbiologia e prescrição em escala hospitalar e municipal.</p>
-          <div class="todo">A preencher: link do Lattes/ORCID.</div>
-        </div>
+<!-- 02 EQUIPE -->
+<section class="row" id="equipe">
+  <div class="rail">
+    <div class="no">02</div><div class="k">Equipe</div><div class="dash"></div>
+    <h2 class="side">Quem faz.</h2>
+  </div>
+  <div class="people">
+    <article class="person">
+      <div class="ph"><img src="img/paulo-suen-637x478.jpg" width="637" height="478" loading="lazy" decoding="async" alt="Retrato de Paulo Suen"></div>
+      <div class="bd">
+        <div class="no">01</div>
+        <h3>Paulo Suen</h3>
+        <div class="role">Direção científica · MD, PhD</div>
+        <p>Engenheiro, médico e cientista de dados, com doutorado pela Faculdade de Medicina da USP. Atua na fronteira entre clínica, epidemiologia e engenharia de dados.</p>
+        <p>Atuou em redes municipais de saúde, complexos hospitalares terciários e pesquisa acadêmica, com prática forte em integração de dados de prontuário, laboratório, microbiologia e prescrição em escala hospitalar e municipal.</p>
       </div>
-
-      <div class="person">
-        <div class="ph"><img src="img/ester-sabino-760x490.jpg" width="760" height="490" loading="lazy" decoding="async" alt="Retrato de Ester Sabino"></div>
-        <div class="bd">
-          <h3>Ester Sabino</h3>
-          <div class="role">Conselho científico · MD, PhD</div>
-          <p>Professora Titular do Departamento de Patologia da Faculdade de Medicina da USP. Membro da Academia Brasileira de Ciências.</p>
-          <p style="margin-top:12px">Coordenadora de diversos projetos de pesquisa nacionais e internacionais, com mais de 500 artigos publicados em periódicos indexados.</p>
-        </div>
+    </article>
+    <article class="person">
+      <div class="ph"><img src="img/ester-sabino-760x490.jpg" width="760" height="490" loading="lazy" decoding="async" alt="Retrato de Ester Sabino"></div>
+      <div class="bd">
+        <div class="no">02</div>
+        <h3>Ester Sabino</h3>
+        <div class="role">Conselho científico · MD, PhD</div>
+        <p>Professora Titular do Departamento de Patologia da Faculdade de Medicina da USP. Membro da Academia Brasileira de Ciências.</p>
+        <p>Coordenadora de diversos projetos de pesquisa nacionais e internacionais, com mais de 500 artigos publicados em periódicos indexados.</p>
       </div>
-
-      <div class="person">
-        <div class="ph">RETRATO · 4:3</div>
-        <div class="bd">
-          <h3>Henrique</h3>
-          <div class="role">Estratégia e governança</div>
-          <p>Economista pelo Insper e mestre em economia e finanças pela FGV, com fellowship no MIT. Mais de dez anos de experiência em consultoria, finanças e novos negócios.</p>
-          <p style="margin-top:12px">Passou por indústrias como serviços médicos, banking, imobiliário e jurídico, com prática forte de governança financeira, de dados e corporativa.</p>
-          <div class="todo">A preencher: sobrenome, retrato e link do LinkedIn.</div>
-        </div>
+    </article>
+    <article class="person">
+      <div class="ph"><img src="img/henrique-lorenzi-400x399.jpg" width="400" height="399" loading="lazy" decoding="async" alt="Retrato de Henrique Lorenzi" style="object-position:50% 30%"></div>
+      <div class="bd">
+        <div class="no">03</div>
+        <h3>Henrique Lorenzi</h3>
+        <div class="role">Estratégia e governança</div>
+        <p>Economista pelo Insper e mestre em economia e finanças pela FGV, com fellowship no MIT. Mais de dez anos de experiência em consultoria, finanças e novos negócios.</p>
+        <p>Passou por indústrias como serviços médicos, banking, imobiliário e jurídico, com prática forte de governança financeira, de dados e corporativa.</p>
       </div>
-
-    </div>
+    </article>
   </div>
 </section>
 
-<section class="svc">
-  <div class="wrap">
-    <div class="head"><div><span class="eyebrow">Como trabalhamos</span><h2>Três compromissos.</h2></div></div>
-    <div class="vals">
-      <div class="val"><div class="bar"></div><h3>O dado não precisa sair de casa</h3><p>Trabalhamos dentro da infraestrutura da instituição, com trilha de auditoria. Nuvem só quando é escolha do cliente.</p></div>
-      <div class="val"><div class="bar"></div><h3>Ética e base legal antes da primeira linha</h3><p>Comitê de ética, termo de uso de dados de registro eletrônico e adequação à LGPD entram no escopo, não no improviso.</p></div>
-      <div class="val"><div class="bar"></div><h3>Limitação declarada é entrega</h3><p>Dizemos o que o dado não permite concluir com a mesma clareza com que dizemos o que ele permite.</p></div>
-    </div>
+<!-- 03 COMO TRABALHAMOS -->
+<section class="row" id="compromissos">
+  <div class="rail">
+    <div class="no">03</div><div class="k">Como trabalhamos</div><div class="dash"></div>
+    <h2 class="side">Três compromissos.</h2>
+  </div>
+  <div class="vals">
+    <div><div class="num">01</div><h3>O dado não precisa sair de casa</h3><p>Trabalhamos dentro da infraestrutura da instituição, com trilha de auditoria. Nuvem só quando é escolha do cliente.</p></div>
+    <div><div class="num">02</div><h3>Ética e base legal antes da primeira linha</h3><p>Comitê de ética, termo de uso de dados de registro eletrônico e adequação à LGPD entram no escopo, não no improviso.</p></div>
+    <div><div class="num">03</div><h3>Limitação declarada é entrega</h3><p>Dizemos o que o dado não permite concluir com a mesma clareza com que dizemos o que ele permite.</p></div>
   </div>
 </section>
 
-<section>
-  <div class="wrap" style="text-align:center">
-    <h2 style="font-size:clamp(30px,4.2vw,48px);letter-spacing:-.025em;line-height:1.06">Vamos conversar sobre seus dados.</h2>
-    <div style="margin-top:30px"><a class="btn" href="index.html#contato">Entrar em contato</a></div>
+<!-- CONTATO -->
+<section class="contato" id="contato">
+  <div class="ct-l">
+    <h2>Vamos conversar<br>sobre seus dados.</h2>
+    <div class="btns">
+      <a class="btn light" href="index.html#contato">Entrar em contato →</a>
+      <a class="btn ghost" href="index.html#casos" style="background:transparent;border-color:rgba(238,242,250,.45);color:var(--on-klein)">Ver os casos</a>
+    </div>
+  </div>
+  <div class="ct-r">
+    <svg class="logo" viewBox="108 28 570 104" aria-hidden="true">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-foot"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-foot)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg>
+    <div class="ct-direct">
+      <span>Direto</span>
+      <a href="mailto:contato@coorte.com.br">contato@coorte.com.br</a>
+      <span>São Paulo · Brasil</span>
+    </div>
+    <nav class="ct-links" aria-label="Rodapé">
+      <a href="index.html#metodo">Método</a><a href="index.html#casos">Casos</a><a href="index.html#servicos">Serviços</a><a href="sobre.html">Sobre</a>
+    </nav>
+    <div class="ct-foot">
+      <span>© 2026 Coorte<br>Ciência de dados em saúde<br>Telas de demonstração com dados fictícios.</span>
+      <span>006</span>
+    </div>
   </div>
 </section>
 
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <div>© 2026 Coorte · Ciência de dados em saúde</div>
-    <div class="lk"><a href="index.html#metodo">Método</a><a href="index.html#casos">Casos</a><a href="index.html#servicos">Serviços</a><a href="index.html#contato">Contato</a></div>
-    <div>contato@coorte.com.br</div>
-  </div>
-</footer>
-
 <script>
-const hd=document.getElementById('hd');
-const onScroll=()=>hd.classList.toggle('solid',window.scrollY>60);
-onScroll();addEventListener('scroll',onScroll,{passive:true});
+/* Hero: rede acoplada — núcleo denso, hubs em anel, folhas em leque.
+   Semente fixa: o desenho é sempre o mesmo. O cursor puxa os nós. */
+(function(){
+  var host=document.getElementById('hero'), cv=document.getElementById('net'); if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ACCENT='#002FA7', STRENGTH=1, DENSITY=1, SPEED=.45;
+  var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
+  var nodes=[],links=[],raf=0,visible=true;
+  var mouse={x:-9999,y:-9999,tx:-9999,ty:-9999,active:false};
+
+  function build(){
+    var s=20260918; function rnd(){return (s=(s*1664525+1013904223)%4294967296)/4294967296;}
+    nodes.length=0; links.length=0;
+    var narrow=W<900;
+    var cx=W*(narrow?.62:.62), cy=H*(narrow?.7:.48);
+    var R=Math.min(W*(narrow?.9:.62),H)*(narrow?.62:.86);
+    function add(x,y,r,kind){nodes.push({hx:x,hy:y,x:x,y:y,vx:0,vy:0,r:r,kind:kind,ph:rnd()*6.283});return nodes.length-1;}
+    var core=add(cx,cy,2.6,'core'), coreIdx=[core];
+    for(var i=0,n=Math.round(90*DENSITY);i<n;i++){
+      var a=rnd()*Math.PI*2, d=Math.pow(rnd(),.7)*R*.2;
+      var id=add(cx+Math.cos(a)*d,cy+Math.sin(a)*d,1.3+rnd()*.9,'core');
+      coreIdx.push(id);
+      links.push({a:id,b:coreIdx[Math.floor(rnd()*coreIdx.length)],w:.55,hot:rnd()<.12});
+    }
+    var hubs=Math.round(26*DENSITY);
+    for(var h=0;h<hubs;h++){
+      var ha=(h/hubs)*Math.PI*2+rnd()*.22, hd=R*(.36+rnd()*.56);
+      var hid=add(cx+Math.cos(ha)*hd,cy+Math.sin(ha)*hd,2.1+rnd()*1.1,'hub');
+      links.push({a:hid,b:coreIdx[Math.floor(rnd()*coreIdx.length)],w:1.15,hot:rnd()<.22});
+      var fan=6+Math.floor(rnd()*22);
+      for(var f=0;f<fan;f++){
+        var sa=ha+(rnd()-.5)*.85, sd=hd+R*(.05+rnd()*.28);
+        var lid=add(cx+Math.cos(sa)*sd,cy+Math.sin(sa)*sd,.9+rnd()*.8,'leaf');
+        links.push({a:lid,b:hid,w:.5,hot:rnd()<.08});
+        if(rnd()<.1){
+          var ta=sa+(rnd()-.5)*.4, td=sd+R*.07;
+          var tid=add(cx+Math.cos(ta)*td,cy+Math.sin(ta)*td,.8,'leaf');
+          links.push({a:tid,b:lid,w:.4,hot:false});
+        }
+      }
+    }
+    for(var j=0,m=Math.round(38*DENSITY);j<m;j++){
+      links.push({a:Math.floor(rnd()*nodes.length),b:Math.floor(rnd()*nodes.length),w:.45,hot:rnd()<.35});
+    }
+  }
+
+  function resize(){
+    var r=host.getBoundingClientRect();
+    W=Math.max(320,r.width); H=Math.max(320,r.height);
+    cv.width=W*dpr; cv.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    build(); if(reduce) draw();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.lineCap='round';
+    var half=Math.min(W,H)*.5;
+    for(var i=0;i<links.length;i++){
+      var l=links[i], a=nodes[l.a], b=nodes[l.b];
+      var st=Math.min(1,Math.hypot(a.x-b.x,a.y-b.y)/half);
+      ctx.strokeStyle=l.hot?'rgba(16,19,24,'+(.1+st*.14).toFixed(3)+')':'rgba(0,47,167,'+(.13+st*.24).toFixed(3)+')';
+      ctx.lineWidth=l.w*(1-st*.4);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+    for(var k=0;k<nodes.length;k++){
+      var n=nodes[k];
+      ctx.fillStyle=n.kind==='leaf'?'rgba(16,19,24,.5)':ACCENT;
+      ctx.globalAlpha=n.kind==='leaf'?.85:.9;
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,6.2832); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  var t=0;
+  function tick(){
+    raf=0;
+    t+=.0022*SPEED*4;
+    /* o próprio cursor é suavizado: a puxada é sem pressa */
+    mouse.x+=(mouse.tx-mouse.x)*.045; mouse.y+=(mouse.ty-mouse.y)*.045;
+    var radius=Math.min(W,H)*.5, pull=150*STRENGTH*SPEED;
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      n.vx+=(n.hx+Math.sin(t+n.ph)*2.4-n.x)*.0055;
+      n.vy+=(n.hy+Math.cos(t*.9+n.ph)*2.4-n.y)*.0055;
+      if(mouse.active){
+        var dx=mouse.x-n.x, dy=mouse.y-n.y, dist=Math.hypot(dx,dy)+.001;
+        if(dist<radius){
+          var f=Math.pow(1-dist/radius,2)*pull/(dist+40);
+          n.vx+=dx*f*.05; n.vy+=dy*f*.05;
+          if(dist<38){n.vx-=dx/dist*.28; n.vy-=dy/dist*.28;}
+        }
+      }
+      n.vx*=.955; n.vy*=.955; n.x+=n.vx; n.y+=n.vy;
+    }
+    draw();
+    if(visible) raf=requestAnimationFrame(tick);
+  }
+  function start(){ if(!reduce && !raf && visible) raf=requestAnimationFrame(tick); }
+
+  host.addEventListener('pointermove',function(e){
+    if(e.pointerType!=='mouse') return;
+    var r=cv.getBoundingClientRect();
+    mouse.tx=e.clientX-r.left; mouse.ty=e.clientY-r.top;
+    if(!mouse.active){mouse.x=mouse.tx; mouse.y=mouse.ty;}
+    mouse.active=true;
+  });
+  host.addEventListener('pointerleave',function(){mouse.active=false;});
+
+  resize();
+  new ResizeObserver(resize).observe(host);
+  /* fora da tela, a animação para */
+  new IntersectionObserver(function(es){
+    visible=es[0].isIntersecting;
+    if(visible) start(); else if(raf){cancelAnimationFrame(raf); raf=0;}
+  }).observe(host);
+  start();
+})();
 </script>
 </body>
 </html>
