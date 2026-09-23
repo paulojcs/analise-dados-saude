@@ -38,7 +38,10 @@ section,[id]{scroll-margin-top:56px}
 /* ---------- topo ---------- */
 .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;
   padding:12px 28px;border-bottom:1px solid var(--rule);
-  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:background .35s ease,border-color .35s ease}
+/* depois do hero, o topo ganha um véu azul-acinzentado, como se o Klein estivesse por trás do vidro */
+.top.past{background:color-mix(in srgb,color-mix(in srgb,var(--klein) 11%,var(--bg)) 92%,transparent);border-bottom-color:rgba(0,47,167,.16)}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
 .brand:hover{color:var(--ink)}
 /* marca: coorte-opcao-02-mono.svg, recortada ao desenho; as cores vêm dos tokens */
@@ -138,8 +141,6 @@ fieldset{border:0;margin:0;padding:0}
   background:var(--klein);color:var(--on-klein);font:400 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .foot a{color:var(--on-klein)}
 .foot a:hover{color:#fff;text-decoration:underline}
-.foot nav{display:flex;flex-wrap:wrap;gap:6px 18px}
-.foot .note{opacity:.65}
 .foot .logo{height:16px}
 .foot .logo .lg-a,.foot .logo .lg-b{stroke:var(--on-klein)}
 .foot .logo .lg-a{opacity:.62}
@@ -168,7 +169,6 @@ fieldset{border:0;margin:0;padding:0}
 .person .ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.02);transition:filter .5s ease}
 .person:hover .ph img{filter:none}
 .person .bd{padding:24px 26px 30px;display:flex;flex-direction:column;gap:12px;flex:1}
-.person .no{font:500 11.5px/1 var(--mono);letter-spacing:.12em;color:var(--klein)}
 .person h3{font-size:24px;line-height:1.05}
 .person .role{font:500 11.5px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein)}
 .person p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
@@ -242,7 +242,7 @@ fieldset{border:0;margin:0;padding:0}
 
 <!-- 01 QUEM SOMOS -->
 <section class="row" id="quem-somos">
-  <div class="rail"><div class="no">01</div><div class="k">Quem somos</div></div>
+  <div class="rail"><div class="no">01</div><div class="k">Quem somos</div><div class="dash"></div></div>
   <div class="prose">
     <div>
       <h2>Nascida dentro<br>da pesquisa.</h2>
@@ -263,7 +263,6 @@ fieldset{border:0;margin:0;padding:0}
     <article class="person">
       <div class="ph"><img src="img/paulo-suen-637x478.jpg" width="637" height="478" loading="lazy" decoding="async" alt="Retrato de Paulo Suen"></div>
       <div class="bd">
-        <div class="no">01</div>
         <h3>Paulo Suen</h3>
         <div class="role">Direção científica · MD, PhD</div>
         <p>Engenheiro, médico e cientista de dados, com doutorado pela Faculdade de Medicina da USP. Atua na fronteira entre clínica, epidemiologia e engenharia de dados.</p>
@@ -273,7 +272,6 @@ fieldset{border:0;margin:0;padding:0}
     <article class="person">
       <div class="ph"><img src="img/ester-sabino-760x490.jpg" width="760" height="490" loading="lazy" decoding="async" alt="Retrato de Ester Sabino"></div>
       <div class="bd">
-        <div class="no">02</div>
         <h3>Ester Sabino</h3>
         <div class="role">Conselho científico · MD, PhD</div>
         <p>Professora Titular do Departamento de Patologia da Faculdade de Medicina da USP. Membro da Academia Brasileira de Ciências.</p>
@@ -283,9 +281,8 @@ fieldset{border:0;margin:0;padding:0}
     <article class="person">
       <div class="ph"><img src="img/henrique-lorenzi-400x399.jpg" width="400" height="399" loading="lazy" decoding="async" alt="Retrato de Henrique Lorenzi" style="object-position:50% 30%"></div>
       <div class="bd">
-        <div class="no">03</div>
         <h3>Henrique Lorenzi</h3>
-        <div class="role">Estratégia e governança</div>
+        <div class="role">Estratégia e governança · MS</div>
         <p>Economista pelo Insper e mestre em economia e finanças pela FGV, com fellowship no MIT. Mais de dez anos de experiência em consultoria, finanças e novos negócios.</p>
         <p>Passou por indústrias como serviços médicos, banking, imobiliário e jurídico, com prática forte de governança financeira, de dados e corporativa.</p>
       </div>
@@ -339,7 +336,6 @@ fieldset{border:0;margin:0;padding:0}
         <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
       </g>
     </svg></a>
-  <nav aria-label="Rodapé"><a href="index.html#metodo">Método</a><a href="index.html#casos">Casos</a><a href="index.html#servicos">Serviços</a><a href="sobre.html">Sobre</a><a href="index.html#contato">Contato</a></nav>
   <span>© 2026 Coorte · Ciência de dados em saúde</span>
 </footer>
 
@@ -462,6 +458,15 @@ fieldset{border:0;margin:0;padding:0}
     if(visible) start(); else if(raf){cancelAnimationFrame(raf); raf=0;}
   }).observe(host);
   start();
+})();
+</script>
+<script>
+/* topo: troca de tom quando o hero sai de baixo dele */
+(function(){
+  var top=document.querySelector('.top'), hero=document.getElementById('hero');
+  if(!top||!hero||!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){ top.classList.toggle('past',!es[0].isIntersecting); },
+    {rootMargin:'-'+top.offsetHeight+'px 0px 0px 0px'}).observe(hero);
 })();
 </script>
 </body>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Coorte · Ciência de dados em saúde</title>
-<meta name="description" content="Epidemiologia, análise de dados e produtos digitais para hospitais, redes públicas de saúde e indústria.">
+<meta name="description" content="Epidemiologia, análise de dados e inteligência para hospitais, redes públicas de saúde e indústria.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -38,7 +38,10 @@ section,[id]{scroll-margin-top:56px}
 /* ---------- topo ---------- */
 .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;
   padding:12px 28px;border-bottom:1px solid var(--rule);
-  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:background .35s ease,border-color .35s ease}
+/* depois do hero, o topo ganha um véu azul-acinzentado, como se o Klein estivesse por trás do vidro */
+.top.past{background:color-mix(in srgb,color-mix(in srgb,var(--klein) 11%,var(--bg)) 92%,transparent);border-bottom-color:rgba(0,47,167,.16)}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
 .brand:hover{color:var(--ink)}
 /* marca: coorte-opcao-02-mono.svg, recortada ao desenho; as cores vêm dos tokens */
@@ -110,7 +113,6 @@ section,[id]{scroll-margin-top:56px}
 .sobre>div:last-child{border-right:0;padding:44px 22px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
 .sobre h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04;letter-spacing:-.01em}
 .sobre p.lead{font-size:17px;line-height:1.6;color:var(--t2);text-wrap:pretty}
-.sobre p.small{margin-top:18px;font:400 12px/1.8 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
 .sobre .addr{font:400 12px/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
 .sobre .more{display:inline-block;margin-top:22px;font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase}
 .cross{width:22px;height:22px;border:1px solid var(--klein);border-radius:50%;position:relative}
@@ -370,9 +372,8 @@ section,[id]{scroll-margin-top:56px}
 .svc ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
 .svc li{display:grid;grid-template-columns:10px 1fr;gap:9px;font-size:15px;line-height:1.5;color:var(--t2);text-wrap:pretty}
 .svc li:before{content:"—";color:var(--klein);font-size:12px;line-height:1.9}
-.svc-lead{padding:18px 24px;border-top:1px solid var(--rule-2);grid-column:1/-1;font:400 12px/1.8 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
 @media(max-width:1100px){.svc{grid-template-columns:1fr 1fr}.svc>div:nth-child(2){border-right:0}.svc>div:nth-child(-n+2){border-bottom:1px solid var(--rule-2)}}
-@media(max-width:600px){.svc{grid-template-columns:1fr}.svc>div{border-right:0!important;border-bottom:1px solid var(--rule-2);padding:26px 20px}.svc-lead{padding:18px 20px}}
+@media(max-width:600px){.svc{grid-template-columns:1fr}.svc>div{border-right:0!important;border-bottom:1px solid var(--rule-2);padding:26px 20px}}
 
 /* ---------- 06 governança ---------- */
 .gov{position:relative;overflow:hidden}
@@ -423,8 +424,6 @@ fieldset{border:0;margin:0;padding:0}
   background:var(--klein);color:var(--on-klein);font:400 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .foot a{color:var(--on-klein)}
 .foot a:hover{color:#fff;text-decoration:underline}
-.foot nav{display:flex;flex-wrap:wrap;gap:6px 18px}
-.foot .note{opacity:.65}
 .foot .logo{height:16px}
 .foot .logo .lg-a,.foot .logo .lg-b{stroke:var(--on-klein)}
 .foot .logo .lg-a{opacity:.62}
@@ -489,12 +488,11 @@ fieldset{border:0;margin:0;padding:0}
 
 <!-- 01 SOBRE -->
 <section class="row" id="sobre">
-  <div class="rail"><div class="no">01</div><div class="k">Sobre</div></div>
+  <div class="rail"><div class="no">01</div><div class="k">Sobre</div><div class="dash"></div></div>
   <div class="sobre">
     <div><h2>Do dado<br>à decisão.</h2></div>
     <div>
-      <p class="lead">Epidemiologia, análise de dados e produtos digitais para hospitais, redes públicas de saúde e indústria.</p>
-      <p class="small">Contratado como projeto, como parceria de pesquisa ou como desenvolvimento de produto.</p>
+      <p class="lead">Epidemiologia, análise de dados e inteligência para hospitais, redes públicas de saúde e indústria.</p>
       <a class="more" href="sobre.html">Quem somos →</a>
     </div>
     <div>
@@ -508,7 +506,6 @@ fieldset{border:0;margin:0;padding:0}
 <section class="row" id="metodo">
   <div class="rail">
     <div class="no">02</div><div class="k">Método</div><div class="dash"></div>
-    <div class="note">Abra cada etapa</div>
   </div>
   <div class="metodo">
     <div class="st">
@@ -694,7 +691,6 @@ fieldset{border:0;margin:0;padding:0}
 <section class="row" id="casos">
   <div class="rail">
     <div class="no">03</div><div class="k">Casos</div><div class="dash"></div>
-    <div class="note">Figuras representam o formato do que entregamos; todos os dados são fictícios.</div>
   </div>
   <div class="cs">
     <article class="cs-card cs1" data-p="cs1-p">
@@ -858,7 +854,7 @@ fieldset{border:0;margin:0;padding:0}
     <div>
       <div class="num">02</div>
       <div class="nm"><span>Análise e evidência</span><i></i><b>▸</b></div>
-      <ul><li>Coortes retrospectivas sobre o dado de rotina</li><li>Avaliação de intervenção e série temporal interrompida</li><li>Modelos de risco e predição de desfecho</li><li>Equidade, território e indicadores de rede</li></ul>
+      <ul><li>Coortes retrospectivas sobre o dado de rotina</li><li>Avaliação de intervenção e série temporal interrompida</li><li>Modelos de risco e predição de desfecho</li><li>Equidade, acesso, território e indicadores de rede</li></ul>
     </div>
     <div>
       <div class="num">03</div>
@@ -870,7 +866,6 @@ fieldset{border:0;margin:0;padding:0}
       <div class="nm"><span>Entrega e governança</span><i></i><b>▸</b></div>
       <ul><li>Auditoria clínica e adesão a diretriz</li><li>Manuscrito, parecer e submissão a comitê de ética</li><li>Código, pipeline e treinamento da equipe</li></ul>
     </div>
-    <div class="svc-lead">Contratado como projeto, como parceria de pesquisa ou como desenvolvimento de produto.</div>
   </div>
 </section>
 
@@ -880,7 +875,7 @@ fieldset{border:0;margin:0;padding:0}
   <div class="gov">
     <div class="big" aria-hidden="true">4</div>
     <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Governança e reprodutibilidade em todas as etapas.</p></div>
-    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Uma base, um dicionário, uma versão: tudo que vem depois lê daqui.</p></div>
+    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Sua base de dados organizada, no seu ambiente.</p></div>
     <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Código e orquestração entregues ao cliente.</p></div>
     <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O pipeline roda dentro da sua infraestrutura.</p></div>
   </div>
@@ -893,7 +888,6 @@ fieldset{border:0;margin:0;padding:0}
     <div class="ct-l">
       <h2>Fale com<br>a gente.</h2>
       <div class="ct-direct">
-        <span>Direto</span>
         <a href="mailto:contato@coorte.com.br">contato@coorte.com.br</a>
         <span>São Paulo · Brasil</span>
       </div>
@@ -939,9 +933,7 @@ fieldset{border:0;margin:0;padding:0}
         <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
       </g>
     </svg></a>
-  <nav aria-label="Rodapé"><a href="#metodo">Método</a><a href="#casos">Casos</a><a href="#servicos">Serviços</a><a href="sobre.html">Sobre</a><a href="#contato">Contato</a></nav>
   <span>© 2026 Coorte · Ciência de dados em saúde</span>
-  <span class="note">Telas de demonstração com dados fictícios.</span>
 </footer>
 
 <script>
@@ -2050,6 +2042,15 @@ function fitFigures() {
 }
 fitFigures();
 addEventListener('resize', fitFigures);
+})();
+</script>
+<script>
+/* topo: troca de tom quando o hero sai de baixo dele */
+(function(){
+  var top=document.querySelector('.top'), hero=document.getElementById('hero');
+  if(!top||!hero||!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(es){ top.classList.toggle('past',!es[0].isIntersecting); },
+    {rootMargin:'-'+top.offsetHeight+'px 0px 0px 0px'}).observe(hero);
 })();
 </script>
 </body>
