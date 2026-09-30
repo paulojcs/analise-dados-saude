@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidade · Coorte</title>
+<meta name="description" content="Como a Coorte trata os dados pessoais recebidos pelo site, nos termos da LGPD.">
+<!-- RASCUNHO: remover o noindex depois da revisão jurídica -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+/* fundo "gelo": frio e levemente azulado, no lugar do off-white quente do protótipo */
+:root{
+  color-scheme:light;
+  --bg:#EDF1F5; --bg-2:#E2E8EF; --bg-hi:#F6F8FA;
+  --ink:#101318;
+  --t2:rgba(16,19,24,.68); --t3:rgba(16,19,24,.46); --t4:rgba(16,19,24,.34);
+  --rule:rgba(16,19,24,.14); --rule-2:rgba(16,19,24,.09);
+  --klein:#002FA7; --klein-deep:#00207A; --klein-2:#2F5BD3; --klein-tint:#C9D5EF; --klein-wash:rgba(0,47,167,.05);
+  --on-klein:#EEF2FA;
+  --signal:#D9482B; --ok:#1F9A7E;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --narrow:"Archivo Narrow","Archivo",sans-serif;
+  --rail:172px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:"Archivo",Helvetica,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .3s}
+h1,h2,h3,h4{font-family:var(--narrow);font-weight:700;margin:0;text-transform:uppercase;letter-spacing:-.005em}
+p{margin:0}
+a{color:var(--klein);text-decoration:none}
+a:hover{color:var(--klein-deep)}
+section,[id]{scroll-margin-top:56px}
+.k{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein)}
+.mono{font-family:var(--mono)}
+
+/* ---------- topo ---------- */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:12px 28px;border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:background .35s ease,border-color .35s ease}
+/* depois do hero, o topo ganha um véu azul-acinzentado, como se o Klein estivesse por trás do vidro */
+.top.past{background:color-mix(in srgb,color-mix(in srgb,var(--klein) 11%,var(--bg)) 92%,transparent);border-bottom-color:rgba(0,47,167,.16)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
+.brand:hover{color:var(--ink)}
+/* marca: coorte-opcao-02-mono.svg, recortada ao desenho; as cores vêm dos tokens */
+.logo{display:block;height:22px;width:auto;aspect-ratio:570/104}
+.logo .lg-a{stroke:var(--klein)}
+.logo .lg-b{stroke:var(--ink)}
+.brand{gap:14px}
+/* sobre o azul, a marca inteira fica clara */
+.brand .tag{font:400 12px/1 var(--mono);letter-spacing:.1em;color:var(--t3)}
+.nav{display:flex;align-items:center;gap:26px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.nav a{color:var(--t2)}
+.nav a:hover{color:var(--klein)}
+.nav a.cta{display:flex;align-items:center;gap:8px;background:var(--klein);color:var(--on-klein);padding:10px 14px}
+.nav a.cta:hover{background:var(--klein-deep);color:var(--on-klein)}
+@media(max-width:1000px){.brand .tag{display:none}}
+@media(max-width:760px){.nav a:not(.cta){display:none}.top{padding:10px 16px}}
+
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;font:500 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--klein);background:var(--klein);color:var(--on-klein);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--klein-deep);border-color:var(--klein-deep);color:var(--on-klein)}
+.btn.ghost{background:color-mix(in srgb,var(--bg) 65%,transparent);border-color:rgba(16,19,24,.3);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--klein);color:var(--klein)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule);background:var(--bg)}
+.hero canvas{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-g{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:600px;pointer-events:none}
+.hero-g a,.hero-g button{pointer-events:auto}
+.hero-l{display:flex;flex-direction:column;justify-content:center;gap:48px;padding:64px 40px 34px 28px;position:relative}
+.hero-l .inner{padding-left:0}
+.hero h1{font-size:clamp(48px,5.8vw,92px);line-height:.92;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 span{color:var(--klein)}
+.hero .sub{margin:22px 0 0;max-width:30ch;font-size:18.5px;line-height:1.5;color:var(--t2)}
+.hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-left:0;
+  font:400 12px/1.7 var(--mono);letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
+.hero-foot b{font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--klein)}
+.ticker{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--rule);background:var(--klein);color:var(--on-klein)}
+.ticker div{flex:1 1 auto;text-align:center;padding:12px 14px;border-right:1px solid rgba(238,242,250,.22);font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.ticker div:last-child{border-right:0}
+
+@media(max-width:900px){
+  .hero-g{grid-template-columns:minmax(0,1fr);min-height:0}
+  .hero-l{padding:48px 20px 28px;gap:36px}
+  .hero-r{min-height:240px}
+}
+
+/* ---------- faixa com trilho de rótulo (o esqueleto do v2) ---------- */
+.row{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+.rail{padding:40px 20px;border-right:1px solid var(--rule)}
+.rail .no{font:700 61.5px/.85 var(--narrow);margin-bottom:10px}
+.rail .k{font-size:11px;letter-spacing:.08em;line-height:1.45}
+.rail .dash{width:26px;height:1px;background:var(--klein);margin-top:10px}
+.rail .note{margin-top:14px;font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.rail h2.side{margin-top:16px;font-size:20px;line-height:1.05;hyphens:auto;-webkit-hyphens:auto}
+@media(max-width:900px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .rail{border-right:0;border-bottom:1px solid var(--rule);padding:22px 20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .rail .no{font-size:36px;margin:0}
+  .rail .dash{display:none}
+  .rail .note{margin:0;flex-basis:100%}
+  .rail h2.side{margin:0;flex-basis:100%;font-size:27px}
+}
+
+
+/* ---------- contato: uma seção como as outras ---------- */
+.ct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.ct-l{padding:44px 32px;border-right:1px solid var(--rule);display:flex;flex-direction:column;justify-content:space-between;gap:34px}
+.ct-l h2{font-size:clamp(40px,4.8vw,76px);line-height:.94;letter-spacing:-.015em}
+.ct-direct{display:flex;flex-direction:column;gap:10px;font:400 13px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.ct-r{padding:44px 32px}
+.ct-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+form{display:grid;gap:16px;max-width:640px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ct label,.ct legend{font:400 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:8px;padding:0}
+.ct input,.ct textarea{width:100%;padding:12px 14px;border:1px solid var(--rule);background:var(--bg-hi);font:inherit;font-size:16px;color:var(--ink);border-radius:0}
+.ct input:focus,.ct textarea:focus{outline:none;border-color:var(--klein);background:#fff}
+.ct textarea{resize:vertical;min-height:110px}
+fieldset{border:0;margin:0;padding:0}
+.tipos{display:flex;flex-wrap:wrap;gap:8px}
+.tipos label{margin:0;cursor:pointer}
+.tipos input{position:absolute;opacity:0;width:1px;height:1px}
+.tipos span{display:inline-block;border:1px solid rgba(0,47,167,.3);padding:8px 11px;font:400 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein);transition:.15s}
+.tipos input:checked+span{background:var(--klein);color:var(--on-klein);border-color:var(--klein)}
+.tipos input:focus-visible+span{outline:2px solid var(--klein);outline-offset:2px}
+.form-ok{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
+@media(max-width:900px){
+  .ct{grid-template-columns:minmax(0,1fr)}
+  .ct-l{border-right:0;border-bottom:1px solid var(--rule-2);padding:28px 20px}
+  .ct-r{padding:28px 20px}
+  .f2{grid-template-columns:1fr}
+}
+
+/* ---------- rodapé: faixa fina ---------- */
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;padding:16px 28px;
+  background:var(--klein);color:var(--on-klein);font:400 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.foot a{color:var(--on-klein)}
+.foot a:hover{color:#fff;text-decoration:underline}
+.foot .logo{height:16px}
+.foot .logo .lg-a,.foot .logo .lg-b{stroke:var(--on-klein)}
+.foot .logo .lg-a{opacity:.62}
+@media(max-width:760px){.foot{padding:16px 20px;justify-content:flex-start}}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ---------- sobre: abertura ---------- */
+.hero-g.sb{min-height:520px}
+.hero h1.sb-h{font-size:clamp(40px,4.6vw,76px);line-height:.95}
+.nav a[aria-current]{color:var(--klein)}
+
+/* ---------- 01 quem somos ---------- */
+.prose{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.prose>div{padding:44px 32px}
+.prose>div:first-child{border-right:1px solid var(--rule)}
+.prose h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04}
+.prose p{font-size:17px;line-height:1.65;color:var(--t2);text-wrap:pretty;max-width:62ch}
+.prose p+p{margin-top:18px}
+.prose p strong{color:var(--ink);font-weight:600}
+
+/* ---------- 02 equipe ---------- */
+.people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.person{display:flex;flex-direction:column;border-right:1px solid var(--rule-2)}
+.person:last-child{border-right:0}
+.person .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-2);border-bottom:1px solid var(--rule-2)}
+.person .ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.02);transition:filter .5s ease}
+.person:hover .ph img{filter:none}
+.person .bd{padding:24px 26px 30px;display:flex;flex-direction:column;gap:12px;flex:1}
+.person h3{font-size:24px;line-height:1.05}
+.person .role{font:500 11.5px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein)}
+.person p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+
+/* ---------- 03 como trabalhamos ---------- */
+.vals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.vals>div{padding:40px 26px;border-right:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
+.vals>div:last-child{border-right:0}
+.vals .num{font:700 47px/.85 var(--narrow)}
+.vals h3{font-size:20px;line-height:1.12;letter-spacing:.01em}
+.vals h3:after{content:"";display:block;width:26px;height:1px;background:var(--klein);margin-top:14px}
+.vals p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+@media(max-width:1200px) and (min-width:901px){
+  .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vals>div:nth-child(2n){border-right:0}
+  .vals>div:nth-child(-n+2){border-bottom:1px solid var(--rule-2)}
+}
+
+
+@media(max-width:900px){
+  .hero-g.sb{min-height:0}
+  .prose{grid-template-columns:minmax(0,1fr)}
+  .prose>div{padding:28px 20px}
+  .prose>div:first-child{border-right:0;border-bottom:1px solid var(--rule-2)}
+  .people,.vals{grid-template-columns:minmax(0,1fr)}
+  .person,.vals>div{border-right:0;border-bottom:1px solid var(--rule-2)}
+  .vals>div{padding:28px 20px}
+}
+
+/* ---------- política de privacidade ---------- */
+.draft{background:var(--signal);color:#fff;font:500 12px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:10px 28px}
+.pol-h{padding:56px 32px 36px;border-bottom:1px solid var(--rule)}
+.pol-h h1{font-size:clamp(40px,4.6vw,76px);line-height:.95;letter-spacing:-.02em}
+.pol-h h1 span{color:var(--klein)}
+.pol-h p{margin-top:18px;font:400 12px/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.pol{padding:40px 32px 56px;max-width:78ch}
+.pol h2{font-size:22px;line-height:1.1;margin:36px 0 12px}
+.pol h2:first-child{margin-top:0}
+.pol h2 b{font:500 13px/1 var(--mono);color:var(--klein);margin-right:12px;letter-spacing:.06em}
+.pol p,.pol li{font-size:16px;line-height:1.65;color:var(--t2);text-wrap:pretty}
+.pol p+p{margin-top:12px}
+.pol ul{margin:10px 0 0;padding-left:20px;display:grid;gap:6px}
+.pol strong{color:var(--ink);font-weight:600}
+.pol mark{background:rgba(217,72,43,.14);color:var(--ink);padding:0 3px}
+@media(max-width:900px){.pol-h{padding:36px 20px 26px}.pol{padding:28px 20px 40px}.draft{padding:10px 20px}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="index.html" aria-label="Coorte · início">
+    <!-- marca: coorte-opcao-02-mono.svg -->
+    <svg class="logo" viewBox="108 28 570 104" role="img" aria-label="Coorte">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-top"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-top)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg>
+    <span class="tag">| CIÊNCIA DE DADOS EM SAÚDE</span>
+  </a>
+  <nav class="nav" aria-label="Seções">
+    <a href="index.html#metodo">Método</a>
+    <a href="index.html#casos">Casos</a>
+    <a href="index.html#servicos">Serviços</a>
+    <a href="sobre.html">Sobre</a>
+    <a class="cta" href="index.html#contato">Contato <span aria-hidden="true">→</span></a>
+  </nav>
+</div>
+
+<main id="topo">
+
+<div class="draft">Rascunho · aguardando revisão jurídica · não publicar</div>
+
+<div class="row">
+  <div class="rail"><div class="no">§</div><div class="k">Privacidade</div><div class="dash"></div></div>
+  <div>
+    <div class="pol-h">
+      <h1>Política de<br><span>privacidade.</span></h1>
+      <p>Versão 0.1 · rascunho de 30.09.2026</p>
+    </div>
+    <div class="pol">
+      <h2><b>01</b>Quem somos</h2>
+      <p>Este site é mantido pela Coorte (<mark>[razão social]</mark>, CNPJ <mark>[00.000.000/0000-00]</mark>, com sede em <mark>[endereço]</mark>, São Paulo, Brasil), que é a controladora dos dados pessoais tratados por meio dele, nos termos da Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018, LGPD).</p>
+
+      <h2><b>02</b>Que dados recebemos</h2>
+      <p>Só os que você nos envia pelo formulário de contato ou por e-mail:</p>
+      <ul>
+        <li>nome e e-mail;</li>
+        <li>instituição e tipo de instituição, se você informar;</li>
+        <li>o texto da mensagem.</li>
+      </ul>
+      <p>O site não usa cookies de rastreamento, ferramentas de análise de navegação nem publicidade. Como qualquer site, o servidor que o hospeda (Cloudflare) registra dados técnicos de acesso, como endereço IP e navegador, para segurança e funcionamento. As fontes tipográficas são carregadas do Google Fonts, que recebe o endereço IP do visitante.</p>
+      <p>Pedimos que você não inclua na mensagem dados de saúde ou dados de pacientes.</p>
+
+      <h2><b>03</b>Para que usamos</h2>
+      <p>Para responder ao seu contato e, se houver interesse dos dois lados, conduzir a conversa comercial que ele iniciou. A base legal é o procedimento preliminar a contrato a pedido do titular (art. 7º, V, da LGPD) e, no que exceder isso, o nosso legítimo interesse em responder a quem nos procura (art. 7º, IX).</p>
+      <p>Não usamos seus dados para envio de propaganda, não os vendemos e não os compartilhamos com terceiros para fins próprios deles.</p>
+
+      <h2><b>04</b>Com quem compartilhamos</h2>
+      <p>Apenas com os fornecedores que tornam o site e o e-mail possíveis (hospedagem e serviço de e-mail <mark>[nomear o provedor de e-mail]</mark>), que tratam os dados em nosso nome e sob nossas instruções. Alguns desses fornecedores podem armazenar dados fora do Brasil, com as garantias previstas no art. 33 da LGPD.</p>
+
+      <h2><b>05</b>Por quanto tempo guardamos</h2>
+      <p>Mensagens que não se transformam em contrato são apagadas em até <mark>[24 meses]</mark> depois do último contato. Se a conversa virar um contrato, os dados passam a seguir as regras de guarda desse contrato e das obrigações legais aplicáveis.</p>
+
+      <h2><b>06</b>Seus direitos</h2>
+      <p>Você pode, a qualquer momento, pedir para:</p>
+      <ul>
+        <li>confirmar se tratamos dados seus e acessá-los;</li>
+        <li>corrigir dados incompletos, inexatos ou desatualizados;</li>
+        <li>apagar os dados, ou anonimizá-los ou bloqueá-los quando forem desnecessários;</li>
+        <li>saber com quem os compartilhamos;</li>
+        <li>receber os dados em formato portável;</li>
+        <li>se opor a um tratamento baseado em legítimo interesse.</li>
+      </ul>
+      <p>Respondemos em até 15 dias. Você também pode apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+      <h2><b>07</b>Segurança</h2>
+      <p>O site usa conexão cifrada (HTTPS). O acesso às mensagens recebidas é restrito às pessoas da Coorte que precisam delas para responder.</p>
+
+      <h2><b>08</b>Contato e encarregado</h2>
+      <p>Para exercer seus direitos ou tirar dúvidas sobre esta política, escreva para <a href="mailto:contato@coorte.com.br">contato@coorte.com.br</a> <mark>[ou um endereço dedicado, como privacidade@]</mark>. Encarregado pelo tratamento de dados pessoais: <mark>[nome]</mark>.</p>
+
+      <h2><b>09</b>Mudanças</h2>
+      <p>Se esta política mudar, a nova versão será publicada nesta página, com a data de atualização.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer class="foot">
+  <a href="index.html" aria-label="Coorte · início"><svg class="logo" viewBox="108 28 570 104" aria-hidden="true">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-foot"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-foot)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg></a>
+  <span>© 2026 Coorte · Ciência de dados em saúde</span>
+</footer>
+</body>
+</html>
