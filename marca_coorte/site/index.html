@@ -377,6 +377,12 @@ section,[id]{scroll-margin-top:56px}
 }
 
 /* ---------- 05 serviços ---------- */
+.svc-w{min-width:0}
+.svc-h{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:end;padding:40px 26px 30px 24px;border-bottom:1px solid var(--ink)}
+.svc-h h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04;letter-spacing:-.01em;text-wrap:balance}
+.svc-h h2 span{color:var(--klein)}
+.svc-h p{font-size:16px;line-height:1.55;color:var(--t2);max-width:38ch;text-wrap:pretty}
+@media(max-width:900px){.svc-h{grid-template-columns:minmax(0,1fr);gap:12px;padding:26px 20px 22px}}
 .svc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .svc>div{padding:40px 24px;border-right:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
 .svc>div:last-child{border-right:0}
@@ -870,6 +876,11 @@ fieldset{border:0;margin:0;padding:0}
   <div class="rail">
     <div class="no">05</div><div class="k">Serviços</div><div class="dash"></div>
   </div>
+  <div class="svc-w">
+  <div class="svc-h">
+    <h2>Chief Data Officer<br><span>as a service.</span></h2>
+    <p>A liderança de dados da sua instituição — sem precisar montar a área.</p>
+  </div>
   <div class="svc">
     <div>
       <div class="num">01</div>
@@ -891,6 +902,7 @@ fieldset{border:0;margin:0;padding:0}
       <div class="nm"><span>Entrega e governança</span><i></i><b>▸</b></div>
       <ul><li>Auditoria clínica e adesão a diretriz</li><li>Manuscrito, parecer e submissão a comitê de ética</li><li>Código, pipeline e treinamento da equipe</li></ul>
     </div>
+  </div>
   </div>
 </section>
 
