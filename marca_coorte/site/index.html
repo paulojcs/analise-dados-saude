@@ -103,6 +103,9 @@ section,[id]{scroll-margin-top:56px}
 
 /* ---------- faixa com trilho de rótulo (o esqueleto do v2) ---------- */
 .row{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+/* número da seção em marca-d'água, atrás do conteúdo */
+.row[data-no]{position:relative;z-index:0}
+.row[data-no]:before{content:attr(data-no);position:absolute;z-index:-1;left:calc(var(--rail) + 6px);top:-4px;font:700 250px/.8 var(--narrow);letter-spacing:-.02em;color:rgba(0,47,167,.07);pointer-events:none;user-select:none}
 .rail{padding:40px 20px;border-right:1px solid var(--rule)}
 .rail .no{font:700 61.5px/.85 var(--narrow);margin-bottom:10px}
 .rail .k{font-size:11px;letter-spacing:.08em;line-height:1.45}
@@ -110,6 +113,7 @@ section,[id]{scroll-margin-top:56px}
 .rail .note{margin-top:14px;font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
 .rail h2.side{margin-top:16px;font-size:20px;line-height:1.05;hyphens:auto;-webkit-hyphens:auto}
 @media(max-width:900px){
+  .row[data-no]:before{left:auto;right:10px;top:70px;font-size:150px}
   .row{grid-template-columns:minmax(0,1fr)}
   .rail{border-right:0;border-bottom:1px solid var(--rule);padding:22px 20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
   .rail .no{font-size:36px;margin:0}
@@ -513,13 +517,14 @@ fieldset{border:0;margin:0;padding:0}
 </div>
 
 <!-- 01 SOBRE · o que fazemos + serviços -->
-<section class="row" id="sobre">
+<section class="row" id="sobre" data-no="01">
   <div class="rail"><div class="no">01</div><div class="k">Sobre</div><div class="dash"></div></div>
   <div class="sobre-w">
   <div class="sobre">
     <div><h2>Chief Data Officer<br><span>as a service.</span></h2></div>
     <div>
-      <p class="lead">A liderança de dados da sua instituição, sem precisar montar a área.</p>
+      <p class="lead">O dado que nasceu para atender uma pessoa só consegue decidir sobre uma população inteira se houver método que alcance essa escala.</p>
+      <p class="lead">A Coorte constrói o método dentro da sua instituição.</p>
       <a class="more" href="sobre.html">Quem somos →</a>
     </div>
     <div>
@@ -553,7 +558,7 @@ fieldset{border:0;margin:0;padding:0}
 </section>
 
 <!-- 02 MÉTODO · linhas do protótipo; cada uma abre o painel animado do site atual -->
-<section class="row" id="metodo">
+<section class="row" id="metodo" data-no="02">
   <div class="rail">
     <div class="no">02</div><div class="k">Método</div><div class="dash"></div>
   </div>
@@ -742,7 +747,7 @@ fieldset{border:0;margin:0;padding:0}
 </section>
 
 <!-- 03 GOVERNANÇA -->
-<section class="row" id="governanca">
+<section class="row" id="governanca" data-no="03">
   <div class="rail"><div class="no">03</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
   <div class="gov">
     <div class="gov-h"><h2>O dado não conta<br><span>a história que alguém quer.</span></h2></div>
@@ -754,7 +759,7 @@ fieldset{border:0;margin:0;padding:0}
 </section>
 
 <!-- 04 CASOS -->
-<section class="row" id="casos">
+<section class="row" id="casos" data-no="04">
   <div class="rail">
     <div class="no">04</div><div class="k">Casos</div><div class="dash"></div>
   </div>
@@ -805,7 +810,7 @@ fieldset{border:0;margin:0;padding:0}
 </section>
 
 <!-- 05 PUBLICAÇÕES -->
-<section class="row" id="publicacoes">
+<section class="row" id="publicacoes" data-no="05">
   <div class="rail"><div class="no">05</div><div class="k">Publicações</div><div class="dash"></div></div>
   <div class="pubs">
     <div class="pubs-top">
@@ -906,7 +911,7 @@ fieldset{border:0;margin:0;padding:0}
 </section>
 
 <!-- 06 CONTATO -->
-<section class="row" id="contato">
+<section class="row" id="contato" data-no="06">
   <div class="rail"><div class="no">06</div><div class="k">Contato</div><div class="dash"></div></div>
   <div class="ct">
     <div class="ct-l">
