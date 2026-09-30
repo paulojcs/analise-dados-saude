@@ -345,9 +345,8 @@ section,[id]{scroll-margin-top:56px}
 
 /* ---------- 04 publicações ---------- */
 .pubs{padding:36px 32px 40px 28px}
-.pubs-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:end;margin-bottom:34px}
+.pubs-top{margin-bottom:34px}
 .pubs-top h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04}
-.pubs-top p{font-size:16px;color:var(--t2);max-width:38ch}
 .tier{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein);display:flex;align-items:center;gap:14px;margin-bottom:18px}
 .tier i{flex:1;height:1px;background:var(--rule)}
 .bycase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
@@ -371,7 +370,6 @@ section,[id]{scroll-margin-top:56px}
 .pubnote{margin-top:28px;font:400 12px/1.7 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-left:2px solid var(--klein);padding-left:14px;max-width:70ch}
 @media(max-width:900px){
   .pubs{padding:26px 20px 30px}
-  .pubs-top{grid-template-columns:minmax(0,1fr);gap:12px}
   .bycase{grid-template-columns:minmax(0,1fr)}
   .bycase>div{border-right:0;border-bottom:1px solid var(--rule);padding:20px 0!important}
   .capgrid{grid-template-columns:minmax(0,1fr)}
@@ -771,10 +769,9 @@ fieldset{border:0;margin:0;padding:0}
   <div class="rail"><div class="no">04</div><div class="k">Publicações</div><div class="dash"></div></div>
   <div class="pubs">
     <div class="pubs-top">
-      <h2>O mesmo método, revisado por pares.</h2>
-      <p>Alguns exemplos publicados do trabalho por trás dessas telas.</p>
+      <h2>Nosso método revisado por pares.</h2>
     </div>
-    <div class="tier"><span>Por trás de cada tela</span><i></i></div>
+    <div class="tier"><span>Por trás de cada caso</span><i></i></div>
     <div class="bycase">
       <div>
         <div class="bc-h"><b>Caso 01</b></div>
@@ -811,7 +808,7 @@ fieldset{border:0;margin:0;padding:0}
     </div>
 
     <div class="cap">
-      <div class="tier"><span>Capacidades que atravessam as três telas</span><i></i></div>
+      <div class="tier"><span>Outros casos</span><i></i></div>
       <div class="capgrid">
         <div class="why">
           <h4>Vigilância em tempo real</h4>
