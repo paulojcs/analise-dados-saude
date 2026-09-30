@@ -438,6 +438,10 @@ fieldset{border:0;margin:0;padding:0}
 .tipos input:checked+span{background:var(--klein);color:var(--on-klein);border-color:var(--klein)}
 .tipos input:focus-visible+span{outline:2px solid var(--klein);outline-offset:2px}
 .ct-priv{font-size:14px;line-height:1.5;color:var(--t3)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-err{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.form-err a{color:inherit;text-decoration:underline}
+.btn:disabled{opacity:.6;cursor:wait}
 .form-ok{display:none;font:400 13px/1.6 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
 @media(max-width:900px){
   .ct{grid-template-columns:minmax(0,1fr)}
@@ -933,10 +937,10 @@ fieldset{border:0;margin:0;padding:0}
     <div class="ct-r">
       <form id="ct-form">
         <div class="f2">
-          <div><label for="n">Nome</label><input id="n" required autocomplete="name"></div>
-          <div><label for="e">E-mail</label><input id="e" type="email" required autocomplete="email"></div>
+          <div><label for="n">Nome</label><input id="n" required maxlength="120" autocomplete="name"></div>
+          <div><label for="e">E-mail</label><input id="e" type="email" required maxlength="200" autocomplete="email"></div>
         </div>
-        <div><label for="i">Instituição</label><input id="i" autocomplete="organization"></div>
+        <div><label for="i">Instituição</label><input id="i" maxlength="200" autocomplete="organization"></div>
         <fieldset>
           <legend>Tipo</legend>
           <div class="tipos">
@@ -947,13 +951,15 @@ fieldset{border:0;margin:0;padding:0}
             <label><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
           </div>
         </fieldset>
-        <div><label for="m">O que você quer resolver</label><textarea id="m"></textarea></div>
+        <div><label for="m">O que você quer resolver</label><textarea id="m" maxlength="5000"></textarea></div>
         <div class="ct-btns">
           <button class="btn" type="submit">Enviar mensagem →</button>
           <a class="btn ghost" href="#casos">Ver os casos</a>
         </div>
         <p class="ct-priv">Usamos seus dados só para responder. <a href="privacidade.html">Política de privacidade →</a></p>
-        <p class="form-ok">Mensagem registrada. (Formulário de demonstração — conectar ao e-mail ou CRM.)</p>
+        <div class="hp" aria-hidden="true"><label for="ct-site">Site</label><input id="ct-site" tabindex="-1" autocomplete="off"></div>
+        <p class="form-ok" role="status">Mensagem enviada. Respondemos em breve.</p>
+        <p class="form-err" role="alert">Não foi possível enviar. Tente de novo ou escreva para <a href="mailto:contato@coorte.io">contato@coorte.io</a>.</p>
       </form>
     </div>
   </div>
@@ -1142,9 +1148,24 @@ fieldset{border:0;margin:0;padding:0}
 </script>
 
 <script>
-document.getElementById('ct-form').addEventListener('submit',function(e){
-  e.preventDefault(); this.querySelector('.form-ok').style.display='block';
-});
+/* Contato: envia para /api/contato (worker/index.js), que manda o e-mail */
+(function(){
+  var f=document.getElementById('ct-form'); if(!f) return;
+  var btn=f.querySelector('button[type=submit]'), ok=f.querySelector('.form-ok'), err=f.querySelector('.form-err'), label=btn.innerHTML;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    ok.style.display='none'; err.style.display='none';
+    btn.disabled=true; btn.textContent='Enviando…';
+    var v=function(id){return document.getElementById(id).value;};
+    fetch('/api/contato',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+      nome:v('n'),email:v('e'),instituicao:v('i'),mensagem:v('m'),site:v('ct-site'),
+      tipo:(f.querySelector('input[name=tipo]:checked')||{}).value
+    })}).then(function(r){return r.json().catch(function(){return {};}).then(function(j){if(!r.ok||!j.ok) throw 0;});})
+    .then(function(){ f.reset(); ok.style.display='block'; })
+    .catch(function(){ err.style.display='block'; })
+    .then(function(){ btn.disabled=false; btn.innerHTML=label; });
+  });
+})();
 </script>
 
 <script>
