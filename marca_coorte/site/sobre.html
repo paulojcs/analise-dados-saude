@@ -174,13 +174,18 @@ fieldset{border:0;margin:0;padding:0}
 .person p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
 
 /* ---------- 03 como trabalhamos ---------- */
-.vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.vals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .vals>div{padding:40px 26px;border-right:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
 .vals>div:last-child{border-right:0}
 .vals .num{font:700 47px/.85 var(--narrow)}
 .vals h3{font-size:20px;line-height:1.12;letter-spacing:.01em}
 .vals h3:after{content:"";display:block;width:26px;height:1px;background:var(--klein);margin-top:14px}
 .vals p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+@media(max-width:1200px) and (min-width:901px){
+  .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vals>div:nth-child(2n){border-right:0}
+  .vals>div:nth-child(-n+2){border-bottom:1px solid var(--rule-2)}
+}
 
 
 @media(max-width:900px){
@@ -296,9 +301,10 @@ fieldset{border:0;margin:0;padding:0}
     <div class="no">03</div><div class="k">Como trabalhamos</div><div class="dash"></div>
   </div>
   <div class="vals">
-    <div><div class="num">01</div><h3>O dado não precisa sair de casa</h3><p>Trabalhamos dentro da infraestrutura da instituição, com trilha de auditoria. Nuvem só quando é escolha do cliente, de forma segura e em conformidade com a HIPAA.</p></div>
+    <div><div class="num">01</div><h3>O dado não precisa sair de casa</h3><p>Trabalhamos dentro da infraestrutura da instituição, com trilha de auditoria. Nuvem só quando é escolha do cliente — e só uma que a Coorte assina.</p></div>
     <div><div class="num">02</div><h3>Ética e base legal antes da primeira linha</h3><p>A adequação à LGPD entra no escopo, não no improviso.</p></div>
     <div><div class="num">03</div><h3>Limitação declarada é entrega</h3><p>Dizemos o que o dado não permite concluir com a mesma clareza com que dizemos o que ele permite.</p></div>
+    <div><div class="num">04</div><h3>O indicador não se ajusta</h3><p>Não mudamos definição, recorte ou métrica para o número contar a história que alguém quer.</p></div>
   </div>
 </section>
 
