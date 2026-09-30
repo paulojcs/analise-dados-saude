@@ -41,12 +41,11 @@ export default {
     const corpo = [
       `Nome: ${nome}`,
       `E-mail: ${email}`,
-      `Instituição: ${instituicao || "—"}`,
+      `Instituição: ${instituicao || "não informada"}`,
       `Tipo: ${tipo}`,
       "",
       mensagem || "(sem mensagem)",
       "",
-      "—",
       "Enviado pelo formulário de coorte.io",
     ].join("\r\n");
 
