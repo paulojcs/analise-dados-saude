@@ -141,6 +141,11 @@ section,[id]{scroll-margin-top:56px}
 @keyframes om-flow{0%{opacity:0;transform:translateY(-8px)}30%{opacity:1}100%{opacity:0;transform:translateY(30px)}}
 
 .metodo{min-width:0}
+.met-h{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:end;padding:40px 26px 30px 30px;border-bottom:1px solid var(--ink)}
+.met-h h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04;letter-spacing:-.01em;text-wrap:balance}
+.met-h h2 span{color:var(--klein)}
+.met-h p{font-size:16px;line-height:1.55;color:var(--t2);max-width:38ch;text-wrap:pretty}
+@media(max-width:900px){.met-h{grid-template-columns:minmax(0,1fr);gap:12px;padding:26px 20px 22px}}
 .st{border-bottom:1px solid var(--rule-2);transition:background .3s}
 .st.on{background:var(--klein-wash)}
 .st-h{all:unset;box-sizing:border-box;display:grid;grid-template-columns:78px minmax(0,1.15fr) minmax(0,1fr) 150px;align-items:start;width:100%;cursor:pointer;transition:background .2s}
@@ -515,6 +520,10 @@ fieldset{border:0;margin:0;padding:0}
     <div class="no">02</div><div class="k">Método</div><div class="dash"></div>
   </div>
   <div class="metodo">
+    <div class="met-h">
+      <h2>O resultado depende do olhar.<br><span>Por isso o olhar é declarado.</span></h2>
+      <p>Pergunta, método e versão definidos antes da análise — e auditáveis por quem contrata.</p>
+    </div>
     <div class="st">
       <button class="st-h" type="button" aria-expanded="false" aria-controls="st1-b">
         <span class="st-n">01</span><span class="st-t">Entender o dado que existe</span><span class="st-d">Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</span>
