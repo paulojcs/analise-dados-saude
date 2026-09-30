@@ -380,6 +380,9 @@ section,[id]{scroll-margin-top:56px}
 /* ---------- 06 governança ---------- */
 .gov{position:relative;overflow:hidden}
 .gov .big{position:absolute;left:6px;top:-18px;font:700 250px/.8 var(--narrow);color:rgba(0,47,167,.07);pointer-events:none;user-select:none}
+.gov-h{position:relative;padding:40px 30px 30px 34px;border-bottom:1px solid var(--ink)}
+.gov-h h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04;letter-spacing:-.01em;text-wrap:balance}
+.gov-h h2 span{color:var(--klein)}
 .gov .r{position:relative;display:grid;grid-template-columns:70px minmax(0,1fr) minmax(0,1.1fr);align-items:center;border-bottom:1px solid var(--rule-2)}
 .gov .r:last-child{border-bottom:0}
 .gov .r>*{padding:17px 30px 17px 0}
@@ -387,6 +390,7 @@ section,[id]{scroll-margin-top:56px}
 .gov .r h4{font-size:18px;letter-spacing:.03em}
 .gov .r p{font-size:15px;line-height:1.5;color:var(--t2)}
 @media(max-width:700px){
+  .gov-h{padding:26px 20px 22px}
   .gov .r{grid-template-columns:48px 1fr}
   .gov .r b{padding-left:20px}
   .gov .r p{grid-column:2;padding-top:0}
@@ -877,10 +881,11 @@ fieldset{border:0;margin:0;padding:0}
   <div class="rail"><div class="no">06</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
   <div class="gov">
     <div class="big" aria-hidden="true">4</div>
-    <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Governança e reprodutibilidade em todas as etapas.</p></div>
-    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Sua base de dados organizada, no seu ambiente.</p></div>
-    <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Código e orquestração entregues ao cliente.</p></div>
-    <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O pipeline roda dentro da sua infraestrutura.</p></div>
+    <div class="gov-h"><h2>O dado não conta<br><span>a história que alguém quer.</span></h2></div>
+    <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Cada acesso registrado. Cada número rastreável até a origem.</p></div>
+    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Todo indicador tem definição escrita e data. A régua não muda sem deixar rastro.</p></div>
+    <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Se a equipe mudar, o trabalho fica. Base e código são da instituição.</p></div>
+    <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O dado não sai de casa — nem para a IA.</p></div>
   </div>
 </section>
 
