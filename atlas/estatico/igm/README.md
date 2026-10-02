@@ -1,6 +1,6 @@
 # IGM SUS Paulista: repasses por município segundo as Resoluções SS (2024–2026)
 
-Tabela oficial por município (645 municípios de SP) lida dos Anexos das Resoluções SS de pagamento, para substituir os valores do painel SES "legado". Gerada em 2026-10-02 por `parse_resolucoes.py`. Os PDFs ficam em `PrefSaoCaetano/data/territorio/normas_igm/` (somente leitura). As tabelas são lidas do PDF com pdfplumber, e não do .txt, que embaralha as colunas.
+Tabela oficial por município (645 municípios de SP) lida dos Anexos das Resoluções SS de pagamento, para substituir os valores do painel SES "legado". Gerada em 2026-10-02 por `parse_resolucoes.py`. Os PDFs são os atos publicados na BVS SES-SP; o script lê a pasta indicada em `IGM_NORMAS`. As tabelas são lidas do PDF com pdfplumber, e não do .txt, que embaralha as colunas.
 
 ```
 python parse_resolucoes.py   # ~3 min; regrava os CSVs e _validacao.txt

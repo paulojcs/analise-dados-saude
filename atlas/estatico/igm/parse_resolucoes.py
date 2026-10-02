@@ -1,6 +1,6 @@
 """Repasses do IGM SUS Paulista por municipio (2024-2026) lidos dos Anexos das Resolucoes SS.
 
-Fonte: PDFs em PrefSaoCaetano/data/territorio/normas_igm/ (somente leitura). As tabelas sao lidas
+Fonte: PDFs das Resolucoes SS publicados na BVS SES-SP, na pasta IGM_NORMAS. As tabelas sao lidas
 do PDF com pdfplumber (o .txt do pdftotext embaralha colunas). Linhas validas: codigo IBGE de 6
 digitos na coluna 0; numeros no formato brasileiro.
 
@@ -12,6 +12,7 @@ Saidas (nesta pasta):
     python parse_resolucoes.py
 """
 
+import os
 import re
 from pathlib import Path
 
@@ -19,8 +20,8 @@ import pandas as pd
 import pdfplumber
 
 AQUI = Path(__file__).resolve().parent
-NORMAS = Path(r"C:\Users\paulo\Documents\PrefSaoCaetano\data\territorio\normas_igm")
-PAINEL = Path(r"C:\Users\paulo\Documents\PrefSaoCaetano\outputs\aps\tables\igm_sp\igm_sp_longo.csv")
+NORMAS = Path(os.environ.get("IGM_NORMAS", "normas_igm"))       # PDFs das Resolucoes SS (BVS SES-SP)
+PAINEL = Path(os.environ.get("IGM_PAINEL", "igm_sp_longo.csv"))  # saida do igm_powerbi.py (comparacao com o legado)
 
 # arquivo -> (resolucao, ano, colunas: [(indice da coluna, parcela, componente)], total impresso no ato)
 RESOLUCOES = {
