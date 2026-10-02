@@ -9,14 +9,14 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#EDF1F5">
 <title>Atlas da APS · Coorte</title>
-<meta name="description" content="O financiamento do SUS na atenção primária: repasse federal para os 5.570 municípios, mês a mês desde 2024. Em São Paulo, também o incentivo estadual IGM e a situação de cada equipe.">
+<meta name="description" content="Repasse federal da atenção primária a cada município do Brasil, mês a mês desde 2024. Em São Paulo, também o incentivo estadual IGM e a situação de cada equipe. Não inclui o que as prefeituras gastam com recursos próprios.">
 <link rel="canonical" href="https://coorte.io/atlas/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Coorte">
 <meta property="og:url" content="https://coorte.io/atlas/">
-<meta property="og:title" content="Atlas da APS · O financiamento do SUS na atenção primária">
-<meta property="og:description" content="Repasse federal da APS para os 5.570 municípios, mês a mês desde 2024. Em São Paulo, também o IGM SUS Paulista e a situação de cada equipe.">
+<meta property="og:title" content="Atlas da APS · O financiamento federal da atenção primária">
+<meta property="og:description" content="Repasse federal da APS a cada município do Brasil, mês a mês desde 2024. Em São Paulo, também o IGM SUS Paulista e a situação de cada equipe. Não inclui recursos próprios das prefeituras.">
 <meta property="og:image" content="https://coorte.io/atlas/og-atlas-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Dataset","name":"Atlas da APS: financiamento federal da atenção primária por município",
- "description":"Repasse federal da atenção primária à saúde (APS) para os 5.570 municípios brasileiros, por parcela mensal desde maio de 2024, com componentes de pagamento; em São Paulo, o IGM SUS Paulista e a situação de pagamento de cada equipe de Saúde da Família.",
+ "description":"Repasse federal da atenção primária à saúde (APS) a cada município brasileiro, por parcela mensal desde maio de 2024, com componentes de pagamento; em São Paulo, o IGM SUS Paulista e a situação de pagamento de cada equipe de Saúde da Família. Não inclui o gasto municipal com recursos próprios.",
  "url":"https://coorte.io/atlas/","inLanguage":"pt-BR","isAccessibleForFree":true,
  "creator":{"@type":"Organization","name":"Coorte","url":"https://coorte.io/"},
  "spatialCoverage":{"@type":"Place","name":"Brasil"},"temporalCoverage":"2024-05/..",
@@ -293,12 +293,12 @@ button{font:inherit;color:inherit}
     <div class="k">Atlas · beta</div>
     <div class="dash"></div>
     <h2 class="side">Financiamento da APS</h2>
-    <div class="note" id="railNote">Federal mai/2024 a set/2026<br>IGM SUS Paulista 2024 a 2026<br>CNES jan/2025 a jul/2026</div>
+    <div class="note" id="railNote">Federal desde mai/2024<br>IGM SUS Paulista desde 2024<br>CNES desde mar/2024</div>
   </aside>
   <div>
     <div class="head">
       <h1>Onde o dinheiro da <span>atenção primária</span> chega.</h1>
-      <p>Passe o cursor para ver, clique para aproximar.</p>
+      <p>Repasses federais da atenção primária a cada município (e, em São Paulo, o IGM SUS Paulista). Não inclui o que cada prefeitura gasta com recursos próprios. Passe o cursor para ver, clique para aproximar.</p>
     </div>
 
     <div class="atlas">
@@ -334,8 +334,8 @@ button{font:inherit;color:inherit}
     </div>
 
     <div class="sources">
-      <div><b>Federal</b><p>Ministério da Saúde, relatorioaps: pagamento da APS por município, 29 parcelas (mai/2024 a set/2026). Totais estaduais são a soma dos municípios; a composição vem dos planos orçamentários. 5.570 municípios; em SP, a situação de cada eSF/eAP por parcela.</p></div>
-      <div><b>IGM SUS Paulista</b><p id="srcIgm">Painéis públicos da SES-SP: legado (2024 e 2025, CIB 117/2023) e atual (Q1 e Q2 de 2026, CIB 24 e 25/2026), com valor fixo, variável e pontuação vacinal.</p></div>
+      <div><b>Federal</b><p>Ministério da Saúde, relatorioaps: pagamento da APS por município, uma parcela por mês desde mai/2024. Totais estaduais são a soma dos municípios; a composição vem dos planos orçamentários. Todos os municípios com pagamento; em SP, a situação de cada eSF/eAP por parcela.</p></div>
+      <div><b>IGM SUS Paulista</b><p id="srcIgm">Resoluções SS da SES-SP, os atos de pagamento de 2024 a 2026, com fixo, variável, ajuste e bônus. Pontuação vacinal do painel público de 2026.</p></div>
       <div><b>CNES e IBGE</b><p>Equipes por município (CNES-EP, DATASUS) e população estimada (IBGE, tabela 6579). Valor por equipe é estimativa da Coorte: repasse do componente dividido pelas equipes pagas, ponderado pela composição (100/75/50/25%).</p></div>
     </div>
   </div>
