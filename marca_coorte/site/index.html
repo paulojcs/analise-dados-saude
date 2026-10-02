@@ -91,7 +91,7 @@ section,[id]{scroll-margin-top:56px}
 .hero-l .inner{padding-left:0}
 .hero h1{font-size:clamp(48px,5.8vw,92px);line-height:.92;letter-spacing:-.02em;text-wrap:balance}
 .hero h1 span{color:var(--klein)}
-.hero .sub{margin:22px 0 0;max-width:30ch;font-size:18.5px;line-height:1.5;color:var(--t2)}
+.hero .sub{margin:22px 0 0;max-width:none;white-space:nowrap;font-size:18.5px;line-height:1.5;color:var(--t2)}
 .hero .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .hero-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-left:0;
   font:400 12px/1.7 var(--mono);letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
@@ -104,6 +104,7 @@ section,[id]{scroll-margin-top:56px}
   .hero-g{grid-template-columns:minmax(0,1fr);min-height:0}
   .hero-l{padding:48px 20px 28px;gap:36px}
   .hero-r{min-height:240px}
+  .hero .sub{white-space:normal}
 }
 
 /* ---------- faixa com trilho de rótulo (o esqueleto do v2) ---------- */
@@ -177,7 +178,7 @@ section,[id]{scroll-margin-top:56px}
 .st.on .st-n{color:var(--klein)}
 .st-t{padding:22px 24px 22px 0;font:700 21.5px/1.15 var(--narrow);text-transform:uppercase;letter-spacing:.01em}
 .st-d{padding:22px 24px 22px 0;font-size:14.5px;line-height:1.6;color:var(--t2);text-wrap:pretty}
-.st-c{padding:22px 26px 22px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;font:400 11.5px/1.6 var(--mono);letter-spacing:.1em;color:var(--t3)}
+.st-c{padding:22px 26px 22px 0;display:flex;align-items:center;justify-content:flex-end;gap:12px;font:400 11.5px/1.6 var(--mono);letter-spacing:.1em;color:var(--t3)}
 .st-c i{font-style:normal;font-size:19px;line-height:1;color:var(--klein);display:inline-block;transition:transform .35s ease}
 .st.on .st-c i{transform:rotate(45deg)}
 /* abre por altura: a linha de grade vai de 0fr a 1fr */
@@ -296,7 +297,6 @@ section,[id]{scroll-margin-top:56px}
   .st-t{grid-column:2;padding:18px 10px 8px 0}
   .st-d{grid-column:2;grid-row:2;padding:0 10px 18px 0}
   .st-c{grid-column:3;grid-row:1;padding:16px 16px 0 0;justify-content:flex-end}
-  .st-c span{display:none}
   .st-pad{padding:0 16px 22px 20px}
       }
 @media(max-width:760px){
@@ -573,12 +573,11 @@ fieldset{border:0;margin:0;padding:0}
   <div class="metodo">
     <div class="met-h">
       <h2>O resultado depende do olhar.<br><span>Por isso o olhar é declarado.</span></h2>
-      <p>Pergunta, método e versão definidos antes da análise e auditáveis por quem contrata.</p>
     </div>
     <div class="st">
       <button class="st-h" type="button" aria-expanded="false" aria-controls="st1-b">
         <span class="st-n">01</span><span class="st-t">Entender o dado que existe</span><span class="st-d">Inventário das bases, dicionário, teste de qualidade e a lista honesta do que já dá para responder.</span>
-        <span class="st-c"><span>ETAPA / 01</span><i aria-hidden="true">+</i></span>
+        <span class="st-c"><i aria-hidden="true">+</i></span>
       </button>
       <div class="st-b" id="st1-b"><div class="st-in"><div class="st-pad"><div class="st-body">
         <div class="st-tags"><span class="ent">Entrega: relatório de diagnóstico de dados</span><span>Inventário</span><span>Qualidade</span><span>Escopo</span></div>
@@ -619,7 +618,7 @@ fieldset{border:0;margin:0;padding:0}
     <div class="st">
       <button class="st-h" type="button" aria-expanded="false" aria-controls="st2-b">
         <span class="st-n">02</span><span class="st-t">Camada de ingestão e organização</span><span class="st-d">Pipeline de ingestão, padronização, ligação de registros verificada e tabelas analíticas versionadas.</span>
-        <span class="st-c"><span>ETAPA / 02</span><i aria-hidden="true">+</i></span>
+        <span class="st-c"><i aria-hidden="true">+</i></span>
       </button>
       <div class="st-b" id="st2-b"><div class="st-in"><div class="st-pad"><div class="st-body">
         <div class="st-tags"><span class="ent">Entrega: base analítica reprodutível</span><span>Padronizar</span><span>Ligar registros</span><span>Versionar</span><span>FHIR / RNDS</span></div>
@@ -664,7 +663,7 @@ fieldset{border:0;margin:0;padding:0}
     <div class="st">
       <button class="st-h" type="button" aria-expanded="false" aria-controls="st3-b">
         <span class="st-n">03</span><span class="st-t">Análise que responde a pergunta</span><span class="st-d">Coorte, indicador, modelo de risco, avaliação de intervenção: código de análise e figuras rodando sobre a mesma base.</span>
-        <span class="st-c"><span>ETAPA / 03</span><i aria-hidden="true">+</i></span>
+        <span class="st-c"><i aria-hidden="true">+</i></span>
       </button>
       <div class="st-b" id="st3-b"><div class="st-in"><div class="st-pad"><div class="st-body">
         <div class="st-tags"><span class="ent">Entrega: resultados, figuras e interpretação</span><span>Sobrevida</span><span>Efeito estimado</span><span>Reprodução</span></div>
@@ -711,7 +710,7 @@ fieldset{border:0;margin:0;padding:0}
     <div class="st">
       <button class="st-h" type="button" aria-expanded="false" aria-controls="st4-b">
         <span class="st-n">04</span><span class="st-t">Automação e painel vivo</span><span class="st-d">A análise passa a rodar sozinha: atualização programada, alertas e um painel ligado à rotina de quem decide.</span>
-        <span class="st-c"><span>ETAPA / 04</span><i aria-hidden="true">+</i></span>
+        <span class="st-c"><i aria-hidden="true">+</i></span>
       </button>
       <div class="st-b" id="st4-b"><div class="st-in"><div class="st-pad"><div class="st-body">
         <div class="st-tags"><span class="ent">Entrega: painel vivo e código transferido</span><span>Extrai</span><span>Recalcula</span><span>Publica</span></div>
@@ -754,41 +753,27 @@ fieldset{border:0;margin:0;padding:0}
   </div>
 </section>
 
-<!-- 03 GOVERNANÇA -->
-<section class="row" id="governanca" data-no="03">
-  <div class="rail"><div class="no">03</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
-  <div class="gov">
-    <div class="gov-h"><h2>O dado não conta<br><span>a história que alguém quer.</span></h2></div>
-    <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Cada acesso registrado. Cada número rastreável até a origem.</p></div>
-    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Todo indicador tem definição escrita e data. A régua não muda sem deixar rastro.</p></div>
-    <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Se a equipe mudar, o trabalho fica. Base e código são da instituição.</p></div>
-    <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O dado não sai de casa, nem para a IA.</p></div>
-  </div>
-</section>
-
-<!-- 04 CASOS -->
-<section class="row" id="casos" data-no="04">
+<!-- 03 CASOS -->
+<section class="row" id="casos" data-no="03">
   <div class="rail">
-    <div class="no">04</div><div class="k">Casos</div><div class="dash"></div>
+    <div class="no">03</div><div class="k">Casos</div><div class="dash"></div>
   </div>
   <div class="cs">
     <article class="cs-card cs1" data-p="cs1-p">
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 01</span></div>
       <div class="cs-body">
-        <div class="cs-kick">Complexo hospitalar terciário · microbiologia</div>
-        <h3>Um dado, três decisões</h3>
+        <div class="cs-kick">Complexo hospitalar terciário</div>
+        <h3>Microbiologia</h3>
         <div class="chips"><span class="chip">Detecção de aglomerado</span><span class="chip">Qualidade de coleta</span><span class="chip">Resistência antimicrobiana</span></div>
-        <p>Cada faixa de tempo termina em uma decisão, não em um número.</p>
         <div class="cs-foot"><span>2 publicações</span><button type="button" aria-expanded="false" aria-controls="cs1-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
     <article class="cs-card cs2" data-p="cs2-p">
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 02</span></div>
       <div class="cs-body">
-        <div class="cs-kick">Rede municipal · atenção primária</div>
-        <h3>A nota vira repasse</h3>
+        <div class="cs-kick">Rede municipal</div>
+        <h3>Atenção primária</h3>
         <div class="chips"><span class="chip">Indicadores de APS</span><span class="chip">Equidade territorial</span><span class="chip">Financiamento por desempenho</span></div>
-        <p>Cada faixa de classificação tem um preço por equipe, e o mapa mostra o que a rede deixa de receber.</p>
         <a class="cs-link" href="atlas/">Explorar no Atlas da APS <span aria-hidden="true">→</span></a>
         <div class="cs-foot"><span>1 publicação</span><button type="button" aria-expanded="false" aria-controls="cs2-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
@@ -796,10 +781,9 @@ fieldset{border:0;margin:0;padding:0}
     <article class="cs-card cs3" data-p="cs3-p">
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 03</span></div>
       <div class="cs-body">
-        <div class="cs-kick">Serviço ambulatorial de especialidades</div>
-        <h3>Quatro fontes, um paciente</h3>
+        <div class="cs-kick">Atenção especializada</div>
+        <h3>Ambulatório de especialidades</h3>
         <div class="chips"><span class="chip">Prontuário eletrônico</span><span class="chip">Laboratório e farmácia</span><span class="chip">Regulação</span></div>
-        <p>A lista não para no status: cada linha termina em uma ação.</p>
         <div class="cs-foot"><span>2 publicações</span><button type="button" aria-expanded="false" aria-controls="cs3-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
@@ -818,9 +802,9 @@ fieldset{border:0;margin:0;padding:0}
   </div>
 </section>
 
-<!-- 05 PUBLICAÇÕES -->
-<section class="row" id="publicacoes" data-no="05">
-  <div class="rail"><div class="no">05</div><div class="k">Publicações</div><div class="dash"></div></div>
+<!-- 04 PUBLICAÇÕES -->
+<section class="row" id="publicacoes" data-no="04">
+  <div class="rail"><div class="no">04</div><div class="k">Publicações</div><div class="dash"></div></div>
   <div class="pubs">
     <div class="pubs-top">
       <h2>Nosso método revisado por pares.</h2>
@@ -916,6 +900,18 @@ fieldset{border:0;margin:0;padding:0}
     </div>
 
     <p class="pubnote">Publicações em que a equipe participou do desenho, da análise ou da construção da base.</p>
+  </div>
+</section>
+
+<!-- 05 GOVERNANÇA -->
+<section class="row" id="governanca" data-no="05">
+  <div class="rail"><div class="no">05</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
+  <div class="gov">
+    <div class="gov-h"><h2>O dado não conta<br><span>a história que alguém quer.</span></h2></div>
+    <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Cada acesso registrado. Cada número rastreável até a origem.</p></div>
+    <div class="r"><b>02</b><h4>Dicionário de dados versionado</h4><p>Todo indicador tem definição escrita e data. A régua não muda sem deixar rastro.</p></div>
+    <div class="r"><b>03</b><h4>Código aberto ao cliente</h4><p>Se a equipe mudar, o trabalho fica. Base e código são da instituição.</p></div>
+    <div class="r"><b>04</b><h4>Instalação no seu ambiente</h4><p>O dado não sai de casa, nem para a IA.</p></div>
   </div>
 </section>
 
@@ -1252,7 +1248,7 @@ const C1 = (() => {
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
         '<div>' +
           '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7B838F;margin-bottom:6px">Caso 01 · hemocultura · complexo hospitalar terciário</div>' +
-          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">Um dado, três decisões</h2>' +
+          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">Microbiologia</h2>' +
         '</div>' +
         '<div style="text-align:right">' +
           '<div style="display:inline-block;border:1px solid #D9482B;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#D9482B;white-space:nowrap">Figuras ilustrativas · dados fictícios</div>' +
@@ -1796,8 +1792,8 @@ const C2 = (() => {
     '<div style="width:1180px;height:720px;background:#F6F8FA;padding:28px 40px 22px;display:flex;flex-direction:column;overflow:hidden">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
         '<div>' +
-          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7B838F;margin-bottom:6px">Caso 02 · rede municipal · atenção primária</div>' +
-          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">A nota vira repasse</h2>' +
+          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7B838F;margin-bottom:6px">Caso 02 · rede municipal</div>' +
+          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">Atenção primária</h2>' +
         '</div>' +
         '<div style="text-align:right">' +
           '<div style="display:inline-block;border:1px solid #D9482B;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#D9482B;white-space:nowrap">Município demonstrativo · dados fictícios</div>' +
@@ -2033,8 +2029,8 @@ const C3 = (() => {
     '<div style="width:1180px;height:720px;background:#F6F8FA;padding:28px 40px 22px;display:flex;flex-direction:column;overflow:hidden">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:30px">' +
         '<div>' +
-          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7B838F;margin-bottom:6px">Caso 03 · ambulatório de especialidades · serviço demonstrativo</div>' +
-          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">Quatro fontes, um paciente</h2>' +
+          '<div style="font-family:' + MONO + ';font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#7B838F;margin-bottom:6px">Caso 03 · serviço demonstrativo</div>' +
+          '<h2 style="font-family:Archivo Narrow,sans-serif;font-weight:700;font-size:26px;line-height:1.05;color:#101318;margin:0">Ambulatório de especialidades</h2>' +
         '</div>' +
         '<div style="text-align:right">' +
           '<div style="display:inline-block;border:1px solid #D9482B;padding:5px 9px;font-family:' + MONO + ';font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#D9482B;white-space:nowrap">Serviço fictício · dados sintéticos</div>' +
