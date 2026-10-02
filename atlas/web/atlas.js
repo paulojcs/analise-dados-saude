@@ -41,6 +41,8 @@ const IGM_RES = BR.meta.igm_fonte === 'resolucoes';
 const PI = BR.meta.pop_i || {}, PANOS = BR.meta.pop_anos || [BR.meta.pop_ano];
 const popAt = (d, ax, i) => (d.pa && PI[ax] ? d.pa[PI[ax][i]] : null) || d.pop;
 const popAno = (ax, i) => PANOS[PI[ax] ? PI[ax][i] : PANOS.length - 1];
+// dezembro traz o 13º do ACS e o adicional de qualidade; em 202512 o agrupado do Ministério não os soma (build.py soma pelo completo)
+const notaDez = i => String(BR.meta.parc[i]).endsWith('12') ? `<p class="fine" style="margin-top:8px">Dezembro inclui a parcela extra do ACS (13º) e o adicional anual do componente de qualidade.${(BR.meta.extra || []).includes(BR.meta.parc[i]) ? ' Nesta parcela o relatório agrupado do Ministério não os soma; somamos pelo relatório completo (o FNS pagou o ACS em dez/2025 e a qualidade em jan–fev/2026).' : ''}</p>` : '';
 $('#railNote').innerHTML = `Federal ${AX.parc.long(0)} a ${AX.parc.long(AX.parc.n - 1)}<br>IGM SUS Paulista ${BR.meta.cic[0].slice(3)} a ${BR.meta.cic.at(-1).slice(3)}<br>CNES ${AX.comp.long(0)} a ${AX.comp.long(AX.comp.n - 1)}<br>Atualizado em ${new Date(BR.meta.gerado).toLocaleDateString('pt-BR')}`;
 $('#srcIgm').textContent = IGM_RES
   ? 'Resoluções SS da SES-SP, os atos de pagamento de 2024 a 2026 (Res 18 e 140/2024; 13, 97, 180 e 230/2025; 111 e 185/2026), com fixo, variável, ajuste e bônus. Pontuação vacinal do painel público de 2026. Em 2025 o 1º período foi pago com duas parcelas fixas e o variável dos dois primeiros períodos saiu junto, no 2º.'
@@ -504,7 +506,7 @@ function panelBrazil() {
       <div class="kpi wide hl"><div class="v">${brl(tot)}</div><div class="l">transferido no mês · ${deltaTxt(delta(BR_TOT, i))}</div></div>
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(tot / popAt(BR_POP, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(BR_TOT, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
-    </div>${series(BR_TOT, 'parc')}</div>
+    </div>${series(BR_TOT, 'parc')}${notaDez(i)}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(plan, i)}</div>
     <div class="blk"><h3>${esc(m.label)} por estado <em>clique para abrir</em></h3>${items.length ? rankBlock(items, -1, 'uf', m.fmt) : `<p class="empty">Sem 12 meses completos em ${AX.parc.lbl(i)}: a série começa em ${AX.parc.lbl(0)}.</p>`}</div>
   </div>`;
@@ -535,7 +537,7 @@ function panelUf(ix) {
       <div class="kpi wide hl"><div class="v">${brl(d.tot[i])}</div><div class="l">repasse federal da APS · ${AX.parc.lbl(i)} · ${deltaTxt(delta(d.tot, i))}</div></div>
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(d.tot[i] / popAt(d, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(d.tot, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
-    </div>${series(d.tot, 'parc')}</div>
+    </div>${series(d.tot, 'parc')}${notaDez(i)}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(d.plan, i)}</div>
     ${extra}${munis}
   </div>`;
@@ -638,7 +640,7 @@ function panelMu(ix) {
         <div class="kpi"><div class="v"><small>R$</small>${per == null ? '–' : nf2.format(per)}</div><div class="l">por habitante</div></div>
         <div class="kpi wide"><div class="v">${brl(last12(f.tot, i))}</div><div class="l">${l12(i)} · ${deltaTxt(delta(f.tot, i))}</div></div>
       </div>
-      ${series(f.tot, 'parc')}
+      ${series(f.tot, 'parc')}${notaDez(i)}
       <div class="badges" style="margin-top:12px">
         <span class="badge ${CLS[d.vin] || ''}">Vínculo <b>${esc(d.vin || '–')}</b></span>
         <span class="badge ${CLS[d.qual] || ''}">Qualidade <b>${esc(d.qual || '–')}</b></span>

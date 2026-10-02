@@ -91,6 +91,21 @@ tot = mpp.drop_duplicates(['coMunicipioIbge', 'nuParcela'])[['coMunicipioIbge', 
 tot['p'] = tot.nuParcela.astype(int)
 c = pd.read_parquet(tier1 / 'pagamento_completo.parquet')
 c['p'] = c.nuParcela.astype(int)
+# parcelas extras de dezembro (13º do ACS e adicional de qualidade): o COMPLETO traz; o AGRUPADO de 202412 soma no total,
+# o de 202512 não, embora o FNS tenha pago (ACS em dez/25, qualidade em jan-fev/26). Onde faltam, somamos à parcela.
+EXTRA = {'acs': ['vlPagamentoParcelaExtraAcsDireto'], 'esf': ['vlPagamentoQualidadeExtraEsf', 'vlPagamentoQualidadeExtraEap'],
+         'sb': ['vlPagamentoQualidadeExtraEsb40H'], 'emulti': ['vlPagamentoQualidadeEmulti'],
+         'demais': ['vlPagamentoParcelaExtraAcsIndireto', 'vlPagamentoEsfrbExtraQualidade', 'vlPagamentoParcelaExtraMicroscopista']}
+for k, cols in EXTRA.items(): c['x_' + k] = sum(pd.to_numeric(c[col], errors='coerce').fillna(0) for col in cols)
+c['x_tot'] = c[['x_' + k for k in EXTRA]].sum(axis=1)
+s = c.groupby('p').agg(ext=('x_acs', 'sum'), acs=('vlTotalAcsDireto', lambda v: pd.to_numeric(v, errors='coerce').sum())).join(tot.groupby('p').pl_acs.sum())
+FALTA = [int(p) for p, x in s.iterrows() if x.ext > 0 and abs(x.pl_acs - (x.acs - x.ext)) < abs(x.pl_acs - x.acs)]   # plano 2 = só o regular
+xs = c[c.p.isin(FALTA)]
+tot = tot.merge(xs[['coMunicipioIbge', 'p', 'x_tot', 'x_acs', 'x_sb', 'x_emulti', 'x_esf']], on=['coMunicipioIbge', 'p'], how='left')
+for a, b in (('total', 'x_tot'), ('pl_acs', 'x_acs'), ('pl_sb', 'x_sb'), ('pl_emulti', 'x_emulti'), ('pl_esfeap', 'x_esf')): tot[a] += tot.pop(b).fillna(0)
+for (sg, p), g in xs.groupby(['sgUf', 'p']):
+    uf = UF[SG[sg]]; j = pi[p]; uf['tot'][j] += round(g.x_tot.sum())
+    for k in EXTRA: uf['plan'].setdefault(k, [0] * NP)[j] += round(g['x_' + k].sum())
 c = c.merge(tot[['coMunicipioIbge', 'p', 'total', 'pl_sb', 'pl_emulti', 'pl_acs', 'pl_esfeap']], on=['coMunicipioIbge', 'p'], how='left')
 # vlTotalEsf/Eap são brutos (antes dos descontos); o repasse real é o plano 8. Líquido repartido pela proporção do bruto (+ implantação)
 num = lambda k: pd.to_numeric(c[k], errors='coerce').fillna(0)
@@ -204,7 +219,7 @@ for cod_uf in sorted(UFN):
         IDX.append([cod6, m['nome'], cod_uf, m['pop'] or 0])
     dump({'geo': geo, 'mun': mun}, OUT / 'uf' / f'{cod_uf}.json')
 # IGM: as Resoluções SS não trazem a população usada (só a Res 11/2024, per capita); fica a do IBGE do ano do ciclo
-meta = {'parc': PARC, 'cic': CIC, 'comp': COMP, 'pop_ano': POP_ANO, 'pop_anos': POP_ANOS, 'igm_fonte': 'resolucoes',
+meta = {'parc': PARC, 'cic': CIC, 'comp': COMP, 'pop_ano': POP_ANO, 'pop_anos': POP_ANOS, 'igm_fonte': 'resolucoes', 'extra': FALTA,
         'pop_i': {'parc': pop_i(p // 100 for p in PARC), 'cic': pop_i(int(q[3:]) for q in CIC), 'comp': pop_i(p // 100 for p in COMP)},
         'gerado': pd.Timestamp.now(tz='America/Sao_Paulo').isoformat(timespec='minutes')}
 dump({'meta': meta, 'geo': GEO_UF, 'ufn': UFN, 'uf': UF, 'idx': IDX}, OUT / 'br.json')
