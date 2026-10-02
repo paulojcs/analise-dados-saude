@@ -6,7 +6,9 @@ set -uo pipefail
 RAIZ=/srv/atlas
 exec 9>"$RAIZ/.lock"
 flock -n 9 || { echo "$(date -Is) outra rodada em andamento"; exit 0; }
-if [ ! -f "$RAIZ/.env" ]; then echo "$(date -Is) sem $RAIZ/.env (credenciais do R2 e do alerta); nada a fazer"; exit 1; fi
+if [ ! -f "$RAIZ/.env" ] || grep -q PREENCHER "$RAIZ/.env"; then
+  echo "$(date -Is) $RAIZ/.env ausente ou incompleto (credenciais do R2); nada a fazer"; exit 1
+fi
 
 cd "$RAIZ/repo"
 RAMO=$(grep -E '^ATLAS_BRANCH=' "$RAIZ/.env" | cut -d= -f2); RAMO=${RAMO:-main}
