@@ -30,12 +30,19 @@ if [ "$NOVA" = sim ] || [ "${FORCAR:-}" = 1 ]; then
   ls -d "$ATLAS_HOME"/data/public/relatorioaps_br/20*/ | sort | head -n -2 | xargs -r rm -rf
 fi
 
-python $P/igm_powerbi.py atual legado || falha "IGM (painel da SES-SP)"
+# IGM e CNES não derrubam a rodada: em falha, segue com os últimos arquivos bons e avisa no fim
+# (o FTP do DATASUS costuma travar por horas; o painel do IGM muda de chave quando a SES republica)
+AVISOS=()
+python $P/igm_powerbi.py atual legado || AVISOS+=("IGM (painel da SES-SP)")
 ls -d "$ATLAS_HOME"/data/public/igm_sp/20*/ 2>/dev/null | sort | head -n -4 | xargs -r rm -rf
+timeout 3h python $P/cnes_ep.py || AVISOS+=("CNES EP (FTP do DATASUS)")
 
-python $P/cnes_ep.py || falha "CNES EP"
 python $P/build.py || falha "build"
 python $P/publish.py || falha "publicação no R2"
 
 find "$ATLAS_HOME/logs" -name 'run_*.log' -mtime +120 -delete
+if [ ${#AVISOS[@]} -gt 0 ]; then
+  echo "AVISOS: ${AVISOS[*]} (publicado com os dados anteriores dessas fontes)"
+  python atlas/pipeline/alerta.py "Atlas da APS: rodada com avisos (${AVISOS[*]})" "$LOG" || echo "(alerta falhou)"
+fi
 echo "== $(date -Is) atlas: fim"

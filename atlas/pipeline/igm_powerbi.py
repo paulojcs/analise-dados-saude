@@ -82,7 +82,10 @@ def http(url, corpo=None, chave=None, rotulo=""):
         try:
             req = urllib.request.Request(url, data=dados, headers=cab)
             with urllib.request.urlopen(req, timeout=180) as r:
-                txt = r.read().decode("utf-8")
+                bruto = r.read()
+            if bruto[:2] == b"\x1f\x8b":      # o Power BI as vezes responde em gzip sem pedirmos
+                bruto = gzip.decompress(bruto)
+            txt = bruto.decode("utf-8")
             LOG.append({"quando": datetime.now().isoformat(timespec="seconds"), "rotulo": rotulo,
                         "url": url, "ok": True, "status": 200, "bytes": len(txt),
                         "segundos": round(time.time() - t0, 2), "erro": ""})
