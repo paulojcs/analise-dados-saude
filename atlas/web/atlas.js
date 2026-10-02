@@ -538,13 +538,19 @@ const HCOL = {'4': '#002FA7', '3': '#5E7FCB', '2': '#8AA2D9', '1': '#B3C3E6', '0
 const HLBL = {'4': 'paga 100%', '3': 'paga 75%', '2': 'paga 50%', '1': 'paga 25%', '0': 'válida, composição inválida', 'x': 'inválida', '.': 'sem registro'};
 const HW = {'4': 1, '3': .75, '2': .5, '1': .25};
 let showAllTeams = false;
-// valor estimado por equipe: repasse do componente no mês ÷ soma dos pesos de composição das equipes pagas
+// valor estimado por equipe: fixo do componente ÷ soma dos pesos de composição + vínculo e qualidade ÷ equipes pagas.
+// Até 202505 tudo segue a composição; a partir de 202506 só o fixo (vínculo e qualidade vão inteiros a cada equipe paga).
 function teamEstimates(d, i) {
-  const w = {eSF: 0, eAP: 0}; d.teams.forEach(t => w[t.c] += HW[t.h[i]] || 0);
-  const unit = {eSF: w.eSF ? d.f.esf[i] / w.eSF : 0, eAP: w.eAP ? d.f.eap[i] / w.eAP : 0};
+  const w = {eSF: 0, eAP: 0}, n = {eSF: 0, eAP: 0}, fx = {}, vq = {}, unit = {};
+  d.teams.forEach(t => { const x = HW[t.h[i]] || 0; w[t.c] += x; if (x) n[t.c]++; });
+  ['eSF', 'eAP'].forEach(c => {
+    const k = c.toLowerCase(), tot = d.f[k][i], fixo = BR.meta.parc[i] >= 202506 ? (d.f[k + '_fixo'] || [])[i] ?? tot : tot;
+    fx[c] = w[c] ? fixo / w[c] : 0; vq[c] = n[c] ? (tot - fixo) / n[c] : 0; unit[c] = fx[c] + vq[c];
+  });
+  const val = (c, h) => { const x = HW[h] || 0; return x ? x * fx[c] + vq[c] : 0; };
   let gain = 0, partial = 0, invalid = 0;
-  d.teams.forEach(t => { const c = t.h[i]; if (c === '.') return; const ww = HW[c] || 0; if (ww < 1) { gain += (1 - ww) * unit[t.c]; if (ww > 0) partial++; else invalid++; } });
-  return {unit, gain, partial, invalid};
+  d.teams.forEach(t => { const h = t.h[i]; if (h === '.') return; const ww = HW[h] || 0; if (ww < 1) { gain += unit[t.c] - val(t.c, h); if (ww > 0) partial++; else invalid++; } });
+  return {unit, val, gain, partial, invalid};
 }
 function panelMu(ix) {
   const m = MU[ix], d = m.d, f = d.f, i = T.parc, c = T.cic, ig = d.igm, sp = muUf === SP;
@@ -593,12 +599,12 @@ function panelMu(ix) {
     let grp = '';
     const rows = list.map(t => {
       const g = t.c !== grp ? `<tr class="tgrp"><td colspan="3">${t.c}</td></tr>` : ''; grp = t.c;
-      const h = t.h[i], v = (HW[h] || 0) * e.unit[t.c];
+      const h = t.h[i], v = e.val(t.c, h);
       const strip = `<div class="hist" title="Situação por parcela, ${AX.parc.lbl(0)} a ${AX.parc.lbl(AX.parc.n - 1)}">${[...t.h].map((x, j) => `<i class="${j === i ? 'on' : ''}" style="${HCOL[x] ? 'background:' + HCOL[x] : ''}"></i>`).join('')}</div>`;
       return g + `<tr><td>${esc(title(t.n))}<span class="u">CNES ${esc(t.e)} · INE ${esc(t.i)}</span>${strip}</td><td><span class="st" style="background:${HCOL[h] || 'var(--bg-2)'}"></span><span class="fine">${HLBL[h]}</span></td><td class="m r">${v ? brl(v, false) : '–'}</td></tr>`;
     }).join('');
     teams = `<div class="blk"><h3>eSF e eAP no repasse <em>${AX.parc.lbl(i)}</em></h3>
-      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%). A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
+      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%); a partir de jun/2025 a composição pesa só no componente fixo, porque vínculo e qualidade são pagos inteiros a cada equipe paga. A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
       ${e.gain > 1 ? `<div class="gain"><div class="v">+ ${brl(e.gain)}</div><div class="l">oportunidade de aumento no mês (estimativa): o repasse se ${e.partial} equipe(s) paga(s) em parte e ${e.invalid} inválida(s) chegassem a 100%.</div></div>` : ''}
       <div class="kpis" style="margin-bottom:14px">
         <div class="kpi"><div class="v">${act.length}</div><div class="l">equipes no relatório</div></div>
