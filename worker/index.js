@@ -54,7 +54,7 @@ async function atlasData(request, env, url) {
 
 async function atlasAlert(request, env) {
   if (request.method !== "POST") return json(405, { ok: false });
-  const tok = env.ATLAS_ALERT_TOKEN;
+  const tok = (env.ATLAS_ALERT_TOKEN || "").trim();   // colado no painel às vezes vem com espaço ou quebra de linha
   if (!tok || request.headers.get("authorization") !== `Bearer ${tok}`) return json(401, { ok: false });
   let d;
   try { d = await request.json(); } catch { return json(400, { ok: false }); }
