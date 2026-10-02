@@ -35,6 +35,10 @@ const AX = {
 const T = {parc: AX.parc.n - 1, cic: AX.cic.n - 1, comp: AX.comp.n - 1};
 const last12 = (a, i) => sum(a.slice(Math.max(0, i - 11), i + 1));
 const IGM_RES = BR.meta.igm_fonte === 'resolucoes';
+// população IBGE do ano de cada parcela/ciclo/competência (meta.pop_i → meta.pop_anos); 12 meses: a do ano da última parcela da janela
+const PI = BR.meta.pop_i || {}, PANOS = BR.meta.pop_anos || [BR.meta.pop_ano];
+const popAt = (d, ax, i) => (d.pa && PI[ax] ? d.pa[PI[ax][i]] : null) || d.pop;
+const popAno = (ax, i) => PANOS[PI[ax] ? PI[ax][i] : PANOS.length - 1];
 $('#railNote').innerHTML = `Federal ${AX.parc.long(0)} a ${AX.parc.long(AX.parc.n - 1)}<br>IGM SUS Paulista ${BR.meta.cic[0].slice(3)} a ${BR.meta.cic.at(-1).slice(3)}<br>CNES ${AX.comp.long(0)} a ${AX.comp.long(AX.comp.n - 1)}<br>Atualizado em ${new Date(BR.meta.gerado).toLocaleDateString('pt-BR')}`;
 $('#srcIgm').textContent = IGM_RES
   ? 'Resoluções SS da SES-SP, os atos de pagamento de 2024 a 2026 (Res 18 e 140/2024; 13, 97, 180 e 230/2025; 111 e 185/2026), com fixo, variável, ajuste e bônus. Pontuação vacinal do painel público de 2026. Em 2025 o 1º período foi pago com duas parcelas fixas e o variável dos dois primeiros períodos saiu junto, no 2º.'
@@ -74,7 +78,7 @@ for (const [cod, rings] of Object.entries(BR.geo)) {
 }
 const SP = ufIdx['35'];
 const BR_TOT = Array.from({length: AX.parc.n}, (_, i) => sum(UF.map(u => u.d.tot[i])));
-const BR_POP = sum(UF.map(u => u.d.pop));
+const BR_POP = {pop: sum(UF.map(u => u.d.pop)), pa: PANOS.map((_, j) => sum(UF.map(u => u.d.pa?.[j] || u.d.pop)))};
 
 // municípios: carregados por UF, sob demanda
 const CACHE = {};
@@ -108,18 +112,18 @@ const hasMu = () => level !== 'br' && focusUf === muUf && MU.length > 0;
 /* ================= métricas ================= */
 const METRICS = {
   uf: [
-    {id: 'pc', ax: 'parc', label: 'R$/hab/mês', title: 'Repasse federal APS por habitante no mês', f: (u, i) => u.d.tot[i] / u.d.pop, fmt: v => 'R$ ' + nf2.format(v)},
-    {id: 'pc12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (u, i) => last12(u.d.tot, i) / u.d.pop, fmt: v => 'R$ ' + nf0.format(v)},
+    {id: 'pc', ax: 'parc', label: 'R$/hab/mês', title: 'Repasse federal APS por habitante no mês', f: (u, i) => u.d.tot[i] / popAt(u.d, 'parc', i), fmt: v => 'R$ ' + nf2.format(v)},
+    {id: 'pc12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (u, i) => last12(u.d.tot, i) / popAt(u.d, 'parc', i), fmt: v => 'R$ ' + nf0.format(v)},
     {id: 'tot', ax: 'parc', label: 'Total no mês', title: 'Repasse federal APS no mês', f: (u, i) => u.d.tot[i], fmt: v => brl(v)},
   ],
   mu: [
-    {id: 'fed', ax: 'parc', label: 'Federal R$/hab', title: 'Repasse federal APS por habitante no mês', f: (m, i) => m.d.pop ? m.d.f.tot[i] / m.d.pop : null, fmt: v => 'R$ ' + nf2.format(v)},
-    {id: 'fed12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (m, i) => m.d.pop ? last12(m.d.f.tot, i) / m.d.pop : null, fmt: v => 'R$ ' + nf0.format(v)},
-    {id: 'esfpg', ax: 'parc', label: 'eSF pagas/10 mil hab', title: 'eSF pagas pelo Ministério por 10 mil habitantes', f: (m, i) => m.d.pop ? m.d.f.esf_pg[i] / m.d.pop * 1e4 : null, fmt: v => nf2.format(v)},
+    {id: 'fed', ax: 'parc', label: 'Federal R$/hab', title: 'Repasse federal APS por habitante no mês', f: (m, i) => m.d.pop ? m.d.f.tot[i] / popAt(m.d, 'parc', i) : null, fmt: v => 'R$ ' + nf2.format(v)},
+    {id: 'fed12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (m, i) => m.d.pop ? last12(m.d.f.tot, i) / popAt(m.d, 'parc', i) : null, fmt: v => 'R$ ' + nf0.format(v)},
+    {id: 'esfpg', ax: 'parc', label: 'eSF pagas/10 mil hab', title: 'eSF pagas pelo Ministério por 10 mil habitantes', f: (m, i) => m.d.pop ? m.d.f.esf_pg[i] / popAt(m.d, 'parc', i) * 1e4 : null, fmt: v => nf2.format(v)},
     {id: 'teto', ax: 'parc', label: 'Uso do teto eSF', title: 'eSF credenciadas ÷ teto de eSF do município', f: (m, i) => m.d.f.esf_teto[i] ? m.d.f.esf_cred[i] / m.d.f.esf_teto[i] : null, fmt: v => pct(v)},
-    {id: 'igm', sp: true, ax: 'cic', label: 'IGM R$/hab', title: 'IGM SUS Paulista por habitante no ciclo', f: (m, i) => m.d.igm && m.d.igm.tot[i] != null && m.d.pop ? m.d.igm.tot[i] / m.d.pop : null, fmt: v => 'R$ ' + nf2.format(v)},
+    {id: 'igm', sp: true, ax: 'cic', label: 'IGM R$/hab', title: 'IGM SUS Paulista por habitante no ciclo', f: (m, i) => m.d.igm && m.d.igm.tot[i] != null && m.d.pop ? m.d.igm.tot[i] / popAt(m.d, 'cic', i) : null, fmt: v => 'R$ ' + nf2.format(v)},
     {id: 'pts', sp: true, ax: 'cic', label: 'Pontos IGM', title: 'Pontuação IGM (máx. 10; só no painel 2026)', f: (m, i) => m.d.igm ? m.d.igm.pts[i] : null, fmt: v => nf1.format(v) + ' pts'},
-    {id: 'esf', ax: 'comp', label: 'eSF CNES/10 mil hab', title: 'Equipes de Saúde da Família ativas no CNES por 10 mil habitantes', f: (m, i) => m.d.cnes && m.d.pop ? m.d.cnes.esf[i] / m.d.pop * 1e4 : null, fmt: v => nf2.format(v)},
+    {id: 'esf', ax: 'comp', label: 'eSF CNES/10 mil hab', title: 'Equipes de Saúde da Família ativas no CNES por 10 mil habitantes', f: (m, i) => m.d.cnes && m.d.pop ? m.d.cnes.esf[i] / popAt(m.d, 'comp', i) * 1e4 : null, fmt: v => nf2.format(v)},
   ],
 };
 let metric = {uf: 'pc', mu: 'fed'};
@@ -154,7 +158,7 @@ function recolor() {
   const mu = metricOf('uf'), bu = binsFor('uf', mu); UF.forEach(u => { u.v = mu.f(u, T[mu.ax]); u.col = colorFor(u.v, bu); });
   const mm = metricOf('mu');
   if (MU.length && mm) { const bm = binsFor('mu', mm); MU.forEach(m => { m.v = mm.f(m, T[mm.ax]); m.col = colorFor(m.v, bm); }); }
-  [...UF].sort((a, b) => b.d.tot[T.parc] / b.d.pop - a.d.tot[T.parc] / a.d.pop).forEach((u, i) => u.rank = i + 1);
+  [...UF].sort((a, b) => b.d.tot[T.parc] / popAt(b.d, 'parc', T.parc) - a.d.tot[T.parc] / popAt(a.d, 'parc', T.parc)).forEach((u, i) => u.rank = i + 1);
 }
 
 /* ================= vista e grade de pixels ================= */
@@ -359,7 +363,7 @@ function showTip(p) {
     html = `<b>${esc(u.nome)}</b><span>${esc(m.label)} <em>${m.fmt(m.f(u, T[m.ax]))}</em> · ${AX[m.ax].lbl(T[m.ax])}</span><span>${u.rank}º de 27 em R$/hab no mês</span><span>${level === 'br' ? 'Clique para aproximar' : 'Clique para ir ao estado'}</span>`;
   } else if (hasMu() && p.mu >= 0) {
     const m = MU[p.mu], mm = metricOf('mu');
-    html = `<b>${esc(m.nome)}</b><span>${esc(mm.label)} <em>${m.v == null ? '–' : mm.fmt(m.v)}</em> · ${AX[mm.ax].lbl(T[mm.ax])}</span><span>Pop. <em>${nf0.format(m.d.pop || 0)}</em> · eSF pagas <em>${m.d.f.esf_pg[T.parc]}</em></span><span>Clique para abrir</span>`;
+    html = `<b>${esc(m.nome)}</b><span>${esc(mm.label)} <em>${m.v == null ? '–' : mm.fmt(m.v)}</em> · ${AX[mm.ax].lbl(T[mm.ax])}</span><span>Pop. <em>${nf0.format(popAt(m.d, mm.ax, T[mm.ax]) || 0)}</em> (IBGE ${popAno(mm.ax, T[mm.ax])}) · eSF pagas <em>${m.d.f.esf_pg[T.parc]}</em></span><span>Clique para abrir</span>`;
   } else if (p.uf >= 0) {
     const u = UF[p.uf];
     html = `<b>${esc(u.nome)}</b><span>Repasse federal <em>${brl(u.d.tot[T.parc])}</em> · ${AX.parc.lbl(T.parc)}</span>`;
@@ -495,7 +499,7 @@ function panelBrazil() {
   <div class="p-body">
     <div class="blk"><div class="kpis">
       <div class="kpi wide hl"><div class="v">${brl(tot)}</div><div class="l">transferido no mês · ${deltaTxt(delta(BR_TOT, i))}</div></div>
-      <div class="kpi"><div class="v"><small>R$</small>${nf2.format(tot / BR_POP)}</div><div class="l">por habitante no mês</div></div>
+      <div class="kpi"><div class="v"><small>R$</small>${nf2.format(tot / popAt(BR_POP, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(BR_TOT, i)).replace('R$ ', '')}</div><div class="l">12 meses até ${AX.parc.lbl(i)}</div></div>
     </div>${series(BR_TOT, 'parc')}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(plan, i)}</div>
@@ -522,11 +526,11 @@ function panelUf(ix) {
 `;
   }
   if (loaded && AGG) extra += `<div class="blk"><h3>Equipes no CNES <em>${AX.comp.lbl(T.comp)}</em></h3><div class="kpis"><div class="kpi"><div class="v">${nf0.format(AGG.esf[T.comp])}</div><div class="l">eSF ativas</div></div><div class="kpi"><div class="v">${nf0.format(MU.length)}</div><div class="l">municípios</div></div></div>${series(AGG.esf, 'comp')}</div>`;
-  return `<div class="p-head"><span class="k">${esc(u.reg)} · ${u.sg}</span><h2>${esc(u.nome)}</h2><div class="sub">${nf0.format(d.n)} municípios · ${nf0.format(d.pop)} hab · ${u.rank}º de 27 em R$/hab · ${AX.parc.lbl(i)}</div></div>
+  return `<div class="p-head"><span class="k">${esc(u.reg)} · ${u.sg}</span><h2>${esc(u.nome)}</h2><div class="sub">${nf0.format(d.n)} municípios · ${nf0.format(popAt(d, 'parc', i))} hab (IBGE ${popAno('parc', i)}) · ${u.rank}º de 27 em R$/hab · ${AX.parc.lbl(i)}</div></div>
   <div class="p-body">
     <div class="blk"><div class="kpis">
       <div class="kpi wide hl"><div class="v">${brl(d.tot[i])}</div><div class="l">repasse federal da APS · ${AX.parc.lbl(i)} · ${deltaTxt(delta(d.tot, i))}</div></div>
-      <div class="kpi"><div class="v"><small>R$</small>${nf2.format(d.tot[i] / d.pop)}</div><div class="l">por habitante no mês</div></div>
+      <div class="kpi"><div class="v"><small>R$</small>${nf2.format(d.tot[i] / popAt(d, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(d.tot, i)).replace('R$ ', '')}</div><div class="l">12 meses até ${AX.parc.lbl(i)}</div></div>
     </div>${series(d.tot, 'parc')}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(d.plan, i)}</div>
@@ -551,7 +555,7 @@ function panelMu(ix) {
   const vacN = ['Pól', 'Pen', 'Pnm', 'Trí', 'HPV♀', 'HPV♂'], vacMax = [1.3, 1.3, 1.3, 1.3, .4, .4];
   const vacFull = ['Poliomielite', 'Pentavalente', 'Pneumocócica', 'Tríplice viral', 'HPV meninas', 'HPV meninos'];
   const vac = v => `<div class="vac">${v.map((x, j) => { const k = Math.round((x || 0) / vacMax[j] * 4); return `<div title="${vacFull[j]}: ${nf2.format(x || 0)} de ${nf1.format(vacMax[j])}"><div class="px">${[3, 2, 1, 0].map(r => `<i class="${r < k ? 'f' : ''}"></i>`).join('')}</div><span>${vacN[j]}</span></div>`; }).join('')}</div>`;
-  const per = d.pop ? f.tot[i] / d.pop : null;
+  const per = d.pop ? f.tot[i] / popAt(d, 'parc', i) : null;
   const line = (col, nm, v) => v ? `<div class="line"><i class="dot" style="background:${col}"></i><span class="nm">${nm}</span><span class="vv">${brl(v)}</span><span class="pp">${pct(v / f.tot[i])}</span></div>` : '';
   const comp = `<div class="lines" style="margin-top:12px">
       ${line('#002FA7', `eSF · ${f.esf_pg[i]} pagas de ${f.esf_cred[i]} credenciadas`, f.esf[i])}
@@ -611,7 +615,7 @@ function panelMu(ix) {
     teams = `<div class="blk"><p class="fine">Situação de cada equipe no repasse e IGM: por enquanto, só em São Paulo.</p></div>`;
   }
   const uf = UF[muUf];
-  return `<div class="p-head"><span class="k">${esc(uf.nome)} · IBGE ${m.cod}</span><h2>${esc(title(m.nome))}</h2><div class="sub">${nf0.format(d.pop || 0)} hab${d.faixa ? ` · faixa IGM R$ ${d.faixa}/hab` : ''} · ${esc((d.eq || '').toLowerCase())}</div></div>
+  return `<div class="p-head"><span class="k">${esc(uf.nome)} · IBGE ${m.cod}</span><h2>${esc(title(m.nome))}</h2><div class="sub">${nf0.format(popAt(d, 'parc', i) || 0)} hab (IBGE ${popAno('parc', i)})${d.faixa ? ` · faixa IGM R$ ${d.faixa}/hab` : ''} · ${esc((d.eq || '').toLowerCase())}</div></div>
   <div class="p-body">
     <div class="blk"><h3>Federal · APS <em>${AX.parc.lbl(i)}</em></h3>
       <div class="kpis">

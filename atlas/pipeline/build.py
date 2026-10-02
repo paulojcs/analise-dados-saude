@@ -8,7 +8,7 @@ Entradas (ATLAS_HOME, mesmo layout dos coletores):
   outputs/aps/tables/igm_sp/igm_sp_longo.csv, atual__tbFinanceira.csv     IGM (painel atual da SES-SP)
   data/public/cnes_ep/ep_<AAAAMM>.parquet                                  equipes no CNES (Brasil)
 Estáticos (git, atlas/estatico/): malhas, nomes, IGM 2024-25 pelas Resoluções SS.
-População: IBGE SIDRA 6579 (última estimativa), com cópia local se a API falhar.
+População: IBGE SIDRA 6579, estimativa do ano de cada parcela/ciclo/competência, com cópia local se a API falhar.
 
 Saída: ATLAS_HOME/site/  (br.json, uf/<cod>.json, manifest.json com o hash do conteúdo)
     python atlas/pipeline/build.py
@@ -32,18 +32,28 @@ NOMES = load(EST / 'municipios.json')
 GEO_UF = load(EST / 'geo/uf.json')
 
 # ---------- população (IBGE) ----------
+# uma estimativa por ano civil (2024 em diante: 1ª competência/parcela/ciclo do atlas); cada parcela, ciclo e
+# competência divide pela população do seu ano (ano sem estimativa: a última anterior, ou a primeira)
+ANOS = ','.join(str(a) for a in range(2024, pd.Timestamp.now().year + 2))
 def sidra(nivel):
     cache = H / 'cache' / f'pop_{nivel}.json'
     try:
-        raw = urllib.request.urlopen(f'https://apisidra.ibge.gov.br/values/t/6579/{nivel}/all/v/9324/p/last', timeout=120).read()
+        raw = urllib.request.urlopen(f'https://apisidra.ibge.gov.br/values/t/6579/{nivel}/all/v/9324/p/{ANOS}', timeout=120).read()
         rows = json.loads(raw)[1:]
         cache.parent.mkdir(parents=True, exist_ok=True); cache.write_bytes(raw)
     except Exception as e:
         print(f'   SIDRA {nivel} falhou ({e}); usando cópia local', file=sys.stderr)
         rows = load(cache)[1:]
-    return {r['D1C'][:6]: int(r['V']) for r in rows}, rows[0]['D3N']
-POP, POP_ANO = sidra('n6')
+    pop = {}
+    for r in rows:
+        if str(r['V']).isdigit(): pop.setdefault(r['D1C'][:6], {})[r['D3N']] = int(r['V'])
+    return pop, sorted({r['D3N'] for r in rows})
+POP, POP_ANOS = sidra('n6')
 POP_UF, _ = sidra('n3')
+POP_ANO = POP_ANOS[-1]
+pa = lambda d: [d.get(a) for a in POP_ANOS]                          # população por ano, alinhada a meta.pop_anos
+def pop_i(anos):   # índice em POP_ANOS da estimativa usada para cada ano civil
+    return [max([j for j, a in enumerate(POP_ANOS) if a <= str(y)], default=0) for y in anos]
 
 # ---------- federal ----------
 tier1 = sorted((H / 'data/public/relatorioaps_br').glob('*/pagamento_completo.parquet'))[-1].parent
@@ -66,7 +76,7 @@ for sg, g in u.groupby('sgUf'):
         a = [0] * NP
         for p, v in h.groupby('nuParcela').v.sum().items(): a[pi[int(p)]] = round(v)
         plan[cat] = a
-    UF[cod] = {'n': n, 'pop': POP_UF[cod], 'tot': tot, 'plan': plan}
+    UF[cod] = {'n': n, 'pop': POP_UF[cod][POP_ANO], 'pa': pa(POP_UF[cod]), 'tot': tot, 'plan': plan}
 
 mpp = pd.read_parquet(tier1 / 'pagamento_municipio_parcela.parquet', columns=['coMunicipioIbge', 'nuParcela', 'total', 'coSeqPlanoOrcamentario', 'vlTotalCusteio', 'vlTotalImplantacao'])
 for col in ('total', 'vlTotalCusteio', 'vlTotalImplantacao'): mpp[col] = pd.to_numeric(mpp[col], errors='coerce')
@@ -173,11 +183,13 @@ for cod_uf in sorted(UFN):
     for cod6, rings in geo_all.items():
         if cod6 not in MU: continue
         geo[cod6] = rings
-        m = MU[cod6]; m['nome'] = NOMES.get(cod6, cod6); m['pop'] = POP.get(cod6)
+        m = MU[cod6]; m['nome'] = NOMES.get(cod6, cod6); m['pop'] = POP.get(cod6, {}).get(POP_ANO); m['pa'] = pa(POP.get(cod6, {}))
         mun[cod6] = m
         IDX.append([cod6, m['nome'], cod_uf, m['pop'] or 0])
     dump({'geo': geo, 'mun': mun}, OUT / 'uf' / f'{cod_uf}.json')
-meta = {'parc': PARC, 'cic': CIC, 'comp': COMP, 'pop_ano': POP_ANO, 'igm_fonte': 'resolucoes',
+# IGM: as Resoluções SS não trazem a população usada (só a Res 11/2024, per capita); fica a do IBGE do ano do ciclo
+meta = {'parc': PARC, 'cic': CIC, 'comp': COMP, 'pop_ano': POP_ANO, 'pop_anos': POP_ANOS, 'igm_fonte': 'resolucoes',
+        'pop_i': {'parc': pop_i(p // 100 for p in PARC), 'cic': pop_i(int(q[3:]) for q in CIC), 'comp': pop_i(p // 100 for p in COMP)},
         'gerado': pd.Timestamp.now(tz='America/Sao_Paulo').isoformat(timespec='minutes')}
 dump({'meta': meta, 'geo': GEO_UF, 'ufn': UFN, 'uf': UF, 'idx': IDX}, OUT / 'br.json')
 
