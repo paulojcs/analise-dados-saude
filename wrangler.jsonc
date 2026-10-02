@@ -3,13 +3,19 @@
   // Mantém em versionamento o que hoje só existe nas build settings do painel.
   "name": "coorte",
   "compatibility_date": "2026-09-09",
-  // O Worker só atende /api/* (formulário de contato); o resto são assets.
+  // O Worker só atende /api/* (formulário, alerta do atlas) e /atlas/data/* (R2); o resto são assets.
   "main": "worker/index.js",
   "assets": {
     "directory": "marca_coorte/site",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*", "/atlas/data/*"]
   },
+
+  // Dados do Atlas da APS (coorte.io/atlas/): o pipeline no zen publica neste bucket;
+  // o Worker serve /atlas/data/* a partir dele. Token do alerta: `wrangler secret put ATLAS_ALERT_TOKEN`.
+  "r2_buckets": [
+    { "binding": "ATLAS", "bucket_name": "coorte-atlas" }
+  ],
 
   // Envio de e-mail pelo Email Routing do coorte.io. O destino precisa ser um
   // endereço verificado em Email Routing → Destination addresses.
