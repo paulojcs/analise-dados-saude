@@ -170,9 +170,10 @@ if det.exists():
 IDX = []
 for cod_uf in sorted(UFN):
     geo_all = load(EST / 'geo' / f'{cod_uf}.json'); geo, mun = {}, {}
-    for cod6, rings in geo_all.items():
+    for cod6 in list(geo_all) + sorted(c for c in MU if c[:2] == cod_uf and c not in geo_all):
         if cod6 not in MU: continue
-        geo[cod6] = rings
+        if cod6 in geo_all: geo[cod6] = geo_all[cod6]
+        else: print(f'   AVISO: {cod6} {NOMES.get(cod6, "?")} sem malha em estatico/geo/{cod_uf}.json (fora do mapa; rodar prep_estatico.py)', file=sys.stderr)
         m = MU[cod6]; m['nome'] = NOMES.get(cod6, cod6); m['pop'] = POP.get(cod6)
         mun[cod6] = m
         IDX.append([cod6, m['nome'], cod_uf, m['pop'] or 0])
