@@ -844,6 +844,7 @@ const deltaTxt = d => d == null ? '' : `<span style="color:${d < 0 ? 'var(--sign
 function panelBrazil() {
   const i = T.parc, tot = BR_TOT[i], n = sum(UF.map(u => u.d.n));
   const plan = {}; UF.forEach(u => { for (const [k, v] of Object.entries(u.d.plan)) { plan[k] = plan[k] || Array(AX.parc.n).fill(0); v.forEach((x, j) => plan[k][j] += x); } });
+  const ot = {}; UF.forEach(u => { for (const [k, v] of Object.entries(u.d.ot || {})) { ot[k] = ot[k] || Array(AX.parc.n).fill(0); v.forEach((x, j) => ot[k][j] += x); } });
   const m = metricOf('uf');
   const items = UF.map((u, j) => ({i: j, s: u.sg, v: m.f(u, T[m.ax])})).filter(x => x.v != null).sort((a, b) => b.v - a.v);
   return `<div class="p-head"><span class="k">Brasil · 27 UF</span><h2>Repasse federal da APS</h2><div class="sub">Parcela de ${AX.parc.long(i)} · ${nf0.format(n)} municípios</div></div>
@@ -853,7 +854,7 @@ function panelBrazil() {
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(tot / popAt(BR_POP, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(BR_TOT, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
     </div>${series(BR_TOT, 'parc')}${notaDez(i)}</div>
-    <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(plan, i)}</div>
+    <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(plan, i)}${otP(otTxt(ot, otAt(ot, 'pg', i), i, true), 10)}</div>
     <div class="blk"><h3>${esc(m.label)} por estado <em>clique para abrir</em></h3>${items.length ? rankBlock(items, -1, 'uf', m.fmt) : `<p class="empty">Sem 12 meses completos em ${AX.parc.lbl(i)}: a série começa em ${AX.parc.lbl(0)}.</p>`}</div>
   </div>`;
 }
@@ -884,11 +885,30 @@ function panelUf(ix) {
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(d.tot[i] / popAt(d, 'parc', i))}</div><div class="l">por habitante no mês</div></div>
       <div class="kpi"><div class="v">${brl(last12(d.tot, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
     </div>${series(d.tot, 'parc')}${notaDez(i)}</div>
-    <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(d.plan, i)}</div>
+    <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(d.plan, i)}${otP(otTxt(d.ot, otAt(d.ot, 'pg', i), i, true), 10)}</div>
     ${extra}${munis}
   </div>`;
 }
-const CLS = {'ÓTIMO': 'ot', 'BOM': 'bo', 'SUFICIENTE': 'su', 'REGULAR': 're'};
+// vínculo e qualidade das eSF pelo valor pago (o rótulo da API diz BOM em toda parcela). ot: q, v = eSF pagas como ótimo
+// (no município, saldo com sinal em degraus de R$ 2 mil; na UF, qn e vn somam o que ficou abaixo do bom); qa, va = R$ das eAP acima do bom
+const otAt = (ot, k, i) => ot && ot[k] ? ot[k][i] : 0;
+function otTxt(ot, pg, i, agg) {
+  if (!pg) return '';
+  const on = k => UF.some(u => otAt(u.d.ot, k, i) > 0), full = UF.some(u => otAt(u.d.ot, 'qn', i) || otAt(u.d.ot, 'vn', i));
+  const parts = [['q', 'Qualidade'], ['v', 'Vínculo']].map(([k, nm]) => {
+    const n = Math.max(0, otAt(ot, k, i)), b = otAt(ot, k + 'n', i) + Math.max(0, -otAt(ot, k, i)), a = otAt(ot, k + 'a', i);
+    if (!on(k) && !b) return null;
+    const eap = a ? `; eAP: ${a > 0 ? '+' : '−'} ${brl(Math.abs(a))} sobre o bom` : '';
+    if (b && !n) return `${nm}: ${brl(b * 2000)} abaixo do valor bom das ${nf0.format(pg)} eSF${eap}`;
+    if (full && !n) return `${nm}: todas como bom${eap}`;
+    const x = n ? `${nf0.format(n)} de ${nf0.format(pg)} eSF${agg ? ` (${pct(n / pg)})` : ''}` : `nenhuma das ${nf0.format(pg)} eSF`;
+    return full ? `${nm}: saldo acima do bom equivale a ${x} como ótimo${b ? `; ${brl(b * 2000)} abaixo do bom em outros municípios` : ''}${eap}`
+      : `${nm}: ${x} ${n > 1 ? 'pagas' : 'paga'} como ótimo${n ? ' (R$ 8 mil); demais' : '; todas'} como bom${eap}`;
+  });
+  if (parts.every(x => !x)) return `Vínculo e qualidade das eSF pagos como bom por regra de transição (Portaria GM/MS 3.493/2024, art. 3).`;
+  return parts.map((x, j) => x || `${j ? 'Vínculo' : 'Qualidade'}: todas como bom`).join('. ') + (full ? '. Pagamento pela classificação (Portaria GM/MS 10.994/2026).' : '. Transição parcial (Portaria GM/MS 10.994/2026).');
+}
+const otP = (txt, mt) => txt ? `<p class="fine" style="margin-top:${mt}px">${txt}</p>` : '';
 const HCOL = {'4': '#002FA7', '3': '#5E7FCB', '2': '#8AA2D9', '1': '#B3C3E6', '0': '#C9A227', 'x': '#D9482B', '.': ''};
 const HLBL = {'4': 'paga 100%', '3': 'paga 75%', '2': 'paga 50%', '1': 'paga 25%', '0': 'válida, composição inválida', 'x': 'inválida', '.': 'sem registro'};
 const HW = {'4': 1, '3': .75, '2': .5, '1': .25};
@@ -987,10 +1007,7 @@ function panelMu(ix) {
         <div class="kpi wide"><div class="v">${brl(last12(f.tot, i))}</div><div class="l">${l12(i)} · ${deltaTxt(delta(f.tot, i))}</div></div>
       </div>
       ${series(f.tot, 'parc')}${notaDez(i)}
-      <div class="badges" style="margin-top:12px">
-        <span class="badge ${CLS[d.vin] || ''}">Vínculo <b>${esc(d.vin || '–')}</b></span>
-        <span class="badge ${CLS[d.qual] || ''}">Qualidade <b>${esc(d.qual || '–')}</b></span>
-      </div>
+      ${otP(otTxt(d.ot, f.esf_pg[i], i), 12)}
       ${comp}${teto}
     </div>
     ${igmBlk}${cnesBlk}${teams}
