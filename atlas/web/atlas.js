@@ -554,8 +554,8 @@ function panelMu(ix) {
   const per = d.pop ? f.tot[i] / d.pop : null;
   const line = (col, nm, v) => v ? `<div class="line"><i class="dot" style="background:${col}"></i><span class="nm">${nm}</span><span class="vv">${brl(v)}</span><span class="pp">${pct(v / f.tot[i])}</span></div>` : '';
   const comp = `<div class="lines" style="margin-top:12px">
-      ${line('#002FA7', `eSF · ${f.esf_pg[i]} pagas de ${f.esf_cred[i]} credenciadas`, f.esf[i])}
-      ${line('#8AA2D9', `eAP · ${f.eap_pg[i]} pagas`, f.eap[i])}
+      ${line('#002FA7', `eSF · ${f.esf_pg[i]} pagas de ${f.esf_cred[i]} credenciadas`, f.esf_l[i])}
+      ${line('#8AA2D9', `eAP · ${f.eap_pg[i]} pagas`, f.eap_l[i])}
       ${line('#5E7FCB', 'Saúde bucal', f.sb[i])}
       ${line('#B3C3E6', 'eMulti', f.emulti[i])}
       ${line('#7A8597', 'Agentes comunitários', f.acs[i])}
@@ -598,11 +598,11 @@ function panelMu(ix) {
       return g + `<tr><td>${esc(title(t.n))}<span class="u">CNES ${esc(t.e)} · INE ${esc(t.i)}</span>${strip}</td><td><span class="st" style="background:${HCOL[h] || 'var(--bg-2)'}"></span><span class="fine">${HLBL[h]}</span></td><td class="m r">${v ? brl(v, false) : '–'}</td></tr>`;
     }).join('');
     teams = `<div class="blk"><h3>eSF e eAP no repasse <em>${AX.parc.lbl(i)}</em></h3>
-      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%). A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
+      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%). É o valor bruto da regra, antes dos descontos do município; as linhas eSF e eAP acima são o repasse líquido, já com os descontos. A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
       ${e.gain > 1 ? `<div class="gain"><div class="v">+ ${brl(e.gain)}</div><div class="l">oportunidade de aumento no mês (estimativa): o repasse se ${e.partial} equipe(s) paga(s) em parte e ${e.invalid} inválida(s) chegassem a 100%.</div></div>` : ''}
       <div class="kpis" style="margin-bottom:14px">
         <div class="kpi"><div class="v">${act.length}</div><div class="l">equipes no relatório</div></div>
-        <div class="kpi"><div class="v">${brl(e.unit.eSF, false).replace('R$ ', '')}</div><div class="l">R$ por eSF 100% no mês (estimado)</div></div>
+        <div class="kpi"><div class="v">${brl(e.unit.eSF, false).replace('R$ ', '')}</div><div class="l">R$ por eSF 100% no mês (estimado, bruto)</div></div>
       </div>
       <table class="teams"><thead><tr><th>Equipe</th><th>Situação</th><th class="r">R$/mês est.</th></tr></thead><tbody>${rows}</tbody></table>
       ${d.teams.length > 40 ? `<button class="more" id="moreTeams">${showAllTeams ? 'Mostrar menos' : `Mostrar as ${d.teams.length} equipes`}</button>` : ''}
