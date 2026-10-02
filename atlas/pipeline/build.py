@@ -148,12 +148,13 @@ for mun, a in cnt.items():
 # ---------- equipes eSF/eAP de SP por parcela (relatorio-detalhado) ----------
 det = H / 'data/public/relatorioaps_br/detalhe_validacoesEquipes.parquet'
 if det.exists():
-    d = pd.read_parquet(det, columns=['nuParcela', 'coComponente', 'coMunicipioIbge', 'coEquipe', 'codigoEstabelecimento', 'stPagamento', 'composicao'])
+    d = pd.read_parquet(det, columns=['nuParcela', 'coComponente', 'coMunicipioIbge', 'coEquipe', 'codigoEstabelecimento', 'stPagamento', 'composicao', 'modalidade'])
     def code(st, comp):   # '.' sem registro, 'x' inválida, '4'/'3'/'2'/'1' paga a 100/75/50/25%, '0' válida c/ composição inválida
         if str(st or '').startswith('INV'): return 'x'
         return {'100%': '4', '75%': '3', '50%': '2', '25%': '1'}.get(str(comp or ''), '0')
     d['h'] = [code(a, b) for a, b in zip(d.stPagamento, d.composicao)]
     d['ine'] = d.coEquipe.astype(str).str.lstrip('0'); d['p'] = d.nuParcela.astype(int)
+    d['m'] = d.modalidade.astype(str).str[:2].map({'20': '2', '30': '3'})   # eAP 20h/30h: valores diferentes (Portaria GM/MS 3.493/2024)
     d = d[d.p.isin(pi)]
     for (cod, ine), h in d.groupby(['coMunicipioIbge', 'ine']):
         m = MU.get(cod)
@@ -163,6 +164,10 @@ if det.exists():
         last = h.loc[h.p.idxmax()]
         m.setdefault('teams', []).append({'i': ine, 'c': 'eSF' if int(last.coComponente) == 48 else 'eAP', 'n': NOME.get(ine) or ('INE ' + ine),
                                           'e': str(last.codigoEstabelecimento or ''), 'h': ''.join(hist)})
+        if m['teams'][-1]['c'] == 'eAP':   # modalidade por parcela ('2' 20h, '3' 30h); parcelas sem modalidade válida herdam a vizinha
+            mo = pd.Series([None] * NP, dtype=object)
+            for p, x in zip(h.p, h.m): mo[pi[p]] = x if isinstance(x, str) else None
+            m['teams'][-1]['m'] = ''.join(mo.ffill().bfill().fillna('.'))
     for m in MU.values():
         if 'teams' in m: m['teams'].sort(key=lambda t: (t['c'] != 'eSF', t['e'], t['n']))
 
