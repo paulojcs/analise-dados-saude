@@ -320,6 +320,8 @@ section,[id]{scroll-margin-top:56px}
 .cs-foot{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;
   font:400 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
 .cs-foot button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.cs-link{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:var(--klein);color:var(--on-klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.cs-link:hover{background:var(--klein-deep);color:var(--on-klein)}
 .cs-foot button:focus-visible{outline:2px solid var(--klein);outline-offset:4px}
 .cs-foot button i{font-style:normal;font-size:17px;display:inline-block;transition:transform .35s ease}
 .cs-card.on .cs-foot button i{transform:rotate(45deg)}
@@ -487,6 +489,7 @@ fieldset{border:0;margin:0;padding:0}
     <a href="#servicos">Serviços</a>
     <a href="#metodo">Método</a>
     <a href="#casos">Casos</a>
+    <a href="atlas/">Atlas</a>
     <a href="sobre.html">Sobre</a>
     <a class="cta" href="#contato">Contato <span aria-hidden="true">→</span></a>
   </nav>
@@ -781,6 +784,7 @@ fieldset{border:0;margin:0;padding:0}
         <h3>A nota vira repasse</h3>
         <div class="chips"><span class="chip">Indicadores de APS</span><span class="chip">Equidade territorial</span><span class="chip">Financiamento por desempenho</span></div>
         <p>Cada faixa de classificação tem um preço por equipe, e o mapa mostra o que a rede deixa de receber.</p>
+        <a class="cs-link" href="atlas/">Explorar no Atlas da APS <span aria-hidden="true">→</span></a>
         <div class="cs-foot"><span>1 publicação</span><button type="button" aria-expanded="false" aria-controls="cs2-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
@@ -1122,7 +1126,8 @@ fieldset{border:0;margin:0;padding:0}
     },520);
   }
   cards.forEach(function(c){
-    c.addEventListener('click',function(){
+    c.addEventListener('click',function(e){
+      if(e.target.closest('a')) return;   // o link do atlas navega, não abre a figura
       var open=!c.classList.contains('on');
       cards.forEach(function(o){ if(o!==c && o.classList.contains('on')) set(o,false); });
       set(c,open);

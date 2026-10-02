@@ -598,7 +598,7 @@ function panelMu(ix) {
       return g + `<tr><td>${esc(title(t.n))}<span class="u">CNES ${esc(t.e)} · INE ${esc(t.i)}</span>${strip}</td><td><span class="st" style="background:${HCOL[h] || 'var(--bg-2)'}"></span><span class="fine">${HLBL[h]}</span></td><td class="m r">${v ? brl(v, false) : '–'}</td></tr>`;
     }).join('');
     teams = `<div class="blk"><h3>eSF e eAP no repasse <em>${AX.parc.lbl(i)}</em></h3>
-      <div class="note"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%). A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
+      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%). A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
       ${e.gain > 1 ? `<div class="gain"><div class="v">+ ${brl(e.gain)}</div><div class="l">oportunidade de aumento no mês (estimativa): o repasse se ${e.partial} equipe(s) paga(s) em parte e ${e.invalid} inválida(s) chegassem a 100%.</div></div>` : ''}
       <div class="kpis" style="margin-bottom:14px">
         <div class="kpi"><div class="v">${act.length}</div><div class="l">equipes no relatório</div></div>
