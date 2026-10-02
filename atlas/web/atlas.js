@@ -33,7 +33,9 @@ const AX = {
   comp: {n: BR.meta.comp.length, lbl: i => ym(BR.meta.comp[i]), long: i => ym(BR.meta.comp[i]).replace('/', '/20'), unit: 'competência CNES', year: i => String(BR.meta.comp[i]).slice(0, 4)},
 };
 const T = {parc: AX.parc.n - 1, cic: AX.cic.n - 1, comp: AX.comp.n - 1};
-const last12 = (a, i) => sum(a.slice(Math.max(0, i - 11), i + 1));
+const last12 = (a, i) => i < 11 ? null : sum(a.slice(i - 11, i + 1));   // só janelas completas: a série começa na 1ª parcela
+const l12 = i => i < 11 ? `12 meses · série começa em ${AX.parc.lbl(0)}` : `12 meses até ${AX.parc.lbl(i)}`;
+const per12 = (a, i, pop) => { const s = last12(a, i); return s == null || !pop ? null : s / pop; };
 const IGM_RES = BR.meta.igm_fonte === 'resolucoes';
 $('#railNote').innerHTML = `Federal ${AX.parc.long(0)} a ${AX.parc.long(AX.parc.n - 1)}<br>IGM SUS Paulista ${BR.meta.cic[0].slice(3)} a ${BR.meta.cic.at(-1).slice(3)}<br>CNES ${AX.comp.long(0)} a ${AX.comp.long(AX.comp.n - 1)}<br>Atualizado em ${new Date(BR.meta.gerado).toLocaleDateString('pt-BR')}`;
 $('#srcIgm').textContent = IGM_RES
@@ -109,12 +111,12 @@ const hasMu = () => level !== 'br' && focusUf === muUf && MU.length > 0;
 const METRICS = {
   uf: [
     {id: 'pc', ax: 'parc', label: 'R$/hab/mês', title: 'Repasse federal APS por habitante no mês', f: (u, i) => u.d.tot[i] / u.d.pop, fmt: v => 'R$ ' + nf2.format(v)},
-    {id: 'pc12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (u, i) => last12(u.d.tot, i) / u.d.pop, fmt: v => 'R$ ' + nf0.format(v)},
+    {id: 'pc12', ax: 'parc', w12: true, label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (u, i) => per12(u.d.tot, i, u.d.pop), fmt: v => v == null ? '–' : 'R$ ' + nf0.format(v)},
     {id: 'tot', ax: 'parc', label: 'Total no mês', title: 'Repasse federal APS no mês', f: (u, i) => u.d.tot[i], fmt: v => brl(v)},
   ],
   mu: [
     {id: 'fed', ax: 'parc', label: 'Federal R$/hab', title: 'Repasse federal APS por habitante no mês', f: (m, i) => m.d.pop ? m.d.f.tot[i] / m.d.pop : null, fmt: v => 'R$ ' + nf2.format(v)},
-    {id: 'fed12', ax: 'parc', label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (m, i) => m.d.pop ? last12(m.d.f.tot, i) / m.d.pop : null, fmt: v => 'R$ ' + nf0.format(v)},
+    {id: 'fed12', ax: 'parc', w12: true, label: '12 meses R$/hab', title: 'Repasse federal APS por habitante, 12 meses até a parcela', f: (m, i) => per12(m.d.f.tot, i, m.d.pop), fmt: v => v == null ? '–' : 'R$ ' + nf0.format(v)},
     {id: 'esfpg', ax: 'parc', label: 'eSF pagas/10 mil hab', title: 'eSF pagas pelo Ministério por 10 mil habitantes', f: (m, i) => m.d.pop ? m.d.f.esf_pg[i] / m.d.pop * 1e4 : null, fmt: v => nf2.format(v)},
     {id: 'teto', ax: 'parc', label: 'Uso do teto eSF', title: 'eSF credenciadas ÷ teto de eSF do município', f: (m, i) => m.d.f.esf_teto[i] ? m.d.f.esf_cred[i] / m.d.f.esf_teto[i] : null, fmt: v => pct(v)},
     {id: 'igm', sp: true, ax: 'cic', label: 'IGM R$/hab', title: 'IGM SUS Paulista por habitante no ciclo', f: (m, i) => m.d.igm && m.d.igm.tot[i] != null && m.d.pop ? m.d.igm.tot[i] / m.d.pop : null, fmt: v => 'R$ ' + nf2.format(v)},
@@ -448,7 +450,7 @@ function setT(ax, i) {
 }
 function play() {
   const ax = metricOf(curLvl()).ax;
-  if (T[ax] >= AX[ax].n - 1) T[ax] = -1;
+  if (T[ax] >= AX[ax].n - 1) T[ax] = metricOf(curLvl()).w12 ? 10 : -1;   // 12 meses: começa na 1ª janela completa
   playing = setInterval(() => { if (T[ax] >= AX[ax].n - 1) return stop(); setT(ax, T[ax] + 1); }, ax === 'parc' ? 520 : 900);
   drawTime();
 }
@@ -491,16 +493,16 @@ function panelBrazil() {
   const i = T.parc, tot = BR_TOT[i], n = sum(UF.map(u => u.d.n));
   const plan = {}; UF.forEach(u => { for (const [k, v] of Object.entries(u.d.plan)) { plan[k] = plan[k] || Array(AX.parc.n).fill(0); v.forEach((x, j) => plan[k][j] += x); } });
   const m = metricOf('uf');
-  const items = UF.map((u, j) => ({i: j, s: u.sg, v: m.f(u, T[m.ax])})).sort((a, b) => b.v - a.v);
+  const items = UF.map((u, j) => ({i: j, s: u.sg, v: m.f(u, T[m.ax])})).filter(x => x.v != null).sort((a, b) => b.v - a.v);
   return `<div class="p-head"><span class="k">Brasil · 27 UF</span><h2>Repasse federal da APS</h2><div class="sub">Parcela de ${AX.parc.long(i)} · ${nf0.format(n)} municípios</div></div>
   <div class="p-body">
     <div class="blk"><div class="kpis">
       <div class="kpi wide hl"><div class="v">${brl(tot)}</div><div class="l">transferido no mês · ${deltaTxt(delta(BR_TOT, i))}</div></div>
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(tot / BR_POP)}</div><div class="l">por habitante no mês</div></div>
-      <div class="kpi"><div class="v">${brl(last12(BR_TOT, i)).replace('R$ ', '')}</div><div class="l">12 meses até ${AX.parc.lbl(i)}</div></div>
+      <div class="kpi"><div class="v">${brl(last12(BR_TOT, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
     </div>${series(BR_TOT, 'parc')}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(plan, i)}</div>
-    <div class="blk"><h3>${esc(m.label)} por estado <em>clique para abrir</em></h3>${rankBlock(items, -1, 'uf', m.fmt)}</div>
+    <div class="blk"><h3>${esc(m.label)} por estado <em>clique para abrir</em></h3>${items.length ? rankBlock(items, -1, 'uf', m.fmt) : `<p class="empty">Sem 12 meses completos em ${AX.parc.lbl(i)}: a série começa em ${AX.parc.lbl(0)}.</p>`}</div>
   </div>`;
 }
 function panelUf(ix) {
@@ -528,7 +530,7 @@ function panelUf(ix) {
     <div class="blk"><div class="kpis">
       <div class="kpi wide hl"><div class="v">${brl(d.tot[i])}</div><div class="l">repasse federal da APS · ${AX.parc.lbl(i)} · ${deltaTxt(delta(d.tot, i))}</div></div>
       <div class="kpi"><div class="v"><small>R$</small>${nf2.format(d.tot[i] / d.pop)}</div><div class="l">por habitante no mês</div></div>
-      <div class="kpi"><div class="v">${brl(last12(d.tot, i)).replace('R$ ', '')}</div><div class="l">12 meses até ${AX.parc.lbl(i)}</div></div>
+      <div class="kpi"><div class="v">${brl(last12(d.tot, i)).replace('R$ ', '')}</div><div class="l">${l12(i)}</div></div>
     </div>${series(d.tot, 'parc')}</div>
     <div class="blk"><h3>Para onde vai <em>${AX.parc.lbl(i)}</em></h3>${planBlock(d.plan, i)}</div>
     ${extra}${munis}
@@ -541,16 +543,21 @@ const HW = {'4': 1, '3': .75, '2': .5, '1': .25};
 let showAllTeams = false;
 // valor estimado por equipe: fixo do componente ÷ soma dos pesos de composição + vínculo e qualidade ÷ equipes pagas.
 // Até 202505 tudo segue a composição; a partir de 202506 só o fixo (vínculo e qualidade vão inteiros a cada equipe paga).
+// eAP por modalidade: a 20h recebe 2/3 do fixo e 3/4 do vínculo e da qualidade da 30h (Portaria GM/MS 3.493/2024; PRC 6/2017, Anexos XCIX-A/B)
+const RELF = {eAP20: 2 / 3}, RELV = {eAP20: .75};
+const kind = (t, i) => t.c !== 'eAP' || !t.m ? t.c : t.m[i] === '3' ? 'eAP30' : 'eAP20';   // modalidade desconhecida: 20h (valor menor)
 function teamEstimates(d, i) {
-  const w = {eSF: 0, eAP: 0}, n = {eSF: 0, eAP: 0}, fx = {}, vq = {}, unit = {};
-  d.teams.forEach(t => { const x = HW[t.h[i]] || 0; w[t.c] += x; if (x) n[t.c]++; });
+  const w = {eSF: 0, eAP: 0}, n = {eSF: 0, eAP: 0}, fx = {}, vq = {};
+  d.teams.forEach(t => { const x = HW[t.h[i]] || 0, k = kind(t, i); w[t.c] += x * (RELF[k] || 1); if (x) n[t.c] += RELV[k] || 1; });
   ['eSF', 'eAP'].forEach(c => {
     const k = c.toLowerCase(), tot = d.f[k][i], fixo = BR.meta.parc[i] >= 202506 ? (d.f[k + '_fixo'] || [])[i] ?? tot : tot;
-    fx[c] = w[c] ? fixo / w[c] : 0; vq[c] = n[c] ? (tot - fixo) / n[c] : 0; unit[c] = fx[c] + vq[c];
+    fx[c] = w[c] ? fixo / w[c] : 0; vq[c] = n[c] ? (tot - fixo) / n[c] : 0;
   });
-  const val = (c, h) => { const x = HW[h] || 0; return x ? x * fx[c] + vq[c] : 0; };
+  const val = (t, h) => { const x = HW[h] || 0, k = kind(t, i); return x ? x * fx[t.c] * (RELF[k] || 1) + vq[t.c] * (RELV[k] || 1) : 0; };
+  const full = k => { const c = k.slice(0, 3); return fx[c] * (RELF[k] || 1) + vq[c] * (RELV[k] || 1); };
+  const unit = {eSF: full('eSF'), eAP: full('eAP'), eAP30: full('eAP30'), eAP20: full('eAP20')};
   let gain = 0, partial = 0, invalid = 0;
-  d.teams.forEach(t => { const h = t.h[i]; if (h === '.') return; const ww = HW[h] || 0; if (ww < 1) { gain += unit[t.c] - val(t.c, h); if (ww > 0) partial++; else invalid++; } });
+  d.teams.forEach(t => { const h = t.h[i]; if (h === '.') return; const ww = HW[h] || 0; if (ww < 1) { gain += unit[kind(t, i)] - val(t, h); if (ww > 0) partial++; else invalid++; } });
   return {unit, val, gain, partial, invalid};
 }
 function panelMu(ix) {
@@ -600,16 +607,17 @@ function panelMu(ix) {
     let grp = '';
     const rows = list.map(t => {
       const g = t.c !== grp ? `<tr class="tgrp"><td colspan="3">${t.c}</td></tr>` : ''; grp = t.c;
-      const h = t.h[i], v = e.val(t.c, h);
+      const h = t.h[i], k = kind(t, i), v = e.val(t, h);
       const strip = `<div class="hist" title="Situação por parcela, ${AX.parc.lbl(0)} a ${AX.parc.lbl(AX.parc.n - 1)}">${[...t.h].map((x, j) => `<i class="${j === i ? 'on' : ''}" style="${HCOL[x] ? 'background:' + HCOL[x] : ''}"></i>`).join('')}</div>`;
-      return g + `<tr><td>${esc(title(t.n))}<span class="u">CNES ${esc(t.e)} · INE ${esc(t.i)}</span>${strip}</td><td><span class="st" style="background:${HCOL[h] || 'var(--bg-2)'}"></span><span class="fine">${HLBL[h]}</span></td><td class="m r">${v ? brl(v, false) : '–'}</td></tr>`;
+      return g + `<tr><td>${esc(title(t.n))}<span class="u">CNES ${esc(t.e)} · INE ${esc(t.i)}${k !== t.c ? ' · ' + k.slice(3) + 'h' : ''}</span>${strip}</td><td><span class="st" style="background:${HCOL[h] || 'var(--bg-2)'}"></span><span class="fine">${HLBL[h]}</span></td><td class="m r">${v ? brl(v, false) : '–'}</td></tr>`;
     }).join('');
     teams = `<div class="blk"><h3>eSF e eAP no repasse <em>${AX.parc.lbl(i)}</em></h3>
-      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%); a partir de jun/2025 a composição pesa só no componente fixo, porque vínculo e qualidade são pagos inteiros a cada equipe paga. É o valor bruto da regra, antes dos descontos do município; as linhas eSF e eAP acima são o repasse líquido, já com os descontos. A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
+      <div class="est"><b>Valores estimados.</b> O Ministério publica o repasse de cada componente e a situação de cada equipe, não o valor pago a cada uma. Aqui, o valor por equipe é o repasse do componente na parcela dividido pelas equipes pagas, ponderado pela composição (100, 75, 50 ou 25%); na eAP, a 20h recebe 2/3 do fixo e 3/4 do vínculo e da qualidade da 30h; a partir de jun/2025 a composição pesa só no componente fixo, porque vínculo e qualidade são pagos inteiros a cada equipe paga. É o valor bruto da regra, antes dos descontos do município; as linhas eSF e eAP acima são o repasse líquido, já com os descontos. A oportunidade de aumento aplica esse valor médio ao que faltou para as equipes pagas em parte ou não pagas chegarem a 100%.</div>
       ${e.gain > 1 ? `<div class="gain"><div class="v">+ ${brl(e.gain)}</div><div class="l">oportunidade de aumento no mês (estimativa): o repasse se ${e.partial} equipe(s) paga(s) em parte e ${e.invalid} inválida(s) chegassem a 100%.</div></div>` : ''}
       <div class="kpis" style="margin-bottom:14px">
         <div class="kpi"><div class="v">${act.length}</div><div class="l">equipes no relatório</div></div>
         <div class="kpi"><div class="v">${brl(e.unit.eSF, false).replace('R$ ', '')}</div><div class="l">R$ por eSF 100% no mês (estimado, bruto)</div></div>
+         ${['eAP30', 'eAP20', 'eAP'].filter(k => act.some(t => kind(t, i) === k)).map(k => `<div class="kpi"><div class="v">${brl(e.unit[k], false).replace('R$ ', '')}</div><div class="l">R$ por eAP${k === 'eAP' ? '' : ' ' + k.slice(3) + 'h'} 100% no mês (estimado, bruto)</div></div>`).join('')}
       </div>
       <table class="teams"><thead><tr><th>Equipe</th><th>Situação</th><th class="r">R$/mês est.</th></tr></thead><tbody>${rows}</tbody></table>
       ${d.teams.length > 40 ? `<button class="more" id="moreTeams">${showAllTeams ? 'Mostrar menos' : `Mostrar as ${d.teams.length} equipes`}</button>` : ''}
@@ -624,7 +632,7 @@ function panelMu(ix) {
       <div class="kpis">
         <div class="kpi hl"><div class="v">${brl(f.tot[i])}</div><div class="l">repasse no mês</div></div>
         <div class="kpi"><div class="v"><small>R$</small>${per == null ? '–' : nf2.format(per)}</div><div class="l">por habitante</div></div>
-        <div class="kpi wide"><div class="v">${brl(last12(f.tot, i))}</div><div class="l">12 meses até ${AX.parc.lbl(i)} · ${deltaTxt(delta(f.tot, i))}</div></div>
+        <div class="kpi wide"><div class="v">${brl(last12(f.tot, i))}</div><div class="l">${l12(i)} · ${deltaTxt(delta(f.tot, i))}</div></div>
       </div>
       ${series(f.tot, 'parc')}
       <div class="badges" style="margin-top:12px">
@@ -660,7 +668,7 @@ function ui(keepScroll) {
   $('#metrics').innerHTML = metricsFor(lvl).map(m => `<button aria-pressed="${metric[lvl] === m.id}" data-m="${m.id}">${esc(m.label)}</button>`).join('');
   $('#metrics').querySelectorAll('button').forEach(b => b.onclick = () => { stop(); metric[lvl] = b.dataset.m; recolor(); ui(true); schedule(); });
   const bb = lvl === 'mu' && !MU.length ? {min: 0, max: 0} : binsFor(lvl, mm);
-  $('#lgT').textContent = mm.title + ' · ' + AX[mm.ax].lbl(T[mm.ax]);
+  $('#lgT').textContent = mm.title + ' · ' + AX[mm.ax].lbl(T[mm.ax]) + (mm.w12 && T[mm.ax] < 11 ? ` · sem dado: a série começa em ${AX.parc.lbl(0)}` : '');
   $('#lgS').innerHTML = RAMP.map(c => `<i style="background:${c}"></i>`).join('');
   $('#lgA').textContent = mm.fmt(bb.min); $('#lgB').textContent = mm.fmt(bb.max);
   $('#hint').innerHTML = level === 'br' ? 'Passe o cursor sobre um estado<br>clique para aproximar · ← → muda o mês' : 'Clique num município<br>Esc ou − volta · ← → muda o período';
