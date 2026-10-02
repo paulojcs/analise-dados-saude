@@ -336,6 +336,7 @@ function toMu(i) { stop(); level = 'mu'; focusUf = muUf; selMu = i; hover = {uf:
 async function toMuCode(cod6, ufCod) {
   const i = ufIdx[ufCod];
   if (muUf !== i) useUf(i, await loadUf(i));
+  if (muIdx[cod6] == null) return toUf(i);   // município sem malha (build.py avisa): fica na UF
   toMu(muIdx[cod6]);
 }
 
