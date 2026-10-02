@@ -4,7 +4,7 @@ Entradas (ATLAS_HOME, mesmo layout dos coletores):
   data/public/relatorioaps_br/<data>/pagamento_municipio_parcela.parquet   total e planos por município x parcela
   data/public/relatorioaps_br/<data>/pagamento_completo.parquet            componentes e equipes (180 colunas)
   data/public/relatorioaps_br/detalhe_validacoesEquipes.parquet            situação de cada eSF/eAP de SP por parcela
-  outputs/aps/tables/relatorioaps_br/uf_parcela.csv, resumo_planos_uf_parcela.csv
+  outputs/aps/tables/relatorioaps_br/uf_parcela.csv
   outputs/aps/tables/igm_sp/igm_sp_longo.csv, atual__tbFinanceira.csv     IGM (painel atual da SES-SP)
   data/public/cnes_ep/ep_<AAAAMM>.parquet                                  equipes no CNES (Brasil)
 Estáticos (git, atlas/estatico/): malhas, nomes, IGM 2024-25 pelas Resoluções SS.
@@ -49,40 +49,45 @@ POP_UF, _ = sidra('n3')
 tier1 = sorted((H / 'data/public/relatorioaps_br').glob('*/pagamento_completo.parquet'))[-1].parent
 u = pd.read_csv(TB / 'relatorioaps_br/uf_parcela.csv')
 PARC = sorted(int(p) for p in u.nuParcela.unique()); NP = len(PARC); pi = {p: i for i, p in enumerate(PARC)}
-r = pd.read_csv(TB / 'relatorioaps_br/resumo_planos_uf_parcela.csv')
-r['v'] = r.vlEfetivoRepasse + r.vlTotalImplantacao.fillna(0)
+# planos por município (AGRUPADO): somam o total de cada município; o resumo por UF da API inclui pagamentos a estados
+# (esfera ESTADUAL: CEO/LRPD, prisional) e desloca ajustes entre parcelas, então não fecha com tot
+mpp = pd.read_parquet(tier1 / 'pagamento_municipio_parcela.parquet', columns=['sgUf', 'coMunicipioIbge', 'nuParcela', 'total', 'coSeqPlanoOrcamentario', 'dsPlanoOrcamentario', 'vlTotalCusteio', 'vlTotalImplantacao'])
+for col in ('total', 'vlTotalCusteio', 'vlTotalImplantacao'): mpp[col] = pd.to_numeric(mpp[col], errors='coerce')
+mpp['v'] = mpp.vlTotalCusteio.fillna(0) + mpp.vlTotalImplantacao.fillna(0)
 CAT = {'Equipes de Saúde da Família - eSF e equipes de Atenção Primária - eAP': 'esf', 'Agentes Comunitários de Saúde': 'acs',
        'Atenção à Saúde Bucal': 'sb', 'Equipes Multiprofissionais - eMulti': 'emulti', 'Componente per capita de base populacional': 'percapita',
        'Incentivo Compensatório de Transição': 'transicao', 'Demais programas, serviços e equipes da Atenção Primária à Saúde': 'demais',
        'Manutenção de pagamento de valor nominal com base em exercício anterior': 'manut', 'Incentivo financeiro da APS - Promoção à saúde': 'promo'}
-r['cat'] = r.dsPlanoOrcamentario.map(CAT).fillna('outros')
+mpp['cat'] = mpp.dsPlanoOrcamentario.map(CAT).fillna('outros')
 UF = {}
 for sg, g in u.groupby('sgUf'):
     cod = SG[sg]; tot = [0] * NP; n = 0
     for x in g.itertuples():
         tot[pi[int(x.nuParcela)]] = round(x.total_repasse); n = int(x.municipios)
     plan = {}
-    for cat, h in r[r.sgUf == sg].groupby('cat'):
+    for cat, h in mpp[mpp.sgUf == sg].groupby('cat'):
         a = [0] * NP
         for p, v in h.groupby('nuParcela').v.sum().items(): a[pi[int(p)]] = round(v)
         plan[cat] = a
     UF[cod] = {'n': n, 'pop': POP_UF[cod], 'tot': tot, 'plan': plan}
 
-mpp = pd.read_parquet(tier1 / 'pagamento_municipio_parcela.parquet', columns=['coMunicipioIbge', 'nuParcela', 'total', 'coSeqPlanoOrcamentario', 'vlTotalCusteio', 'vlTotalImplantacao'])
-for col in ('total', 'vlTotalCusteio', 'vlTotalImplantacao'): mpp[col] = pd.to_numeric(mpp[col], errors='coerce')
-mpp['v'] = mpp.vlTotalCusteio.fillna(0) + mpp.vlTotalImplantacao.fillna(0)
 mpp['coSeqPlanoOrcamentario'] = pd.to_numeric(mpp.coSeqPlanoOrcamentario, errors='coerce')
-# componentes por plano orçamentário (os mesmos do "Para onde vai" das UFs): 10 saúde bucal, 9 eMulti, 2 ACS
+# componentes por plano orçamentário (os mesmos do "Para onde vai" das UFs): 10 saúde bucal, 9 eMulti, 2 ACS, 8 eSF+eAP (líquido)
 pl = mpp.pivot_table(index=['coMunicipioIbge', 'nuParcela'], columns='coSeqPlanoOrcamentario', values='v', aggfunc='sum', fill_value=0)
-for k in (10, 9, 2):
+for k in (10, 9, 2, 8):
     if k not in pl.columns: pl[k] = 0
-pl = pl.rename(columns={10: 'pl_sb', 9: 'pl_emulti', 2: 'pl_acs'})[['pl_sb', 'pl_emulti', 'pl_acs']].reset_index()
+pl = pl.rename(columns={10: 'pl_sb', 9: 'pl_emulti', 2: 'pl_acs', 8: 'pl_esfeap'})[['pl_sb', 'pl_emulti', 'pl_acs', 'pl_esfeap']].reset_index()
 tot = mpp.drop_duplicates(['coMunicipioIbge', 'nuParcela'])[['coMunicipioIbge', 'nuParcela', 'total']].merge(pl, on=['coMunicipioIbge', 'nuParcela'])
 tot['p'] = tot.nuParcela.astype(int)
 c = pd.read_parquet(tier1 / 'pagamento_completo.parquet')
 c['p'] = c.nuParcela.astype(int)
-c = c.merge(tot[['coMunicipioIbge', 'p', 'total', 'pl_sb', 'pl_emulti', 'pl_acs']], on=['coMunicipioIbge', 'p'], how='left')
-COLS = {'tot': 'total', 'esf': 'vlTotalEsf', 'eap': 'vlTotalEap', 'emulti': 'pl_emulti', 'sb': 'pl_sb', 'acs': 'pl_acs',
+c = c.merge(tot[['coMunicipioIbge', 'p', 'total', 'pl_sb', 'pl_emulti', 'pl_acs', 'pl_esfeap']], on=['coMunicipioIbge', 'p'], how='left')
+# vlTotalEsf/Eap são brutos (antes dos descontos); o repasse real é o plano 8. Líquido repartido pela proporção do bruto (+ implantação)
+num = lambda k: pd.to_numeric(c[k], errors='coerce').fillna(0)
+gE, gA = num('vlTotalEsf') + num('vlPagamentoImplantacaoEsf'), num('vlTotalEap') + num('vlPagamentoImplantacaoEap')
+sh = (gE / (gE + gA)).where(gE + gA > 0, 1.0)
+c['esf_l'] = c.pl_esfeap.fillna(0) * sh; c['eap_l'] = c.pl_esfeap.fillna(0) - c.esf_l
+COLS = {'tot': 'total', 'esf': 'vlTotalEsf', 'eap': 'vlTotalEap', 'esf_l': 'esf_l', 'eap_l': 'eap_l', 'emulti': 'pl_emulti', 'sb': 'pl_sb', 'acs': 'pl_acs',
         'esf_pg': 'qtEsfTotalPgto', 'esf_cred': 'qtEsfCredenciado', 'esf_teto': 'qtTetoEsf', 'eap_pg': 'qtEapTotalPgto'}
 for col in COLS.values(): c[col] = pd.to_numeric(c[col], errors='coerce')
 c['i'] = c.p.map(pi)
