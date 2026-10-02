@@ -8,5 +8,7 @@ log = sys.argv[2] if len(sys.argv) > 2 else None
 texto = open(log, encoding='utf8', errors='replace').read()[-12000:] if log and os.path.exists(log) else ''
 req = urllib.request.Request(os.environ.get('ATLAS_ALERT_URL', 'https://coorte.io/api/atlas-alert'),
                              data=json.dumps({'assunto': assunto, 'texto': texto}).encode(), method='POST',
-                             headers={'Content-Type': 'application/json', 'Authorization': f"Bearer {os.environ['ATLAS_ALERT_TOKEN']}"})
+                             headers={'Content-Type': 'application/json', 'Authorization': f"Bearer {os.environ['ATLAS_ALERT_TOKEN']}",
+                                      # o Cloudflare barra o User-Agent padrão do Python (erro 1010)
+                                      'User-Agent': 'coorte-atlas/1.0 (+https://coorte.io/atlas)'})
 print(urllib.request.urlopen(req, timeout=60).status)
