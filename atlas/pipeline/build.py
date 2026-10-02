@@ -86,6 +86,22 @@ COLS = {'tot': 'total', 'esf': 'vlTotalEsf', 'eap': 'vlTotalEap', 'emulti': 'pl_
         'esf_pg': 'qtEsfTotalPgto', 'esf_cred': 'qtEsfCredenciado', 'esf_teto': 'qtTetoEsf', 'eap_pg': 'qtEapTotalPgto'}
 for col in COLS.values(): c[col] = pd.to_numeric(c[col], errors='coerce')
 c['i'] = c.p.map(pi)
+# eSF pagas como ótimo em qualidade (q) e vínculo (v), lidas do valor: o rótulo dsClassificacao*EsfEap diz BOM em toda parcela.
+# Por eSF: ótimo R$ 8 mil, bom 6 mil, suficiente 4 mil, regular 2 mil (Anexos XCIX-A/B da PRC 6/2017). Saldo k = (valor − 6 mil × eSF) / 2 mil:
+# na transição parcial (Portaria GM/MS 3.493/2024 art. 3, red. 10.994/2026) só há ótimo e bom, e k é o número de eSF pagas como ótimo;
+# k < 0 é valor abaixo do bom (pagamento pela classificação, a partir de 2027). Denominador: até 202505 as eSF pagas ponderadas pela
+# composição (100/75/50/25%); de 202506 em diante, qtEsfTotalPgto. eAP (qa, va): R$ acima (ou abaixo) do bom (30h 3 mil, 20h 2.250).
+OTC = ['vlQualidadeEsf', 'vlVinculoEsf', 'qtEsf100pcPgto', 'qtEsf75pcPgto', 'qtEsf50pcPgto', 'qtEsf25pcPgto',
+       'vlQualidadeEap', 'vlVinculoEap', 'qtEap20hCompletas', 'qtEap20hIncompletas', 'qtEap30hCompletas', 'qtEap30hIncompletas']
+for col in OTC: c[col] = pd.to_numeric(c[col], errors='coerce').fillna(0)
+den = np.where(c.p >= 202506, c.qtEsfTotalPgto.fillna(0), c.qtEsf100pcPgto + .75 * c.qtEsf75pcPgto + .5 * c.qtEsf50pcPgto + .25 * c.qtEsf25pcPgto)
+bom_eap = 3000 * (c.qtEap30hCompletas + c.qtEap30hIncompletas) + 2250 * (c.qtEap20hCompletas + c.qtEap20hIncompletas)
+for k, col in (('q', 'vlQualidadeEsf'), ('v', 'vlVinculoEsf')):
+    x = (c[col] - 6000 * den) / 2000; c['ot_' + k] = x.round().astype(int)
+    if (fora := ((x - x.round()).abs() > .01).sum()): print(f'   aviso: {col} fora dos degraus de R$ 2 mil em {fora} município-parcelas', file=sys.stderr)
+for k, col in (('qa', 'vlQualidadeEap'), ('va', 'vlVinculoEap')):
+    c['ot_' + k] = np.where(c.p >= 202506, (c[col] - bom_eap).round(), 0).astype(int)   # antes de 202506 as eAP também eram ponderadas
+OTK = ('q', 'v', 'qa', 'va')
 MU = {}
 for cod, g in c.groupby('coMunicipioIbge'):
     d = {k: [0] * NP for k in COLS}
@@ -93,8 +109,22 @@ for cod, g in c.groupby('coMunicipioIbge'):
         arr = d[k]
         for i, v in zip(g.i, g[col]): arr[i] = 0 if pd.isna(v) else round(float(v))
     last = g.loc[g.p.idxmax()]
-    MU[cod] = {'f': d, 'vin': last.dsClassificacaoVinculoEsfEap, 'qual': last.dsClassificacaoQualidadeEsfEap,
-               'eq': last.dsFaixaIndiceEquidadeEsfEap}
+    MU[cod] = {'f': d, 'eq': last.dsFaixaIndiceEquidadeEsfEap}
+    ot = {}
+    for k in OTK:
+        a = [0] * NP
+        for i, v in zip(g.i, g['ot_' + k]): a[i] = int(v)
+        if any(a): ot[k] = a
+    if ot: MU[cod]['ot'] = ot
+# por UF: eSF pagas e quantas como ótimo (qn, vn: saldo abaixo do bom, em degraus de R$ 2 mil)
+for cod_uf, g in c.groupby(c.coMunicipioIbge.str[:2]):
+    if cod_uf not in UF: continue
+    ot = {k: [0] * NP for k in ('pg', 'q', 'v', 'qn', 'vn')}
+    for x in g.itertuples():
+        ot['pg'][x.i] += int(x.qtEsfTotalPgto or 0)
+        for k in ('q', 'v'):
+            n = getattr(x, 'ot_' + k); ot[k if n > 0 else k + 'n'][x.i] += abs(n)
+    UF[cod_uf]['ot'] = {k: a for k, a in ot.items() if any(a)}
 
 # ---------- IGM (SP): Resoluções SS (estático, 2024 em diante) + painel atual para ciclos ainda sem resolução ----------
 longo = pd.read_csv(TB / 'igm_sp/igm_sp_longo.csv', low_memory=False)
