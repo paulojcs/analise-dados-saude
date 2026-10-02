@@ -13,7 +13,7 @@ População: IBGE SIDRA 6579 (última estimativa), com cópia local se a API fal
 Saída: ATLAS_HOME/site/  (br.json, uf/<cod>.json, manifest.json com o hash do conteúdo)
     python atlas/pipeline/build.py
 """
-import hashlib, json, os, sys, urllib.request
+import hashlib, json, os, sys, unicodedata, urllib.request
 from pathlib import Path
 import numpy as np, pandas as pd
 
@@ -88,7 +88,8 @@ gE, gA = num('vlTotalEsf') + num('vlPagamentoImplantacaoEsf'), num('vlTotalEap')
 sh = (gE / (gE + gA)).where(gE + gA > 0, 1.0)
 c['esf_l'] = c.pl_esfeap.fillna(0) * sh; c['eap_l'] = c.pl_esfeap.fillna(0) - c.esf_l
 COLS = {'tot': 'total', 'esf': 'vlTotalEsf', 'eap': 'vlTotalEap', 'esf_l': 'esf_l', 'eap_l': 'eap_l', 'emulti': 'pl_emulti', 'sb': 'pl_sb', 'acs': 'pl_acs',
-        'esf_pg': 'qtEsfTotalPgto', 'esf_cred': 'qtEsfCredenciado', 'esf_teto': 'qtTetoEsf', 'eap_pg': 'qtEapTotalPgto'}
+        'esf_pg': 'qtEsfTotalPgto', 'esf_cred': 'qtEsfCredenciado', 'esf_teto': 'qtTetoEsf', 'eap_pg': 'qtEapTotalPgto',
+        'esf_fixo': 'vlFixoEsf', 'eap_fixo': 'vlFixoEap'}
 for col in COLS.values(): c[col] = pd.to_numeric(c[col], errors='coerce')
 c['i'] = c.p.map(pi)
 MU = {}
@@ -154,8 +155,12 @@ for mun, a in cnt.items():
 det = H / 'data/public/relatorioaps_br/detalhe_validacoesEquipes.parquet'
 if det.exists():
     d = pd.read_parquet(det, columns=['nuParcela', 'coComponente', 'coMunicipioIbge', 'coEquipe', 'codigoEstabelecimento', 'stPagamento', 'composicao'])
-    def code(st, comp):   # '.' sem registro, 'x' inválida, '4'/'3'/'2'/'1' paga a 100/75/50/25%, '0' válida c/ composição inválida
-        if str(st or '').startswith('INV'): return 'x'
+    def code(st, comp):   # '.' sem registro, 'x' inválida, '4'/'3'/'2'/'1' paga a 100/75/50/25%, '0' proporcional c/ composição inválida
+        # 'VÁLIDO' é pago a 100% qualquer que seja a composição; só 'VÁLIDO (PROPORCIONAL)' segue a composição
+        # (confere 100% com qtEsf100/75/50/25pcPgto e qtEap*Completas/Incompletas do pagamento, SP 202405-202609)
+        st = unicodedata.normalize('NFKD', str(st or '')).encode('ascii', 'ignore').decode().upper()
+        if st.startswith('INV'): return 'x'
+        if 'PROPORC' not in st: return '4'
         return {'100%': '4', '75%': '3', '50%': '2', '25%': '1'}.get(str(comp or ''), '0')
     d['h'] = [code(a, b) for a, b in zip(d.stPagamento, d.composicao)]
     d['ine'] = d.coEquipe.astype(str).str.lstrip('0'); d['p'] = d.nuParcela.astype(int)
