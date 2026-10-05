@@ -21,7 +21,12 @@ falha() {
 P=atlas/pipeline
 echo "== $(date -Is) atlas: início (código $(git rev-parse --short HEAD 2>/dev/null || echo '?'))"
 
-NOVA=$(python $P/novidade.py) || falha "consulta de parcelas do relatorioaps"
+# IGM e CNES não derrubam a rodada: em falha, segue com os últimos arquivos bons e avisa no fim
+# (o FTP do DATASUS costuma travar por horas; o painel do IGM muda de chave quando a SES republica;
+#  a API do relatorioaps já ficou horas em 503, ex. 2026-10-05)
+AVISOS=()
+
+NOVA=$(python $P/novidade.py) || { NOVA=indisponivel; AVISOS+=("relatorioaps (API fora do ar; federal não atualizado)"); }
 echo "parcela nova no relatorioaps: $NOVA"
 if [ "$NOVA" = sim ] || [ "${FORCAR:-}" = 1 ]; then
   python $P/relatorioaps_brasil.py tier1 || falha "relatorioaps tier1"
@@ -30,9 +35,6 @@ if [ "$NOVA" = sim ] || [ "${FORCAR:-}" = 1 ]; then
   ls -d "$ATLAS_HOME"/data/public/relatorioaps_br/20*/ | sort | head -n -2 | xargs -r rm -rf
 fi
 
-# IGM e CNES não derrubam a rodada: em falha, segue com os últimos arquivos bons e avisa no fim
-# (o FTP do DATASUS costuma travar por horas; o painel do IGM muda de chave quando a SES republica)
-AVISOS=()
 python $P/igm_powerbi.py atual legado || AVISOS+=("IGM (painel da SES-SP)")
 ls -d "$ATLAS_HOME"/data/public/igm_sp/20*/ 2>/dev/null | sort | head -n -4 | xargs -r rm -rf
 timeout 3h python $P/cnes_ep.py || AVISOS+=("CNES EP (FTP do DATASUS)")
