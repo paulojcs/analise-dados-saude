@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#EDF1F5">
+<title>Publicações · Coorte</title>
+<meta name="description" content="As publicações por trás dos casos da Coorte, num mapa navegável: casos, frentes e temas ligados entre si.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Coorte">
+<meta property="og:url" content="https://coorte.io/publicacoes.html">
+<meta property="og:title" content="Publicações · Coorte">
+<meta property="og:description" content="As publicações por trás dos casos da Coorte, num mapa navegável: casos, frentes e temas ligados entre si.">
+<meta property="og:image" content="https://coorte.io/img/og-coorte.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  color-scheme:light;
+  --bg:#EDF1F5; --bg-2:#E2E8EF; --bg-hi:#F6F8FA;
+  --ink:#101318;
+  --t2:rgba(16,19,24,.68); --t3:rgba(16,19,24,.46); --t4:rgba(16,19,24,.34);
+  --rule:rgba(16,19,24,.14); --rule-2:rgba(16,19,24,.09);
+  --klein:#002FA7; --klein-deep:#00207A; --klein-2:#2F5BD3; --klein-tint:#C9D5EF; --klein-wash:rgba(0,47,167,.05);
+  --on-klein:#EEF2FA;
+  --signal:#D9482B; --ok:#1F9A7E;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --narrow:"Archivo Narrow","Archivo",sans-serif;
+  --rail:172px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:"Archivo",Helvetica,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--narrow);font-weight:700;margin:0;text-transform:uppercase;letter-spacing:-.005em}
+p{margin:0}
+a{color:var(--klein);text-decoration:none}
+a:hover{color:var(--klein-deep)}
+section,[id]{scroll-margin-top:56px}
+.k{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein)}
+
+/* ---------- topo ---------- */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:12px 28px;border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:14px;color:var(--ink)}
+.brand:hover{color:var(--ink)}
+.logo{display:block;height:22px;width:auto;aspect-ratio:570/104}
+.logo .lg-a{stroke:var(--klein)}
+.logo .lg-b{stroke:var(--ink)}
+.brand .tag{font:400 12px/1 var(--mono);letter-spacing:.1em;color:var(--t3)}
+.nav{display:flex;align-items:center;gap:26px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.nav a{color:var(--t2)}
+.nav a:hover,.nav a[aria-current]{color:var(--klein)}
+.nav a.cta{display:flex;align-items:center;gap:8px;background:var(--klein);color:var(--on-klein);padding:10px 14px}
+.nav a.cta:hover{background:var(--klein-deep);color:var(--on-klein)}
+@media(max-width:1000px){.brand .tag{display:none}}
+@media(max-width:760px){.nav a:not(.cta){display:none}.top{padding:10px 16px}}
+
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;font:500 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--klein);background:var(--klein);color:var(--on-klein);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--klein-deep);border-color:var(--klein-deep);color:var(--on-klein)}
+.btn.ghost{background:color-mix(in srgb,var(--bg) 65%,transparent);border-color:rgba(16,19,24,.3);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--klein);color:var(--klein)}
+
+/* ---------- faixa com trilho de rótulo ---------- */
+.row{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);border-bottom:1px solid var(--rule)}
+.rail{padding:40px 20px;border-right:1px solid var(--rule)}
+.rail .no{font:700 61.5px/.85 var(--narrow);margin-bottom:10px}
+.rail .k{font-size:11px;letter-spacing:.08em;line-height:1.45}
+.rail .dash{width:26px;height:1px;background:var(--klein);margin-top:10px}
+.rail .note{margin-top:14px;font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+@media(max-width:900px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .rail{border-right:0;border-bottom:1px solid var(--rule);padding:22px 20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .rail .no{font-size:36px;margin:0}
+  .rail .dash{display:none}
+  .rail .note{margin:0;flex-basis:100%}
+}
+
+/* ---------- 01 mapa ---------- */
+.gx-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;padding:36px 32px 26px 28px;border-bottom:1px solid var(--rule)}
+.gx-top h1{font-size:clamp(34px,3.6vw,58px);line-height:.98;letter-spacing:-.012em}
+.gx-top h1 span{color:var(--klein)}
+.gx-top .sub{margin-top:14px;max-width:52ch;font-size:16px;line-height:1.55;color:var(--t2)}
+.gx-tools{display:flex;align-items:center;gap:8px}
+.gx-tools input{width:min(300px,62vw);padding:11px 13px;border:1px solid var(--rule);background:var(--bg-hi);font:400 13px/1 var(--mono);letter-spacing:.06em;color:var(--ink);border-radius:0}
+.gx-tools input:focus{outline:none;border-color:var(--klein);background:#fff}
+.gx-tools button,.gx-zoom button{all:unset;cursor:pointer;display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--rule);background:var(--bg-hi);
+  font:500 15px/1 var(--mono);color:var(--klein);box-sizing:border-box}
+.gx-tools button:hover,.gx-zoom button:hover{border-color:var(--klein)}
+.gx-tools button:focus-visible,.gx-zoom button:focus-visible{outline:2px solid var(--klein);outline-offset:2px}
+
+.gx{display:grid;grid-template-columns:minmax(0,1fr) 360px}
+.gx-stage{position:relative;height:clamp(540px,74vh,780px);overflow:hidden;
+  background:radial-gradient(circle at 50% 46%,var(--bg-hi) 0,var(--bg) 70%)}
+.gx-stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.gx-stage canvas.drag{cursor:grabbing}
+.gx-stage canvas.hot{cursor:pointer}
+.gx-legend{position:absolute;left:18px;bottom:16px;display:flex;flex-wrap:wrap;gap:6px 16px;pointer-events:none;
+  font:400 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.gx-legend span{display:inline-flex;align-items:center;gap:7px}
+.gx-legend i{display:inline-block;border-radius:50%}
+.gx-legend .l-case{width:12px;height:12px;background:var(--klein)}
+.gx-legend .l-front{width:10px;height:10px;background:var(--klein-2)}
+.gx-legend .l-pub{width:8px;height:8px;background:var(--ink);opacity:.75}
+.gx-legend .l-tag{width:8px;height:8px;border:1.5px solid var(--t3)}
+.gx-zoom{position:absolute;right:16px;bottom:16px;display:flex;flex-direction:column;gap:6px}
+.gx-hint{position:absolute;left:18px;top:16px;pointer-events:none;font:400 11px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t4)}
+
+/* painel lateral */
+.gx-panel{border-left:1px solid var(--rule);background:var(--bg-hi);height:clamp(540px,74vh,780px);overflow-y:auto;padding:28px 26px 32px;display:flex;flex-direction:column;gap:14px}
+.gx-panel .pk{font:500 11.5px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+.gx-panel h2{font-size:25px;line-height:1.06}
+.gx-panel h2.pt{font-family:"Archivo",sans-serif;font-weight:600;text-transform:none;font-size:20px;line-height:1.3;letter-spacing:0}
+.gx-panel p{font-size:15px;line-height:1.6;color:var(--t2);text-wrap:pretty}
+.gx-panel .meta{font:400 12.5px/1.6 var(--mono);color:var(--t3)}
+.gx-panel .meta em{font-style:normal;color:var(--t2)}
+.gx-panel .sec{margin-top:6px;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--t3);display:flex;align-items:center;gap:12px}
+.gx-panel .sec i{flex:1;height:1px;background:var(--rule)}
+.gx-panel .chips{display:flex;flex-wrap:wrap;gap:6px}
+.gx-panel .chip{all:unset;cursor:pointer;border:1px solid rgba(0,47,167,.3);padding:7px 10px;font:400 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--klein)}
+.gx-panel .chip:hover{background:var(--klein);color:var(--on-klein)}
+.gx-panel .chip:focus-visible{outline:2px solid var(--klein);outline-offset:2px}
+.gx-panel .items{display:flex;flex-direction:column}
+.gx-panel .it{all:unset;cursor:pointer;display:block;padding:11px 0;border-top:1px solid var(--rule-2);font-size:14.5px;line-height:1.42;color:var(--ink)}
+.gx-panel .it small{display:block;margin-top:4px;font:400 11.5px/1.3 var(--mono);color:var(--t3)}
+.gx-panel .it:hover{color:var(--klein)}
+.gx-panel .it:focus-visible{outline:2px solid var(--klein);outline-offset:2px}
+.gx-panel .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.gx-panel .stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);margin-top:4px}
+.gx-panel .stat div{padding:14px 0 4px;font:400 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.gx-panel .stat b{display:block;font:700 34px/.9 var(--narrow);color:var(--ink);margin-bottom:6px}
+@media(max-width:1100px){
+  .gx{grid-template-columns:minmax(0,1fr)}
+  .gx-panel{border-left:0;border-top:1px solid var(--rule);height:auto;min-height:0}
+}
+@media(max-width:900px){
+  .gx-top{padding:26px 20px 22px}
+  .gx-stage{height:62vh;min-height:420px}
+  .gx-panel{padding:24px 20px 28px}
+  .gx-hint{display:none}
+}
+
+/* ---------- 02 lista ---------- */
+.lst{padding:36px 32px 40px 28px}
+.tier{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein);display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.tier i{flex:1;height:1px;background:var(--rule)}
+.grp{display:grid;grid-template-columns:300px minmax(0,1fr);gap:0 40px;border-top:1px solid var(--ink)}
+.grp>div{padding:22px 0;border-bottom:1px solid var(--rule-2)}
+.grp .why b{font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+.grp .why h3{font-size:19px;line-height:1.15;margin:8px 0}
+.grp .why p{font-size:15px;line-height:1.5;color:var(--t2);max-width:34ch;text-wrap:pretty}
+.grp .why button{all:unset;cursor:pointer;margin-top:10px;display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+.grp .why button:hover{color:var(--klein-deep)}
+.ref{display:block;padding:12px 0;border-top:1px solid var(--rule-2)}
+.grp .list .ref:first-child{border-top:0;padding-top:0}
+.ref .t{display:block;font-size:15.5px;line-height:1.42;color:var(--ink);text-wrap:pretty}
+.ref .m{display:flex;justify-content:space-between;gap:12px;margin-top:6px;font:400 12px/1.3 var(--mono);color:var(--t3)}
+.ref .m em{font-style:normal;color:var(--t2)}
+.ref:hover .t,.ref:hover .m em{color:var(--klein)}
+.pubnote{margin-top:28px;font:400 12px/1.7 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-left:2px solid var(--klein);padding-left:14px;max-width:70ch}
+@media(max-width:900px){
+  .lst{padding:26px 20px 30px}
+  .grp{grid-template-columns:minmax(0,1fr)}
+  .grp .why{border-bottom:0;padding-bottom:8px}
+}
+
+/* ---------- contato ---------- */
+.ct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.ct-l{padding:44px 32px;border-right:1px solid var(--rule)}
+.ct-l h2{font-size:clamp(40px,4.8vw,76px);line-height:.94;letter-spacing:-.015em}
+.ct-r{padding:44px 32px;display:flex;flex-direction:column;justify-content:space-between;gap:34px}
+.ct-direct{display:flex;flex-direction:column;gap:10px;font:400 13px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.ct-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+@media(max-width:900px){
+  .ct{grid-template-columns:minmax(0,1fr)}
+  .ct-l{border-right:0;border-bottom:1px solid var(--rule-2);padding:28px 20px}
+  .ct-r{padding:28px 20px}
+}
+
+/* ---------- rodapé ---------- */
+.foot{display:flex;align-items:center;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;padding:16px 28px;
+  background:var(--klein);color:var(--on-klein);font:400 11px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.foot a{color:var(--on-klein)}
+.foot a:hover{color:#fff;text-decoration:underline}
+.foot .logo{height:16px}
+.foot .logo .lg-a,.foot .logo .lg-b{stroke:var(--on-klein)}
+.foot .logo .lg-a{opacity:.62}
+@media(max-width:760px){.foot{padding:16px 20px;justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="index.html" aria-label="Coorte · início">
+    <!-- marca: coorte-opcao-02-mono.svg -->
+    <svg class="logo" viewBox="108 28 570 104" role="img" aria-label="Coorte">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-top"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-top)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg>
+    <span class="tag">| CIÊNCIA DE DADOS EM SAÚDE</span>
+  </a>
+  <nav class="nav" aria-label="Seções">
+    <a href="index.html#servicos">Serviços</a>
+    <a href="index.html#metodo">Método</a>
+    <a href="index.html#casos">Casos</a>
+    <a href="atlas/">Atlas</a>
+    <a href="publicacoes.html" aria-current="page">Publicações</a>
+    <a href="sobre.html">Sobre</a>
+    <a class="cta" href="index.html#contato">Contato <span aria-hidden="true">→</span></a>
+  </nav>
+</div>
+
+<main id="topo">
+
+<!-- 01 MAPA -->
+<section class="row" id="mapa">
+  <div class="rail">
+    <div class="no">01</div><div class="k">Mapa das publicações</div><div class="dash"></div>
+    <div class="note">Arraste os nós. Role para aproximar. Clique para abrir.</div>
+  </div>
+  <div>
+    <div class="gx-top">
+      <div>
+        <h1>Nosso método,<br><span>revisado por pares.</span></h1>
+        <p class="sub">Cada publicação ligada ao caso ou à frente de trabalho de onde veio, e aos temas que divide com as outras.</p>
+      </div>
+      <div class="gx-tools">
+        <input id="gx-q" type="search" placeholder="Buscar: COVID, resistência…" aria-label="Buscar publicações, casos e temas" autocomplete="off">
+        <button type="button" id="gx-fit" title="Enquadrar o mapa" aria-label="Enquadrar o mapa">⤢</button>
+      </div>
+    </div>
+    <div class="gx">
+      <div class="gx-stage" id="gx-stage">
+        <canvas id="gx" role="img" aria-label="Mapa interativo das publicações. A mesma informação está na lista abaixo."></canvas>
+        <div class="gx-hint" id="gx-hint">Passe o cursor sobre um nó</div>
+        <div class="gx-legend" aria-hidden="true">
+          <span><i class="l-case"></i>Caso</span>
+          <span><i class="l-front"></i>Frente</span>
+          <span><i class="l-pub"></i>Publicação</span>
+          <span><i class="l-tag"></i>Tema</span>
+        </div>
+        <div class="gx-zoom">
+          <button type="button" id="gx-in" aria-label="Aproximar">+</button>
+          <button type="button" id="gx-out" aria-label="Afastar">−</button>
+        </div>
+      </div>
+      <aside class="gx-panel" id="gx-panel" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- 02 LISTA -->
+<section class="row" id="lista">
+  <div class="rail"><div class="no">02</div><div class="k">Lista completa</div><div class="dash"></div></div>
+  <div class="lst" id="lst"></div>
+</section>
+
+<!-- 03 CONTATO -->
+<section class="row" id="contato">
+  <div class="rail"><div class="no">03</div><div class="k">Contato</div><div class="dash"></div></div>
+  <div class="ct">
+    <div class="ct-l">
+      <h2>Vamos conversar<br>sobre seus dados.</h2>
+    </div>
+    <div class="ct-r">
+      <div class="ct-direct">
+        <a href="mailto:contato@coorte.io">contato@coorte.io</a>
+        <span>São Paulo · Brasil</span>
+      </div>
+      <div class="ct-btns">
+        <a class="btn" href="index.html#contato">Entrar em contato →</a>
+        <a class="btn ghost" href="index.html#casos">Ver os casos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <a href="index.html" aria-label="Coorte · início"><svg class="logo" viewBox="108 28 570 104" aria-hidden="true">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-foot"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-foot)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg></a>
+  <span>© 2026 Coorte · Ciência de dados em saúde</span>
+</footer>
+
+<script>
+/* Dados: casos e frentes (hubs), temas e publicações. Uma publicação nova entra em PUBS
+   com o hub de onde veio e os temas que divide com as outras; o mapa e a lista se refazem. */
+var HUBS=[
+  {id:'caso-01',kind:'case',no:'Caso 01',name:'Detecção precoce de surto e análise preditiva',ctx:'Complexo hospitalar terciário',
+   desc:'Microbiologia de um complexo hospitalar terciário: detecção de aglomerado, qualidade de coleta e resistência antimicrobiana.'},
+  {id:'caso-02',kind:'case',no:'Caso 02',name:'Indicadores de qualidade e repasse financeiro na atenção primária',ctx:'Rede municipal',
+   desc:'Rede municipal: indicadores de APS, equidade territorial e financiamento por desempenho.',link:{href:'atlas/',t:'Explorar no Atlas da APS'}},
+  {id:'caso-03',kind:'case',no:'Caso 03',name:'Otimização da jornada de pacientes',ctx:'Atenção especializada',
+   desc:'Ambulatório de especialidades: prontuário eletrônico, laboratório e farmácia, regulação.'},
+  {id:'vigilancia',kind:'front',no:'Frente',name:'Vigilância em tempo real',
+   desc:'Coletar, sequenciar e devolver resultado em campo, no mesmo relógio do caso 01.'},
+  {id:'predicao',kind:'front',no:'Frente',name:'Predição a partir de dado de rotina',
+   desc:'Prontuário, exame e prescrição como já existem, sem coleta nova, viram modelo de risco.'},
+  {id:'fenotipo',kind:'front',no:'Frente',name:'Fenótipo e saúde mental em escala',
+   desc:'Separar quadros que a classificação clínica confunde e ler o efeito de um choque populacional.'}
+];
+var TAGS={
+  amr:'Resistência antimicrobiana', aps:'Atenção primária', vig:'Vigilância', covid:'COVID-19',
+  coorte:'Coorte longitudinal', sm:'Saúde mental', sub:'Uso de substâncias', ml:'Aprendizado de máquina',
+  rotina:'Dado de rotina', cardio:'Cardiologia'
+};
+var PUBS=[
+  {pmid:'39320520',hub:'caso-01',y:2024,j:'Eur J Clin Microbiol Infect Dis',s:'MDR em profissionais da APS',tags:['amr','aps'],
+   t:'Colonisation by multidrug-resistant organisms in health workers in primary care: narrow spectrum oral antimicrobials are a risk factor'},
+  {pmid:'42019365',hub:'caso-01',y:2026,j:'Braz J Infect Dis',s:'Resistência num córrego urbano',tags:['amr','vig'],
+   t:'Insights of bacterial community structure and occurrence of antibiotic resistance and antimicrobial compounds in an urban stream in the megacity of São Paulo, Brazil'},
+  {pmid:'33436471',hub:'caso-02',y:2021,j:'BMJ Open',s:'Corona São Caetano: 2.073 casos',tags:['covid','aps','coorte'],
+   t:'Clinical features and natural history of the first 2073 suspected COVID-19 cases in the Corona São Caetano primary care programme: a prospective cohort study'},
+  {pmid:'41521395',hub:'caso-03',y:2026,j:'Early Interv Psychiatry',s:'Abandono entre adultos emergentes',tags:['sm','sub'],
+   t:'Gone Too Soon: Higher Pretreatment and Treatment Dropout Among Emerging Adults in a Women-Specific Outpatient Treatment Service for Substance Use Disorders in Brazil'},
+  {pmid:'40782139',hub:'caso-03',y:2025,j:'Arch Womens Ment Health',s:'Replicação do PROMUD',tags:['sm','sub'],
+   t:"Expanding gender-sensitive and equitable substance use care models: treatment retention analysis of the women's drug dependent treatment program (PROMUD) replication in psychosocial units in Brazil"},
+  {pmid:'27683027',hub:'vigilancia',y:2016,j:'Genome Med',a:'Faria NR, … Sabino EC',s:'Vigilância móvel do Zika',tags:['vig'],
+   t:'Mobile real-time surveillance of Zika virus in Brazil'},
+  {pmid:'35843930',hub:'predicao',y:2022,j:'BMC Med Inform Decis Mak',a:'Rodrigues DS, … Sabino EC',s:'Desfecho da COVID pelo prontuário',tags:['covid','ml','rotina'],
+   t:'Predicting the outcome for COVID-19 patients by applying time series classification to electronic health records'},
+  {pmid:'36131274',hub:'predicao',y:2022,j:'BMC Med Inform Decis Mak',a:'Sabino EC, et al.',s:'Prescrição e prognóstico na COVID',tags:['covid','rotina'],
+   t:'Correlating drug prescriptions with prognosis in severe COVID-19: first step towards resource management'},
+  {pmid:'35421085',hub:'predicao',y:2022,j:'PLoS Negl Trop Dis',s:'Óbito em 2 anos na doença de Chagas',tags:['ml','cardio'],
+   t:'Two-year death prediction models among patients with Chagas Disease using machine learning-based methods'},
+  {pmid:'34433816',hub:'predicao',y:2021,j:'Nat Commun',s:'Idade eletrocardiográfica',tags:['ml','cardio'],
+   t:'Deep neural network-estimated electrocardiographic age as a mortality predictor'},
+  {pmid:'34911001',hub:'fenotipo',y:2021,j:'J Anxiety Disord',a:'Suen PJC, et al.',s:'Psicopatologia em rede no ELSA',tags:['covid','sm','coorte'],
+   t:'Examining the impact of the COVID-19 pandemic through the lens of the network approach to psychopathology: Analysis of the Brazilian Longitudinal Study of Health (ELSA-Brasil) cohort over a 12-year timespan'},
+  {pmid:'33307387',hub:'fenotipo',y:2020,j:'Psychiatry Res',a:'Suen PJC, … Brunoni AR',s:'Depressão unipolar × bipolar',tags:['sm','ml'],
+   t:'Classification of unipolar and bipolar depression using machine learning techniques'}
+];
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function pubUrl(p){return 'https://pubmed.ncbi.nlm.nih.gov/'+p.pmid+'/';}
+
+/* ---------- lista (a mesma informação do mapa, legível sem ele) ---------- */
+(function(){
+  var host=document.getElementById('lst'), h='';
+  [['case','Por trás de cada caso'],['front','Outros casos']].forEach(function(g,gi){
+    h+='<div class="tier"'+(gi?' style="margin-top:44px"':'')+'><span>'+g[1]+'</span><i></i></div><div class="grp">';
+    HUBS.filter(function(x){return x.kind===g[0];}).forEach(function(hb){
+      h+='<div class="why" id="lista-'+hb.id+'"><b>'+esc(hb.no)+'</b><h3>'+esc(hb.name)+'</h3><p>'+esc(hb.desc)+'</p>'+
+         '<button type="button" data-node="hub:'+hb.id+'">Ver no mapa ↑</button></div><div class="list">';
+      PUBS.filter(function(p){return p.hub===hb.id;}).forEach(function(p){
+        h+='<a class="ref" href="'+pubUrl(p)+'" target="_blank" rel="noopener"><span class="t">'+esc(p.t)+'</span>'+
+           '<span class="m"><em>'+(p.a?esc(p.a)+' · ':'')+esc(p.j)+'</em>'+p.y+' · '+p.pmid+'</span></a>';
+      });
+      h+='</div>';
+    });
+    h+='</div>';
+  });
+  h+='<p class="pubnote">Publicações em que a equipe participou do desenho, da análise ou da construção da base.</p>';
+  host.innerHTML=h;
+})();
+
+/* ---------- mapa: grafo de forças em canvas, sem bibliotecas ---------- */
+(function(){
+  var stage=document.getElementById('gx-stage'), cv=document.getElementById('gx'), ctx=cv.getContext('2d');
+  var panel=document.getElementById('gx-panel'), q=document.getElementById('gx-q'), hint=document.getElementById('gx-hint');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var KLEIN='#002FA7', KLEIN2='#2F5BD3', INK='16,19,24';
+  var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
+  var view={x:0,y:0,k:1};
+
+  /* nós e arestas */
+  var nodes=[], byKey={}, edges=[];
+  function add(n){n.i=nodes.length;n.nb=[];nodes.push(n);byKey[n.key]=n;return n;}
+  HUBS.forEach(function(h){add({key:'hub:'+h.id,type:h.kind,d:h,r:h.kind==='case'?12:9.5,q:4.5,label:h.name});});
+  Object.keys(TAGS).forEach(function(k){add({key:'tag:'+k,type:'tag',d:{id:k,name:TAGS[k]},r:4.5,q:1.1,label:TAGS[k]});});
+  PUBS.forEach(function(p){add({key:'pub:'+p.pmid,type:'pub',d:p,r:6,q:1.4,label:p.s});});
+  function link(a,b,kind){var e={a:a,b:b,kind:kind};edges.push(e);a.nb.push(b);b.nb.push(a);}
+  PUBS.forEach(function(p){
+    var n=byKey['pub:'+p.pmid];
+    link(n,byKey['hub:'+p.hub],'hub');
+    p.tags.forEach(function(t){link(n,byKey['tag:'+t],'tag');});
+  });
+
+  /* posição inicial determinística: hubs em anel, o resto perto deles */
+  (function seed(){
+    var s=20261007; function rnd(){return (s=(s*1664525+1013904223)%4294967296)/4294967296;}
+    var hubs=nodes.filter(function(n){return n.type==='case'||n.type==='front';});
+    hubs.forEach(function(h,i){var a=i/hubs.length*Math.PI*2-Math.PI/2;h.x=Math.cos(a)*230;h.y=Math.sin(a)*190;});
+    nodes.forEach(function(n){
+      if(n.type==='pub'){var h=byKey['hub:'+n.d.hub];n.x=h.x*.7+(rnd()-.5)*60;n.y=h.y*.7+(rnd()-.5)*60;}
+      else if(n.type==='tag'){n.x=(rnd()-.5)*160;n.y=(rnd()-.5)*160;}
+      n.vx=0;n.vy=0;
+    });
+  })();
+
+  /* simulação */
+  var alpha=1, alphaTarget=0, raf=0;
+  function step(){
+    var i,j,a,b,dx,dy,d2,d,f;
+    for(i=0;i<nodes.length;i++){a=nodes[i];
+      for(j=i+1;j<nodes.length;j++){b=nodes[j];
+        dx=b.x-a.x;dy=b.y-a.y;d2=dx*dx+dy*dy;if(d2<1){dx=.5;dy=.5;d2=1;}
+        if(d2>250000) continue;
+        d=Math.sqrt(d2);f=1100*a.q*b.q*alpha/d2/d;
+        a.vx-=dx*f/a.q;a.vy-=dy*f/a.q;b.vx+=dx*f/b.q;b.vy+=dy*f/b.q;
+      }
+    }
+    edges.forEach(function(e){
+      var L=e.kind==='hub'?88:170, K=e.kind==='hub'?.5:.012;
+      dx=e.b.x-e.a.x;dy=e.b.y-e.a.y;d=Math.sqrt(dx*dx+dy*dy)||1;
+      f=(d-L)/d*K*alpha;
+      var wa=e.b.q/(e.a.q+e.b.q), wb=1-wa;
+      e.a.vx+=dx*f*wa;e.a.vy+=dy*f*wa;e.b.vx-=dx*f*wb;e.b.vy-=dy*f*wb;
+    });
+    nodes.forEach(function(n){
+      n.vx-=n.x*.008*alpha;n.vy-=n.y*.011*alpha;
+      if(n.fx!=null){n.x=n.fx;n.y=n.fy;n.vx=n.vy=0;return;}
+      n.vx*=.6;n.vy*=.6;n.x+=n.vx;n.y+=n.vy;
+    });
+    alpha+=(alphaTarget-alpha)*.0228;
+  }
+  for(var w=0;w<320;w++) step();
+  alpha=.04;
+
+  function loop(){
+    raf=0; step(); draw();
+    if(alpha>.006||alphaTarget>0) raf=requestAnimationFrame(loop);
+  }
+  function heat(t){alpha=Math.max(alpha,t);if(reduce){for(var i=0;i<60;i++)step();draw();return;}if(!raf)raf=requestAnimationFrame(loop);}
+  var drawQ=0;function redraw(){if(raf||drawQ)return;drawQ=requestAnimationFrame(function(){drawQ=0;draw();});}
+
+  /* enquadramento */
+  function bounds(){
+    var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    nodes.forEach(function(n){x0=Math.min(x0,n.x);y0=Math.min(y0,n.y);x1=Math.max(x1,n.x);y1=Math.max(y1,n.y);});
+    return {x0:x0-70,y0:y0-50,x1:x1+70,y1:y1+60};
+  }
+  function fit(anim){
+    var b=bounds(), k=Math.min(W/(b.x1-b.x0),H/(b.y1-b.y0),1.5);
+    var t={k:k,x:W/2-(b.x0+b.x1)/2*k,y:H/2-(b.y0+b.y1)/2*k};
+    tween(t,anim);
+  }
+  function center(n,k){tween({k:k,x:W/2-n.x*k,y:H/2-n.y*k},true);}
+  var tw=0;
+  function tween(t,anim){
+    cancelAnimationFrame(tw);
+    if(!anim||reduce){view=t;redraw();return;}
+    var s={x:view.x,y:view.y,k:view.k},t0=performance.now();
+    (function f(now){var u=Math.min(1,(now-t0)/450),e=1-Math.pow(1-u,3);
+      view={x:s.x+(t.x-s.x)*e,y:s.y+(t.y-s.y)*e,k:s.k+(t.k-s.k)*e};draw();
+      if(u<1)tw=requestAnimationFrame(f);})(t0);
+  }
+  function zoomAt(sx,sy,factor){
+    var k=Math.max(.35,Math.min(4,view.k*factor)),r=k/view.k;
+    view={k:k,x:sx-(sx-view.x)*r,y:sy-(sy-view.y)*r};redraw();
+  }
+
+  /* foco: hover > seleção > busca */
+  var hover=null, sel=null, matches=null;
+  function focusSet(){
+    var f=hover||sel;
+    if(f){var s={};s[f.i]=1;f.nb.forEach(function(n){s[n.i]=1;});return {set:s,center:f};}
+    if(matches) return {set:matches,center:null};
+    return null;
+  }
+
+  /* desenho */
+  function wrap(text,max){
+    var words=text.split(' '),lines=[],cur='';
+    words.forEach(function(wd){var t=cur?cur+' '+wd:wd;if(t.length>max&&cur){lines.push(cur);cur=wd;}else cur=t;});
+    if(cur)lines.push(cur);return lines;
+  }
+  function draw(){
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    ctx.save();ctx.translate(view.x,view.y);ctx.scale(view.k,view.k);
+    var F=focusSet(), k=view.k;
+    /* arestas */
+    edges.forEach(function(e){
+      var on=!F||(F.center?(e.a===F.center||e.b===F.center):(F.set[e.a.i]&&F.set[e.b.i]));
+      var hubE=e.kind==='hub';
+      ctx.strokeStyle=on&&F?(hubE?'rgba(0,47,167,.85)':'rgba(47,91,211,.7)'):
+        (hubE?'rgba(0,47,167,'+(F?.06:.32)+')':'rgba('+INK+','+(F?.04:.16)+')');
+      ctx.lineWidth=(hubE?1.3:.9)*(on&&F?1.5:1)/Math.sqrt(k);
+      ctx.beginPath();ctx.moveTo(e.a.x,e.a.y);ctx.lineTo(e.b.x,e.b.y);ctx.stroke();
+    });
+    /* nós */
+    nodes.forEach(function(n){
+      var dim=F&&!F.set[n.i];
+      ctx.globalAlpha=dim?.16:1;
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.2832);
+      if(n.type==='tag'){ctx.fillStyle='#F6F8FA';ctx.fill();ctx.lineWidth=1.6/Math.sqrt(k);ctx.strokeStyle='rgba('+INK+',.5)';ctx.stroke();}
+      else{ctx.fillStyle=n.type==='case'?KLEIN:n.type==='front'?KLEIN2:'rgba('+INK+',.78)';ctx.fill();}
+      if(n===sel||n===hover){ctx.lineWidth=2/k;ctx.strokeStyle=KLEIN;ctx.beginPath();ctx.arc(n.x,n.y,n.r+4/k+2,0,6.2832);ctx.stroke();}
+    });
+    /* rótulos: hubs sempre; temas e publicações aparecem com a aproximação ou no foco */
+    ctx.textAlign='center';ctx.textBaseline='top';
+    nodes.forEach(function(n){
+      var inF=F&&F.set[n.i], a;
+      if(n.type==='case'||n.type==='front') a=F&&!inF?.2:1;
+      else if(n.type==='tag') a=inF?1:F?0:Math.max(0,Math.min(1,(k-.95)/.35));
+      else a=inF?1:F?0:Math.max(0,Math.min(1,(k-1.7)/.4));
+      if(a<=.01) return;
+      ctx.globalAlpha=a;
+      var s=1/Math.max(k,.6), y=n.y+n.r+5*s+2;
+      if(n.type==='case'||n.type==='front'){
+        ctx.font='500 '+(9.5*s)+'px "IBM Plex Mono",monospace';ctx.fillStyle=KLEIN;
+        ctx.fillText(n.d.no.toUpperCase(),n.x,y);y+=13*s;
+        ctx.font='700 '+(13*s)+'px "Archivo Narrow",sans-serif';ctx.fillStyle='#101318';
+        wrap(n.label.toUpperCase(),24).forEach(function(l){ctx.fillText(l,n.x,y);y+=14*s;});
+      }else if(n.type==='tag'){
+        ctx.font='400 '+(9.5*s)+'px "IBM Plex Mono",monospace';ctx.fillStyle='rgba('+INK+',.6)';
+        ctx.fillText(n.label.toUpperCase(),n.x,y);
+      }else{
+        ctx.font='500 '+(11.5*s)+'px "Archivo",sans-serif';ctx.fillStyle='#101318';
+        wrap(n.label,22).forEach(function(l){ctx.fillText(l,n.x,y);y+=14*s;});
+      }
+    });
+    ctx.globalAlpha=1;ctx.restore();
+  }
+
+  /* interação: arrastar nó, arrastar fundo, roda e pinça para zoom */
+  function toWorld(sx,sy){return {x:(sx-view.x)/view.k,y:(sy-view.y)/view.k};}
+  function hit(sx,sy){
+    var p=toWorld(sx,sy),best=null,bd=1e9;
+    nodes.forEach(function(n){var d=Math.hypot(n.x-p.x,n.y-p.y),r=n.r+8/view.k;if(d<r&&d<bd){bd=d;best=n;}});
+    return best;
+  }
+  function local(e){var r=cv.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+  var ptrs={}, drag=null;
+  cv.addEventListener('pointerdown',function(e){
+    var p=local(e);ptrs[e.pointerId]=p;cv.setPointerCapture(e.pointerId);
+    var ids=Object.keys(ptrs);
+    if(ids.length===2){drag={pinch:true,d:dist2(),k:view.k};return;}
+    var n=hit(p.x,p.y);
+    drag={node:n,sx:p.x,sy:p.y,vx:view.x,vy:view.y,moved:false};
+    if(n){var w=toWorld(p.x,p.y);n.fx=n.x;n.fy=n.y;drag.ox=n.x-w.x;drag.oy=n.y-w.y;}
+    cv.classList.add('drag');
+  });
+  function dist2(){var v=Object.keys(ptrs).map(function(k){return ptrs[k];});return {d:Math.hypot(v[0].x-v[1].x,v[0].y-v[1].y),cx:(v[0].x+v[1].x)/2,cy:(v[0].y+v[1].y)/2};}
+  cv.addEventListener('pointermove',function(e){
+    var p=local(e);
+    if(ptrs[e.pointerId]) ptrs[e.pointerId]=p;
+    if(drag&&drag.pinch&&Object.keys(ptrs).length===2){
+      var m=dist2();zoomAt(m.cx,m.cy,(drag.k*m.d/drag.d.d)/view.k);return;
+    }
+    if(drag&&!drag.pinch){
+      if(Math.hypot(p.x-drag.sx,p.y-drag.sy)>4) drag.moved=true;
+      if(drag.node&&drag.moved){var w=toWorld(p.x,p.y);drag.node.fx=w.x+drag.ox;drag.node.fy=w.y+drag.oy;alphaTarget=.12;heat(.12);}
+      else if(!drag.node){view.x=drag.vx+p.x-drag.sx;view.y=drag.vy+p.y-drag.sy;redraw();}
+      return;
+    }
+    if(e.pointerType==='mouse'){
+      var n=hit(p.x,p.y);
+      if(n!==hover){hover=n;cv.classList.toggle('hot',!!n);redraw();}
+    }
+  });
+  function end(e){
+    delete ptrs[e.pointerId];
+    if(!drag) return;
+    if(drag.pinch){if(!Object.keys(ptrs).length)drag=null;return;}
+    if(drag.node){drag.node.fx=drag.node.fy=null;alphaTarget=0;}
+    if(!drag.moved){select(drag.node,false);}
+    drag=null;cv.classList.remove('drag');
+  }
+  cv.addEventListener('pointerup',end);
+  cv.addEventListener('pointercancel',end);
+  cv.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'&&hover&&!drag){hover=null;cv.classList.remove('hot');redraw();}});
+  cv.addEventListener('wheel',function(e){
+    e.preventDefault();var p=local(e);zoomAt(p.x,p.y,Math.exp(-e.deltaY*.0015));
+  },{passive:false});
+  document.getElementById('gx-in').addEventListener('click',function(){zoomAt(W/2,H/2,1.3);});
+  document.getElementById('gx-out').addEventListener('click',function(){zoomAt(W/2,H/2,1/1.3);});
+  document.getElementById('gx-fit').addEventListener('click',function(){select(null,false);q.value='';matches=null;fit(true);});
+
+  /* busca: acende o que bate, apaga o resto; Enter abre o primeiro */
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  q.addEventListener('input',function(){
+    var v=norm(q.value.trim());
+    if(!v){matches=null;redraw();return;}
+    matches={};var any=false;
+    nodes.forEach(function(n){
+      var hay=n.type==='pub'?[n.d.t,n.d.s,n.d.j,n.d.y,n.d.a||''].join(' '):n.type==='tag'?n.label:[n.d.name,n.d.no,n.d.desc,n.d.ctx||''].join(' ');
+      if(norm(String(hay)).indexOf(v)>-1){matches[n.i]=1;any=true;}
+    });
+    if(sel){sel=null;renderPanel(null);}
+    redraw();
+  });
+  q.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&matches){var f=nodes.filter(function(n){return matches[n.i];});if(f.length)select(f[0],true);}
+    if(e.key==='Escape'){q.value='';matches=null;redraw();}
+  });
+
+  /* seleção e painel */
+  function select(n,move){
+    sel=n;if(n){matches=null;q.value='';}
+    renderPanel(n);redraw();
+    if(n&&move) center(n,Math.max(view.k,1.25));
+    if(n) history.replaceState(null,'','#'+(n.type==='pub'?'pmid-'+n.d.pmid:n.type==='tag'?'tema-'+n.d.id:n.d.id));
+    else history.replaceState(null,'',location.pathname);
+  }
+  function item(n){
+    var sub=n.type==='pub'?n.d.j+' · '+n.d.y:n.type==='tag'?'Tema':n.d.no;
+    return '<button type="button" class="it" data-node="'+n.key+'">'+esc(n.type==='pub'?n.d.t:n.label)+'<small>'+esc(sub)+'</small></button>';
+  }
+  function renderPanel(n){
+    var h='';
+    if(!n){
+      h='<div class="pk">Como ler o mapa</div><h2>Casos, frentes e temas</h2>'+
+        '<p>Os nós azuis são os casos e as frentes de trabalho. Cada publicação se liga ao caso de onde veio e aos temas que divide com outras. Passe o cursor para ver as ligações; clique para abrir.</p>'+
+        '<div class="stat"><div><b>'+PUBS.length+'</b>publicações</div><div><b>'+HUBS.length+'</b>casos e frentes</div><div><b>'+Object.keys(TAGS).length+'</b>temas</div></div>'+
+        '<div class="sec"><span>Começar por um caso</span><i></i></div><div class="items">'+
+        nodes.filter(function(x){return x.type==='case';}).map(item).join('')+'</div>';
+    }else if(n.type==='pub'){
+      var p=n.d, hub=byKey['hub:'+p.hub], rel={};
+      n.nb.forEach(function(t){if(t.type==='tag')t.nb.forEach(function(o){if(o!==n)rel[o.key]=o;});});
+      var rl=Object.keys(rel).map(function(k){return rel[k];});
+      h='<div class="pk">'+esc(hub.d.no)+' · '+esc(hub.label)+'</div><h2 class="pt">'+esc(p.t)+'</h2>'+
+        '<div class="meta">'+(p.a?esc(p.a)+'<br>':'')+'<em>'+esc(p.j)+'</em> · '+p.y+' · PMID '+p.pmid+'</div>'+
+        '<div class="acts"><a class="btn" href="'+pubUrl(p)+'" target="_blank" rel="noopener">Abrir no PubMed →</a></div>'+
+        '<div class="sec"><span>Temas</span><i></i></div><div class="chips">'+
+        p.tags.map(function(t){return '<button type="button" class="chip" data-node="tag:'+t+'">'+esc(TAGS[t])+'</button>';}).join('')+
+        '<button type="button" class="chip" data-node="'+hub.key+'">'+esc(hub.d.no)+'</button></div>'+
+        (rl.length?'<div class="sec"><span>Ligadas por tema</span><i></i></div><div class="items">'+rl.map(item).join('')+'</div>':'');
+    }else if(n.type==='tag'){
+      h='<div class="pk">Tema</div><h2>'+esc(n.label)+'</h2>'+
+        '<p>'+n.nb.length+' publicações, em '+uniq(n.nb.map(function(x){return x.d.hub;})).length+' casos ou frentes diferentes.</p>'+
+        '<div class="sec"><span>Publicações</span><i></i></div><div class="items">'+n.nb.map(item).join('')+'</div>';
+    }else{
+      var d=n.d;
+      h='<div class="pk">'+esc(d.no)+(d.ctx?' · '+esc(d.ctx):'')+'</div><h2>'+esc(d.name)+'</h2><p>'+esc(d.desc)+'</p>'+
+        '<div class="acts">'+(d.kind==='case'?'<a class="btn ghost" href="index.html#casos">Ver o caso →</a>':'')+
+        (d.link?'<a class="btn" href="'+d.link.href+'">'+esc(d.link.t)+' →</a>':'')+'</div>'+
+        '<div class="sec"><span>'+n.nb.length+(n.nb.length>1?' publicações':' publicação')+'</span><i></i></div><div class="items">'+n.nb.map(item).join('')+'</div>';
+    }
+    panel.innerHTML=h;
+  }
+  function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i;});}
+  function byDataNode(e){
+    var b=e.target.closest('[data-node]');if(!b)return;
+    var n=byKey[b.getAttribute('data-node')];if(!n)return;
+    select(n,true);
+    if(!panel.contains(b)) stage.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+  }
+  panel.addEventListener('click',byDataNode);
+  document.getElementById('lst').addEventListener('click',byDataNode);
+
+  /* tamanho */
+  var fitted=false;
+  function resize(){
+    var r=stage.getBoundingClientRect();W=r.width;H=r.height;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    if(!fitted){fit(false);fitted=true;}else redraw();
+  }
+  new ResizeObserver(resize).observe(stage);
+  resize();
+
+  /* chegar por link: publicacoes.html#caso-01, #pmid-…, #tema-… */
+  function fromHash(){
+    var h=decodeURIComponent(location.hash.slice(1));if(!h)return renderPanel(null);
+    var n=byKey['hub:'+h]||byKey['pub:'+h.replace(/^pmid-/,'')]||byKey['tag:'+h.replace(/^tema-/,'')];
+    if(!n) return renderPanel(null);
+    sel=n;renderPanel(n);center(n,1.3);
+  }
+  fromHash();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(redraw);
+  /* um pequeno assentamento visível na chegada */
+  if(!reduce) heat(.08);
+  stage.addEventListener('pointerenter',function(){if(hint)hint.style.opacity='0';},{once:true});
+})();
+</script>
+</body>
+</html>

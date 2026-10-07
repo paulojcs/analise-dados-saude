@@ -8,7 +8,8 @@ e produtos digitais para hospitais, redes públicas de saúde e indústria.
 ```
 marca_coorte/
   site/                       # site publicado
-    index.html                # home (hero, sobre, método, casos, publicações, serviços, contato)
+    index.html                # home (hero, sobre, método, casos, governança, contato)
+    publicacoes.html          # publicações num grafo navegável (dados no próprio arquivo: HUBS, TAGS, PUBS)
     sobre.html                # quem somos, equipe, compromissos
     privacidade.html          # política de privacidade (LGPD)
     img/                      # retratos da equipe

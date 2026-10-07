@@ -327,6 +327,8 @@ section,[id]{scroll-margin-top:56px}
 .cs-foot button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .cs-link{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:var(--klein);color:var(--on-klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .cs-link:hover{background:var(--klein-deep);color:var(--on-klein)}
+.cs-pubs{color:var(--t3)}
+.cs-pubs:hover{color:var(--klein)}
 .cs-foot button:focus-visible{outline:2px solid var(--klein);outline-offset:4px}
 .cs-foot button i{font-style:normal;font-size:17px;display:inline-block;transition:transform .35s ease}
 .cs-card.on .cs-foot button i{transform:rotate(45deg)}
@@ -354,39 +356,6 @@ section,[id]{scroll-margin-top:56px}
   .cs-card:nth-of-type(3){order:5} #cs3-p{order:6}
   .cs-fig{height:52px}
   .cs-pad{padding:18px 20px 24px}
-}
-
-/* ---------- 04 publicações ---------- */
-.pubs{padding:36px 32px 40px 28px}
-.pubs-top{margin-bottom:34px}
-.pubs-top h2{font-size:clamp(28px,2.8vw,44px);line-height:1.04}
-.tier{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--klein);display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.tier i{flex:1;height:1px;background:var(--rule)}
-.bycase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
-.bycase>div{padding:22px 24px 24px 0;border-right:1px solid var(--rule)}
-.bycase>div:last-child{border-right:0}
-.bycase>div:not(:first-child){padding-left:24px}
-.bc-h b{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
-.bycase h4{font-size:19px;line-height:1.15;margin:8px 0 14px}
-.ref{display:block;padding:12px 0;border-top:1px solid var(--rule-2);transition:.15s}
-.ref .t{display:block;font-size:15.5px;line-height:1.42;color:var(--ink);text-wrap:pretty}
-.ref .m{display:flex;justify-content:space-between;gap:12px;margin-top:6px;font:400 12px/1.3 var(--mono);color:var(--t3)}
-.ref .m em{font-style:normal;color:var(--t2)}
-.ref:hover .t{color:var(--klein)}
-.ref:hover .m em{color:var(--klein)}
-.cap{margin-top:52px}
-.capgrid{display:grid;grid-template-columns:260px 1fr;gap:0 40px;border-top:1px solid var(--ink)}
-.capgrid>div{padding:22px 0;border-bottom:1px solid var(--rule-2)}
-.capgrid .why h4{font-size:19px;line-height:1.15;margin-bottom:8px}
-.capgrid .why p{font-size:15px;line-height:1.5;color:var(--t2);max-width:32ch;text-wrap:pretty}
-.capgrid .list .ref:first-child{border-top:0;padding-top:0}
-.pubnote{margin-top:28px;font:400 12px/1.7 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-left:2px solid var(--klein);padding-left:14px;max-width:70ch}
-@media(max-width:900px){
-  .pubs{padding:26px 20px 30px}
-  .bycase{grid-template-columns:minmax(0,1fr)}
-  .bycase>div{border-right:0;border-bottom:1px solid var(--rule);padding:20px 0!important}
-  .capgrid{grid-template-columns:minmax(0,1fr)}
-  .capgrid .why{border-bottom:0;padding-bottom:8px}
 }
 
 /* ---------- 05 serviços ---------- */
@@ -495,6 +464,7 @@ fieldset{border:0;margin:0;padding:0}
     <a href="#metodo">Método</a>
     <a href="#casos">Casos</a>
     <a href="atlas/">Atlas</a>
+    <a href="publicacoes.html">Publicações</a>
     <a href="sobre.html">Sobre</a>
     <a class="cta" href="#contato">Contato <span aria-hidden="true">→</span></a>
   </nav>
@@ -763,28 +733,28 @@ fieldset{border:0;margin:0;padding:0}
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 01</span></div>
       <div class="cs-body">
         <div class="cs-kick">Complexo hospitalar terciário</div>
-        <h3>Microbiologia</h3>
+        <h3>Detecção precoce de surto e análise preditiva</h3>
         <div class="chips"><span class="chip">Detecção de aglomerado</span><span class="chip">Qualidade de coleta</span><span class="chip">Resistência antimicrobiana</span></div>
-        <div class="cs-foot"><span>2 publicações</span><button type="button" aria-expanded="false" aria-controls="cs1-p">Ver figura <i aria-hidden="true">+</i></button></div>
+        <div class="cs-foot"><a class="cs-pubs" href="publicacoes.html#caso-01">2 publicações</a><button type="button" aria-expanded="false" aria-controls="cs1-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
     <article class="cs-card cs2" data-p="cs2-p">
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 02</span></div>
       <div class="cs-body">
         <div class="cs-kick">Rede municipal</div>
-        <h3>Atenção primária</h3>
+        <h3>Indicadores de qualidade e repasse financeiro na atenção primária</h3>
         <div class="chips"><span class="chip">Indicadores de APS</span><span class="chip">Equidade territorial</span><span class="chip">Financiamento por desempenho</span></div>
         <a class="cs-link" href="atlas/">Explorar no Atlas da APS <span aria-hidden="true">→</span></a>
-        <div class="cs-foot"><span>1 publicação</span><button type="button" aria-expanded="false" aria-controls="cs2-p">Ver figura <i aria-hidden="true">+</i></button></div>
+        <div class="cs-foot"><a class="cs-pubs" href="publicacoes.html#caso-02">1 publicação</a><button type="button" aria-expanded="false" aria-controls="cs2-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
     <article class="cs-card cs3" data-p="cs3-p">
       <div class="cs-fig" aria-hidden="true"><span class="b">CASO 03</span></div>
       <div class="cs-body">
         <div class="cs-kick">Atenção especializada</div>
-        <h3>Ambulatório de especialidades</h3>
+        <h3>Otimização da jornada de pacientes</h3>
         <div class="chips"><span class="chip">Prontuário eletrônico</span><span class="chip">Laboratório e farmácia</span><span class="chip">Regulação</span></div>
-        <div class="cs-foot"><span>2 publicações</span><button type="button" aria-expanded="false" aria-controls="cs3-p">Ver figura <i aria-hidden="true">+</i></button></div>
+        <div class="cs-foot"><a class="cs-pubs" href="publicacoes.html#caso-03">2 publicações</a><button type="button" aria-expanded="false" aria-controls="cs3-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>
     <div class="cs-p" id="cs1-p" role="region" aria-label="Figura do caso 01"><div class="cs-in"><div class="cs-pad">
@@ -802,110 +772,9 @@ fieldset{border:0;margin:0;padding:0}
   </div>
 </section>
 
-<!-- 04 PUBLICAÇÕES -->
-<section class="row" id="publicacoes" data-no="04">
-  <div class="rail"><div class="no">04</div><div class="k">Publicações</div><div class="dash"></div></div>
-  <div class="pubs">
-    <div class="pubs-top">
-      <h2>Nosso método revisado por pares.</h2>
-    </div>
-    <div class="tier"><span>Por trás de cada caso</span><i></i></div>
-    <div class="bycase">
-      <div>
-        <div class="bc-h"><b>Caso 01</b></div>
-        <h4>Hospital, microbiologia e resistência</h4>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/39320520/" target="_blank" rel="noopener">
-          <span class="t">Colonisation by multidrug-resistant organisms in health workers in primary care: narrow spectrum oral antimicrobials are a risk factor</span>
-          <span class="m"><em>Eur J Clin Microbiol Infect Dis</em>2024 · 39320520</span>
-        </a>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/42019365/" target="_blank" rel="noopener">
-          <span class="t">Insights of bacterial community structure and occurrence of antibiotic resistance and antimicrobial compounds in an urban stream in the megacity of São Paulo, Brazil</span>
-          <span class="m"><em>Braz J Infect Dis</em>2026 · 42019365</span>
-        </a>
-      </div>
-      <div>
-        <div class="bc-h"><b>Caso 02</b></div>
-        <h4>Rede municipal de atenção primária</h4>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/33436471/" target="_blank" rel="noopener">
-          <span class="t">Clinical features and natural history of the first 2073 suspected COVID-19 cases in the Corona São Caetano primary care programme: a prospective cohort study</span>
-          <span class="m"><em>BMJ Open</em>2021 · 33436471</span>
-        </a>
-      </div>
-      <div>
-        <div class="bc-h"><b>Caso 03</b></div>
-        <h4>Serviço ambulatorial de especialidades</h4>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/41521395/" target="_blank" rel="noopener">
-          <span class="t">Gone Too Soon: Higher Pretreatment and Treatment Dropout Among Emerging Adults in a Women-Specific Outpatient Treatment Service for Substance Use Disorders in Brazil</span>
-          <span class="m"><em>Early Interv Psychiatry</em>2026 · 41521395</span>
-        </a>
-        <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/40782139/" target="_blank" rel="noopener">
-          <span class="t">Expanding gender-sensitive and equitable substance use care models: treatment retention analysis of the women's drug dependent treatment program (PROMUD) replication in psychosocial units in Brazil</span>
-          <span class="m"><em>Arch Womens Ment Health</em>2025 · 40782139</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="cap">
-      <div class="tier"><span>Outros casos</span><i></i></div>
-      <div class="capgrid">
-        <div class="why">
-          <h4>Vigilância em tempo real</h4>
-          <p>Coletar, sequenciar e devolver resultado em campo, no mesmo relógio do caso 01.</p>
-        </div>
-        <div class="list">
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/27683027/" target="_blank" rel="noopener">
-            <span class="t">Mobile real-time surveillance of Zika virus in Brazil</span>
-            <span class="m"><em>Faria NR, … Sabino EC · Genome Med</em>2016 · 27683027</span>
-          </a>
-        </div>
-
-        <div class="why">
-          <h4>Predição a partir de dado de rotina</h4>
-          <p>Prontuário, exame e prescrição como já existem, sem coleta nova, viram modelo de risco.</p>
-        </div>
-        <div class="list">
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/35843930/" target="_blank" rel="noopener">
-            <span class="t">Predicting the outcome for COVID-19 patients by applying time series classification to electronic health records</span>
-            <span class="m"><em>Rodrigues DS, … Sabino EC · BMC Med Inform Decis Mak</em>2022 · 35843930</span>
-          </a>
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/36131274/" target="_blank" rel="noopener">
-            <span class="t">Correlating drug prescriptions with prognosis in severe COVID-19: first step towards resource management</span>
-            <span class="m"><em>Sabino EC, et al. · BMC Med Inform Decis Mak</em>2022 · 36131274</span>
-          </a>
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/35421085/" target="_blank" rel="noopener">
-            <span class="t">Two-year death prediction models among patients with Chagas Disease using machine learning-based methods</span>
-            <span class="m"><em>PLoS Negl Trop Dis</em>2022 · 35421085</span>
-          </a>
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/34433816/" target="_blank" rel="noopener">
-            <span class="t">Deep neural network-estimated electrocardiographic age as a mortality predictor</span>
-            <span class="m"><em>Nat Commun</em>2021 · 34433816</span>
-          </a>
-        </div>
-
-        <div class="why">
-          <h4>Fenótipo e saúde mental em escala</h4>
-          <p>Separar quadros que a classificação clínica confunde e ler o efeito de um choque populacional.</p>
-        </div>
-        <div class="list">
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/34911001/" target="_blank" rel="noopener">
-            <span class="t">Examining the impact of the COVID-19 pandemic through the lens of the network approach to psychopathology: Analysis of the Brazilian Longitudinal Study of Health (ELSA-Brasil) cohort over a 12-year timespan</span>
-            <span class="m"><em>Suen PJC, et al. · J Anxiety Disord</em>2021 · 34911001</span>
-          </a>
-          <a class="ref" href="https://pubmed.ncbi.nlm.nih.gov/33307387/" target="_blank" rel="noopener">
-            <span class="t">Classification of unipolar and bipolar depression using machine learning techniques</span>
-            <span class="m"><em>Suen PJC, … Brunoni AR · Psychiatry Res</em>2020 · 33307387</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <p class="pubnote">Publicações em que a equipe participou do desenho, da análise ou da construção da base.</p>
-  </div>
-</section>
-
-<!-- 05 GOVERNANÇA -->
-<section class="row" id="governanca" data-no="05">
-  <div class="rail"><div class="no">05</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
+<!-- 04 GOVERNANÇA -->
+<section class="row" id="governanca" data-no="04">
+  <div class="rail"><div class="no">04</div><div class="k">Governança e reprodutibilidade</div><div class="dash"></div></div>
   <div class="gov">
     <div class="gov-h"><h2>Por que a <span>Coorte</span></h2></div>
     <div class="r"><b>01</b><h4>LGPD e trilha de auditoria</h4><p>Cada acesso registrado. Cada número rastreável até a origem.</p></div>
@@ -915,9 +784,9 @@ fieldset{border:0;margin:0;padding:0}
   </div>
 </section>
 
-<!-- 06 CONTATO -->
-<section class="row" id="contato" data-no="06">
-  <div class="rail"><div class="no">06</div><div class="k">Contato</div><div class="dash"></div></div>
+<!-- 05 CONTATO -->
+<section class="row" id="contato" data-no="05">
+  <div class="rail"><div class="no">05</div><div class="k">Contato</div><div class="dash"></div></div>
   <div class="ct">
     <div class="ct-l">
       <h2>Fale com<br>a gente.</h2>
