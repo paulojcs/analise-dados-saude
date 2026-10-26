@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+       <loc>https://coorte.io/</loc>
+       <lastmod>2026-10-26T21:42:12+00:00</lastmod>
+       <priority>1.0000</priority>
+  </url>
+  <url>
+       <loc>https://coorte.io/atlas/</loc>
+       <lastmod>2026-10-26T21:42:12+00:00</lastmod>
+       <priority>0.8000</priority>
+  </url>
+  <url>
+       <loc>https://coorte.io/publicacoes</loc>
+       <lastmod>2026-10-26T21:42:12+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://coorte.io/sobre</loc>
+       <lastmod>2026-10-26T21:42:12+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://coorte.io/privacidade</loc>
+       <lastmod>2026-10-26T21:42:12+00:00</lastmod>
+       <priority>0.6400</priority>
+  </url>
+</urlset>
