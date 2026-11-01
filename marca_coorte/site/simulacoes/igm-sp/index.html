@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- RASCUNHO: não indexar até a publicação junto com o artigo. -->
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#EDF1F5">
+<title>Vacinas no IGM SUS Paulista · Coorte</title>
+<meta name="description" content="Simulador das regras de pagamento das vacinas do IGM SUS Paulista nos 645 municípios de São Paulo: quanto cada regra paga, quem fica sem nada e quanto vale uma criança a mais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#EDF1F5; --bg-2:#E2E8EF; --bg-hi:#F6F8FA;
+  --ink:#101318;
+  --t2:rgba(16,19,24,.68); --t3:rgba(16,19,24,.46); --t4:rgba(16,19,24,.34);
+  --rule:rgba(16,19,24,.14); --rule-2:rgba(16,19,24,.09);
+  --klein:#002FA7; --klein-deep:#00207A; --klein-wash:rgba(0,47,167,.05); --on-klein:#EEF2FA;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --narrow:"Archivo Narrow","Archivo",sans-serif;
+  /* paleta do painel: regra atual laranja, proporcional azul, cortes fixos cinzas */
+  --atual:#E5622E; --atual-2:#F4B496;
+  --prop:#2A78D6; --prop-2:#A9C8EF; --crianca:#15508F;
+  --fixo90:#7C828C; --fixo95:#B4B9C1;
+  --sobe:#2A78D6; --desce:#E5622E; --igual:#D6DBE2;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:"Archivo",Helvetica,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--narrow);font-weight:700;margin:0;letter-spacing:-.005em}
+p{margin:0}
+a{color:var(--klein);text-decoration:none}
+button{font:inherit;color:inherit}
+.k{font:500 12px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+.num{font-variant-numeric:tabular-nums}
+
+/* topo (o mesmo do Atlas) */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:12px 28px;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:14px;color:var(--ink)}
+.logo{display:block;height:22px;width:auto;aspect-ratio:570/104}
+.logo .lg-a{stroke:var(--klein)} .logo .lg-b{stroke:var(--ink)}
+.nav{display:flex;align-items:center;gap:22px;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.nav a{color:var(--t2)} .nav a:hover{color:var(--klein)}
+.lang{all:unset;cursor:pointer;font:500 12px/1 var(--mono);letter-spacing:.1em;border:1px solid var(--rule);padding:7px 9px;color:var(--t2)}
+.lang:hover{border-color:var(--klein);color:var(--klein)}
+@media(max-width:760px){.nav a{display:none}.top{padding:10px 16px}}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+@media(max-width:760px){.wrap{padding:0 16px}}
+.draft{background:#FFF4D6;border-bottom:1px solid #E8D18A;font:400 12.5px/1.5 var(--mono);letter-spacing:.04em;color:#6B5208;padding:8px 0}
+
+/* cada vista: título curto + ⓘ */
+.view{padding:44px 0 40px;border-bottom:1px solid var(--rule)}
+.vh{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+.vh h2{font-size:clamp(24px,3vw,36px);line-height:1.05;text-wrap:balance;max-width:24ch}
+.vh h2 em{font-style:normal;color:var(--atual)}
+.vh h2 em.b{color:var(--prop)}
+.info{all:unset;cursor:pointer;flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--rule);display:grid;place-items:center;font:600 14px/1 var(--mono);color:var(--t2)}
+.info:hover,.info[aria-expanded="true"]{border-color:var(--klein);color:var(--klein)}
+.more{display:none;max-width:72ch;font-size:15px;line-height:1.55;color:var(--t2);margin:-6px 0 18px;padding-left:12px;border-left:2px solid var(--klein)}
+.more.on{display:block}
+.src{display:inline-block;font:400 11px/1.4 var(--mono);letter-spacing:.05em;border:1px solid var(--rule);padding:1px 7px;color:var(--t2);white-space:nowrap;vertical-align:1px}
+.src.ses{border-color:var(--atual)} .src.fed{border-color:var(--prop)} .src.rec{border-style:dashed}
+
+/* vista 1: mapa + município */
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}}
+.find{position:relative;margin-bottom:14px}
+.find input{width:100%;font:400 18px/1.2 "Archivo",sans-serif;padding:12px 14px 12px 40px;border:1px solid var(--rule);background:var(--bg-hi);color:var(--ink);outline:none}
+.find input:focus{border-color:var(--klein)}
+.find svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--t3)}
+.find ul{position:absolute;z-index:20;top:100%;left:0;right:0;margin:2px 0 0;padding:0;list-style:none;background:var(--bg-hi);border:1px solid var(--rule);max-height:300px;overflow:auto;display:none;box-shadow:0 10px 30px rgba(16,19,24,.12)}
+.find ul.on{display:block}
+.find li{padding:9px 14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.find li small{font:400 11.5px/1.7 var(--mono);color:var(--t3)}
+.find li.act,.find li:hover{background:var(--klein-wash);color:var(--klein)}
+#mapa{position:relative}
+#mapa svg{display:block;width:100%;height:auto}
+#mapa path{stroke:var(--bg);stroke-width:.5;cursor:pointer;transition:opacity .15s}
+#mapa path.sel{stroke:var(--ink);stroke-width:2}
+#mapa.dim path:not(.sel){opacity:.55}
+.leg{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:400 12px/1.4 var(--mono);color:var(--t2);margin-top:8px}
+.leg i{display:inline-block;width:14px;height:10px;vertical-align:-1px;margin-right:4px}
+.big{display:flex;gap:28px;flex-wrap:wrap;margin:6px 0 14px}
+.big div b{display:block;font:700 44px/1 var(--narrow);font-variant-numeric:tabular-nums}
+.big div span{font:400 12px/1.4 var(--mono);letter-spacing:.06em;color:var(--t2);text-transform:uppercase}
+.card{background:var(--bg-hi);border:1px solid var(--rule);padding:18px 18px 16px}
+.card h3{font-size:26px;line-height:1.05;text-transform:uppercase}
+.card .sub{font:400 12px/1.5 var(--mono);color:var(--t3);margin:6px 0 14px;letter-spacing:.04em}
+.vacs{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;font-size:15px}
+.vacs .bar{position:relative;height:12px;background:var(--bg-2)}
+.vacs .bar i{position:absolute;top:0;bottom:0;left:0}
+.vacs .bar i.j{background:var(--t4);height:5px}
+.vacs .bar i.s{top:auto;bottom:0;height:7px}
+.delta{font:700 30px/1 var(--narrow);font-variant-numeric:tabular-nums}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:var(--on-klein);padding:9px 11px;font:400 12.5px/1.5 var(--mono);max-width:280px;opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+.tip b{font:700 15px/1.2 var(--narrow);display:block;text-transform:uppercase;margin-bottom:3px}
+
+/* controles */
+.ctrls{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:flex-end;margin-bottom:20px}
+.ctl>span{display:block;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule)}
+.seg button{all:unset;cursor:pointer;padding:9px 12px;font-size:15px;border-right:1px solid var(--rule);background:var(--bg-hi);white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:disabled{cursor:not-allowed;color:var(--t4)}
+.seg button:disabled[aria-pressed="true"]{color:var(--bg);background:var(--t2)}
+.seg button .sw{display:inline-block;width:10px;height:10px;margin-right:7px;vertical-align:0}
+.sl{display:flex;align-items:center;gap:10px}
+.sl input{width:180px;accent-color:var(--prop)}
+.sl b{font:700 20px/1 var(--narrow);min-width:46px;font-variant-numeric:tabular-nums}
+.tg{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:15px}
+.tg input{width:18px;height:18px;accent-color:var(--prop)}
+.ctl.off{opacity:.4;pointer-events:none}
+
+/* playground */
+.play{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.play{grid-template-columns:minmax(0,1fr)}}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--t2)}
+.chart .lbl{font-family:"Archivo Narrow",sans-serif;font-weight:700;font-size:14px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.kpis div{background:var(--bg-hi);padding:14px 14px 12px}
+.kpis b{display:block;font:700 32px/1 var(--narrow);font-variant-numeric:tabular-nums}
+.kpis span{display:block;font:400 11.5px/1.4 var(--mono);color:var(--t2);margin-top:6px;letter-spacing:.03em}
+.pick{display:flex;gap:4px;flex-wrap:wrap;margin:14px 0 6px}
+.pick button{all:unset;cursor:pointer;font:400 12px/1 var(--mono);padding:6px 7px;border:1px solid var(--rule);background:var(--bg-hi)}
+.pick button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.h4{font:500 12px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:22px 0 6px}
+
+/* calendário */
+.cal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+@media(max-width:900px){.cal{grid-template-columns:minmax(0,1fr)}}
+.scrub{display:flex;align-items:center;gap:12px;margin-top:10px}
+.scrub input{flex:1;accent-color:var(--atual)}
+.scrub button{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--rule);background:var(--bg-hi);font:600 14px/1 var(--mono)}
+.now{font:700 22px/1.15 var(--narrow);min-height:52px;margin-top:10px}
+.now small{display:block;font:400 12px/1.5 var(--mono);color:var(--t2);letter-spacing:.03em}
+
+.stub{border:1px dashed var(--rule);padding:22px;color:var(--t2);font-size:15px}
+footer{padding:28px 0 40px;font:400 12px/1.6 var(--mono);color:var(--t3)}
+footer p+p{margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="/" aria-label="Coorte · início">
+    <svg class="logo" viewBox="108 28 570 104" role="img" aria-label="Coorte">
+      <g fill="none" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter">
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38"/>
+        <path class="lg-a" d="M 252 38 A 42 42 0 1 1 252 122 A 42 42 0 1 1 252 38"/>
+        <clipPath id="lg-clip-top"><circle cx="278" cy="112.98" r="19"/></clipPath>
+        <path class="lg-b" d="M 304 38 A 42 42 0 1 1 304 122 A 42 42 0 1 1 304 38" clip-path="url(#lg-clip-top)"/>
+        <path class="lg-a" d="M 185.86 46.9 A 42 42 0 1 0 185.86 113.1"/>
+        <path class="lg-b" d="M 376 30 L 376 130 M 376 38 L 439 38 A 21 21 0 0 1 439 80 L 376 80 M 396 80 L 460 130 M 476 38 L 576 38 M 526 30 L 526 130 M 592 30 L 592 130 M 592 38 L 676 38 M 592 80 L 664 80 M 592 122 L 676 122"/>
+      </g>
+    </svg>
+  </a>
+  <nav class="nav" aria-label="Seções">
+    <a href="#mapa-v">Mapa</a>
+    <a href="#calendario">Calendário</a>
+    <a href="#regras">Regras</a>
+    <a href="#crianca">Uma criança a mais</a>
+    <a href="#como">Como contamos</a>
+    <button class="lang" id="lang" title="English version (in progress)" disabled>EN</button>
+  </nav>
+</div>
+<div class="draft"><div class="wrap">RASCUNHO PARA REVISÃO · não publicado · dados de 01/11/2026</div></div>
+
+<main class="wrap">
+
+<!-- 1. Mapa -->
+<section class="view" id="mapa-v">
+  <div class="vh">
+    <h2 id="h1">Em setembro de 2026, <em id="nCairam">…</em> de 645 municípios perderam pontos de vacina</h2>
+    <button class="info" aria-expanded="false" data-more="m1" aria-label="Como foi calculado">i</button>
+  </div>
+  <p class="more" id="m1">Pontos das quatro vacinas do primeiro ano (1,3 ponto cada, 5,2 no total) na parcela de junho e na de setembro de 2026. Junho reproduz ao centavo o que a SES publicou; em setembro, nossa reconstrução bate em 97% das pontuações (por isso 419 aqui e 415 no artigo). Nada mudou na vacinação: mudou a janela do calendário. <span class="src rec">reconstrução nossa sobre os valores publicados pela SES</span></p>
+  <div class="hero">
+    <div>
+      <div class="find">
+        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
+        <input id="busca" placeholder="Buscar um município…" autocomplete="off" aria-label="Buscar município">
+        <ul id="sug" role="listbox"></ul>
+      </div>
+      <div id="mapa" role="img" aria-label="Mapa dos municípios de São Paulo pela mudança nos pontos de vacina"></div>
+      <div class="leg"><span><i style="background:var(--desce)"></i>perdeu pontos</span><span><i style="background:var(--igual)"></i>igual</span><span><i style="background:var(--sobe)"></i>ganhou</span><span style="color:var(--t3)">jun → set/2026 · cor mais forte = mudança maior</span></div>
+    </div>
+    <div>
+      <div class="big">
+        <div><b class="num" id="kZero">…</b><span>sem nenhum ponto<br>de vacina em setembro</span></div>
+        <div><b class="num" id="kDinheiro">…</b><span>dinheiro das vacinas<br>jun → set, pago pela SES</span></div>
+      </div>
+      <div class="card" id="munCard"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Calendário -->
+<section class="view" id="calendario">
+  <div class="vh">
+    <h2>O calendário decide o dinheiro: <em>todo janeiro</em> a cobertura cai</h2>
+    <button class="info" aria-expanded="false" data-more="m2" aria-label="Como foi calculado">i</button>
+  </div>
+  <p class="more" id="m2">O valor que o estado lê soma os vacinados desde janeiro e divide pelos nascidos do ano anterior nos mesmos meses. Como nascem mais crianças de janeiro a abril, o primeiro valor de cada ano cai sem que a vacinação mude. A cobertura de 12 meses não tem esse degrau. Medianas dos 645 municípios. <span class="src fed">painel federal relido em 19/09/2026</span> <span class="src">SINASC 2024</span></p>
+  <div class="cal">
+    <div>
+      <div class="h4" style="margin-top:0">Nascidos por mês em 2024, estado de SP</div>
+      <div class="chart" id="gNasc"></div>
+    </div>
+    <div>
+      <div class="ctrls" style="margin-bottom:6px">
+        <div class="ctl"><span>Vacina</span><div class="seg" id="calVac"></div></div>
+      </div>
+      <div class="chart" id="gSerra"></div>
+      <div class="scrub"><button id="calPrev" aria-label="Anterior">‹</button><input type="range" id="calT" min="0" max="6" value="3" aria-label="Período"><button id="calNext" aria-label="Próximo">›</button></div>
+      <div class="now" id="calNow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Regras -->
+<section class="view" id="regras">
+  <div class="vh">
+    <h2>Mude a regra e veja o dinheiro mexer</h2>
+    <button class="info" aria-expanded="false" data-more="m3" aria-label="Como foi calculado">i</button>
+  </div>
+  <p class="more" id="m3">As mesmas vacinas e o mesmo dinheiro em 11 parcelas, de setembro de 2024 a dezembro de 2027; só muda a regra. Dinheiro de 2026 em todas (população e per capita de 2026; 50% variável até 2026 e 60% em 2027), antes do teto de 10 pontos e sem os outros indicadores. Com o mesmo orçamento, a proporcional e a por criança repartem o que a regra atual pagou em média: R$ 32,04 milhões por parcela até 2026 e R$ 35,70 milhões em 2027. Dez/2026 é previsão (ritmo de jan–abr mantido); 2027 é projeção sem mudança na vacinação. Set/2024 é aproximado. <span class="src fed">painel federal relido em 19/09/2026</span></p>
+  <div class="ctrls">
+    <div class="ctl"><span>Como paga</span><div class="seg" id="rRegra"></div></div>
+    <div class="ctl" id="cPiso"><span>Paga de nada em…</span><div class="sl"><input type="range" id="rPiso" min="70" max="90" step="1" value="80"><b id="rPisoV">80%</b><span style="font:400 12px var(--mono);color:var(--t3)">até cheio em 95%</span></div></div>
+    <div class="ctl" id="cOrc"><span>Orçamento</span><label class="tg"><input type="checkbox" id="rOrc"> o mesmo da regra atual</label></div>
+    <div class="ctl" id="cVar"><span>Por criança</span><label class="tg"><input type="checkbox" id="rVar"> tudo variável</label></div>
+  </div>
+  <div class="ctrls" style="margin-top:-8px">
+    <div class="ctl"><span>Como mede a cobertura</span><div class="seg" id="rMede"></div></div>
+  </div>
+  <div class="play">
+    <div>
+      <div class="chart" id="gRegra"></div>
+      <div class="h4">Municípios sem nada de dinheiro de vacina</div>
+      <div class="chart" id="gZero"></div>
+    </div>
+    <div>
+      <div class="kpis" id="rKpi"></div>
+      <div class="pick" id="rParc"></div>
+      <div class="h4" id="rMunT">Um município</div>
+      <div class="find" style="margin-bottom:8px">
+        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
+        <input id="busca2" placeholder="Buscar um município…" autocomplete="off" aria-label="Buscar município">
+        <ul id="sug2" role="listbox"></ul>
+      </div>
+      <div class="chart" id="gMun"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 e 5: ainda não desenhados no rascunho -->
+<section class="view" id="crianca">
+  <div class="vh"><h2>Quanto vale vacinar <em class="b">uma criança a mais</em>?</h2></div>
+  <div class="stub">Próxima vista (não incluída neste rascunho): escolher município e vacina, empurrar +N crianças e ver o dinheiro mudar em cada regra. O motor já calcula (<code>IGM.criancaAMais</code>); falta o desenho.</div>
+</section>
+<section class="view" id="como">
+  <div class="vh"><h2>Como contamos</h2></div>
+  <div class="stub">Métodos em texto corrido, fontes e limitações, como na aba "Como contamos" do painel atual; citação do artigo (manuscrito em preparação), conflito de interesse, versão e data.</div>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Do vaccination incentives pay for vaccination? A statewide analysis of São Paulo's primary care incentive. Manuscrito em preparação, 2026. Versão 1.2 dos dados, 01/11/2026.</p>
+  <p>Conflito de interesse: alguns autores trabalham na gestão da saúde de um município paulista que recebe estes repasses. Só dados públicos e agregados por município. <a href="/privacidade.html">Privacidade</a> · © 2026 Coorte</p>
+</footer>
+<div class="tip" id="tip"></div>
+
+<script src="motor.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const nf0 = new Intl.NumberFormat('pt-BR', {maximumFractionDigits: 0});
+const nf1 = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+const nf2 = new Intl.NumberFormat('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const mi = x => 'R$ ' + nf1.format(x / 1e6) + ' mi';
+const rs = x => 'R$ ' + nf0.format(Math.round(x));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const titulo = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()).replace(/\b(D[aeo]s?|E)\b/g, w => w.toLowerCase());
+const VAC_L = {Polio: 'Pólio', Penta: 'Penta', Pneumo: 'Pneumo', Triplice: 'Tríplice'};
+const PAG_L = p => ({'01': 'jan', '06': 'jun', '09': 'set', '12': 'dez'}[p.slice(5)] + '/' + p.slice(2, 4));
+
+/* ---------- dados ---------- */
+async function texto(f) {
+  const r = await fetch('dados/' + f);
+  if (!r.ok) throw new Error(f + ': ' + r.status);
+  const b = new Uint8Array(await r.arrayBuffer());
+  // Alguns servidores já descomprimem o .gz no caminho; só descomprime se ainda for gzip.
+  if (b[0] === 0x1f && b[1] === 0x8b) return new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  return new TextDecoder().decode(b);
+}
+const tip = $('#tip');
+function dica(e, html) { tip.innerHTML = html; tip.classList.add('on'); const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + 'px'; tip.style.top = (e.clientY + 14) + 'px'; }
+const semDica = () => tip.classList.remove('on');
+
+document.querySelectorAll('.info').forEach(b => b.onclick = () => {
+  const m = document.getElementById(b.dataset.more), on = !m.classList.contains('on');
+  m.classList.toggle('on', on); b.setAttribute('aria-expanded', on);
+});
+
+(async function () {
+  const [D, mu, pg, mdn, cob, mp] = await Promise.all([
+    texto('dados_simulacao_igm.json').then(JSON.parse),
+    texto('municipios.csv'), texto('pagamentos.csv'), texto('medianas.csv'),
+    texto('cobertura.csv.gz'), texto('municipio_pagamento.csv.gz'),
+  ]);
+  const B = IGM.montar({municipios: mu, pagamentos: pg, medianas: mdn, cobertura: cob, municipio_pagamento: mp});
+  const ctx = IGM.contexto(B);
+  const N = B.N, MUN = B.muns;
+  const nomes = MUN.map(m => m.nome);
+  const st = {mun: null};
+
+  /* ---------- vista 1: mapa ---------- */
+  const W = [0, .5, .75, 1];
+  const pontos = s => MUN.map((_, i) => [0, 1, 2, 3].reduce((a, v) => a + W[+s[4 * i + v]], 0) * IGM.PONTO_VAC);
+  const vacPts = (s, i) => [0, 1, 2, 3].map(v => W[+s[4 * i + v]]);
+  const pj = D.pts.jun['oficial|mediana'], ps = D.pts.set['oficial|mediana'];
+  const PJ = pontos(pj), PS = pontos(ps), DP = PS.map((x, i) => x - PJ[i]);
+  const iSet = B.pags.findIndex(p => p.id === '2026-09');
+  const vpSet = B.vp[iSet];
+  $('#nCairam').textContent = nf0.format(DP.filter(d => d < -1e-9).length);
+  $('#kZero').textContent = nf0.format(PS.filter(x => x === 0).length);
+  // Dinheiro das vacinas como o estado pagou (pontos publicados × valor do ponto, antes do teto).
+  const dinJ = D.pagoEst['2026-06'][0], dinS = D.pagoEst['2026-09'][0];
+  $('#kDinheiro').textContent = (dinS / dinJ - 1 < 0 ? '−' : '+') + nf0.format(Math.abs(100 * (dinS / dinJ - 1))) + '%';
+
+  function corDelta(d) {
+    if (Math.abs(d) < 1e-9) return 'var(--igual)';
+    const t = Math.min(1, Math.abs(d) / 3.25), base = d < 0 ? [229, 98, 46] : [42, 120, 214], claro = [232, 236, 241];
+    const c = base.map((b, k) => Math.round(claro[k] + (b - claro[k]) * (0.35 + 0.65 * t)));
+    return `rgb(${c})`;
+  }
+  const M = D.mapa;
+  $('#mapa').innerHTML = `<svg viewBox="0 0 ${M.w} ${M.h}">${M.d.map((d, i) => `<path d="${d}" data-i="${i}" fill="${corDelta(DP[i])}"/>`).join('')}</svg>`;
+  const paths = [...document.querySelectorAll('#mapa path')];
+  $('#mapa').addEventListener('mousemove', e => {
+    const i = e.target.dataset && e.target.dataset.i; if (i === undefined) return semDica();
+    const d = DP[i];
+    dica(e, `<b>${esc(titulo(nomes[i]))}</b>pontos de vacina<br>jun ${nf2.format(PJ[i])} → set ${nf2.format(PS[i])}<br>${d === 0 ? 'igual' : (d < 0 ? '−' : '+') + rs(Math.abs(d) * vpSet[i])}`);
+  });
+  $('#mapa').addEventListener('mouseleave', semDica);
+  $('#mapa').addEventListener('click', e => { const i = e.target.dataset && e.target.dataset.i; if (i !== undefined) escolher(+i); });
+
+  function cartao() {
+    const i = st.mun;
+    if (i === null) {
+      $('#munCard').innerHTML = `<span class="k">Estado de São Paulo</span><h3 style="margin-top:6px">645 municípios</h3>
+        <div class="sub">Busque ou clique num município: ele passa a guiar todas as vistas da página.</div>
+        <div class="vacs">${IGM.VAC.map((v, k) => {
+          const a = MUN.reduce((s, _, j) => s + W[+pj[4 * j + k]], 0) / N, b = MUN.reduce((s, _, j) => s + W[+ps[4 * j + k]], 0) / N;
+          return `<span>${VAC_L[v]}</span><div class="bar"><i class="j" style="width:${100 * a}%"></i><i class="s" style="width:${100 * b}%;background:${b < a ? 'var(--desce)' : 'var(--sobe)'}"></i></div><span class="num">${nf0.format(100 * a)}→${nf0.format(100 * b)}%</span>`;
+        }).join('')}</div>
+        <p class="sub" style="margin:10px 0 0">parte média do ponto de cada vacina · cinza jun, cor set</p>`;
+      return;
+    }
+    const m = MUN[i], a = vacPts(pj, i), b = vacPts(ps, i), d = DP[i];
+    $('#munCard').innerHTML = `<span class="k">${esc(titulo(m.drs))} · ${esc(m.porte)} hab.</span>
+      <h3 style="margin-top:6px">${esc(titulo(m.nome))}</h3>
+      <div class="sub">${nf0.format(m.pop)} hab. · per capita estadual R$ ${m.pc}/hab.</div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span class="delta" style="color:${d < 0 ? 'var(--desce)' : d > 0 ? 'var(--sobe)' : 'var(--t2)'}">${d === 0 ? '=' : (d < 0 ? '−' : '+') + rs(Math.abs(d) * vpSet[i])}</span><span class="sub" style="margin:0">vacinas, jun → set/2026<br>${nf2.format(PJ[i])} → ${nf2.format(PS[i])} de 5,2 pontos</span></div>
+      <div class="vacs">${IGM.VAC.map((v, k) => `<span>${VAC_L[v]}</span><div class="bar"><i class="j" style="width:${100 * a[k]}%"></i><i class="s" style="width:${100 * b[k]}%;background:${b[k] < a[k] ? 'var(--desce)' : b[k] > a[k] ? 'var(--sobe)' : 'var(--t3)'}"></i></div><span class="num">${nf0.format(100 * a[k])}→${nf0.format(100 * b[k])}%</span>`).join('')}</div>
+      <p class="sub" style="margin:10px 0 0">parte do ponto de cada vacina · cinza jun, cor set · <span class="src rec">reconstrução nossa</span></p>`;
+  }
+
+  /* busca (as duas caixas usam a mesma lista) */
+  const sem = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const chave = nomes.map(sem);
+  function busca(inp, ul) {
+    let act = 0, res = [];
+    const pinta = () => { ul.innerHTML = res.map((i, k) => `<li class="${k === act ? 'act' : ''}" data-i="${i}">${esc(titulo(nomes[i]))}<small>${esc(MUN[i].porte)}</small></li>`).join(''); ul.classList.toggle('on', res.length > 0); };
+    inp.addEventListener('input', () => { const q = sem(inp.value.trim()); res = q ? chave.map((c, i) => [c.indexOf(q), i]).filter(x => x[0] >= 0).sort((a, b) => a[0] - b[0] || chave[a[1]].localeCompare(chave[b[1]])).slice(0, 8).map(x => x[1]) : []; act = 0; pinta(); });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { act = Math.min(act + 1, res.length - 1); pinta(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') { act = Math.max(act - 1, 0); pinta(); e.preventDefault(); }
+      else if (e.key === 'Enter' && res.length) { escolher(res[act]); }
+      else if (e.key === 'Escape') { ul.classList.remove('on'); }
+    });
+    ul.addEventListener('mousedown', e => { const li = e.target.closest('li'); if (li) escolher(+li.dataset.i); });
+    inp.addEventListener('blur', () => setTimeout(() => ul.classList.remove('on'), 120));
+  }
+  busca($('#busca'), $('#sug')); busca($('#busca2'), $('#sug2'));
+
+  function escolher(i) {
+    st.mun = i;
+    ['#busca', '#busca2'].forEach(s => { $(s).value = titulo(nomes[i]); });
+    ['#sug', '#sug2'].forEach(s => $(s).classList.remove('on'));
+    paths.forEach((p, k) => p.classList.toggle('sel', k === i));
+    $('#mapa').classList.add('dim');
+    const p = paths[i]; p.parentNode.appendChild(p);
+    cartao(); desenhaRegra();
+  }
+
+  /* ---------- vista 2: calendário ---------- */
+  const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  (function nascidos() {
+    const n = D.nasc2024, tot = n.reduce((a, b) => a + b, 0), med = tot / 12, mx = Math.max(...n) * 1.08;
+    const w = 520, h = 250, l = 8, b = 26, t = 30, bw = (w - l) / 12;
+    const y = v => t + (h - t - b) * (1 - v / mx);
+    const ja = n.slice(0, 4).reduce((a, c) => a + c, 0) / tot;
+    $('#gNasc').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      ${n.map((v, i) => `<rect x="${l + i * bw + 3}" y="${y(v)}" width="${bw - 6}" height="${h - b - y(v)}" fill="${i < 4 ? 'var(--atual)' : 'var(--atual-2)'}"><title>${MES[i]}/2024: ${nf0.format(v)} nascidos</title></rect>
+        <text x="${l + i * bw + bw / 2}" y="${h - 8}" text-anchor="middle">${MES[i]}</text>`).join('')}
+      <line x1="${l}" x2="${w}" y1="${y(med)}" y2="${y(med)}" stroke="var(--ink)" stroke-dasharray="4 4"/>
+      <text x="${w}" y="${y(med) - 6}" text-anchor="end">1/12 do ano</text>
+      <text class="lbl" x="${l}" y="16" style="fill:var(--atual)">jan–abr: ${nf1.format(100 * ja)}% dos nascidos do ano (um terço seria 33,3%)</text>
+    </svg>`;
+  })();
+
+  const DF = D.defs, PER = DF.jan.map(([a, m]) => `${MES[0]}–${MES[m - 1]}/${String(a).slice(2)}`);
+  let calV = 'Penta';
+  $('#calVac').innerHTML = IGM.VAC.map(v => `<button data-v="${v}" aria-pressed="${v === calV}">${VAC_L[v]}</button>`).join('');
+  $('#calVac').onclick = e => { const b = e.target.closest('button'); if (!b) return; calV = b.dataset.v; [...$('#calVac').children].forEach(x => x.setAttribute('aria-pressed', x === b)); serra(); };
+  function serra() {
+    const A = DF.med[calV].A, C = DF.med[calV].C, T = +$('#calT').value;
+    const w = 520, h = 260, l = 34, r = 70, t = 16, b = 30;
+    const all = A.concat(C).filter(v => v != null), lo = Math.floor(Math.min(...all) - 2), hi = Math.ceil(Math.max(...all) + 1);
+    const x = i => l + (w - l - r) * i / (A.length - 1), y = v => t + (h - t - b) * (hi - v) / (hi - lo);
+    const linha = (s, cor, w2) => `<polyline fill="none" stroke="${cor}" stroke-width="${w2}" points="${s.map((v, i) => i <= T ? `${x(i)},${y(v)}` : '').filter(Boolean).join(' ')}"/>`;
+    const ticks = [];
+    for (let v = Math.ceil(lo / 5) * 5; v <= hi; v += 5) ticks.push(v);
+    $('#gSerra').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      ${ticks.map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('')}
+      ${DF.jan.map(([a, m], i) => m === 4 ? `<rect x="${x(i) - 14}" y="${t}" width="28" height="${h - t - b}" fill="var(--atual)" opacity=".07"/>` : '').join('')}
+      ${PER.map((p, i) => `<text x="${x(i)}" y="${h - 10}" text-anchor="middle" style="${i === T ? 'fill:var(--ink);font-weight:500' : ''}">${i % 1 === 0 ? p.replace('jan–', '') : ''}</text>`).join('')}
+      ${linha(C, 'var(--prop)', 2.5)}${linha(A, 'var(--atual)', 3)}
+      ${A.map((v, i) => i <= T ? `<circle cx="${x(i)}" cy="${y(v)}" r="${i === T ? 6 : 3.5}" fill="var(--atual)"/>` : '').join('')}
+      ${C.map((v, i) => i <= T ? `<circle cx="${x(i)}" cy="${y(v)}" r="${i === T ? 5 : 3}" fill="var(--prop)"/>` : '').join('')}
+      <text class="lbl" x="${x(T) + 10}" y="${y(A[T]) + 5}" style="fill:var(--atual)">${nf1.format(A[T])}%</text>
+      <text class="lbl" x="${w - r + 8}" y="${y(C[A.length - 1]) + 4}" style="fill:var(--prop)">12 meses</text>
+      <text class="lbl" x="${w - r + 8}" y="${y(A[A.length - 1]) + 4}" style="fill:var(--atual)">acumulado</text>
+    </svg>`;
+    const d = T ? A[T] - A[T - 1] : null, jan = DF.jan[T][1] === 4 && T > 0;
+    $('#calNow').innerHTML = `${PER[T]}: mediana ${nf1.format(A[T])}%${d === null ? '' : ` <span style="color:${d < 0 ? 'var(--desce)' : 'var(--sobe)'}">(${d < 0 ? '−' : '+'}${nf1.format(Math.abs(d))})</span>`}
+      <small>${jan ? 'Novo ano: a soma recomeça em janeiro, sobre os meses em que mais nascem crianças.' : T === 0 ? 'Arraste para avançar no tempo.' : 'A soma desde janeiro cresce ao longo do ano.'} Em 12 meses: ${nf1.format(C[T])}%.</small>`;
+  }
+  $('#calT').oninput = serra;
+  $('#calPrev').onclick = () => { $('#calT').value = Math.max(0, $('#calT').value - 1); serra(); };
+  $('#calNext').onclick = () => { $('#calT').value = Math.min(6, +$('#calT').value + 1); serra(); };
+  serra();
+
+  /* ---------- vista 3: playground de regras ---------- */
+  const REGRAS = [
+    {id: 'R0', l: 'Regra atual', cor: 'var(--atual)', spec: () => IGM.PRESETS.R0},
+    {id: 'R1', l: 'Faixas, corte 90%', cor: 'var(--fixo90)', spec: () => IGM.PRESETS.R1},
+    {id: 'R2', l: 'Faixas, corte 95%', cor: 'var(--fixo95)', spec: () => IGM.PRESETS.R2},
+    {id: 'P', l: 'Proporcional', cor: 'var(--prop)', spec: () => ({tipo: 'prop', piso: +$('#rPiso').value, meta: 95, orcamento: $('#rOrc').checked})},
+    {id: 'C', l: 'Por criança', cor: 'var(--crianca)', spec: () => ({tipo: 'crianca', piso: +$('#rPiso').value, meta: 95, fixa: $('#rVar').checked ? 0 : 0.5})},
+  ];
+  let rSel = 'P', rParc = iSet;
+  const atual = IGM.regra(B, IGM.PRESETS.R0, ctx);
+  $('#rRegra').innerHTML = REGRAS.map(r => `<button data-v="${r.id}" aria-pressed="${r.id === rSel}"><i class="sw" style="background:${r.cor}"></i>${r.l}</button>`).join('');
+  $('#rRegra').onclick = e => { const b = e.target.closest('button'); if (!b) return; rSel = b.dataset.v; [...$('#rRegra').children].forEach(x => x.setAttribute('aria-pressed', x === b)); desenhaRegra(); };
+  $('#rPiso').oninput = () => { $('#rPisoV').textContent = $('#rPiso').value + '%'; desenhaRegra(); };
+  $('#rOrc').onchange = desenhaRegra; $('#rVar').onchange = desenhaRegra;
+  const MEDE = [{id: 'ac', l: 'Acumulado da SES'}, {id: '12', l: '12 meses'}, {id: 'ano', l: 'Nascidos do ano medido'}];
+  $('#rParc').innerHTML = B.pags.map((p, i) => `<button data-i="${i}" aria-pressed="${i === rParc}">${PAG_L(p.id)}</button>`).join('');
+  $('#rParc').onclick = e => { const b = e.target.closest('button'); if (!b) return; rParc = +b.dataset.i; [...$('#rParc').children].forEach(x => x.setAttribute('aria-pressed', x === b)); desenhaRegra(); };
+
+  const STAT = {forecast: 'previsão', projection: 'projeção'};
+  function eixoParcelas(w, l, r) { return i => l + (w - l - r) * (i + .5) / B.P; }
+  function faixasStatus(svgH, x, top, bot) {
+    const iF = B.pags.findIndex(p => p.status === 'forecast'), iP = B.pags.findIndex(p => p.status === 'projection');
+    const half = (x(1) - x(0)) / 2;
+    return `<rect x="${x(iF) - half}" y="${top}" width="${(B.P - iF) * 2 * half}" height="${bot - top}" fill="var(--bg-2)" opacity=".7"/>
+      <text x="${x(iF)}" y="${top + 12}" text-anchor="middle">previsão</text>
+      <line x1="${x(iP) - half}" x2="${x(iP) - half}" y1="${top}" y2="${bot}" stroke="var(--rule)" stroke-dasharray="3 3"/>
+      <text x="${(x(iP) + x(B.P - 1)) / 2}" y="${top + 12}" text-anchor="middle">projeção 2027</text>`;
+  }
+
+  function desenhaRegra() {
+    const R = REGRAS.find(r => r.id === rSel), spec = R.spec(), res = IGM.regra(B, spec, ctx);
+    const prop = spec.tipo !== 'faixas';
+    $('#cPiso').classList.toggle('off', !prop);
+    $('#cOrc').classList.toggle('off', spec.tipo !== 'prop');
+    $('#cVar').classList.toggle('off', spec.tipo !== 'crianca');
+    $('#rMede').innerHTML = MEDE.map(m => `<button disabled aria-pressed="${prop ? m.id === '12' : m.id === 'ac'}" title="${m.id === 'ano' ? 'Ainda não nesta versão' : 'Segue a regra escolhida'}">${m.l}</button>`).join('');
+
+    /* gráfico: dinheiro por parcela (R$ mi) com o máximo e a regra atual sempre de fundo */
+    const w = 720, h = 330, l = 44, r = 120, t = 22, b = 30;
+    const x = eixoParcelas(w, l, r), hi = 75;
+    const y = v => t + (h - t - b) * (1 - v / hi);
+    const lin = (vals, cor, sw, dash) => `<polyline fill="none" stroke="${cor}" stroke-width="${sw}" ${dash ? `stroke-dasharray="${dash}"` : ''} points="${vals.map((v, i) => `${x(i)},${y(v)}`).join(' ')}"/>`;
+    const tA = atual.map(o => o.total / 1e6), tR = res.map(o => o.total / 1e6), mx = atual.map(o => o.maximo / 1e6);
+    const pago = Object.entries(D.pagoEst).map(([p, a]) => [B.pags.findIndex(q => q.id === p), a[0]]);
+    const ticks = [0, 20, 40, 60];
+    $('#gRegra').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      ${faixasStatus(h, x, t, h - b)}
+      ${ticks.map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('')}
+      <text x="${l - 6}" y="${t - 8}" text-anchor="end">R$ mi</text>
+      ${lin(mx, 'var(--ink)', 1, '2 4')}<text x="${w - r + 8}" y="${y(mx[B.P - 1]) + 4}">máximo</text>
+      ${rSel === 'R0' ? '' : lin(tA, 'var(--atual)', 2, '') + `<text class="lbl" x="${w - r + 8}" y="${y(tA[B.P - 1]) + 4}" style="fill:var(--atual)">regra atual</text>`}
+      ${lin(tR, R.cor, 3.5, '')}
+      ${tR.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === rParc ? 6.5 : 4}" fill="${R.cor}" data-i="${i}" style="cursor:pointer"/>`).join('')}
+      <text class="lbl" x="${w - r + 8}" y="${y(tR[B.P - 1]) + (Math.abs(tR[B.P - 1] - tA[B.P - 1]) < 4 && rSel !== 'R0' ? -10 : 4)}" style="fill:${R.cor}">${esc(R.l.toLowerCase())}</text>
+      ${pago.map(([i, v]) => `<path d="M${x(i)} ${y(v) - 7}l7 7l-7 7l-7 -7z" fill="none" stroke="var(--ink)" stroke-width="1.5"><title>Pago pelo estado, ${PAG_L(B.pags[i].id)}: ${mi(v * 1e6)} (antes do teto; leitura da SES)</title></path>`).join('')}
+      ${B.pags.map((p, i) => `<text x="${x(i)}" y="${h - 10}" text-anchor="middle" style="${i === rParc ? 'fill:var(--ink);font-weight:500' : ''}">${PAG_L(p.id)}${i === 0 ? '*' : ''}</text>`).join('')}
+    </svg>`;
+    $('#gRegra').querySelectorAll('circle').forEach(c => {
+      c.onmousemove = e => { const i = +c.dataset.i, o = res[i]; dica(e, `<b>${PAG_L(B.pags[i].id)}${STAT[B.pags[i].status] ? ' · ' + STAT[B.pags[i].status] : ''}</b>${esc(R.l)}: ${mi(o.total)}<br>${nf0.format(100 * o.total / atual[i].maximo)}% do máximo por habitante<br>${o.zero} municípios sem nada${rSel !== 'R0' ? `<br>regra atual: ${mi(atual[i].total)}, ${atual[i].zero} sem nada` : ''}`); };
+      c.onmouseleave = semDica; c.onclick = () => { rParc = +c.dataset.i; [...$('#rParc').children].forEach((x, k) => x.setAttribute('aria-pressed', k === rParc)); desenhaRegra(); };
+    });
+
+    /* zerados por parcela */
+    const hz = 120, yz = v => 10 + (hz - 34) * (1 - v / 300);
+    $('#gZero').innerHTML = `<svg viewBox="0 0 ${w} ${hz}">
+      ${B.pags.map((p, i) => { const a = atual[i].zero, z = res[i].zero, bw = 16;
+        return `${rSel === 'R0' ? '' : `<rect x="${x(i) - bw - 1}" y="${yz(a)}" width="${bw}" height="${hz - 24 - yz(a)}" fill="var(--atual-2)"><title>Regra atual: ${a}</title></rect>`}
+          <rect x="${rSel === 'R0' ? x(i) - bw / 2 : x(i) + 1}" y="${yz(z)}" width="${bw}" height="${hz - 24 - yz(z)}" fill="${R.cor}"><title>${esc(R.l)}: ${z}</title></rect>
+          <text x="${rSel === 'R0' ? x(i) : x(i) + 9}" y="${yz(z) - 4}" text-anchor="middle" style="fill:var(--ink)">${z}</text>
+          <text x="${x(i)}" y="${hz - 8}" text-anchor="middle">${PAG_L(p.id)}</text>`; }).join('')}
+    </svg>`;
+
+    /* números da parcela escolhida */
+    const o = res[rParc], a = atual[rParc], pj2 = B.pags[rParc];
+    const fr = 100 * o.total / a.maximo;
+    $('#rKpi').innerHTML = `<div><b style="color:${R.cor}">${mi(o.total)}</b><span>${nf0.format(fr)}% do máximo · ${PAG_L(pj2.id)}${STAT[pj2.status] ? ' (' + STAT[pj2.status] + ')' : ''}</span></div>
+      <div><b>${o.zero}</b><span>municípios sem nada<br>regra atual: ${a.zero}</span></div>
+      <div><b>${nf1.format(o.mudanca ?? 0)}</b><span>pontos percentuais: mudança mediana de cada município desde a parcela anterior</span></div>
+      <div><b>${(() => { const f = res.slice(0, 8).map((q, k) => 100 * q.total / atual[k].maximo); return nf0.format(Math.min(...f)) + '–' + nf0.format(Math.max(...f)); })()}%</b><span>faixa do máximo pago, set/24 a dez/26</span></div>`;
+
+    /* município */
+    const i = st.mun;
+    $('#rMunT').textContent = i === null ? 'Um município' : titulo(nomes[i]);
+    if (i === null) { $('#gMun').innerHTML = '<p class="sub" style="font:400 13px var(--mono);color:var(--t3)">Busque um município para ver quanto ele receberia em cada parcela.</p>'; return; }
+    const wm = 420, hm = 200, lm = 8, ym0 = 22;
+    const vals = res.map(q => q.rs[i]), va = atual.map(q => q.rs[i]), maxM = Math.max(...vals, ...va, ...B.pags.map((_, k) => IGM.MAX_PONTOS * B.vp[k][i])) || 1;
+    const xm = k => lm + (wm - lm) * (k + .5) / B.P, ym = v => ym0 + (hm - ym0 - 24) * (1 - v / maxM), bw = 22;
+    $('#gMun').innerHTML = `<svg viewBox="0 0 ${wm} ${hm}">
+      ${B.pags.map((p, k) => `<rect x="${xm(k) - bw / 2}" y="${ym(IGM.MAX_PONTOS * B.vp[k][i])}" width="${bw}" height="${hm - 24 - ym(IGM.MAX_PONTOS * B.vp[k][i])}" fill="none" stroke="var(--rule)"/>
+        <rect x="${xm(k) - bw / 2}" y="${ym(vals[k])}" width="${bw}" height="${hm - 24 - ym(vals[k])}" fill="${R.cor}" opacity="${p.status === 'observed' ? 1 : .55}"><title>${PAG_L(p.id)}: ${rs(vals[k])}</title></rect>
+        ${rSel === 'R0' ? '' : `<line x1="${xm(k) - bw / 2 - 3}" x2="${xm(k) + bw / 2 + 3}" y1="${ym(va[k])}" y2="${ym(va[k])}" stroke="var(--atual)" stroke-width="2.5"><title>Regra atual ${PAG_L(p.id)}: ${rs(va[k])}</title></line>`}
+        <text x="${xm(k)}" y="${hm - 8}" text-anchor="middle" style="font-size:10px">${PAG_L(p.id).replace('/', '')}</text>`).join('')}
+      <text x="${lm}" y="12">${esc(R.l)} em ${PAG_L(B.pags[rParc].id)}: ${rs(vals[rParc])}${rSel === 'R0' ? '' : ` · atual ${rs(va[rParc])}`}</text>
+    </svg>
+    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">contorno: máximo do município (4 vacinas cheias)${rSel === 'R0' ? '' : ' · traço laranja: regra atual'}</p>`;
+  }
+
+  cartao(); desenhaRegra();
+  // ?m=<código IBGE de 6 ou 7 dígitos> abre a página com um município escolhido.
+  const qm = new URLSearchParams(location.search).get('m');
+  if (qm) { const k = MUN.findIndex(m => String(m.mun) === qm.slice(0, 6)); if (k >= 0) escolher(k); }
+})().catch(err => { document.querySelector('main').insertAdjacentHTML('afterbegin', `<p style="padding:20px;color:#b00">Erro ao carregar os dados: ${esc(err.message)}</p>`); console.error(err); });
+</script>
+</body>
+</html>
