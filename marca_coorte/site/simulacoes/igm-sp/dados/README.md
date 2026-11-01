@@ -171,3 +171,9 @@ municipalities of |share this payment - share previous payment| x 100. `maximo_m
    about R$ 9 thousand in each of those payments (R1 R$ 7-13 thousand, R2 R$ 14-24 thousand; B60, and so R3b/R4/R4v
    in 2027, shift by R$ 6 thousand); no count of municipalities with zero changes.
 7. These are simulations under a constant money basis, not amounts the state paid, except where marked as paid.
+
+## Added on the website (COORTE)
+
+`pontos_publicados_2026.csv` (645 rows): `mun`, `pts_jun`, `pts_set`, the vaccine points (of 5.2) of each municipality
+as published by SES-SP for the June and September 2026 payments (IGM SUS Paulista public panel). It feeds the map:
+415 municipalities lost points, 105 unchanged, 125 rose; 164 had none in September.

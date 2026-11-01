@@ -64,5 +64,14 @@ for (const [cod, e] of Object.entries(ref.municipios)) {
   }
 }
 
+// Pontos publicados pela SES (mapa): os números do artigo (Figura B) e o pago em setembro.
+const pub = IGM.csv(ler('pontos_publicados_2026.csv'));
+const dif = pub.map(r => Math.round((+r.pts_set - +r.pts_jun) * 1e4) / 1e4);
+confere('publicado: municípios', pub.length, 645, 0);
+confere('publicado: perderam pontos', dif.filter(d => d < 0).length, 415, 0);
+confere('publicado: iguais', dif.filter(d => d === 0).length, 105, 0);
+confere('publicado: ganharam', dif.filter(d => d > 0).length, 125, 0);
+confere('publicado: sem pontos em setembro', pub.filter(r => +r.pts_set === 0).length, 164, 0);
+
 console.log(`${ok} conferências ok, ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);

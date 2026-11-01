@@ -183,7 +183,7 @@ footer p+p{margin-top:8px}
     <h2 id="h1">Em setembro de 2026, <em id="nCairam">…</em> de 645 municípios perderam pontos de vacina</h2>
     <button class="info" aria-expanded="false" data-more="m1" aria-label="Como foi calculado">i</button>
   </div>
-  <p class="more" id="m1">Pontos das quatro vacinas do primeiro ano (1,3 ponto cada, 5,2 no total) na parcela de junho e na de setembro de 2026. Junho reproduz ao centavo o que a SES publicou; em setembro, nossa reconstrução bate em 97% das pontuações (por isso 419 aqui e 415 no artigo). Nada mudou na vacinação: mudou a janela do calendário. <span class="src rec">reconstrução nossa sobre os valores publicados pela SES</span></p>
+  <p class="more" id="m1">Pontos das quatro vacinas do primeiro ano (1,3 ponto cada, 5,2 no total) na parcela de junho e na de setembro de 2026. Pontos como a SES publicou. Nada mudou na vacinação: mudou a janela do calendário. O detalhe por vacina no cartão é reconstrução nossa, que bate com o publicado em todos os municípios em junho e em 584 de 645 em setembro. <span class="src ses">publicado pela SES</span></p>
   <div class="hero">
     <div>
       <div class="find">
@@ -242,6 +242,7 @@ footer p+p{margin-top:8px}
   </div>
   <div class="ctrls" style="margin-top:-8px">
     <div class="ctl"><span>Como mede a cobertura</span><div class="seg" id="rMede"></div></div>
+    <div class="ctl"><span>Ver</span><div class="seg" id="rVista"><button data-v="estado" aria-pressed="true">Total do estado (R$)</button><button data-v="mun" aria-pressed="false">Cada município (% do seu máximo)</button></div></div>
   </div>
   <div class="play">
     <div>
@@ -313,10 +314,10 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
 });
 
 (async function () {
-  const [D, mu, pg, mdn, cob, mp] = await Promise.all([
+  const [D, mu, pg, mdn, cob, mp, pub] = await Promise.all([
     texto('dados_simulacao_igm.json').then(JSON.parse),
     texto('municipios.csv'), texto('pagamentos.csv'), texto('medianas.csv'),
-    texto('cobertura.csv.gz'), texto('municipio_pagamento.csv.gz'),
+    texto('cobertura.csv.gz'), texto('municipio_pagamento.csv.gz'), texto('pontos_publicados_2026.csv'),
   ]);
   const B = IGM.montar({municipios: mu, pagamentos: pg, medianas: mdn, cobertura: cob, municipio_pagamento: mp});
   const ctx = IGM.contexto(B);
@@ -329,7 +330,11 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
   const pontos = s => MUN.map((_, i) => [0, 1, 2, 3].reduce((a, v) => a + W[+s[4 * i + v]], 0) * IGM.PONTO_VAC);
   const vacPts = (s, i) => [0, 1, 2, 3].map(v => W[+s[4 * i + v]]);
   const pj = D.pts.jun['oficial|mediana'], ps = D.pts.set['oficial|mediana'];
-  const PJ = pontos(pj), PS = pontos(ps), DP = PS.map((x, i) => x - PJ[i]);
+  // Mapa e totais: pontos publicados pela SES. Detalhe por vacina: reconstrução (pj/ps).
+  const PJ = new Float64Array(N), PS = new Float64Array(N);
+  for (const r of IGM.csv(pub)) { const k = B.idx.get(+r.mun); PJ[k] = +r.pts_jun; PS[k] = +r.pts_set; }
+  const DP = Array.from(PS, (x, i) => Math.round((x - PJ[i]) * 1e4) / 1e4);
+  const RJ = pontos(pj), RS = pontos(ps);
   const iSet = B.pags.findIndex(p => p.id === '2026-09');
   const vpSet = B.vp[iSet];
   $('#nCairam').textContent = nf0.format(DP.filter(d => d < -1e-9).length);
@@ -373,7 +378,7 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
       <div class="sub">${nf0.format(m.pop)} hab. · per capita estadual R$ ${m.pc}/hab.</div>
       <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span class="delta" style="color:${d < 0 ? 'var(--desce)' : d > 0 ? 'var(--sobe)' : 'var(--t2)'}">${d === 0 ? '=' : (d < 0 ? '−' : '+') + rs(Math.abs(d) * vpSet[i])}</span><span class="sub" style="margin:0">vacinas, jun → set/2026<br>${nf2.format(PJ[i])} → ${nf2.format(PS[i])} de 5,2 pontos</span></div>
       <div class="vacs">${IGM.VAC.map((v, k) => `<span>${VAC_L[v]}</span><div class="bar"><i class="j" style="width:${100 * a[k]}%"></i><i class="s" style="width:${100 * b[k]}%;background:${b[k] < a[k] ? 'var(--desce)' : b[k] > a[k] ? 'var(--sobe)' : 'var(--t3)'}"></i></div><span class="num">${nf0.format(100 * a[k])}→${nf0.format(100 * b[k])}%</span>`).join('')}</div>
-      <p class="sub" style="margin:10px 0 0">parte do ponto de cada vacina · cinza jun, cor set · <span class="src rec">reconstrução nossa</span></p>`;
+      <p class="sub" style="margin:10px 0 0">parte do ponto de cada vacina · cinza jun, cor set · <span class="src rec">reconstrução nossa</span>${Math.abs(RS[i] - PS[i]) > 1e-6 || Math.abs(RJ[i] - PJ[i]) > 1e-6 ? `<br>⚠ a reconstrução dá ${nf2.format(RJ[i])} → ${nf2.format(RS[i])} pontos; a SES publicou ${nf2.format(PJ[i])} → ${nf2.format(PS[i])}` : ''}</p>`;
   }
 
   /* busca (as duas caixas usam a mesma lista) */
@@ -460,7 +465,8 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
     {id: 'P', l: 'Proporcional', cor: 'var(--prop)', spec: () => ({tipo: 'prop', piso: +$('#rPiso').value, meta: 95, orcamento: $('#rOrc').checked})},
     {id: 'C', l: 'Por criança', cor: 'var(--crianca)', spec: () => ({tipo: 'crianca', piso: +$('#rPiso').value, meta: 95, fixa: $('#rVar').checked ? 0 : 0.5})},
   ];
-  let rSel = 'P', rParc = iSet;
+  let rSel = 'P', rParc = iSet, rVista = 'estado';
+  $('#rVista').onclick = e => { const b = e.target.closest('button'); if (!b) return; rVista = b.dataset.v; [...$('#rVista').children].forEach(x => x.setAttribute('aria-pressed', x === b)); desenhaRegra(); };
   const atual = IGM.regra(B, IGM.PRESETS.R0, ctx);
   $('#rRegra').innerHTML = REGRAS.map(r => `<button data-v="${r.id}" aria-pressed="${r.id === rSel}"><i class="sw" style="background:${r.cor}"></i>${r.l}</button>`).join('');
   $('#rRegra').onclick = e => { const b = e.target.closest('button'); if (!b) return; rSel = b.dataset.v; [...$('#rRegra').children].forEach(x => x.setAttribute('aria-pressed', x === b)); desenhaRegra(); };
@@ -514,6 +520,8 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
       c.onmouseleave = semDica; c.onclick = () => { rParc = +c.dataset.i; [...$('#rParc').children].forEach((x, k) => x.setAttribute('aria-pressed', k === rParc)); desenhaRegra(); };
     });
 
+    if (rVista === 'mun') distribuicao(R, res);
+
     /* zerados por parcela */
     const hz = 120, yz = v => 10 + (hz - 34) * (1 - v / 300);
     $('#gZero').innerHTML = `<svg viewBox="0 0 ${w} ${hz}">
@@ -547,6 +555,40 @@ document.querySelectorAll('.info').forEach(b => b.onclick = () => {
       <text x="${lm}" y="12">${esc(R.l)} em ${PAG_L(B.pags[rParc].id)}: ${rs(vals[rParc])}${rSel === 'R0' ? '' : ` · atual ${rs(va[rParc])}`}</text>
     </svg>
     <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">contorno: máximo do município (4 vacinas cheias)${rSel === 'R0' ? '' : ' · traço laranja: regra atual'}</p>`;
+  }
+
+  /* Cada município: dinheiro ÷ o seu máximo por habitante (4 vacinas cheias = 5,2 × valor do ponto).
+     Caixa: 25–75% dos municípios; haste: 10–90%; traço: mediana. Laranja ao lado: regra atual. */
+  function quantis(a) { const s = Array.from(a).sort((x, y) => x - y), q = f => { const h = (s.length - 1) * f, i = Math.floor(h); return s[i] + (s[Math.min(i + 1, s.length - 1)] - s[i]) * (h - i); }; return [q(.1), q(.25), q(.5), q(.75), q(.9)]; }
+  const parteMax = (o, k) => Array.from(o.rs, (v, m) => 100 * v / (IGM.MAX_PONTOS * B.vp[k][m]));
+  function distribuicao(R, res) {
+    const w = 720, h = 330, l = 44, r = 120, t = 22, b = 30, x = eixoParcelas(w, l, r);
+    const QR = res.map((o, k) => quantis(parteMax(o, k))), QA = atual.map((o, k) => quantis(parteMax(o, k)));
+    const hi = Math.max(100, Math.ceil(Math.max(...QR.map(q => q[4]), ...QA.map(q => q[4])) / 25) * 25), y = v => t + (h - t - b) * (1 - Math.min(v, hi) / hi);
+    const caixa = (q, cx, cor, bw, op) => `<line x1="${cx}" x2="${cx}" y1="${y(q[0])}" y2="${y(q[4])}" stroke="${cor}" stroke-width="1.5" opacity="${op}"/>
+      <rect x="${cx - bw / 2}" y="${y(q[3])}" width="${bw}" height="${Math.max(1.5, y(q[1]) - y(q[3]))}" fill="${cor}" opacity="${op * .85}"/>
+      <line x1="${cx - bw / 2 - 2}" x2="${cx + bw / 2 + 2}" y1="${y(q[2])}" y2="${y(q[2])}" stroke="var(--ink)" stroke-width="2.5"/>`;
+    const dois = rSel !== 'R0', i = st.mun;
+    const ticks = []; for (let v = 0; v <= hi; v += 25) ticks.push(v);
+    const mun = i === null ? '' : `<polyline fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 3" points="${res.map((o, k) => `${x(k)},${y(parteMax(o, k)[i])}`).join(' ')}"/>
+      <text class="lbl" x="${w - r + 8}" y="${y(parteMax(res[B.P - 1], B.P - 1)[i]) + 4}">${esc(titulo(nomes[i]))}</text>`;
+    $('#gRegra').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      ${faixasStatus(h, x, t, h - b)}
+      ${ticks.map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 100 ? 'var(--t3)' : 'var(--rule-2)'}" ${v === 100 ? 'stroke-dasharray="2 4"' : ''}/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join('')}
+      <text x="${w - r + 8}" y="${y(100) + 4}">seu máximo</text>
+      ${B.pags.map((p, k) => (dois ? caixa(QA[k], x(k) - 12, 'var(--atual)', 14, .45) : '') + caixa(QR[k], dois ? x(k) + 8 : x(k), R.cor, dois ? 18 : 22, 1) +
+        `<rect x="${x(k) - 30}" y="${t}" width="60" height="${h - t - b}" fill="transparent" data-k="${k}"/>`).join('')}
+      ${mun}
+      ${B.pags.map((p, k) => `<text x="${x(k)}" y="${h - 10}" text-anchor="middle" style="${k === rParc ? 'fill:var(--ink);font-weight:500' : ''}">${PAG_L(p.id)}${k === 0 ? '*' : ''}</text>`).join('')}
+      <text class="lbl" x="${w - r + 8}" y="${y(QR[B.P - 1][2]) + (i === null ? 4 : 18)}" style="fill:${R.cor}">${esc(R.l.toLowerCase())}</text>
+    </svg>
+    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">cada caixa: metade dos 645 municípios (haste: 80%); traço preto: o município mediano${dois ? ' · laranja ao lado: regra atual' : ''}${i === null ? '' : ' · tracejado: o município escolhido'}. Máximo = as 4 vacinas cheias pelo valor do ponto por habitante.</p>`;
+    $('#gRegra').querySelectorAll('rect[data-k]').forEach(rc => {
+      rc.onmousemove = e => { const k = +rc.dataset.k, q = QR[k], a = QA[k];
+        dica(e, `<b>${PAG_L(B.pags[k].id)}${STAT[B.pags[k].status] ? ' · ' + STAT[B.pags[k].status] : ''}</b>${esc(R.l)}: mediana ${nf0.format(q[2])}%<br>metade entre ${nf0.format(q[1])}% e ${nf0.format(q[3])}%${dois ? `<br>regra atual: mediana ${nf0.format(a[2])}%, metade entre ${nf0.format(a[1])}% e ${nf0.format(a[3])}%` : ''}${i === null ? '' : `<br>${esc(titulo(nomes[i]))}: ${nf0.format(parteMax(res[k], k)[i])}%`}`); };
+      rc.onmouseleave = semDica; rc.style.cursor = 'pointer';
+      rc.onclick = () => { rParc = +rc.dataset.k; [...$('#rParc').children].forEach((x2, k2) => x2.setAttribute('aria-pressed', k2 === rParc)); desenhaRegra(); };
+    });
   }
 
   cartao(); desenhaRegra();
