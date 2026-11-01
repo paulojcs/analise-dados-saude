@@ -212,7 +212,9 @@
     const a = proporcional(c12, piso, meta), d = proporcional(c12n, piso, meta);
     if (spec.tipo === 'prop' && !spec.orcamento) return { antes: vp * a, depois: vp * d, c12, c12n };
     // Com orçamento fixo, o fator de escala é o do estado (mantido: uma criança não o move).
-    const rg = regra(B, spec, ctx)[p];
+    const chave = JSON.stringify(spec);
+    ctx.cache = ctx.cache || {};
+    const rg = (ctx.cache[chave] = ctx.cache[chave] || regra(B, spec, ctx))[p];
     if (spec.tipo === 'prop') return { antes: vp * a * rg.k, depois: vp * d * rg.k, c12, c12n };
     let sws = 0;
     for (let mm = 0; mm < B.N; mm++) sws += B.peso[p][mm] * B.muns[mm].pc / 30 * rg.fracao[mm];

@@ -37,6 +37,7 @@ for (const r of B.medCsv) {
 }
 
 const ctx = IGM.contexto(B);
+const iSet = B.pags.findIndex(p => p.id === '2026-09');
 B.pags.forEach((p, i) => confere(`B_rs ${p.id}`, ctx.orc[i], ref.B_rs[String(p.sv)], tol.B_rs));
 
 const res = {};
@@ -72,6 +73,37 @@ confere('publicado: perderam pontos', dif.filter(d => d < 0).length, 415, 0);
 confere('publicado: iguais', dif.filter(d => d === 0).length, 105, 0);
 confere('publicado: ganharam', dif.filter(d => d > 0).length, 125, 0);
 confere('publicado: sem pontos em setembro', pub.filter(r => +r.pts_set === 0).length, 164, 0);
+
+// Uma criança a mais: sem criança a mais nada muda, e o "antes" é o dinheiro da própria regra.
+for (const cod of Object.keys(ref.municipios)) {
+  const m = B.idx.get(+cod);
+  for (const nome of ['R0', 'R1', 'R2', 'R3']) {
+    let soma = 0, igual = true;
+    IGM.VAC.forEach((_, v) => { const z = IGM.criancaAMais(B, iSet, m, v, 0, IGM.PRESETS[nome], ctx); soma += z.antes; if (z.antes !== z.depois) igual = false; });
+    confere(`criança a mais ${nome} ${cod} n=0`, igual, true, 0);
+    confere(`criança a mais ${nome} ${cod} soma = regra`, soma, res[nome][iSet].rs[m], 0.01);
+  }
+}
+
+// Números da história que a página mostra, recalculados dos mesmos arquivos (os da página saem do mesmo cálculo).
+const nasAno = {2024: new Float64Array(B.N), 2025: new Float64Array(B.N)};
+for (const r of IGM.csv(ler('nascidos.csv.gz'))) if (nasAno[r.ano]) nasAno[r.ano][B.idx.get(+r.mun)] += +r.nv;
+const teto = Array.from(nasAno[2025], (v, i) => 100 * v / nasAno[2024][i]);
+confere('teto abaixo de 95%', teto.filter(v => v < 95).length, 185, 0);
+const ac100 = IGM.VAC.map((_, v) => { let n = 0, t = 0; for (const x of B.cob[iSet].c12[v]) if (!Number.isNaN(x)) { t++; if (x >= 100) n++; } return 100 * n / t; });
+confere('12 meses >= 100%, mínimo', Math.round(Math.min(...ac100) * 10) / 10, 37.5, 1e-9);
+confere('12 meses >= 100%, máximo', Math.round(Math.max(...ac100) * 10) / 10, 42.0, 1e-9);
+const J = JSON.parse(ler('dados_simulacao_igm.json'));
+const nv25 = J.nasc.map(r => r.slice(12, 24).reduce((a, b) => a + b, 0));
+const esperado = {jun: [11.5, 7.0, 5.8, 5.5], set: [22.2, 11.7, 7.7, 3.7]};
+for (const parc of ['jun', 'set']) {
+  const [c0, c1] = J.cob[parc].oficial.Penta;
+  [[0, 100], [100, 500], [500, 1500], [1500, 1e9]].forEach(([a, b], k) => {
+    const sw = c0.map((x, i) => (x == null || c1[i] == null || nv25[i] < a || nv25[i] >= b) ? null : Math.abs(c1[i] - x)).filter(x => x !== null);
+    confere(`oscilação Penta ${parc} porte ${k}`, Math.round(IGM.mediana(sw) * 10) / 10, esperado[parc][k], 1e-9);
+  });
+}
+confere('dinheiro das vacinas jun→set pago', Math.round(100 * (J.pagoEst['2026-09'][0] / J.pagoEst['2026-06'][0] - 1)), -41, 0);
 
 console.log(`${ok} conferências ok, ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);
