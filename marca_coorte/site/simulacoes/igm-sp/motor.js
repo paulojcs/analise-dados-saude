@@ -211,7 +211,7 @@
     const piso = spec.piso ?? 80, meta = spec.meta ?? 95;
     const a = proporcional(c12, piso, meta), d = proporcional(c12n, piso, meta);
     if (spec.tipo === 'prop' && !spec.orcamento) return { antes: vp * a, depois: vp * d, c12, c12n };
-    // Com orçamento fixo, o fator de escala é o do estado (mantido: uma criança não o move).
+    // Com orçamento fixo, o fator do estado fica fixo: uma criança o move muito pouco (aproximação; < 5% no maior município).
     const chave = JSON.stringify(spec);
     ctx.cache = ctx.cache || {};
     const rg = (ctx.cache[chave] = ctx.cache[chave] || regra(B, spec, ctx))[p];

@@ -90,6 +90,7 @@ const nasAno = {2024: new Float64Array(B.N), 2025: new Float64Array(B.N)};
 for (const r of IGM.csv(ler('nascidos.csv.gz'))) if (nasAno[r.ano]) nasAno[r.ano][B.idx.get(+r.mun)] += +r.nv;
 const teto = Array.from(nasAno[2025], (v, i) => 100 * v / nasAno[2024][i]);
 confere('teto abaixo de 95%', teto.filter(v => v < 95).length, 185, 0);
+confere('teto abaixo de 95% com menos de 100 nascidos em 2024', teto.filter((v, i) => v < 95 && nasAno[2024][i] < 100).length, 109, 0);
 const ac100 = IGM.VAC.map((_, v) => { let n = 0, t = 0; for (const x of B.cob[iSet].c12[v]) if (!Number.isNaN(x)) { t++; if (x >= 100) n++; } return 100 * n / t; });
 confere('12 meses >= 100%, mínimo', Math.round(Math.min(...ac100) * 10) / 10, 37.5, 1e-9);
 confere('12 meses >= 100%, máximo', Math.round(Math.max(...ac100) * 10) / 10, 42.0, 1e-9);
