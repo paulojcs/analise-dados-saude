@@ -16,23 +16,27 @@ São Paulo's primary care incentive". Branch `feat/simulacao-igm-sp`. **Não pub
 Fora da página: entrada no `sitemap.xml`; no Atlas, link para o simulador na caixa de fontes do IGM
 (`atlas/web/index.src.html`, gerado com `python atlas/web/build_page.py`).
 
-## O desenho (vs. o painel antigo em abas)
+## O desenho (versão final, validada por Paulo em 04/11/2026)
 
-Sete vistas em sequência, cada uma com um título curto e um ⓘ com o detalhe; métodos à parte no fim.
+Gráficos simples, em reais quando o assunto é dinheiro; um título curto por seção e o detalhe no ⓘ (que termina
+com a fonte em uma frase: "Fonte: valores publicados pela SES", "painel federal relido em 19/09/2026"...).
+Um seletor de município no topo fixo (× volta ao estado); a página abre no estado inteiro.
 
-1. **Mapa** (primeira tela): mudança nos pontos de vacina jun → set/2026 como a SES publicou (415 perderam), busca;
-   o município escolhido guia todas as vistas.
-2. **Calendário**: nascidos por mês (jan–abr em destaque) e a mediana acumulada em degrau, com um controle de tempo.
+1. **Setembro de 2026**: mapa (pontos publicados jun → set; 415 perderam) + duas barras do dinheiro das vacinas
+   jun R$ 39,1 mi → set R$ 22,9 mi (−41%) + barra 415 / 105 / 125. Com município: o dinheiro dele.
+2. **Calendário**: nascidos por mês (mais crianças de jan a abr) e a mediana acumulada × 12 meses, com controle de tempo.
 3. **Denominador velho**: histograma do teto 100 × nascidos 2025 ÷ nascidos 2024 (185 abaixo de 95%).
-4. **Acaso e atraso**: oscilação da Penta por número de nascidos; três municípios grandes com a releitura.
-5. **Regras**: escolher a regra, o piso da proporcional (70–90%), o mesmo orçamento; ver o total do estado ou a
-   distribuição de cada município (% do próprio máximo); o município escolhido em barras.
-6. **Uma criança a mais**: município, vacina e ±N crianças; a curva do dinheiro em cada regra.
-7. **Como contamos**: citação, conflito de interesse, regras, leituras, aproximações, fontes, arquivos.
+4. **Acaso e atraso**: oscilação da Penta por nascidos; três municípios grandes na releitura.
+5. **Regras**: definições em uma linha; escada × rampa; total do estado por ano em R$ (mesmo orçamento = mesmo
+   total); parcela a parcela (estado ou município) nas regras atual, proporcional e por criança.
+6. **Uma criança a mais**: sem município, a parte dos municípios a uma criança de um corte em cada parcela e o salto
+   mediano; com município, a curva do dinheiro (atual, proporcional, por criança); por fim, R$ por criança nascida
+   por faixa de per capita do estado.
+7. **Como contamos**.
 
-Decisões de Paulo (01/11/2026): mapa com os pontos **publicados** (415, não a reconstrução 419); a medida da
-cobertura segue a regra (faixas = acumulado da SES, proporcional e por criança = 12 meses); abre no estado
-inteiro, sem município pré-escolhido; a vista "cada município" entra como alternativa, com o total do estado como padrão.
+Decisões de Paulo: mapa com os pontos **publicados** (415, não a reconstrução 419); a medida da cobertura segue a
+regra; abre no estado; proporcional e por criança sempre com o mesmo orçamento da regra atual; sem o controle do
+piso (80% fixo, como no artigo); fontes no ⓘ, não em etiquetas sob os gráficos.
 
 ## Atualizar os dados quando o PrefSaoCaetano reexportar
 
@@ -60,7 +64,8 @@ nas duas páginas).
 
 ## Registro
 
-- 2026-11-01: página criada (rascunho → versão completa), revisão independente, correções; teste 972/972. Não publicada.
+- 2026-11-01: página criada (rascunho → versão completa), revisão independente, correções; teste 972/972.
+- 2026-11-04: redesenho mais simples (gráficos em reais, seletor no topo, fontes no ⓘ); validado por Paulo. Não publicada.
 
 ## Revisão independente (01/11/2026)
 

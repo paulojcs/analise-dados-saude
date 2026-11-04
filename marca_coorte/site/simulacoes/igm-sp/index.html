@@ -211,6 +211,30 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 .vals .bar i{position:absolute;top:0;bottom:0}
 .vals b{font:700 22px/1 var(--narrow);font-variant-numeric:tabular-nums;text-align:right}
 
+/* seletor de município no topo */
+.top .topfind{flex:1;min-width:0;max-width:340px;margin:0}
+.top .topfind input{font-size:15px;padding:8px 34px 8px 36px}
+.top .topfind ul{max-height:60vh}
+#limpa{all:unset;cursor:pointer;position:absolute;right:4px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;font:500 18px/1 var(--mono);color:var(--t2)}
+#limpa:hover{color:var(--klein)}
+@media(max-width:760px){.top{gap:10px}.top .logo{height:18px}}
+
+/* v3: gráficos simples */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media(max-width:900px){.tri{grid-template-columns:minmax(0,1fr)}}
+.tri .pt{font:700 16px/1.2 var(--narrow);margin-bottom:4px}
+.nota-g{font:400 12px/1.55 var(--mono);color:var(--t3);margin-top:6px}
+.regdef{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 26px;padding:0}
+@media(max-width:900px){.regdef{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:560px){.regdef{grid-template-columns:minmax(0,1fr)}}
+.regdef div{border-top:3px solid var(--rule);padding-top:8px}
+.regdef dt{font:700 17px/1.2 var(--narrow);margin-bottom:4px}
+.regdef dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--t2)}
+.stack{display:flex;height:22px;gap:2px;margin-top:18px}
+.stack i{display:block;border-radius:2px}
+.stackl{display:flex;justify-content:space-between;font-size:14px;margin-top:6px;gap:8px}
+.stackl b{font:700 20px/1 var(--narrow)}
+
 /* métodos */
 .prosa{max-width:76ch;font-size:16px;line-height:1.65;color:var(--ink)}
 .prosa h3{font-size:20px;text-transform:uppercase;margin:26px 0 8px}
@@ -236,6 +260,12 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
       </g>
     </svg>
   </a>
+  <div class="find topfind">
+    <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
+    <input id="busca" autocomplete="off" aria-label="Escolher município / choose a municipality">
+    <button id="limpa" hidden aria-label="Voltar ao estado / back to the state">×</button>
+    <ul id="sug" role="listbox"></ul>
+  </div>
   <nav class="nav" aria-label="Seções">
     <a href="#calendario"><span class="pt">Calendário</span><span class="en">Calendar</span></a>
     <a href="#regras"><span class="pt">Regras</span><span class="en">Rules</span></a>
@@ -260,23 +290,16 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     <h2 id="hMapa"></h2>
     <button class="info" aria-expanded="false" data-more="m1" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m1"><span class="pt">Pontos das quatro vacinas do primeiro ano (1,3 ponto cada, 5,2 no total) na parcela de junho e na de setembro de 2026, como a SES publicou. A queda veio sobretudo do calendário (veja abaixo); parte dela foi dado que ainda não tinha chegado ao painel. O detalhe por vacina no cartão é reconstrução nossa, que bate com o publicado em todos os municípios em junho e em 584 de 645 em setembro (97% das pontuações por vacina). <span class="src ses">publicado pela SES</span></span><span class="en">Points of the four first-year vaccines (1.3 points each, 5.2 in total) in the June and September 2026 payments, as published by the state. The fall came mostly from the calendar (see below); part of it was data that had not yet reached the panel. The per-vaccine detail on the card is our reproduction, which matches the published points in every municipality in June and in 584 of 645 in September (97% of per-vaccine scores). <span class="src ses">published by the state</span></span></p>
+  <p class="more" id="m1"><span class="pt">Pontos das quatro vacinas do primeiro ano (1,3 ponto cada, 5,2 no total) na parcela de junho e na de setembro de 2026, como a SES publicou. A queda veio sobretudo do calendário (veja abaixo); parte dela foi dado que ainda não tinha chegado ao painel. O dinheiro é pontos publicados × valor do ponto, antes do teto de 10 pontos. Fonte: valores publicados pela SES.</span><span class="en">Points of the four first-year vaccines (1.3 points each, 5.2 in total) in the June and September 2026 payments, as published by the state. The fall came mostly from the calendar (see below); part of it was data that had not yet reached the panel. Money is published points × point value, before the 10-point cap. Source: values published by the state.</span></p>
   <div class="hero">
     <div>
-      <div class="find">
-        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
-        <input id="busca" autocomplete="off" aria-label="Buscar município / find a municipality">
-        <ul id="sug" role="listbox"></ul>
-      </div>
       <div id="mapa" role="img"></div>
       <div class="leg" id="legMapa"></div>
     </div>
     <div>
-      <div class="big">
-        <div><b class="num" id="kZero">…</b><span id="kZeroL"></span></div>
-        <div><b class="num" id="kDinheiro">…</b><span id="kDinL"></span></div>
-      </div>
-      <div class="card" id="munCard"></div>
+      <div class="h4" id="tDin" style="margin-top:0"></div>
+      <div class="chart" id="gDin"></div>
+      <div id="barDin"></div>
     </div>
   </div>
 </section>
@@ -287,7 +310,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     <h2><span class="pt">O calendário decide o dinheiro: <em>todo janeiro</em> a cobertura cai</span><span class="en">The calendar decides the money: <em>every January</em> coverage falls</span></h2>
     <button class="info" aria-expanded="false" data-more="m2" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m2"><span class="pt">O valor que o estado lê soma os vacinados desde janeiro e divide pelos nascidos do ano anterior nos mesmos meses. Como nascem mais crianças de janeiro a abril, o primeiro valor de cada ano cai sem que a vacinação mude. A cobertura de 12 meses não tem esse degrau. Linhas: mediana dos 645 municípios. <span class="src fed">painel federal relido em 19/09/2026</span> <span class="src">SINASC 2024</span></span><span class="en">The value the state reads adds up the children vaccinated since January and divides them by the previous year's births of the same months. More children are born in January–April, so the first value of each year falls with no change in vaccination. Twelve-month coverage has no such step. Lines: median of the 645 municipalities. <span class="src fed">federal panel re-read 19 Sep 2026</span> <span class="src">SINASC 2024</span></span></p>
+  <p class="more" id="m2"><span class="pt">O valor que o estado lê soma os vacinados desde janeiro e divide pelos nascidos do ano anterior nos mesmos meses. Como nascem mais crianças de janeiro a abril, o primeiro valor de cada ano cai sem que a vacinação mude. A cobertura de 12 meses não tem esse degrau. Linhas: mediana dos 645 municípios. Fonte: painel federal relido em 19/09/2026; SINASC 2024.</span><span class="en">The value the state reads adds up the children vaccinated since January and divides them by the previous year's births of the same months. More children are born in January–April, so the first value of each year falls with no change in vaccination. Twelve-month coverage has no such step. Lines: median of the 645 municipalities. Source: federal panel re-read 19 Sep 2026; SINASC 2024.</span></p>
   <div class="cal">
     <div>
       <div class="h4" style="margin-top:0" id="tNasc"></div>
@@ -310,7 +333,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     <h2 id="hDen"></h2>
     <button class="info" aria-expanded="false" data-more="m3" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m3"><span class="pt">Os valores de 2025 dividem os vacinados pelos nascidos de 2024. Onde nasceram menos crianças em 2025 do que em 2024, nem vacinando todas se chega a 95%: o teto é 100 × nascidos de 2025 ÷ nascidos de 2024. A maioria é pequena: 109 deles tiveram menos de 100 nascidos em 2024, e aí uma criança a mais ou a menos muda o teto em pontos inteiros. Na outra ponta, muitos ficam acima de 100% na cobertura de 12 meses. <span class="src">SINASC 2024 e 2025 (2025 preliminar)</span> <span class="src fed">painel federal relido em 19/09/2026</span></span><span class="en">The 2025 values divide the children vaccinated by the 2024 births. Where fewer children were born in 2025 than in 2024, not even vaccinating every child reaches 95%: the ceiling is 100 × births 2025 ÷ births 2024. Most are small: 109 of them had fewer than 100 births in 2024, where one child more or less moves the ceiling by whole points. At the other end, many are above 100% on twelve-month coverage. <span class="src">SINASC 2024 and 2025 (2025 preliminary)</span> <span class="src fed">federal panel re-read 19 Sep 2026</span></span></p>
+  <p class="more" id="m3"><span class="pt">Os valores de 2025 dividem os vacinados pelos nascidos de 2024. Onde nasceram menos crianças em 2025 do que em 2024, nem vacinando todas se chega a 95%: o teto é 100 × nascidos de 2025 ÷ nascidos de 2024. A maioria é pequena: 109 deles tiveram menos de 100 nascidos em 2024, e aí uma criança a mais ou a menos muda o teto em pontos inteiros. Na outra ponta, muitos ficam acima de 100% na cobertura de 12 meses. Fonte: SINASC 2024 e 2025 (2025 preliminar); painel federal relido em 19/09/2026.</span><span class="en">The 2025 values divide the children vaccinated by the 2024 births. Where fewer children were born in 2025 than in 2024, not even vaccinating every child reaches 95%: the ceiling is 100 × births 2025 ÷ births 2024. Most are small: 109 of them had fewer than 100 births in 2024, where one child more or less moves the ceiling by whole points. At the other end, many are above 100% on twelve-month coverage. Source: SINASC 2024 and 2025 (2025 preliminary); federal panel re-read 19 Sep 2026.</span></p>
   <div class="duo">
     <div><div class="chart" id="gDen"></div></div>
     <div>
@@ -327,7 +350,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     <h2><span class="pt">Os pequenos oscilam <em>por acaso</em>; alguns grandes, <em class="b">por atraso</em> no registro</span><span class="en">Small municipalities swing <em>by chance</em>; a few large ones were hit <em class="b">by late data</em></span></h2>
     <button class="info" aria-expanded="false" data-more="m4" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m4"><span class="pt">Esquerda: quanto a cobertura da Penta mudou entre os dois valores que cada parcela compara, contra o número de nascidos por ano; onde nascem poucas crianças, uma ou duas mudam muitos pontos. Direita: doses que entram no sistema depois que o estado lê o painel. Metade entra até 1 dia depois da vacina, mas entre 11% e 19% entram mais de 30 dias depois; em três municípios grandes, a releitura de 19/09 mudou muito a contagem de janeiro a abril de 2026, e dois deles (Ribeirão Preto e a capital) ficaram sem nenhum ponto de vacina em setembro no que a SES publicou. <span class="src ses">publicado pela SES</span> <span class="src fed">painel federal relido em 19/09/2026</span> <span class="src">dados abertos SI-PNI/RNDS</span></span><span class="en">Left: how much Penta coverage changed between the two values each payment compares, against births per year; where few children are born, one or two move coverage by many points. Right: doses that reach the system after the state reads the panel. Half are entered within 1 day of vaccination, but 11–19% are entered more than 30 days later; in three large municipalities the re-read of 19 Sep changed the January–April 2026 count a lot, and two of them (Ribeirão Preto and the capital) had no vaccine points in September as published by the state. <span class="src ses">published by the state</span> <span class="src fed">federal panel re-read 19 Sep 2026</span> <span class="src">SI-PNI/RNDS open data</span></span></p>
+  <p class="more" id="m4"><span class="pt">Esquerda: quanto a cobertura da Penta mudou entre os dois valores que cada parcela compara, contra o número de nascidos por ano; onde nascem poucas crianças, uma ou duas mudam muitos pontos. Direita: doses que entram no sistema depois que o estado lê o painel. Metade entra até 1 dia depois da vacina, mas entre 11% e 19% entram mais de 30 dias depois; em três municípios grandes, a releitura de 19/09 mudou muito a contagem de janeiro a abril de 2026, e dois deles (Ribeirão Preto e a capital) ficaram sem nenhum ponto de vacina em setembro no que a SES publicou. Fonte: valores publicados pela SES; painel federal relido em 19/09/2026; dados abertos SI-PNI/RNDS.</span><span class="en">Left: how much Penta coverage changed between the two values each payment compares, against births per year; where few children are born, one or two move coverage by many points. Right: doses that reach the system after the state reads the panel. Half are entered within 1 day of vaccination, but 11–19% are entered more than 30 days later; in three large municipalities the re-read of 19 Sep changed the January–April 2026 count a lot, and two of them (Ribeirão Preto and the capital) had no vaccine points in September as published by the state. Source: values published by the state; federal panel re-read 19 Sep 2026; SI-PNI/RNDS open data.</span></p>
   <div class="duo">
     <div>
       <div class="ctrls" style="margin-bottom:8px"><div class="ctl"><span id="lParc1"></span><div class="seg" id="acParc"></div></div></div>
@@ -346,38 +369,22 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 <!-- 5. Regras -->
 <section class="view" id="regras">
   <div class="vh">
-    <h2><span class="pt">Mude a regra e veja o dinheiro mexer</span><span class="en">Change the rule and watch the money move</span></h2>
+    <h2><span class="pt">Outras regras pagariam <em class="b">o mesmo dinheiro</em>, sem o sobe e desce</span><span class="en">Other rules would pay <em class="b">the same money</em>, without the ups and downs</span></h2>
     <button class="info" aria-expanded="false" data-more="m5" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m5"><span class="pt">As mesmas vacinas e o mesmo dinheiro em 11 parcelas, de setembro de 2024 a dezembro de 2027; só muda a regra. Dinheiro de 2026 em todas (população e per capita de 2026; 50% variável até 2026 e 60% em 2027), antes do teto de 10 pontos e sem os outros indicadores. Com o mesmo orçamento, a proporcional e a por criança repartem o que a regra atual pagou em média: R$ 32,04 milhões por parcela até 2026 e R$ 35,70 milhões em 2027. Dez/2026 é previsão (ritmo de jan–abr mantido); 2027 é projeção sem mudança na vacinação; set/2024 é aproximado. Os losangos são o que o estado pagou em 2026, lido do painel antes de nós. <span class="src fed">painel federal relido em 19/09/2026</span></span><span class="en">The same vaccines and the same money in 11 payments, September 2024 to December 2027; only the rule changes. 2026 money throughout (2026 population and per capita; 50% variable up to 2026 and 60% in 2027), before the 10-point cap and without the other indicators. At the same budget, the proportional and per-child rules share what the current rule paid on average: R$ 32.04 million per payment up to 2026 and R$ 35.70 million in 2027. Dec 2026 is a forecast (Jan–Apr pace kept); 2027 is a projection with no change in vaccination; Sep 2024 is approximate. Diamonds are what the state paid in 2026, read from the panel earlier than we did. <span class="src fed">federal panel re-read 19 Sep 2026</span></span></p>
-  <div class="ctrls">
-    <div class="ctl"><span id="lComo"></span><div class="seg" id="rRegra"></div></div>
-    <div class="ctl" id="cPiso"><span id="lPiso"></span><div class="sl"><input type="range" id="rPiso" min="70" max="90" step="1" value="80"><b id="rPisoV">80%</b><span id="lPiso2" style="font:400 12px var(--mono);color:var(--t3)"></span></div></div>
-    <div class="ctl" id="cOrc"><span id="lOrc"></span><label class="tg"><input type="checkbox" id="rOrc" checked> <span id="lOrc2"></span></label></div>
-    <div class="ctl" id="cVar"><span id="lVar"></span><label class="tg"><input type="checkbox" id="rVar"> <span id="lVar2"></span></label></div>
+  <p class="more" id="m5"><span class="pt">As mesmas vacinas e o mesmo dinheiro em 11 parcelas, de setembro de 2024 a dezembro de 2027; só muda a regra. Dinheiro de 2026 em todas (população e per capita de 2026; 50% variável até 2026 e 60% em 2027), antes do teto de 10 pontos e sem os outros indicadores. A proporcional e a por criança usam o mesmo orçamento: a média do que a regra atual pagou, R$ 32,04 milhões por parcela até 2026 (R$ 96,1 milhões por ano) e R$ 35,70 milhões em 2027. Dez/2026 é previsão (ritmo de jan–abr mantido); 2027 é projeção sem mudança na vacinação; set/2024 é aproximado. Fonte: painel federal relido em 19/09/2026.</span><span class="en">The same vaccines and the same money in 11 payments, September 2024 to December 2027; only the rule changes. 2026 money throughout (2026 population and per capita; 50% variable up to 2026 and 60% in 2027), before the 10-point cap and without the other indicators. The proportional and per-child rules use the same budget: the mean of what the current rule paid, R$ 32.04 million per payment up to 2026 (R$ 96.1 million a year) and R$ 35.70 million in 2027. Dec 2026 is a forecast (Jan–Apr pace kept); 2027 is a projection with no change in vaccination; Sep 2024 is approximate. Source: federal panel re-read 19 Sep 2026.</span></p>
+  <dl class="regdef">
+    <div><dt style="color:var(--atual)"><span class="pt">(i) Regra atual</span><span class="en">(i) Current rule</span></dt><dd><span class="pt">Compara dois valores acumulados e paga por faixas: 100%, 75%, 50% ou nada de cada vacina, conforme subiu e onde ficou em relação à mediana do estado.</span><span class="en">Compares two cumulative values and pays in bands: 100%, 75%, 50% or nothing of each vaccine, depending on whether it rose and where it stands against the state median.</span></dd></div>
+    <div><dt style="color:var(--fixo90)"><span class="pt">(ii, iii) Faixas com corte fixo</span><span class="en">(ii, iii) Bands with a fixed cut</span></dt><dd><span class="pt">As mesmas faixas, com 90% ou 95% no lugar da mediana.</span><span class="en">The same bands, with 90% or 95% in place of the median.</span></dd></div>
+    <div><dt style="color:var(--prop)"><span class="pt">(iv) Proporcional</span><span class="en">(iv) Proportional</span></dt><dd><span class="pt">Cada vacina paga de nada em 80% a cheio em 95% da cobertura dos últimos 12 meses, sem comparar com o período anterior. Divide o orçamento por habitante, como hoje.</span><span class="en">Each vaccine pays from nothing at 80% to full at 95% of the last 12 months' coverage, with no comparison period. Shares the budget by inhabitant, as today.</span></dd></div>
+    <div><dt style="color:var(--crianca)"><span class="pt">(v) Por criança</span><span class="en">(v) Per child</span></dt><dd><span class="pt">O mesmo orçamento dividido por crianças nascidas × per capita do estado: metade garantida, metade pela mesma rampa de cobertura.</span><span class="en">The same budget shared by children born × the state's per capita value: half guaranteed, half on the same coverage ramp.</span></dd></div>
+  </dl>
+  <div class="duo">
+    <div><div class="h4" id="tEsc" style="margin-top:0"></div><div class="chart" id="gEsc"></div></div>
+    <div><div class="h4" id="tAno" style="margin-top:0"></div><div class="chart" id="gAno"></div></div>
   </div>
-  <div class="ctrls" style="margin-top:-8px">
-    <div class="ctl"><span id="lMede"></span><div class="seg" id="rMede"></div></div>
-    <div class="ctl"><span id="lVer"></span><div class="seg" id="rVista"></div></div>
-  </div>
-  <div class="play">
-    <div>
-      <div class="chart" id="gRegra"></div>
-      <div class="h4" id="tZero"></div>
-      <div class="chart" id="gZero"></div>
-    </div>
-    <div>
-      <div class="kpis" id="rKpi"></div>
-      <div class="pick" id="rParc"></div>
-      <div class="h4" id="rMunT"></div>
-      <div class="find" style="margin-bottom:8px">
-        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
-        <input id="busca2" autocomplete="off" aria-label="Buscar município / find a municipality">
-        <ul id="sug2" role="listbox"></ul>
-      </div>
-      <div class="chart" id="gMun"></div>
-    </div>
-  </div>
+  <div class="h4" id="tParc" style="margin-top:34px"></div>
+  <div class="tri chart" id="gParc"></div>
 </section>
 
 <!-- 6. Uma criança a mais -->
@@ -386,10 +393,10 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     <h2><span class="pt">Quanto vale vacinar <em class="b">uma criança a mais</em>?</span><span class="en">What is <em class="b">one more vaccinated child</em> worth?</span></h2>
     <button class="info" aria-expanded="false" data-more="m6" aria-label="Detalhes / details">i</button>
   </div>
-  <p class="more" id="m6"><span class="pt">Uma criança a mais muda a cobertura avaliada em 100 ÷ nascidos do período. Na regra atual a pontuação só muda se isso cruzar um corte (a mediana mantida fixa, ou a meta de 95%): longe de um corte, a criança vale R$ 0; perto, dá um salto. E não dá para saber antes qual criança conta, porque a mediana só é conhecida depois que o período termina. Na proporcional, entre o piso e 95% da cobertura de 12 meses, cada criança vale o mesmo dentro do município. Pago por habitante, vale mais onde nascem menos crianças por habitante; pago por criança, não, e o que resta de diferença é o per capita do estado (faixa do Anexo II da CIB 24/2026, definida por um índice de vulnerabilidade: população, riqueza pelo IPRS, pobreza, receita tributária e cobertura da Estratégia Saúde da Família; R$ 15 a R$ 40 por habitante, R$ 4 na capital). Na por criança, só a metade variável depende da cobertura. <span class="src fed">painel federal relido em 19/09/2026</span></span><span class="en">One more child moves the evaluated coverage by 100 ÷ births in the period. Under the current rule the score changes only if that crosses a cut-off (the median held fixed, or the 95% target): far from a cut-off the child is worth R$ 0; near one, it is a jump. And nobody can know beforehand which child counts, because the median is known only after the period ends. Under the proportional rule, between the floor and 95% twelve-month coverage, every child is worth the same within a municipality. Paid per inhabitant, a child is worth more where fewer children are born per inhabitant; paid per child it is not, and the difference left is the state's per capita value (the CIB 24/2026 Annex II tier, set by a vulnerability score: population, IPRS wealth, poverty, tax revenue and Family Health Strategy coverage; R$ 15–40 per inhabitant, R$ 4 in the capital). Under the per-child rule only the variable half depends on coverage. <span class="src fed">federal panel re-read 19 Sep 2026</span></span></p>
+  <p class="more" id="m6"><span class="pt">Uma criança a mais muda a cobertura avaliada em 100 ÷ nascidos do período. Na regra atual a pontuação só muda se isso cruzar um corte (a mediana mantida fixa, ou a meta de 95%): longe de um corte, a criança vale R$ 0; perto, dá um salto. E não dá para saber antes qual criança conta, porque a mediana só é conhecida depois que o período termina. Na proporcional, entre o piso e 95% da cobertura de 12 meses, cada criança vale o mesmo dentro do município. Pago por habitante, vale mais onde nascem menos crianças por habitante; pago por criança, não, e o que resta de diferença é o per capita do estado (faixa do Anexo II da CIB 24/2026, definida por um índice de vulnerabilidade: população, riqueza pelo IPRS, pobreza, receita tributária e cobertura da Estratégia Saúde da Família; R$ 15 a R$ 40 por habitante, R$ 4 na capital). Na por criança, só a metade variável depende da cobertura. Fonte: painel federal relido em 19/09/2026.</span><span class="en">One more child moves the evaluated coverage by 100 ÷ births in the period. Under the current rule the score changes only if that crosses a cut-off (the median held fixed, or the 95% target): far from a cut-off the child is worth R$ 0; near one, it is a jump. And nobody can know beforehand which child counts, because the median is known only after the period ends. Under the proportional rule, between the floor and 95% twelve-month coverage, every child is worth the same within a municipality. Paid per inhabitant, a child is worth more where fewer children are born per inhabitant; paid per child it is not, and the difference left is the state's per capita value (the CIB 24/2026 Annex II tier, set by a vulnerability score: population, IPRS wealth, poverty, tax revenue and Family Health Strategy coverage; R$ 15–40 per inhabitant, R$ 4 in the capital). Under the per-child rule only the variable half depends on coverage. Source: federal panel re-read 19 Sep 2026.</span></p>
   <div class="cr">
     <div>
-      <div class="ctrls" style="margin-bottom:10px">
+      <div class="ctrls" style="margin-bottom:10px" id="crCtl">
         <div class="ctl"><span id="lVac2"></span><div class="seg" id="crVac"></div></div>
         <div class="ctl"><span id="lN"></span><div class="step"><button id="crMenos" aria-label="−">−</button><output id="crN">+1</output><button id="crMais" aria-label="+">+</button></div></div>
       </div>
@@ -397,16 +404,13 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
     </div>
     <div>
       <div class="h4" id="crMunT" style="margin-top:0"></div>
-      <div class="find" style="margin-bottom:12px">
-        <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
-        <input id="busca3" autocomplete="off" aria-label="Buscar município / find a municipality">
-        <ul id="sug3" role="listbox"></ul>
-      </div>
       <div class="vals" id="crVals"></div>
       <div class="pick" id="crParc" style="margin-top:16px"></div>
       <div class="stat" style="margin-top:18px"><b id="kPerto"></b><span id="kPertoL"></span></div>
     </div>
   </div>
+  <div class="h4" id="tTier" style="margin-top:38px"></div>
+  <div class="chart" id="gTier" style="max-width:900px"></div>
 </section>
 
 <!-- 7. Como contamos -->
@@ -428,7 +432,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
       <h3>De onde vem cada número</h3>
       <p>Cada número diz de que leitura sai. <b>Publicado pela SES</b>: pontos, valores e pagamentos do painel público do IGM SUS Paulista (extraído em 30/09/2026). <b>Reconstrução nossa</b>: a regra atual recalculada por nós sobre esses valores publicados; reproduz junho ao centavo e, em setembro, 97% das pontuações por vacina (584 de 645 municípios com os quatro pontos iguais). <b>Painel federal relido em 19/09/2026</b>: doses e denominadores mensais do painel de cobertura vacinal do Ministério da Saúde, lidos por nós nessa data, já com registros que chegaram depois da leitura do estado; todas as 11 parcelas das Regras e de Uma criança a mais vêm daqui. <b>Dados abertos SI-PNI/RNDS</b>: registros de doses pseudonimizados, com a data da vacina e a de entrada no sistema. Leituras diferentes não se somam: em setembro de 2026, 164 municípios ficaram sem pontos de vacina no que o estado pagou, 172 na reconstrução e 163 na releitura.</p>
       <h3>Outras regras</h3>
-      <p>As 11 parcelas, de setembro de 2024 a dezembro de 2027, comparam dois blocos de quatro meses como o estado faz. O dinheiro é sempre o de 2026, para que só a regra mude: população e per capita de 2026, 50% variável até 2026 e 60% em 2027, sem o teto de 10 pontos, sem os outros indicadores e sem o bônus. As regras são: (i) a atual; (ii) e (iii) as mesmas faixas com corte fixo de 90% ou 95% no lugar da mediana; (iv) a proporcional, em que cada vacina paga de nada em 80% até o valor cheio em 95% da cobertura de 12 meses, sem comparar períodos; e (v) a por criança, em que um orçamento fixo é repartido pelos nascidos × per capita do estado ÷ 30, metade fixa e metade pela fração da proporcional (na variante toda variável, tudo pela fração). Com o mesmo orçamento, (iv) e (v) usam por parcela a média do que a regra atual pagou: R$ 32,04 milhões de setembro de 2024 a dezembro de 2026 (com a previsão de dezembro) e R$ 35,70 milhões em 2027. O piso da proporcional pode ser mudado na página; a meta fica em 95%. O teste da página recalcula as sete regras do artigo no navegador e confere com os números do artigo.</p>
+      <p>As 11 parcelas, de setembro de 2024 a dezembro de 2027, comparam dois blocos de quatro meses como o estado faz. O dinheiro é sempre o de 2026, para que só a regra mude: população e per capita de 2026, 50% variável até 2026 e 60% em 2027, sem o teto de 10 pontos, sem os outros indicadores e sem o bônus. As regras são: (i) a atual; (ii) e (iii) as mesmas faixas com corte fixo de 90% ou 95% no lugar da mediana; (iv) a proporcional, em que cada vacina paga de nada em 80% até o valor cheio em 95% da cobertura de 12 meses, sem comparar períodos; e (v) a por criança, em que um orçamento fixo é repartido pelos nascidos × per capita do estado ÷ 30, metade fixa e metade pela fração da proporcional (na variante toda variável, tudo pela fração). Com o mesmo orçamento, (iv) e (v) usam por parcela a média do que a regra atual pagou: R$ 32,04 milhões de setembro de 2024 a dezembro de 2026 (com a previsão de dezembro) e R$ 35,70 milhões em 2027. O teste da página recalcula as sete regras do artigo no navegador e confere com os números do artigo.</p>
       <h3>Previsões, projeções e aproximações</h3>
       <p>Setembro de 2024 é aproximado: o período de comparação usa o SINASC 2023, porque o de 2022 não foi carregado. Dezembro de 2026 é previsão: o ritmo de vacinação de janeiro a abril de 2026 mantido até agosto. As três parcelas de 2027 são projeção sem mudança na vacinação: cada município mantém as doses mensais de 2025; os meses de 2026 dividem pelo SINASC 2024 e os de 2027 pelo SINASC 2025. O SINASC 2025 é preliminar. Coberturas acima de 100% foram mantidas; são sinal conhecido de denominador impreciso (aqui, sobretudo os nascidos do ano anterior), e também podem vir de doses em crianças nascidas em outro município ou registradas com atraso.</p>
       <h3>Registro tardio</h3>
@@ -445,7 +449,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
       <h3>Where each number comes from</h3>
       <p>Every number says which reading it comes from. <b>Published by the state</b>: points, values and payments from the IGM SUS Paulista public panel (extracted 30 Sep 2026). <b>Our reproduction</b>: the current rule recomputed by us on those published values; it reproduces June to the cent and, in September, 97% of per-vaccine scores (584 of 645 municipalities with all four identical). <b>Federal panel re-read 19 Sep 2026</b>: monthly doses and denominators from the Ministry of Health's vaccination coverage panel, read by us on that date, already including records entered after the state's reading; all 11 payments in Rules and One more child come from here. <b>SI-PNI/RNDS open data</b>: pseudonymised dose records with the date given and the date entered. Readings do not add up: in September 2026, 164 municipalities had no vaccine points in what the state paid, 172 in our reproduction and 163 in the re-read.</p>
       <h3>Other rules</h3>
-      <p>The 11 payments, September 2024 to December 2027, compare two four-month blocks as the state does. The money is always 2026 money, so that only the rule changes: 2026 population and per capita, 50% variable up to 2026 and 60% in 2027, without the 10-point cap, the other indicators or the bonus. The rules are: (i) current; (ii) and (iii) the same bands with a fixed 90% or 95% cut in place of the median; (iv) proportional, where each vaccine pays from nothing at 80% to the full value at 95% of twelve-month coverage, with no comparison period; and (v) per child, where a fixed budget is shared by births × the state's per capita value ÷ 30, half fixed and half on the share of rule (iv) (all-variable variant: all on the share). At the same budget, (iv) and (v) use per payment the mean of what the current rule paid: R$ 32.04 million from September 2024 to December 2026 (including the December forecast) and R$ 35.70 million in 2027. The proportional floor can be changed on the page; the target stays at 95%. The page's test recomputes the paper's seven rules in the browser code and checks them against the paper's numbers.</p>
+      <p>The 11 payments, September 2024 to December 2027, compare two four-month blocks as the state does. The money is always 2026 money, so that only the rule changes: 2026 population and per capita, 50% variable up to 2026 and 60% in 2027, without the 10-point cap, the other indicators or the bonus. The rules are: (i) current; (ii) and (iii) the same bands with a fixed 90% or 95% cut in place of the median; (iv) proportional, where each vaccine pays from nothing at 80% to the full value at 95% of twelve-month coverage, with no comparison period; and (v) per child, where a fixed budget is shared by births × the state's per capita value ÷ 30, half fixed and half on the share of rule (iv) (all-variable variant: all on the share). At the same budget, (iv) and (v) use per payment the mean of what the current rule paid: R$ 32.04 million from September 2024 to December 2026 (including the December forecast) and R$ 35.70 million in 2027. The page's test recomputes the paper's seven rules in the browser code and checks them against the paper's numbers.</p>
       <h3>Forecasts, projections and approximations</h3>
       <p>September 2024 is approximate: its comparison period uses SINASC 2023 because SINASC 2022 was not loaded. December 2026 is a forecast: the January–April 2026 vaccination pace kept to August. The three 2027 payments are a projection with no change in vaccination: each municipality keeps its 2025 monthly doses; 2026 months divide by SINASC 2024 and 2027 months by SINASC 2025. SINASC 2025 is preliminary. Coverages above 100% are kept; they are a known sign of an inaccurate denominator (here, mainly the previous year's births), and can also come from doses to children born elsewhere or recorded late.</p>
       <h3>Late data entry</h3>
@@ -487,11 +491,6 @@ const VAC_L = v => ({Polio: L('Pólio', 'Polio'), Penta: 'Penta', Pneumo: 'Pneum
 const PORTE = p => L(p + ' hab.', p.replace(/ mil/g, 'k') + ' inhab.');
 const STAT = s => ({forecast: L('previsão', 'forecast'), projection: L('projeção', 'projection')}[s] || '');
 const titulo = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()).replace(/\b(D[aeo]s?|E)\b/g, w => w.toLowerCase());
-const SRC = {
-  ses: () => `<span class="src ses">${L('publicado pela SES', 'published by the state')}</span>`,
-  rec: () => `<span class="src rec">${L('reconstrução nossa', 'our reproduction')}</span>`,
-  fed: () => `<span class="src fed">${L('painel federal relido em 19/09/2026', 'federal panel re-read 19 Sep 2026')}</span>`,
-};
 
 /* ---------- dados ---------- */
 async function texto(f) {
@@ -560,31 +559,33 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     $('#hMapa').innerHTML = L(`Em setembro de 2026, <em>${nCairam}</em> de 645 municípios perderam pontos de vacina`, `In September 2026, <em>${nCairam}</em> of 645 municipalities lost vaccine points`);
     $('#mapa').setAttribute('aria-label', L('Mapa dos municípios de São Paulo pela mudança nos pontos de vacina', 'Map of São Paulo municipalities by change in vaccine points'));
     $('#legMapa').innerHTML = `<span><i style="background:var(--desce)"></i>${L('perdeu pontos', 'lost points')}</span><span><i style="background:var(--igual)"></i>${L('igual', 'unchanged')}</span><span><i style="background:var(--sobe)"></i>${L('ganhou', 'gained')}</span><span style="color:var(--t3)">${L('jun → set/2026 · cor mais forte = mudança maior', 'Jun → Sep 2026 · stronger colour = larger change')}</span>`;
-    $('#kZero').textContent = nf(nZero);
-    $('#kZeroL').innerHTML = L('sem nenhum ponto<br>de vacina em setembro', 'with no vaccine<br>points in September');
-    $('#kDinheiro').textContent = sinal(Math.round(100 * varDin), x => nf(x)) + '%';
-    $('#kDinL').innerHTML = L('dinheiro das vacinas<br>jun → set, pago pela SES', 'vaccine money<br>Jun → Sep, paid by the state');
-    ['#busca', '#busca2', '#busca3'].forEach(s => { $(s).placeholder = L('Buscar um município…', 'Find a municipality…'); });
+    $('#busca').placeholder = L('Escolha um município…', 'Choose a municipality…');
     cartao();
   }
   function cartao() {
-    const i = st.mun;
-    const barras = (a, b, rot) => `<div class="vacs">${IGM.VAC.map((v, k) => `<span>${VAC_L(v)}</span><div class="bar"><i class="j" style="width:${100 * a[k]}%"></i><i class="s" style="width:${100 * b[k]}%;background:${b[k] < a[k] ? 'var(--desce)' : b[k] > a[k] ? 'var(--sobe)' : 'var(--t3)'}"></i></div><span class="num">${nf(100 * a[k])}→${nf(100 * b[k])}%</span>`).join('')}</div>
-      <p class="sub" style="margin:10px 0 0">${rot}</p>`;
-    if (i === null) {
-      const med = s => IGM.VAC.map((_, k) => MUN.reduce((a, _, j) => a + W[+s[4 * j + k]], 0) / N);
-      $('#munCard').innerHTML = `<span class="k">${L('Estado de São Paulo', 'São Paulo State')}</span><h3 style="margin-top:6px">${L('645 municípios', '645 municipalities')}</h3>
-        <div class="sub">${L('Busque ou clique num município: ele passa a guiar todas as vistas da página.', 'Search for or click a municipality: it then drives every view on the page.')}</div>
-        ${barras(med(pj), med(ps), L('parte média do ponto de cada vacina · cinza jun, cor set · ', 'mean share of each vaccine\'s point · grey Jun, colour Sep · ') + SRC.rec())}`;
-      return;
-    }
-    const m = MUN[i], d = DP[i], dif = Math.abs(RS[i] - PS[i]) > 1e-6 || Math.abs(RJ[i] - PJ[i]) > 1e-6;
-    $('#munCard').innerHTML = `<span class="k">${esc(titulo(m.drs))} · ${esc(PORTE(m.porte))}</span>
-      <h3 style="margin-top:6px">${esc(titulo(m.nome))}</h3>
-      <div class="sub">${nf(m.pop)} ${L('hab.', 'inhabitants')} · ${L('per capita estadual', 'state per capita value')} R$ ${m.pc}/${L('hab.', 'inhab.')}</div>
-      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap"><span class="delta" style="color:${d < 0 ? 'var(--desce)' : d > 0 ? 'var(--sobe)' : 'var(--t2)'}">${d === 0 ? '=' : sinal(d * vpSet[i], rs)}</span><span class="sub" style="margin:0">${L('vacinas, jun → set/2026', 'vaccines, Jun → Sep 2026')}<br>${nf(PJ[i], 2)} → ${nf(PS[i], 2)} ${L('de 5,2 pontos', 'of 5.2 points')} ${SRC.ses()}</span></div>
-      ${barras(vacPts(pj, i), vacPts(ps, i), L('parte do ponto de cada vacina · cinza jun, cor set · ', 'share of each vaccine\'s point · grey Jun, colour Sep · ') + SRC.rec() +
-        (dif ? '<br>' + L(`a reconstrução dá ${nf(RJ[i], 2)} → ${nf(RS[i], 2)} pontos; a SES publicou ${nf(PJ[i], 2)} → ${nf(PS[i], 2)}`, `our reproduction gives ${nf(RJ[i], 2)} → ${nf(RS[i], 2)} points; the state published ${nf(PJ[i], 2)} → ${nf(PS[i], 2)}`) : ''))}`;
+    /* Dinheiro das vacinas em junho e setembro de 2026 (pontos publicados × valor do ponto, antes do teto):
+       o estado inteiro ou o município escolhido; embaixo, quantos municípios perderam, mantiveram, ganharam. */
+    const i = st.mun, iJun = B.pags.findIndex(p => p.id === '2026-06');
+    const jun = i === null ? D.pagoEst['2026-06'][0] * 1e6 : PJ[i] * B.vp[iJun][i];
+    const set = i === null ? D.pagoEst['2026-09'][0] * 1e6 : PS[i] * vpSet[i];
+    const max = i === null ? D.pagoEst['2026-06'][1] * 1e6 : IGM.MAX_PONTOS * vpSet[i];
+    const w = larg('#gDin', 460), h = 250, l = 8, r = 8, t = 34, b = 30, bw = Math.min(110, (w - l - r) / 3.2);
+    const y = v => t + (h - t - b) * (1 - v / max), xs = [l + (w - l - r) * .27, l + (w - l - r) * .73];
+    const fmt = v => i === null ? mi(v) : rs(v), dv = set - jun;
+    $('#tDin').textContent = i === null ? L('Dinheiro das vacinas, estado inteiro', 'Vaccine money, whole state') : L(`Dinheiro das vacinas: ${titulo(nomes[i])}`, `Vaccine money: ${titulo(nomes[i])}`);
+    $('#gDin').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      <line x1="${l}" x2="${w - r}" y1="${y(max)}" y2="${y(max)}" stroke="var(--ink)" stroke-dasharray="3 4"/><text x="${w - r}" y="${y(max) - 6}" text-anchor="end">${L('máximo', 'maximum')} ${fmt(max)}</text>
+      ${[[jun, L('junho', 'June'), 'var(--t4)'], [set, L('setembro', 'September'), dv < 0 ? 'var(--desce)' : 'var(--sobe)']].map(([v, n, c], k) => `
+        <rect x="${xs[k] - bw / 2}" y="${y(v)}" width="${bw}" height="${h - b - y(v)}" fill="${c}" rx="3"/>
+        <text class="lbl" x="${xs[k]}" y="${y(v) - 8}" text-anchor="middle">${fmt(v)}</text>
+        <text x="${xs[k]}" y="${h - 10}" text-anchor="middle">${n} 2026</text>`).join('')}
+      ${jun > 0 ? `<text class="lbl" x="${(xs[0] + xs[1]) / 2}" y="${y(Math.max(jun, set)) - 26}" text-anchor="middle" style="fill:${dv < 0 ? 'var(--desce)' : 'var(--sobe)'};font-size:20px">${sinal(Math.round(100 * dv / jun), v => nf(v))}%</text>` : ''}
+    </svg>`;
+    const n = [nCairam, DP.filter(d => d === 0).length, DP.filter(d => d > 0).length], cor = ['var(--desce)', 'var(--igual)', 'var(--sobe)'];
+    const rot = [L('perderam', 'lost'), L('iguais', 'same'), L('ganharam', 'gained')];
+    $('#barDin').innerHTML = `<div class="stack">${n.map((v, k) => `<i style="flex:${v};background:${cor[k]}" title="${v} ${rot[k]}"></i>`).join('')}</div>
+      <div class="stackl">${n.map((v, k) => `<span><b>${v}</b> ${rot[k]}</span>`).join('')}</div>
+      <p class="nota-g">${L(`municípios, pontos de vacina jun → set/2026 · ${nZero} ficaram sem nenhum ponto em setembro`, `municipalities, vaccine points Jun → Sep 2026 · ${nZero} had no points at all in September`)}</p>`;
   }
 
   /* busca (as três caixas usam a mesma lista) */
@@ -603,7 +604,12 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     ul.addEventListener('mousedown', e => { const li = e.target.closest('li'); if (li) escolher(+li.dataset.i); });
     inp.addEventListener('blur', () => setTimeout(() => ul.classList.remove('on'), 120));
   }
-  busca($('#busca'), $('#sug')); busca($('#busca2'), $('#sug2')); busca($('#busca3'), $('#sug3'));
+  busca($('#busca'), $('#sug'));
+  $('#limpa').onclick = () => {
+    st.mun = null; $('#busca').value = ''; $('#limpa').hidden = true;
+    paths.forEach(p => p.classList.remove('sel')); $('#mapa').classList.remove('dim');
+    url(); cartao(); vDen(); vAcaso(); vRegras(); vCrianca();
+  };
 
   function url() {
     try {
@@ -615,12 +621,11 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
   }
   function escolher(i) {
     st.mun = i;
-    ['#busca', '#busca2', '#busca3'].forEach(s => { $(s).value = titulo(nomes[i]); });
-    ['#sug', '#sug2', '#sug3'].forEach(s => $(s).classList.remove('on'));
+    $('#busca').value = titulo(nomes[i]); $('#sug').classList.remove('on'); $('#limpa').hidden = false;
     paths.forEach((p, k) => p.classList.toggle('sel', k === i));
     $('#mapa').classList.add('dim');
     const p = paths[i]; p.parentNode.appendChild(p);
-    url(); cartao(); vDen(); vAcaso(); desenhaRegra(); vCrianca();
+    url(); cartao(); vDen(); vAcaso(); vRegras(); vCrianca();
   }
 
   /* ===== 2. calendário ===== */
@@ -634,7 +639,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
         <text x="${l + i * bw + bw / 2}" y="${h - 8}" text-anchor="middle">${MES()[i]}</text>`).join('')}
       <line x1="${l}" x2="${w}" y1="${y(med)}" y2="${y(med)}" stroke="var(--ink)" stroke-dasharray="4 4"/>
       <text x="${w}" y="${y(med) - 6}" text-anchor="end">${L('1/12 do ano', '1/12 of the year')}</text>
-      <text class="lbl" x="${l}" y="16" style="fill:var(--atual)">${L(`jan–abr: ${nf(100 * ja, 1)}% dos nascidos do ano (um terço seria 33,3%)`, `Jan–Apr: ${nf(100 * ja, 1)}% of the year's births (a third would be 33.3%)`)}</text>
+      <text class="lbl" x="${l}" y="16" style="fill:var(--atual)">${L('Nascem mais crianças de janeiro a abril', 'More children are born in January–April')}</text>
     </svg>`;
   }
   const DF = D.defs;
@@ -656,7 +661,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       ${linha(C, 'var(--prop)', 2.5)}${linha(A, 'var(--atual)', 3)}
       ${A.map((v, i) => i <= T ? `<circle cx="${x(i)}" cy="${y(v)}" r="${i === T ? 6 : 3.5}" fill="var(--atual)"/>` : '').join('')}
       ${C.map((v, i) => i <= T ? `<circle cx="${x(i)}" cy="${y(v)}" r="${i === T ? 5 : 3}" fill="var(--prop)"/>` : '').join('')}
-      <text class="lbl" x="${x(T) + 10}" y="${y(A[T]) + 5}" style="fill:var(--atual)">${nf(A[T], 1)}%</text>
+      <text class="lbl" x="${T === A.length - 1 ? x(T) : x(T) + 10}" y="${T === A.length - 1 ? y(A[T]) - 12 : y(A[T]) + 5}" text-anchor="${T === A.length - 1 ? 'middle' : 'start'}" style="fill:var(--atual)">${nf(A[T], 1)}%</text>
       <text class="lbl" x="${w - r + 8}" y="${y(C[A.length - 1]) + 4}" style="fill:var(--prop)">${L('12 meses', '12 months')}</text>
       <text class="lbl" x="${w - r + 8}" y="${y(A[A.length - 1]) + 4}" style="fill:var(--atual)">${L('acumulado', 'cumulative')}</text>
     </svg>`;
@@ -721,7 +726,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       <text x="${l}" y="12">${L('mudança da Penta, pontos percentuais', 'Penta change, percentage points')}</text>
       ${i === null || sw[i] == null ? '' : `<circle cx="${x(NV25[i])}" cy="${y(sw[i])}" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><text class="lbl" x="${x(NV25[i]) + 10}" y="${y(sw[i]) - 8}">${esc(titulo(nomes[i]))}</text>`}
     </svg>
-    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L('cada ponto: um município; traço preto: mediana por porte (menos de 100, 100–499, 500–1.499 e 1.500 ou mais nascidos)', 'each dot: a municipality; black bars: median by size (under 100, 100–499, 500–1,499 and 1,500 or more births)')} · ${SRC.ses()}</p>`;
+    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L('cada ponto: um município; traço preto: mediana por porte (menos de 100, 100–499, 500–1.499 e 1.500 ou mais nascidos)', 'each dot: a municipality; black bars: median by size (under 100, 100–499, 500–1,499 and 1,500 or more births)')}</p>`;
     const A = D.atraso;
     $('#kAtr1').textContent = L(`${nf(A.mediana)} dia`, `${nf(A.mediana)} day`);
     $('#kAtr1L').innerHTML = L('metade das doses entra no sistema<br>até um dia depois da vacina', 'half of doses are entered<br>within a day of vaccination');
@@ -736,132 +741,91 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     $('#atrMun').innerHTML = i === null ? '' : `<b>${esc(titulo(nomes[i]))}</b>: ` + (rel ? IGM.VAC.filter(v => rel[v]).map(v => `${VAC_L(v)} ${nf(rel[v][0])} → ${nf(rel[v][1])}`).join(' · ') + ' ' + L('(vacinados jan–abr/2026, leitura do estado → releitura)', '(vaccinated Jan–Apr 2026, state reading → re-read)') : L('a releitura de 19/09 não mudou os vacinados de jan–abr/2026.', 'the 19 Sep re-read did not change the Jan–Apr 2026 counts.'));
   }
 
-  /* ===== 5. regras ===== */
-  const REGRAS = () => [
-    {id: 'R0', l: L('(i) Regra atual', '(i) Current rule'), cor: 'var(--atual)', spec: () => IGM.PRESETS.R0},
-    {id: 'R1', l: L('(ii) Faixas, corte 90%', '(ii) Bands, 90% cut'), cor: 'var(--fixo90)', spec: () => IGM.PRESETS.R1},
-    {id: 'R2', l: L('(iii) Faixas, corte 95%', '(iii) Bands, 95% cut'), cor: 'var(--fixo95)', spec: () => IGM.PRESETS.R2},
-    {id: 'P', l: L('(iv) Proporcional', '(iv) Proportional'), cor: 'var(--prop)', spec: () => ({tipo: 'prop', piso: +$('#rPiso').value, meta: 95, orcamento: $('#rOrc').checked})},
-    {id: 'C', l: L('(v) Por criança', '(v) Per child'), cor: 'var(--crianca)', spec: () => ({tipo: 'crianca', piso: +$('#rPiso').value, meta: 95, fixa: $('#rVar').checked ? 0 : 0.5})},
+  /* ===== 5. regras: escada × rampa, total por ano, parcela a parcela, reais por criança ===== */
+  const RG = () => [
+    {id: 'R0', l: L('(i) atual', '(i) current'), cor: 'var(--atual)'},
+    {id: 'R1', l: L('(ii) faixas 90%', '(ii) bands 90%'), cor: 'var(--fixo90)'},
+    {id: 'R2', l: L('(iii) faixas 95%', '(iii) bands 95%'), cor: 'var(--fixo95)'},
+    {id: 'R3b', l: L('(iv) proporcional', '(iv) proportional'), cor: 'var(--prop)'},
+    {id: 'R4', l: L('(v) por criança', '(v) per child'), cor: 'var(--crianca)'},
   ];
-  let rSel = 'P', rParc = iSet, rVista = 'estado';
-  const atual = IGM.regra(B, IGM.PRESETS.R0, ctx);
-  $('#rPiso').oninput = () => { $('#rPisoV').textContent = $('#rPiso').value + '%'; desenhaRegra(); vCrianca(); };
-  $('#rOrc').onchange = desenhaRegra; $('#rVar').onchange = desenhaRegra;
+  const RES = {}; for (const k of ['R0', 'R1', 'R2', 'R3b', 'R4']) RES[k] = IGM.regra(B, IGM.PRESETS[k], ctx);
+  const atual = RES.R0;
+  const ipg = id => B.pags.findIndex(p => p.id === id);
+  const ANOS = () => [['2025', ['2025-06', '2025-09', '2025-12'], ''], ['2026', ['2026-06', '2026-09', '2026-12'], L('com dez previsto', 'incl. Dec forecast')], ['2027', ['2027-06', '2027-09', '2027-12'], L('projeção', 'projection')]];
   const eixoParcelas = (w, l, r) => i => l + (w - l - r) * (i + .5) / B.P;
   function faixasStatus(x, top, bot) {
     const iF = B.pags.findIndex(p => p.status === 'forecast'), iP = B.pags.findIndex(p => p.status === 'projection'), half = (x(1) - x(0)) / 2;
     return `<rect x="${x(iF) - half}" y="${top}" width="${(B.P - iF) * 2 * half}" height="${bot - top}" fill="var(--bg-2)" opacity=".7"/>
-      <text x="${x(iF)}" y="${bot - 6}" text-anchor="middle">${STAT('forecast')}</text>
-      <line x1="${x(iP) - half}" x2="${x(iP) - half}" y1="${top}" y2="${bot}" stroke="var(--rule)" stroke-dasharray="3 3"/>
-      <text x="${(x(iP) + x(B.P - 1)) / 2}" y="${bot - 6}" text-anchor="middle">${STAT('projection')} 2027</text>`;
+      <line x1="${x(iP) - half}" x2="${x(iP) - half}" y1="${top}" y2="${bot}" stroke="var(--rule)" stroke-dasharray="3 3"/>`;
   }
-  const rotPag = (k, sel) => `<text x="X" y="Y" text-anchor="middle" style="${sel ? 'fill:var(--ink);font-weight:500' : ''}">${PAG_L(B.pags[k].id)}${k === 0 ? '*' : ''}</text>`;
-  function quantis(a) { const s = Array.from(a).sort((x, y) => x - y), q = f => { const h = (s.length - 1) * f, i = Math.floor(h); return s[i] + (s[Math.min(i + 1, s.length - 1)] - s[i]) * (h - i); }; return [q(.1), q(.25), q(.5), q(.75), q(.9)]; }
-  const parteMax = (o, k) => Array.from(o.rs, (v, m) => 100 * v / (IGM.MAX_PONTOS * B.vp[k][m]));
   const pickParc = (el, sel, cb) => { el.innerHTML = B.pags.map((p, i) => `<button data-i="${i}" aria-pressed="${i === sel}" class="${p.status === 'observed' ? '' : 'prev'}" title="${STAT(p.status)}">${PAG_L(p.id)}</button>`).join('') + `<span class="pl">${L('tracejado: dez/26 previsão, 2027 projeção', 'dashed: Dec 26 forecast, 2027 projection')}</span>`; el.onclick = e => { const b = e.target.closest('button'); if (b) cb(+b.dataset.i); }; };
+  const fmtR = v => v >= 1e6 ? `${nf(v / 1e6, 1)}${L(' mi', 'm')}` : v >= 1e3 ? `${nf(v / 1e3)}${L(' mil', 'k')}` : nf(v);
 
-  function desenhaRegra() {
-    const RR = REGRAS(), R = RR.find(r => r.id === rSel), spec = R.spec(), res = IGM.regra(B, spec, ctx), prop = spec.tipo !== 'faixas';
-    $('#lComo').textContent = L('Como paga', 'How it pays');
-    $('#rRegra').innerHTML = RR.map(r => `<button data-v="${r.id}" aria-pressed="${r.id === rSel}"><i class="sw" style="background:${r.cor}"></i>${r.l}</button>`).join('');
-    $('#rRegra').onclick = e => { const b = e.target.closest('button'); if (!b) return; rSel = b.dataset.v; desenhaRegra(); };
-    $('#lPiso').textContent = L('Paga de nada em…', 'Pays nothing at…'); $('#lPiso2').textContent = L('até cheio em 95%', 'up to full at 95%');
-    $('#lOrc').textContent = L('Orçamento', 'Budget'); $('#lOrc2').textContent = L('o mesmo da regra atual', 'same as the current rule');
-    $('#lVar').textContent = L('Por criança', 'Per child'); $('#lVar2').textContent = L('tudo variável', 'all variable');
-    $('#lMede').textContent = L('Como mede a cobertura', 'How coverage is measured'); $('#lVer').textContent = L('Ver', 'Show');
-    $('#cPiso').classList.toggle('off', !prop); $('#cOrc').classList.toggle('off', spec.tipo !== 'prop'); $('#cVar').classList.toggle('off', spec.tipo !== 'crianca');
-    $('#rMede').innerHTML = [['ac', L('Acumulado da SES', 'State cumulative')], ['12', L('12 meses', '12 months')]].map(([id, l]) => `<button disabled aria-pressed="${prop ? id === '12' : id === 'ac'}" title="${L('Segue a regra escolhida', 'Follows the chosen rule')}">${l}</button>`).join('');
-    seg($('#rVista'), [['estado', L('Total do estado (R$)', 'State total (R$)')], ['mun', L('Cada município (% do seu máximo)', 'Each municipality (% of its maximum)')]], rVista, v => { rVista = v; desenhaRegra(); });
-    pickParc($('#rParc'), rParc, i => { rParc = i; desenhaRegra(); });
-
-    const w = larg('#gRegra', 720), h = 330, l = 40, r = w < 560 ? 86 : 124, t = 22, b = 30, x = eixoParcelas(w, l, r), poucos = w < 600;
-    const dois = rSel !== 'R0', iM = st.mun;
-    const mostra = k => !poucos || k % 2 === 0 || k === rParc;
-    const rot = B.pags.map((p, k) => mostra(k) ? rotPag(k, k === rParc).replace('X', x(k)).replace('Y', h - 10) : '').join('');
-    if (rVista === 'estado') {
-      const hi = 75, y = v => t + (h - t - b) * (1 - v / hi);
-      const lin = (vals, cor, sw, dash) => `<polyline fill="none" stroke="${cor}" stroke-width="${sw}" ${dash ? `stroke-dasharray="${dash}"` : ''} points="${vals.map((v, i) => `${x(i)},${y(v)}`).join(' ')}"/>`;
-      const tA = atual.map(o => o.total / 1e6), tR = res.map(o => o.total / 1e6), mx = atual.map(o => o.maximo / 1e6);
-      const pago = Object.entries(D.pagoEst).map(([p, a]) => [B.pags.findIndex(q => q.id === p), a[0]]);
-      $('#gRegra').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
-        ${faixasStatus(x, t, h - b)}
-        ${[0, 20, 40, 60].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('')}
-        <text x="${l - 6}" y="${t - 8}" text-anchor="end">${L('R$ mi', 'R$ mn')}</text>
-        ${lin(mx, 'var(--ink)', 1, '2 4')}<text x="${w - r + 8}" y="${y(mx[B.P - 1]) + 4}">${L('máximo', 'maximum')}</text>
-        ${dois ? lin(tA, 'var(--atual)', 2, '') + `<text class="lbl" x="${w - r + 8}" y="${y(tA[B.P - 1]) + 4}" style="fill:var(--atual)">${L('regra atual', 'current rule')}</text>` : ''}
-        ${lin(tR, R.cor, 3.5, '')}
-        ${tR.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === rParc ? 6.5 : 4}" fill="${R.cor}" data-i="${i}" style="cursor:pointer"/>`).join('')}
-        <text class="lbl" x="${w - r + 8}" y="${y(tR[B.P - 1]) + (dois && Math.abs(tR[B.P - 1] - tA[B.P - 1]) < 4 ? -10 : 4)}" style="fill:${R.cor}">${esc(R.l.replace(/^\(\w+\) /, '').toLowerCase())}</text>
-        ${pago.map(([i, v]) => `<path d="M${x(i)} ${y(v) - 7}l7 7l-7 7l-7 -7z" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.5"><title>${L('Pago pelo estado', 'Paid by the state')}, ${PAG_L(B.pags[i].id)}: ${mi(v * 1e6)}</title></path>`).join('')}
-        ${rot}
+  function vRegras() {
+    const R = RG();
+    /* escada × rampa: parte do ponto de uma vacina conforme a cobertura, para quem estava em 90% (mediana ~88%) */
+    $('#tEsc').textContent = L('Quanto de uma vacina cada regra paga, conforme a cobertura', 'How much of one vaccine each rule pays, by coverage');
+    (() => {
+      const w = larg('#gEsc', 560), h = 270, l = 40, r = w < 480 ? 12 : 120, t = 14, b = 40, lo = 70, hi = 102;
+      const x = v => l + (w - l - r) * (v - lo) / (hi - lo), y = v => t + (h - t - b) * (1 - v), xs = [];
+      for (let v = lo; v <= hi; v += .05) xs.push(v);
+      const pl = (f, c, sw, d) => `<polyline fill="none" stroke="${c}" stroke-width="${sw}" ${d ? `stroke-dasharray="${d}"` : ''} points="${xs.map(v => `${x(v)},${y(f(v))}`).join(' ')}"/>`;
+      $('#gEsc').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+        ${[0, .5, .75, 1].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v * 100}%</text>`).join('')}
+        ${[70, 80, 88, 95, 100].map(v => `<text x="${x(v)}" y="${h - b + 16}" text-anchor="middle">${v}%</text>`).join('')}
+        <text x="${(l + w - r) / 2}" y="${h - 4}" text-anchor="middle">${L('cobertura', 'coverage')}</text>
+        ${pl(v => IGM.faixa(90, v, 88, 88), 'var(--atual)', 3)}${pl(v => IGM.faixa(90, v, 90, 90), 'var(--fixo90)', 2, '6 3')}${pl(v => IGM.proporcional(v, 80, 95), 'var(--prop)', 3)}
+        ${w < 480 ? '' : `<text class="lbl" x="${w - r + 8}" y="${y(1) - 4}" style="fill:var(--atual)">${L('(i) atual: degraus', '(i) current: steps')}</text><text class="lbl" x="${w - r + 8}" y="${y(1) + 14}" style="fill:var(--fixo90)">(ii) 90%</text><text class="lbl" x="${w - r + 8}" y="${y(1) + 32}" style="fill:var(--prop)">${L('(iv), (v): rampa', '(iv), (v): ramp')}</text>`}
       </svg>
-      <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L('◇ pago pelo estado em 2026 (antes do teto) ', '◇ paid by the state in 2026 (before the cap) ')}${SRC.ses()} · ${L('linhas', 'lines')} ${SRC.fed()} · ${L('* set/24 aproximado', '* Sep 24 approximate')}</p>`;
-      $('#gRegra').querySelectorAll('circle').forEach(c => {
-        c.onmousemove = e => { const i = +c.dataset.i, o = res[i]; dica(e, `<b>${PAG_L(B.pags[i].id)}${STAT(B.pags[i].status) ? ' · ' + STAT(B.pags[i].status) : ''}</b>${esc(R.l)}: ${mi(o.total)}<br>${nf(100 * o.total / atual[i].maximo)}% ${L('do máximo por habitante', 'of the per-inhabitant maximum')}<br>${o.zero} ${L('municípios sem nada', 'municipalities with nothing')}${dois ? `<br>${L('regra atual', 'current rule')}: ${mi(atual[i].total)}, ${atual[i].zero} ${L('sem nada', 'with nothing')}` : ''}`); };
-        c.onmouseleave = semDica; c.onclick = () => { rParc = +c.dataset.i; desenhaRegra(); };
+      <p class="nota-g">${L('Exemplo de um município que estava em 90%, com a mediana do estado em 88%. Na regra atual, ficar abaixo da mediana zera a vacina; subir um pouco dá tudo. Na rampa, cada ponto de cobertura vale o mesmo.', 'Example: a municipality that was at 90%, with the state median at 88%. Under the current rule, falling below the median zeroes the vaccine and rising slightly pays it all. On the ramp, every point of coverage is worth the same.')}</p>`;
+    })();
+
+    /* total do estado por ano, em R$ */
+    $('#tAno').textContent = L('Total do estado por ano, R$ milhões', 'State total per year, R$ million');
+    (() => {
+      const A = ANOS(), w = larg('#gAno', 560), h = 270, l = 34, r = 6, t = 18, b = 40, gw = (w - l - r) / A.length, bw = gw / (R.length + 1.2), y = v => t + (h - t - b) * (1 - v / 140e6);
+      let out = '';
+      A.forEach(([a, ids, nota], g) => {
+        const x0 = l + g * gw + bw * .6;
+        R.forEach((rg, j) => { const v = ids.reduce((s, id) => s + RES[rg.id][ipg(id)].total, 0);
+          out += `<rect x="${x0 + j * bw}" y="${y(v)}" width="${bw - 2}" height="${h - b - y(v)}" fill="${rg.cor}" rx="2" opacity="${a === '2025' ? 1 : .8}"><title>${rg.l}, ${a}: ${mi(v)}</title></rect>${w >= 480 ? `<text x="${x0 + j * bw + (bw - 2) / 2}" y="${y(v) - 4}" text-anchor="middle" style="font-size:10px">${nf(v / 1e6)}</text>` : ''}`; });
+        out += `<text class="lbl" x="${l + g * gw + gw / 2}" y="${h - 20}" text-anchor="middle">${a}</text><text x="${l + g * gw + gw / 2}" y="${h - 5}" text-anchor="middle" style="font-size:10px">${nota}</text>`;
       });
-    } else {
-      /* cada município: dinheiro ÷ o próprio máximo por habitante; caixa 25–75%, haste 10–90%, traço = mediana */
-      const QR = res.map((o, k) => quantis(parteMax(o, k))), QA = atual.map((o, k) => quantis(parteMax(o, k)));
-      const hi = Math.max(100, Math.ceil(Math.max(...QR.map(q => q[4]), ...QA.map(q => q[4])) / 25) * 25), y = v => t + (h - t - b) * (1 - Math.min(v, hi) / hi);
-      const caixa = (q, cx, cor, bw, op) => `<line x1="${cx}" x2="${cx}" y1="${y(q[0])}" y2="${y(q[4])}" stroke="${cor}" stroke-width="1.5" opacity="${op}"/>
-        <rect x="${cx - bw / 2}" y="${y(q[3])}" width="${bw}" height="${Math.max(1.5, y(q[1]) - y(q[3]))}" fill="${cor}" opacity="${op * .85}"/>
-        <line x1="${cx - bw / 2 - 2}" x2="${cx + bw / 2 + 2}" y1="${y(q[2])}" y2="${y(q[2])}" stroke="var(--ink)" stroke-width="2.5"/>`;
-      const ticks = []; for (let v = 0; v <= hi; v += 25) ticks.push(v);
-      const mun = iM === null ? '' : `<polyline fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 3" points="${res.map((o, k) => `${x(k)},${y(parteMax(o, k)[iM])}`).join(' ')}"/>
-        <text class="lbl" x="${w - r + 8}" y="${y(parteMax(res[B.P - 1], B.P - 1)[iM]) + 4}">${esc(titulo(nomes[iM]))}</text>`;
-      $('#gRegra').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
-        ${faixasStatus(x, t, h - b)}
-        ${ticks.map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 100 ? 'var(--t3)' : 'var(--rule-2)'}" ${v === 100 ? 'stroke-dasharray="2 4"' : ''}/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join('')}
-        <text x="${w - r + 8}" y="${y(100) + 4}">${L('seu máximo', 'its maximum')}</text>
-        ${B.pags.map((p, k) => (dois ? caixa(QA[k], x(k) - 12, 'var(--atual)', 14, .45) : '') + caixa(QR[k], dois ? x(k) + 8 : x(k), R.cor, dois ? 18 : 22, 1) +
-          `<rect x="${x(k) - 30}" y="${t}" width="60" height="${h - t - b}" fill="transparent" data-k="${k}" style="cursor:pointer"/>`).join('')}
-        ${mun}${rot}
-        <text class="lbl" x="${w - r + 8}" y="${y(QR[B.P - 1][2]) + (iM === null ? 4 : 18)}" style="fill:${R.cor}">${esc(R.l.replace(/^\(\w+\) /, '').toLowerCase())}</text>
-      </svg>
-      <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L(`cada caixa: metade dos 645 municípios (haste: 80%); traço preto: o município mediano${dois ? ' · laranja ao lado: regra atual' : ''}${iM === null ? '' : ' · tracejado: o município escolhido'} · máximo = as 4 vacinas cheias pelo valor do ponto por habitante · `, `each box: the middle half of the 645 municipalities (whisker: 80%); black tick: the median municipality${dois ? ' · orange beside: current rule' : ''}${iM === null ? '' : ' · dashed: the chosen municipality'} · maximum = all 4 vaccines in full at the per-inhabitant point value · `)}${SRC.fed()}</p>`;
-      $('#gRegra').querySelectorAll('rect[data-k]').forEach(rc => {
-        rc.onmousemove = e => { const k = +rc.dataset.k, q = QR[k], a = QA[k];
-          dica(e, `<b>${PAG_L(B.pags[k].id)}${STAT(B.pags[k].status) ? ' · ' + STAT(B.pags[k].status) : ''}</b>${esc(R.l)}: ${L('mediana', 'median')} ${nf(q[2])}%<br>${L('metade entre', 'middle half')} ${nf(q[1])}–${nf(q[3])}%${dois ? `<br>${L('regra atual', 'current rule')}: ${L('mediana', 'median')} ${nf(a[2])}%, ${nf(a[1])}–${nf(a[3])}%` : ''}${iM === null ? '' : `<br>${esc(titulo(nomes[iM]))}: ${nf(parteMax(res[k], k)[iM])}%`}`); };
-        rc.onmouseleave = semDica; rc.onclick = () => { rParc = +rc.dataset.k; desenhaRegra(); };
-      });
-    }
+      $('#gAno').innerHTML = `<svg viewBox="0 0 ${w} ${h}">${[0, 50e6, 100e6].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v / 1e6}</text>`).join('')}${out}</svg>
+        <div class="leg">${R.map(rg => `<span><i style="background:${rg.cor}"></i>${rg.l}</span>`).join('')}</div>
+        <p class="nota-g">${L('Proporcional e por criança pagam o mesmo total que a média da regra atual: muda só a divisão entre municípios. O máximo possível é R$ 178 milhões por ano (R$ 214 milhões em 2027).', 'Proportional and per child pay the same total as the current rule\'s average; only the split between municipalities changes. The maximum possible is R$ 178 million a year (R$ 214 million in 2027).')}</p>`;
+    })();
 
-    /* zerados por parcela */
-    $('#tZero').textContent = L('Municípios sem nada de dinheiro de vacina', 'Municipalities with no vaccine money');
-    const hz = 120, yz = v => 14 + (hz - 38) * (1 - v / 300);
-    $('#gZero').innerHTML = `<svg viewBox="0 0 ${w} ${hz}">
-      ${B.pags.map((p, i) => { const a = atual[i].zero, z = res[i].zero, bw = Math.min(16, (w - l - r) / B.P / 2.4);
-        return `${dois ? `<rect x="${x(i) - bw - 1}" y="${yz(a)}" width="${bw}" height="${hz - 24 - yz(a)}" fill="var(--atual-2)"><title>${L('Regra atual', 'Current rule')}: ${a}</title></rect>${poucos ? '' : `<text x="${x(i) - bw / 2 - 1}" y="${yz(a) - 4}" text-anchor="middle">${a}</text>`}` : ''}
-          <rect x="${dois ? x(i) + 1 : x(i) - bw / 2}" y="${yz(z)}" width="${bw}" height="${hz - 24 - yz(z)}" fill="${R.cor}"><title>${esc(R.l)}: ${z}</title></rect>
-          ${mostra(i) ? `<text x="${dois ? x(i) + 9 : x(i)}" y="${yz(z) - 4}" text-anchor="middle" style="fill:var(--ink)">${z}</text>` : ''}
-          ${mostra(i) ? `<text x="${x(i)}" y="${hz - 8}" text-anchor="middle">${PAG_L(p.id)}</text>` : ''}`; }).join('')}
-    </svg>`;
+    /* parcela a parcela: o estado ou o município escolhido, três regras lado a lado, mesma escala */
+    const i = st.mun, tres = [R[0], R[3], R[4]];
+    $('#tParc').textContent = i === null ? L('Parcela a parcela, o estado inteiro (escolha um município no topo para ver o dele)', 'Payment by payment, the whole state (choose a municipality at the top to see its own)') : L(`Parcela a parcela: ${titulo(nomes[i])}`, `Payment by payment: ${titulo(nomes[i])}`);
+    const val = (k, p) => i === null ? RES[k][p].total : RES[k][p].rs[i];
+    const top = Math.max(1, ...tres.flatMap(rg => B.pags.map((_, p) => val(rg.id, p))));
+    $('#gParc').innerHTML = tres.map(rg => {
+      const w = larg('#gParc', 1200) >= 760 ? 360 : larg('#gParc', 560), h = 210, l = 52, r = 6, t = 12, b = 26, x = eixoParcelas(w, l, r), y = v => t + (h - t - b) * (1 - v / (top * 1.08)), bw = (w - l - r) / B.P * .68;
+      const z = B.pags.filter((_, p) => val(rg.id, p) < 0.005).length;
+      return `<div><div class="pt" style="color:${rg.cor}">${rg.l}</div><svg viewBox="0 0 ${w} ${h}">${faixasStatus(x, t, h - b)}
+        ${[0, .5, 1].map(f => `<line x1="${l}" x2="${w - r}" y1="${y(f * top)}" y2="${y(f * top)}" stroke="var(--rule-2)"/><text x="${l - 5}" y="${y(f * top) + 4}" text-anchor="end">${f ? fmtR(f * top) : '0'}</text>`).join('')}
+        ${B.pags.map((p, k) => { const v = val(rg.id, k); return `<rect x="${x(k) - bw / 2}" y="${y(v)}" width="${bw}" height="${Math.max(0, h - b - y(v))}" fill="${rg.cor}" rx="2"><title>${PAG_L(p.id)}${STAT(p.status) ? ' (' + STAT(p.status) + ')' : ''}: ${rs(v)}</title></rect>${v < 0.005 ? `<text x="${x(k)}" y="${h - b - 4}" text-anchor="middle" style="fill:var(--atual);font-size:10px">0</text>` : ''}`; }).join('')}
+        <text x="${x(0)}" y="${h - 8}" text-anchor="middle">${PAG_L(B.pags[0].id)}</text><text x="${x(B.P - 1)}" y="${h - 8}" text-anchor="middle">${PAG_L(B.pags[B.P - 1].id)}</text></svg>
+        <p class="nota-g">${L('2025', '2025')}: ${rs(ANOS()[0][1].reduce((s, id) => s + val(rg.id, ipg(id)), 0))}${z ? L(` · ${z} parcela${z > 1 ? 's' : ''} zerada${z > 1 ? 's' : ''}`, ` · ${z} zero payment${z > 1 ? 's' : ''}`) : ''}</p></div>`;
+    }).join('');
 
-    /* números da parcela escolhida */
-    const o = res[rParc], a = atual[rParc], pj2 = B.pags[rParc], fr = res.slice(0, 8).map((q, k) => 100 * q.total / atual[k].maximo);
-    $('#rKpi').innerHTML = `<div><b style="color:${R.cor}">${mi(o.total)}</b><span>${nf(100 * o.total / a.maximo)}% ${L('do máximo', 'of the maximum')} · ${PAG_L(pj2.id)}${STAT(pj2.status) ? ' (' + STAT(pj2.status) + ')' : ''}</span></div>
-      <div><b>${o.zero}</b><span>${L('municípios sem nada', 'municipalities with nothing')}<br>${L('regra atual', 'current rule')}: ${a.zero}</span></div>
-      <div><b>${o.mudanca === null ? '—' : nf(o.mudanca, 1)}</b><span>${L('pontos percentuais: mudança mediana da parte do máximo de cada município desde a parcela anterior', 'percentage points: median change in each municipality\'s share of its maximum since the previous payment')}</span></div>
-      ${Math.max(...fr) - Math.min(...fr) < 0.5
-        ? `<div><b>${L('fixo', 'fixed')}</b><span>${L('o total do estado é o orçamento, igual em todas as parcelas até dez/26; o que muda é a divisão entre municípios', 'the state total is the budget, the same in every payment to Dec 26; what changes is the split between municipalities')}</span></div>`
-        : `<div><b>${nf(Math.min(...fr))}–${nf(Math.max(...fr))}%</b><span>${L('faixa do máximo pago, set/24 a dez/26 (dez/26 é previsão)', 'range of the maximum paid, Sep 24 to Dec 26 (Dec 26 is a forecast)')}</span></div>`}`;
-
-    /* município */
-    $('#rMunT').textContent = iM === null ? L('Um município', 'One municipality') : titulo(nomes[iM]);
-    if (iM === null) { $('#gMun').innerHTML = `<p style="font:400 13px/1.5 var(--mono);color:var(--t3)">${L('Busque um município para ver quanto ele receberia em cada parcela.', 'Find a municipality to see what it would receive in each payment.')}</p>`; return; }
-    const wm = larg('#gMun', 420), hm = 200, lm = 8, ym0 = 22;
-    const vals = res.map(q => q.rs[iM]), va = atual.map(q => q.rs[iM]), maxM = Math.max(...vals, ...va, ...B.pags.map((_, k) => IGM.MAX_PONTOS * B.vp[k][iM])) || 1;
-    const xm = k => lm + (wm - lm) * (k + .5) / B.P, ym = v => ym0 + (hm - ym0 - 24) * (1 - v / maxM), bw = Math.min(22, (wm - lm) / B.P * .7);
-    $('#gMun').innerHTML = `<svg viewBox="0 0 ${wm} ${hm}">
-      ${B.pags.map((p, k) => `<rect x="${xm(k) - bw / 2}" y="${ym(IGM.MAX_PONTOS * B.vp[k][iM])}" width="${bw}" height="${hm - 24 - ym(IGM.MAX_PONTOS * B.vp[k][iM])}" fill="none" stroke="var(--rule)"/>
-        <rect x="${xm(k) - bw / 2}" y="${ym(vals[k])}" width="${bw}" height="${hm - 24 - ym(vals[k])}" fill="${R.cor}" opacity="${p.status === 'observed' ? 1 : .55}"><title>${PAG_L(p.id)}: ${rs(vals[k])}</title></rect>
-        ${dois ? `<line x1="${xm(k) - bw / 2 - 3}" x2="${xm(k) + bw / 2 + 3}" y1="${ym(va[k])}" y2="${ym(va[k])}" stroke="var(--atual)" stroke-width="2.5"><title>${L('Regra atual', 'Current rule')} ${PAG_L(p.id)}: ${rs(va[k])}</title></line>` : ''}
-        ${wm >= 400 || k % 2 === 0 ? `<text x="${xm(k)}" y="${hm - 8}" text-anchor="middle" style="font-size:10px">${PAG_L(p.id).replace(/[\/ ]/, '')}</text>` : ''}`).join('')}
-      <text x="${lm}" y="12">${PAG_L(B.pags[rParc].id)}: ${rs(vals[rParc])}${dois ? ` · ${L('atual', 'current')} ${rs(va[rParc])}` : ''}</text>
-    </svg>
-    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L('contorno: máximo do município (4 vacinas cheias)', 'outline: the municipality\'s maximum (4 vaccines in full)')}${dois ? L(' · traço laranja: regra atual', ' · orange tick: current rule') : ''}</p>`;
+    /* reais por criança nascida, por faixa de per capita do estado (2025) */
+    $('#tTier').textContent = L('E quanto o estado paga, no ano, por criança nascida: depende mais da faixa de per capita do município que da regra', 'And what the state pays per child born in a year: it depends more on the municipality\'s per capita tier than on the rule');
+    (() => {
+      const nas = B.peso[ipg('2025-12')], tiers = [4, 15, 25, 30, 35, 40], ids = ANOS()[0][1];
+      const V = tres.map(rg => { const A = new Float64Array(N); ids.forEach(id => { const r = RES[rg.id][ipg(id)].rs; for (let m = 0; m < N; m++) A[m] += r[m]; });
+        return tiers.map(tt => { let s = 0, n = 0; MUN.forEach((m, k) => { if (m.pc === tt) { s += A[k]; n += nas[k]; } }); return s / n; }); });
+      const cnt = tiers.map(tt => MUN.filter(m => m.pc === tt).length);
+      const w = larg('#gTier', 900), h = 270, l = 40, r = 6, t = 18, b = 44, gw = (w - l - r) / tiers.length, bw = gw / (tres.length + 1.3), y = v => t + (h - t - b) * (1 - v / 750);
+      $('#gTier').innerHTML = `<svg viewBox="0 0 ${w} ${h}">${[0, 250, 500, 750].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text>`).join('')}
+        ${tiers.map((tt, g) => tres.map((rg, j) => { const v = V[j][g], x0 = l + g * gw + bw * .65 + j * bw; return `<rect x="${x0}" y="${y(v)}" width="${bw - 2}" height="${h - b - y(v)}" fill="${rg.cor}" rx="2"><title>${rg.l}, R$ ${tt}/${L('hab.', 'inhab.')}: ${rs(v)}</title></rect>${w >= 600 ? `<text x="${x0 + (bw - 2) / 2}" y="${y(v) - 4}" text-anchor="middle" style="font-size:10px">${nf(v)}</text>` : ''}`; }).join('') +
+          `<text class="lbl" x="${l + g * gw + gw / 2}" y="${h - 24}" text-anchor="middle">R$ ${tt}</text><text x="${l + g * gw + gw / 2}" y="${h - 8}" text-anchor="middle">${cnt[g]} mun.</text>`).join('')}</svg>
+        <div class="leg">${tres.map(rg => `<span><i style="background:${rg.cor}"></i>${rg.l}</span>`).join('')}</div>
+        <p class="nota-g">${L('Dinheiro de vacina das três parcelas de 2025 dividido pelos nascidos, agrupado pela faixa de per capita que o estado dá a cada município (R$ 4 por habitante na capital, R$ 15 a R$ 40 nos demais, por um índice de vulnerabilidade). A faixa pesa muito mais que a regra.', 'Vaccine money of the three 2025 payments divided by births, grouped by the per capita tier the state gives each municipality (R$ 4 per inhabitant in the capital, R$ 15–40 elsewhere, set by a vulnerability score). The tier matters far more than the rule.')}</p>`;
+    })();
   }
 
   /* ===== 6. uma criança a mais ===== */
@@ -874,18 +838,21 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     pickParc($('#crParc'), crP, i => { crP = i; vCrianca(); });
     $('#crN').textContent = (crN > 0 ? '+' : '') + nf(crN);
     const i = st.mun;
-    $('#crMunT').textContent = i === null ? L('Escolha um município', 'Choose a municipality') : titulo(nomes[i]);
-    const RR = REGRAS(), piso = +$('#rPiso').value;
-    const specs = [
-      [RR[0], IGM.PRESETS.R0], [RR[1], IGM.PRESETS.R1], [RR[2], IGM.PRESETS.R2],
-      [RR[3], {tipo: 'prop', piso, meta: 95, orcamento: true}],
-      [RR[4], {tipo: 'crianca', piso, meta: 95, fixa: 0.5}],
-    ];
+    $('#crMunT').textContent = i === null ? L('Escolha um município no topo da página para ver a curva dele', 'Choose a municipality at the top of the page to see its curve') : titulo(nomes[i]);
+    const RR = RG();
+    const specs = [[RR[0], IGM.PRESETS.R0], [RR[3], IGM.PRESETS.R3b], [RR[4], IGM.PRESETS.R4]];
     const r0 = D.reg.R0;
     $('#kPerto').textContent = nf(r0.perto[crP], 0) + '%';
     $('#kPertoL').innerHTML = L(`dos municípios tinham alguma vacina a uma criança de um corte em ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ', ' + STAT(B.pags[crP].status) : ''} (regra atual); salto mediano ${rs(r0.salto[crP])}`, `of municipalities had some vaccine within one child of a cut-off in ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ', ' + STAT(B.pags[crP].status) : ''} (current rule); median jump ${rs(r0.salto[crP])}`);
+    $('#crCtl').style.display = i === null ? 'none' : '';
     if (i === null) {
-      $('#gCr').innerHTML = `<p style="font:400 13px/1.5 var(--mono);color:var(--t3);padding:30px 0">${L('Busque um município (aqui ou no mapa) para empurrar crianças e ver o dinheiro de uma vacina mudar em cada regra.', 'Find a municipality (here or on the map) to add children and watch one vaccine\'s money change under each rule.')}</p>`;
+      /* Estado: em cada parcela, quantos municípios tinham alguma vacina a uma criança de um corte, e o salto mediano. */
+      const w = larg('#gCr', 640), h = 280, l = 40, r = 10, t = 30, b = 30, x = eixoParcelas(w, l, r), y = v => t + (h - t - b) * (1 - v / 50), bw = (w - l - r) / B.P * .62;
+      $('#gCr').innerHTML = `<div class="h4" style="margin-top:0">${L('Municípios com alguma vacina a uma criança de um corte (regra atual)', 'Municipalities with some vaccine within one child of a cut-off (current rule)')}</div>
+        <svg viewBox="0 0 ${w} ${h}">${faixasStatus(x, t, h - b)}${[0, 25, 50].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join('')}
+        ${B.pags.map((p, k) => `<rect x="${x(k) - bw / 2}" y="${y(r0.perto[k])}" width="${bw}" height="${h - b - y(r0.perto[k])}" fill="var(--atual)" rx="2" opacity="${p.status === 'observed' ? 1 : .55}"><title>${PAG_L(p.id)}: ${nf(r0.perto[k])}%; ${L('salto mediano', 'median jump')} ${rs(r0.salto[k])}</title></rect>${w >= 520 || k % 2 === 0 ? `<text x="${x(k)}" y="${y(r0.perto[k]) - 18}" text-anchor="middle" style="fill:var(--ink)">${nf(r0.perto[k])}%</text><text x="${x(k)}" y="${y(r0.perto[k]) - 5}" text-anchor="middle" style="font-size:10px">${fmtR(r0.salto[k])}</text>` : ''}
+          ${w >= 520 || k % 2 === 0 ? `<text x="${x(k)}" y="${h - 8}" text-anchor="middle">${PAG_L(p.id)}</text>` : ''}`).join('')}</svg>
+        <p class="nota-g">${L('Em cima de cada barra: a parte dos 645 municípios e o salto mediano em reais que essa uma criança decide. Nos demais, uma criança a mais não muda nada na regra atual; na proporcional e na por criança, cada criança entre 80% e 95% soma um pouco. Escolha um município no topo da página para ver a curva do dinheiro.', 'Above each bar: the share of the 645 municipalities and the median jump in reais that this one child decides. Elsewhere, one more child changes nothing under the current rule; under proportional and per child, every child between 80% and 95% adds a little. Choose a municipality at the top of the page to see the money curve.')}</p>`;
       $('#crVals').innerHTML = ''; return;
     }
     const v = IGM.VAC.indexOf(crV), o = B.cob[crP], nasc = o.nasc[v][i];
@@ -908,14 +875,14 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       <text x="${x(0)}" y="${h - b + 16}" text-anchor="middle">${L('hoje', 'today')}</text>
       <text x="${l}" y="${h - b + 16}">−${nf(K)}</text><text x="${w - r}" y="${h - b + 16}" text-anchor="end">+${nf(K)}</text>
       <text x="${(l + w - r) / 2}" y="${h - 4}" text-anchor="middle">${L('crianças vacinadas a mais (ou a menos) no período', 'children vaccinated more (or fewer) in the period')}</text>
-      ${specs.map(([R], k) => `<polyline fill="none" stroke="${R.cor}" stroke-width="${k === 0 ? 3 : k === 3 ? 3 : 1.8}" ${k === 4 ? 'stroke-dasharray="6 3"' : ''} points="${xs.map((n, j) => `${x(n)},${y(cur[k][j])}`).join(' ')}"/>`).join('')}
+      ${specs.map(([R], k) => `<polyline fill="none" stroke="${R.cor}" stroke-width="3" ${k === 2 ? 'stroke-dasharray="6 3"' : ''} points="${xs.map((n, j) => `${x(n)},${y(cur[k][j])}`).join(' ')}"/>`).join('')}
       <line x1="${x(xN)}" x2="${x(xN)}" y1="${t}" y2="${h - b}" stroke="var(--ink)" stroke-width="1.5"/>
       ${specs.map(([R], k) => `<circle cx="${x(xN)}" cy="${y(base[k].depois)}" r="4.5" fill="${R.cor}" stroke="var(--bg)" stroke-width="1.5"/>`).join('')}
     </svg>
-    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L(`dinheiro da ${VAC_L(crV)} em ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ' (' + STAT(B.pags[crP].status) + ')' : ''} · regra atual e faixas com a mediana mantida fixa · proporcional e por criança com o mesmo orçamento da regra atual; por criança: só a metade que depende da cobertura (tracejado) · `, `${VAC_L(crV)} money in ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ' (' + STAT(B.pags[crP].status) + ')' : ''} · current rule and bands with the median held fixed · proportional and per child at the current rule's budget; per child: only the half that depends on coverage (dashed) · `)}${SRC.fed()}</p>`;
+    <p style="font:400 11.5px/1.5 var(--mono);color:var(--t3);margin-top:4px">${L(`dinheiro da ${VAC_L(crV)} em ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ' (' + STAT(B.pags[crP].status) + ')' : ''} · regra atual com a mediana mantida fixa · proporcional e por criança com o mesmo orçamento da regra atual; por criança: só a metade que depende da cobertura (tracejado)`, `${VAC_L(crV)} money in ${PAG_L(B.pags[crP].id)}${STAT(B.pags[crP].status) ? ' (' + STAT(B.pags[crP].status) + ')' : ''} · current rule with the median held fixed · proportional and per child at the current rule's budget; per child: only the half that depends on coverage (dashed)`)}</p>`;
     const dif = base.map(z => z.depois - z.antes), mxD = Math.max(1, ...dif.map(Math.abs));
     $('#crVals').innerHTML = specs.map(([R], k) => `<span>${esc(R.l)}</span><div class="bar"><i style="left:${dif[k] < 0 ? 50 - 50 * Math.abs(dif[k]) / mxD : 50}%;width:${50 * Math.abs(dif[k]) / mxD}%;background:${R.cor}"></i><i style="left:50%;width:1px;background:var(--t3)"></i></div><b style="color:${Math.abs(dif[k]) < 0.5 ? 'var(--t3)' : 'var(--ink)'}">${Math.abs(dif[k]) < 0.5 ? 'R$ 0' : sinal(dif[k], rs)}</b>`).join('') +
-      `<span></span><span style="font:400 11.5px/1.5 var(--mono);color:var(--t3);grid-column:2/4">${L(`${crN > 0 ? '+' : ''}${nf(crN)} ${Math.abs(crN) === 1 ? 'criança' : 'crianças'} · cobertura acumulada ${nf(o.c1[v][i], 2)}% → ${nf(base[0].c1n, 2)}% · 12 meses ${nf(o.c12[v][i], 2)}% → ${nf(base[3].c12n, 2)}%`, `${crN > 0 ? '+' : ''}${nf(crN)} ${Math.abs(crN) === 1 ? 'child' : 'children'} · cumulative coverage ${nf(o.c1[v][i], 2)}% → ${nf(base[0].c1n, 2)}% · 12-month ${nf(o.c12[v][i], 2)}% → ${nf(base[3].c12n, 2)}%`)}</span>`;
+      `<span></span><span style="font:400 11.5px/1.5 var(--mono);color:var(--t3);grid-column:2/4">${L(`${crN > 0 ? '+' : ''}${nf(crN)} ${Math.abs(crN) === 1 ? 'criança' : 'crianças'} · cobertura acumulada ${nf(o.c1[v][i], 2)}% → ${nf(base[0].c1n, 2)}% · 12 meses ${nf(o.c12[v][i], 2)}% → ${nf(base[1].c12n, 2)}%`, `${crN > 0 ? '+' : ''}${nf(crN)} ${Math.abs(crN) === 1 ? 'child' : 'children'} · cumulative coverage ${nf(o.c1[v][i], 2)}% → ${nf(base[0].c1n, 2)}% · 12-month ${nf(o.c12[v][i], 2)}% → ${nf(base[1].c12n, 2)}%`)}</span>`;
   }
 
   /* ===== idioma e início ===== */
@@ -923,8 +890,8 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     document.documentElement.lang = LG === 'en' ? 'en' : 'pt-BR';
     $('#lang').textContent = LG === 'en' ? 'PT' : 'EN';
     document.title = L('Vacinas no IGM SUS Paulista · Coorte', 'Vaccines in the IGM SUS Paulista · Coorte');
-    vMapa(); vNasc(); serra(); vDen(); vAcaso(); desenhaRegra(); vCrianca();
-    if (st.mun !== null) ['#busca', '#busca2', '#busca3'].forEach(s => { $(s).value = titulo(nomes[st.mun]); });
+    vMapa(); vNasc(); serra(); vDen(); vAcaso(); vRegras(); vCrianca();
+    if (st.mun !== null) $('#busca').value = titulo(nomes[st.mun]);
   }
   let largAnt = innerWidth, tRes = 0;
   addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(() => { if (Math.abs(innerWidth - largAnt) > 30) { largAnt = innerWidth; tudo(); } }, 200); });
