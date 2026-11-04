@@ -52,6 +52,12 @@ piso (80% fixo, como no artigo); fontes no ⓘ, não em etiquetas sob os gráfic
 
 ## Publicar (quando Paulo decidir; plano: junto com a submissão do artigo)
 
+Antes (estado em 04/11/2026): aprovação da Prefeitura de São Caetano do Sul **não** é mais necessária (o artigo
+não trata mais do município). Pendentes: conflito de interesse (o artigo está em branco; a página ainda diz que
+alguns autores trabalham na gestão de um município paulista); frase do artigo §3.1 sobre Santo André; README da
+exportação. Paulo vai linkar a página a partir da publicação dele no Substack (pôr o link de volta na página quando
+houver a URL; usar `?m=<IBGE>` para links que abrem num município).
+
 1. Conferir: `node marca_coorte/site/simulacoes/igm-sp/teste_referencia.js` = 0 falhas; olhar a página no celular.
 2. Se houver DOI: trocar "Manuscrito em preparação" / "Manuscript in preparation" (bloco "Como contamos" e JSON-LD).
 3. Opcional: incluir o artigo em `publicacoes.html` (lista `PUBS`, por PMID, quando existir).
@@ -65,6 +71,7 @@ nas duas páginas).
 ## Registro
 
 - 2026-11-01: página criada (rascunho → versão completa), revisão independente, correções; teste 972/972.
+- 2026-11-04: citação com os autores (Suen, Oikawa, Malik, Sabino, Leal; FMUSP), conferida com o artigo.
 - 2026-11-04: redesenho mais simples (gráficos em reais, seletor no topo, fontes no ⓘ); validado por Paulo. Não publicada.
 
 ## Revisão independente (01/11/2026)
