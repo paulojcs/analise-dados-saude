@@ -337,6 +337,8 @@ section,[id]{scroll-margin-top:56px}
 .cs-foot button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .cs-link{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;background:var(--klein);color:var(--on-klein);font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .cs-link:hover{background:var(--klein-deep);color:var(--on-klein)}
+.cs-link.alt{background:transparent;color:var(--klein);box-shadow:inset 0 0 0 1px var(--klein);margin-top:-6px}
+.cs-link.alt:hover{background:var(--klein-wash,rgba(0,47,167,.05));color:var(--klein)}
 .cs-pubs{color:var(--t3)}
 .cs-pubs:hover{color:var(--klein)}
 .cs-foot button:focus-visible{outline:2px solid var(--klein);outline-offset:4px}
@@ -755,6 +757,7 @@ fieldset{border:0;margin:0;padding:0}
         <h3>Indicadores de qualidade e repasse financeiro na atenção primária</h3>
         <div class="chips"><span class="chip">Indicadores de APS</span><span class="chip">Equidade territorial</span><span class="chip">Financiamento por desempenho</span></div>
         <a class="cs-link" href="atlas/">Explorar no Atlas da APS <span aria-hidden="true">→</span></a>
+        <a class="cs-link alt" href="simulacoes/igm-sp/">Simular as regras das vacinas do IGM <span aria-hidden="true">→</span></a>
         <div class="cs-foot"><a class="cs-pubs" href="publicacoes.html#caso-02">1 publicação</a><button type="button" aria-expanded="false" aria-controls="cs2-p">Ver figura <i aria-hidden="true">+</i></button></div>
       </div>
     </article>

@@ -326,7 +326,7 @@ var HUBS=[
   {id:'caso-01',kind:'case',no:'Caso 01',name:'Detecção precoce de surto e análise preditiva',ctx:'Complexo hospitalar terciário',
    desc:'Microbiologia de um complexo hospitalar terciário: detecção de aglomerado, qualidade de coleta e resistência antimicrobiana.'},
   {id:'caso-02',kind:'case',no:'Caso 02',name:'Indicadores de qualidade e repasse financeiro na atenção primária',ctx:'Rede municipal',
-   desc:'Rede municipal: indicadores de APS, equidade territorial e financiamento por desempenho.',link:{href:'atlas/',t:'Explorar no Atlas da APS'}},
+   desc:'Rede municipal: indicadores de APS, equidade territorial e financiamento por desempenho.',links:[{href:'atlas/',t:'Explorar no Atlas da APS'},{href:'simulacoes/igm-sp/',t:'Simular as regras das vacinas do IGM'}]},
   {id:'caso-03',kind:'case',no:'Caso 03',name:'Otimização da jornada de pacientes',ctx:'Atenção especializada',
    desc:'Ambulatório de especialidades: prontuário eletrônico, laboratório e farmácia, regulação.'},
   {id:'vigilancia',kind:'front',no:'Frente',name:'Vigilância em tempo real',
@@ -662,7 +662,7 @@ function pubUrl(p){return 'https://pubmed.ncbi.nlm.nih.gov/'+p.pmid+'/';}
       var d=n.d;
       h='<div class="pk">'+esc(d.no)+(d.ctx?' · '+esc(d.ctx):'')+'</div><h2>'+esc(d.name)+'</h2><p>'+esc(d.desc)+'</p>'+
         '<div class="acts">'+(d.kind==='case'?'<a class="btn ghost" href="index.html#casos">Ver o caso →</a>':'')+
-        (d.link?'<a class="btn" href="'+d.link.href+'">'+esc(d.link.t)+' →</a>':'')+'</div>'+
+        (d.links||(d.link?[d.link]:[])).map(function(k,i){return '<a class="btn'+(i?' ghost':'')+'" href="'+k.href+'">'+esc(k.t)+' →</a>';}).join('')+'</div>'+
         '<div class="sec"><span>'+n.nb.length+(n.nb.length>1?' publicações':' publicação')+'</span><i></i></div><div class="items">'+n.nb.map(item).join('')+'</div>';
     }
     panel.innerHTML=h;

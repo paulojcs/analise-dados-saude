@@ -13,7 +13,7 @@ São Paulo's primary care incentive". Branch `feat/simulacao-igm-sp`. **Não pub
 | `dados/` | Dados públicos exportados do projeto PrefSaoCaetano (+ `pontos_publicados_2026.csv`, ver abaixo) |
 | `og-igm-sp-1200x630.png` | Imagem de compartilhamento; gerada por `simulacoes/igm-sp/gerar_og.py` |
 
-Fora da página: entrada no `sitemap.xml`; no Atlas, link para o simulador na caixa de fontes do IGM
+Fora da página: entrada no `sitemap.xml`; botão no cartão do Caso 02 da página inicial e no painel do Caso 02 em Publicações; no Atlas, link para o simulador na caixa de fontes do IGM
 (`atlas/web/index.src.html`, gerado com `python atlas/web/build_page.py`).
 
 ## O desenho (versão final, validada por Paulo em 04/11/2026)
@@ -54,8 +54,8 @@ piso (80% fixo, como no artigo); fontes no ⓘ, não em etiquetas sob os gráfic
 
 Antes (estado em 04/11/2026): aprovação da Prefeitura de São Caetano do Sul **não** é mais necessária (o artigo
 não trata mais do município). Pendentes: conflito de interesse (o artigo está em branco; a página ainda diz que
-alguns autores trabalham na gestão de um município paulista); frase do artigo §3.1 sobre Santo André; README da
-exportação. Paulo vai linkar a página a partir da publicação dele no Substack (pôr o link de volta na página quando
+alguns autores trabalham na gestão de um município paulista); README da exportação. (Santo André: corrigido no
+artigo em 04/11, "two of the three".) Paulo vai linkar a página a partir da publicação dele no Substack (pôr o link de volta na página quando
 houver a URL; usar `?m=<IBGE>` para links que abrem num município).
 
 1. Conferir: `node marca_coorte/site/simulacoes/igm-sp/teste_referencia.js` = 0 falhas; olhar a página no celular.
