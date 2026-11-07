@@ -88,4 +88,8 @@ artigo se ela diz "of these 128" / "of the 155".
 ## Registro
 
 - 2026-11-07: v2 criada (motor parametrizado, teste 1370/0, seção Monte sua regra, Figura G com quatro linhas);
-  revisão independente em Python (ver commit).
+  revisão independente em Python (próprio código, sem ler o motor): R0, R0s, R3b, R4v e 3 regras personalizadas × 11
+  parcelas, 0 divergências (total relativo 2e-15, zerados e estabilidade exatos); confirmou 163/128/90,5/155/70%,
+  224/136 e o achado da R0s (corte único ou fixo 95 explica os provisórios). Pontos que levantou: o casamento exato
+  dos rótulos de bloco (jun/2027 sem valor) é uma escolha; a "parte do máximo" é ponderada pelo peso de repartição;
+  não há c12 faltando em nenhuma parcela.
