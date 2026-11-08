@@ -205,5 +205,79 @@ for (const parc of ['jun', 'set']) {
 }
 confere('dinheiro das vacinas jun→set pago', Math.round(100 * (J.pagoEst['2026-09'][0] / J.pagoEst['2026-06'][0] - 1)), -41, 0);
 
+/* 7. Figuras finais do artigo (revisão de 08/11/2026). */
+// Figura 1C: nascidos de 2024 e Penta completa em 2025, por quadrimestre.
+const nb24 = [0, 1, 2].map(k => J.nasc2024.slice(4 * k, 4 * k + 4).reduce((a, b) => a + b, 0));
+[168131, 156800, 145952].forEach((x, k) => confere(`Figura 1C nascidos 2024 bloco ${k + 1}`, nb24[k], x, 0));
+const vPenta = IGM.VAC.indexOf('Penta');
+const acum = id => { const o = B.cob[ip(id)]; let s = 0; for (let m = 0; m < B.N; m++) if (!Number.isNaN(o.c1[vPenta][m])) s += o.c1[vPenta][m] * o.nasc[vPenta][m] / 100; return s; };
+const pq = [acum('2025-09'), acum('2025-12') - acum('2025-09'), acum('2026-06') - acum('2025-12')];
+[140474, 134492, 149407].forEach((x, k) => confere(`Figura 1C Penta 2025 bloco ${k + 1}`, Math.round(pq[k]), x, 0));
+// Figura 2A: teto de 2025 contra os nascidos de 2024.
+confere('Figura 2A: mediana do teto', r1(IGM.mediana(teto.filter(v => !Number.isNaN(v)))), 100.9, 1e-9);
+// Figura 2B: mudança mediana da Penta (valores publicados) por nascidos de 2024.
+const fig2b = {jun: [[284, 11.7], [219, 7.2], [86, 5.2], [56, 5.5]], set: [[284, 22.4], [219, 12.3], [86, 7.7], [56, 3.6]]};
+for (const parc of ['jun', 'set']) {
+  const [c0, c1] = J.cob[parc].oficial.Penta;
+  [[0, 100], [100, 500], [500, 1500], [1500, 1e9]].forEach(([a, b], k) => {
+    const sw = c0.map((x, i) => (x == null || c1[i] == null || nasAno[2024][i] < a || nasAno[2024][i] >= b) ? null : Math.abs(c1[i] - x)).filter(x => x !== null);
+    confere(`Figura 2B ${parc} grupo ${k} n`, sw.length, fig2b[parc][k][0], 0);
+    confere(`Figura 2B ${parc} grupo ${k} mediana`, r1(IGM.mediana(sw)), fig2b[parc][k][1], 1e-9);
+  });
+}
+// Figura 3A: série do artigo (fig3_series_full.csv; tolerância 0,001 ponto: o artigo usa vp sem o arredondamento
+// de 5 casas da exportação e diferenças de ordem de soma): % do máximo e zerados; Regras A e B = uma linha (pontuação igual).
+const FIG3 = [ // pag, atual %, zerados, A %, zerados A, B %, municípios com sbar = 0
+  ['2024-09', 36.39166194109532, 117, 79.99941878560891, 23, 79.46494062830824, 23], ['2024-12', 54.92474807688875, 23, 85.67794548939419, 14, 85.46572397035875, 14],
+  ['2025-06', 61.2077461660158, 25, 84.60025002637786, 10, 84.47060104918255, 10], ['2025-09', 40.27477302567396, 112, 81.1895348741505, 11, 80.87037749341728, 11],
+  ['2025-12', 62.34964801749671, 14, 74.17631310655794, 5, 73.84653170065552, 5], ['2026-06', 67.57863000496498, 14, 77.08124432678798, 12, 76.934836077455, 12],
+  ['2026-09', 37.43032181068392, 163, 77.38495925375244, 13, 77.168333991484, 13], ['2026-12', 70.9634904589511, 28, 77.45530791734306, 21, 77.46038532105607, 21],
+  ['2027-06', 71.0289711633484, 16, 77.08124432696513, 12, 76.934836077455, 12], ['2027-09', 35.76945227505899, 222, 81.94640767405697, 13, 82.16330907722478, 13],
+  ['2027-12', 43.307211907569005, 98, 76.97636592716295, 11, 76.82488257331723, 11]];
+for (const [pg, cur, cz, a, az, b, bz] of FIG3) {
+  const p = ip(pg);
+  confere(`Figura 3A atual ${pg}`, 100 * res.R0[p].partMax, cur, 1e-3);
+  confere(`Figura 3A atual zerados ${pg}`, res.R0[p].zero, cz, 0);
+  confere(`Figura 3A Regra A ${pg}`, 100 * res.R3b[p].partMax, a, 1e-3);
+  confere(`Figura 3A Regra A zerados ${pg}`, res.R3b[p].zero, az, 0);
+  confere(`Figura 3A Regra B ${pg}`, 100 * res.R4v[p].partMax, b, 1e-3);
+  confere(`Figura 3A Regra B sem pontuação ${pg}`, Array.from(res.R4v[p].fracao).filter(x => x === 0).length, bz, 0);
+}
+// R0s na série do artigo: set/2024 = 68,2% e 45; jun/2027 = 51,4% e 8. NÃO reproduzíveis com dados/: o valor de comparação
+// (12 meses até dez/2023; 12 meses projetados até ago/2026) não está na exportação. O motor deixa as duas sem valor.
+confere('R0s set/2024 sem valor (o artigo usa 68,2% e 45, fora da exportação)', r0s[ip('2024-09')].nd, true, 0);
+confere('R0s jun/2027 sem valor (o artigo usa 51,4% e 8, fora da exportação)', r0s[ip('2027-06')].nd, true, 0);
+// Zerados publicados em set/2026 (164): 128 com 12 meses >= 80% nas quatro; mediana 90,3%; 156 pagos na Regra A, mediana 72%
+// do máximo ENTRE OS PAGOS (entre os 164 seria 67%).
+const pubZ = []; pub.forEach(r => { if (+r.pts_set === 0) pubZ.push(B.idx.get(+r.mun)); });
+confere('publicado set/2026: zerados', pubZ.length, 164, 0);
+confere('publicado set/2026: 12 meses >= 80% nas quatro', pubZ.filter(m => IGM.VAC.every((_, v) => B.cob[iSet].c12[v][m] >= 80)).length, 128, 0);
+confere('publicado set/2026: mediana dos 12 meses', r1(IGM.mediana(pubZ.flatMap(m => IGM.VAC.map((_, v) => B.cob[iSet].c12[v][m])))), 90.3, 1e-9);
+const pagA = pubZ.filter(m => res.R3b[iSet].varRs[m] >= IGM.ZERO);
+confere('publicado set/2026: pagos na Regra A', pagA.length, 156, 0);
+confere('publicado set/2026: mediana da parte do máximo dos pagos na Regra A', Math.round(100 * IGM.mediana(pagA.map(m => res.R3b[iSet].fracao[m]))), 72, 0);
+// Figura 3B/C: o par de exemplo pela regra de escolha, e os valores dos dois municípios (Penta, set/2026).
+const nat = m => 1000 * B.peso[iSet][m] / B.muns[m].pop;
+const cand = pubZ.filter(m => B.cob[iSet].c12[vPenta][m] >= 80 && B.cob[iSet].c12[vPenta][m] < 95 && B.muns[m].pop > 50000);
+let par = null;
+for (const a of cand) for (const b of cand) if (a < b && B.muns[a].pc === B.muns[b].pc && Math.abs(B.muns[a].pop / B.muns[b].pop - 1) <= 0.05) { const d = Math.abs(nat(a) - nat(b)); if (!par || d > par[0]) par = [d, a, b]; }
+confere('Figura 3B/C: par escolhido', par && [par[1], par[2]].map(m => B.muns[m].mun).sort().join(','), '354330,355400', 0);
+confere('Figura 3B/C: natalidade Ribeirão Pires', r1(nat(B.idx.get(354330))), 7.0, 1e-9);
+confere('Figura 3B/C: natalidade Tatuí', r1(nat(B.idx.get(355400))), 12.4, 1e-9);
+const md = B.med[iSet][vPenta];
+confere('Figura 3B/C: corte m0 Penta', r2(md.corte0), 94.12, 1e-9);
+confere('Figura 3B/C: corte m1 Penta', r2(md.corte1), 87.72, 1e-9);
+for (const [cod, kids, salto, umA, umB] of [[354330, 33, 40702, 214, 149], [355400, 32, 40344, 122, 149]]) {
+  const m = B.idx.get(cod), o = B.cob[iSet], c0 = o.c0[vPenta][m], c1 = o.c1[vPenta][m], passo = 100 / o.nasc[vPenta][m];
+  const sc = IGM.faixa(c0, c1, md.corte0, md.corte1); let n = 0, s = sc;
+  while (s <= sc && n < 1000) { n++; s = IGM.faixa(c0, c1 + n * passo, md.corte0, md.corte1); }
+  const full = ctx.vp[iSet][m] * IGM.PONTO_VAC, p12 = 100 / o.den12[vPenta][m];
+  confere(`Figura 3B/C ${cod}: dinheiro hoje (regra atual)`, sc * full, 0, 0);
+  confere(`Figura 3B/C ${cod}: crianças para o salto`, n, kids, 0);
+  confere(`Figura 3B/C ${cod}: valor do salto`, Math.round(s * full), salto, 0);
+  confere(`Figura 3B/C ${cod}: uma criança, Regra A`, Math.round(res.R3b[iSet].unidade[m] * p12 / 15), umA, 0);
+  confere(`Figura 3B/C ${cod}: uma criança, Regra B`, Math.round(res.R4v[iSet].unidade[m] * p12 / 15), umB, 0);
+}
+
 console.log(`${ok} conferências ok, ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);

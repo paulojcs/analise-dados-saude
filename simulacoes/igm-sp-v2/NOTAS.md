@@ -39,7 +39,7 @@ além de `?m=` e `?lang=en`. Parâmetro inválido volta ao padrão sem aviso. Pa
 
 ## R0s (regra atual com 12 meses): PROVISÓRIO
 
-Valores da sessão de análise (de `periodos_cobertura.csv.gz`), no teste como provisórios:
+(08/11: Paulo confirmou a mediana por vacina; a R0s saiu do artigo.) Valores da sessão de análise (de `periodos_cobertura.csv.gz`), no teste como provisórios:
 dez/24 73,7% e 28 · jun/25 65,0 e 48 · set/25 52,6 e 22 · dez/25 38,9 e 46 · jun/26 57,0 e 20 · set/26 56,1 e 37 ·
 dez/26 59,0 e 28 · set/27 65,1 e 58 · dez/27 42,4 e 107; estabilidade 12,5 ou 25,0.
 
@@ -76,14 +76,51 @@ artigo se ela diz "of these 128" / "of the 155".
 3. R0s fora do provisório (acima).
 4. `git switch main && git merge feat/simulacao-igm-sp-v2 && git push` (Workers Builds publica).
 
+## Revisão de 08/11/2026: as figuras finais do artigo
+
+Decisões de Paulo: o artigo tem só três regras, **regra atual, Regra A (R3b) e Regra B (R4v, preferida)**; R1, R2, R4 e
+a regra atual com 12 meses (R0s) ficam como presets secundários em "Outras (fora do artigo)". R0s fica com a mediana
+por vacina (19 zerados em jun/2026). "% do máximo" é antes de repartir o orçamento, e A e B são **uma linha só**
+("Regras A e B (mesma pontuação)"). Orçamento próprio em 2027 (×1,2 com a parte variável): não decidido, deixado como
+está. "Zerados mas vacinando bem" usa o piso da regra, sem controle próprio. v2 substituir a v1: decisão de Paulo depois.
+
+O que mudou na página:
+- **Figura 1C** (Calendário): nascidos por mês em 2024 (barras, jan–abr em destaque) + Penta completa em 2025 como
+  **média mensal de cada quadrimestre** (linha em degrau), mesmo eixo; totais 168.131 / 156.800 / 145.952 e
+  140.474 / 134.492 / 149.407. O dado MENSAL das doses não está na exportação: os totais por quadrimestre saem de
+  c1 × nasc_aval ÷ 100 (jan–abr, jan–ago, jan–dez de 2025, por diferença). Para a linha mês a mês, exportar as doses
+  mensais da Penta 2025 no PrefSaoCaetano.
+- **Figura 2A** (Denominador): dispersão nascidos 2024 (log) × teto de 2025, cores <95 / 95–99,9 / ≥100, linhas em 95 e
+  100 (185; 109 com <100 nascidos; mediana 100,9). Substitui o histograma da v1.
+- **Figura 2B** (Acaso): barras cinzas pareadas jun/set da mudança mediana da Penta por nascidos de **2024**
+  (n 284/219/86/56; jun 11,7/7,2/5,2/5,5; set 22,4/12,3/7,7/3,6). Substitui a dispersão da v1.
+- **Figura 3A** (Regras): % do máximo, regra atual × Regras A e B (uma linha), previsão/projeção sombreadas, sem
+  losangos. Substitui o "total por ano" da v1 e a antiga "Figura G" da seção Monte sua regra (removida).
+- **Figura 3B/C** (Regras): escada × rampa, set/2026, para Ribeirão Pires e Tatuí por padrão ou para o município do
+  seletor/`?m=`, com a vacina escolhível; eixo y comum. Regra de escolha do par no ⓘ e nos métodos.
+- Regras na página: definições só das três do artigo (+ "Outras"); "parcela a parcela", "uma criança a mais" e "R$ por
+  criança por faixa" usam atual / A / B (a v1 usava R4 meio fixo).
+- **Zerados mas vacinando bem**: em jun e set/2026 usa os zerados do pagamento **publicado** (164 em set); nas demais
+  parcelas, a reconstrução. Set/2026: 164 → 128 com 12 meses ≥ 80% nas quatro, mediana 90,3%, 156 pagos na Regra A.
+  **72% é a mediana da parte do máximo entre os 156 pagos** (entre os 164 seria 67%); a página mostra entre os pagos.
+- **Moeda**: R$ em português, **BRL** em inglês (formatadores e textos estáticos em inglês).
+- Corrigido de passagem (só na v2): na v1, os nomes das regras acima dos gráficos "parcela a parcela" usam a classe
+  `pt` e somem em inglês (a regra `html[lang="en"] .pt{display:none}`). Na v2 viraram `ttl`. **A v1 tem esse defeito.**
+
+Números do artigo que **não** se reproduzem com `dados/`: R0s em set/2024 (68,2% e 45) e jun/2027 (51,4% e 8). Em
+`fig3_series_full.csv` estão escritos à mão (`fig3ab_v2.py`); o valor de comparação (12 meses até dez/2023; 12 meses
+projetados até ago/2026) não está na exportação, e o motor deixa as duas parcelas sem valor. Como a R0s saiu do
+artigo, ficou assim. Figura 3A: % do máximo bate com o CSV do artigo a menos de 0,001 ponto (vp arredondado a 5 casas
+na exportação; o teste usa essa tolerância).
+
 ## Perguntas abertas para Paulo
 
-1. R0s: mediana por vacina (19 em jun/2026, página atual) ou corte único (20, valores provisórios)?
-2. Figura G: "parte do máximo" das Regras A e B = o que ganharam antes de repartir o orçamento (as linhas A e B
-   ficam quase iguais). É assim que o artigo vai mostrar, ou em R$ com a Regra A escalada à média da atual?
-3. Orçamento "valor próprio" cresce em 2027 na proporção da parte variável (×1,2). Ou o mesmo R$ em todas?
-4. "Zerados mas vacinando bem" usa o piso da rampa (80 em regras de faixas). Quer um controle próprio?
-5. A v2 substitui a v1 na mesma URL quando publicar?
+1. Orçamento próprio em 2027 (cresce ×1,2 com a parte variável)? Não decidido.
+2. A v2 substitui a v1 na mesma URL quando publicar?
+3. Figura 1C: exportar as doses mensais da Penta 2025 para a linha mês a mês, ou basta a média por quadrimestre?
+4. R0s set/2024 e jun/2027: de onde vieram 68,2/45 e 51,4/8? Se forem entrar em algum lugar, exportar os valores de
+   comparação.
+5. Corrigir na v1 o nome das regras que some em inglês (fora do escopo desta branch)?
 
 ## Registro
 
@@ -93,3 +130,5 @@ artigo se ela diz "of these 128" / "of the 155".
   224/136 e o achado da R0s (corte único ou fixo 95 explica os provisórios). Pontos que levantou: o casamento exato
   dos rótulos de bloco (jun/2027 sem valor) é uma escolha; a "parte do máximo" é ponderada pelo peso de repartição;
   não há c12 faltando em nenhuma parcela.
+- 2026-11-08: figuras finais do artigo (1C, 2A, 2B, 3A, 3B/C), três regras do artigo, 164 publicados, BRL em inglês;
+  teste 1481/0 (v1 972/0).
