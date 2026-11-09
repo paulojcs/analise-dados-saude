@@ -124,6 +124,26 @@ Decisões de Paulo (09/11): **praticamente igual = diferença de até 5% do que 
 (no mesmo período); a frase usa **o período todo** (sem escolher parcela); **Regra A é a preferida** (o artigo nunca
 disse qual preferia; Paulo apagou "we prefer rule B" do Google Doc); a maquete compara A × atual.
 
+Depois (09/11, aprovado): a comparação usa **as 8 parcelas de set/2024 a dez/2026** (o período do orçamento do artigo,
+R$ 256,4 mi; não as 11 da maquete); o artigo **não** dirá que a A é a preferida (o rótulo "Regra A (preferida)" fica na
+página por enquanto, a decidir); arquivos de trabalho fora de `marca_coorte/site`, em `simulacoes/igm-sp-v2/trabalho/`.
+
+**Seção #monte (passos 2–5 da handoff, 09/11).** Embaixo do construtor: frase ao vivo, mapa de ganho e perda
+(azul ganha, laranja perde, cinza praticamente igual; clique escolhe o município), barras por porte, cartão "Seu
+município" (busca; R$ atual → R$ da regra escolhida nas 8 parcelas; linha pelas 11 parcelas) e "Ver detalhes" com o
+resto (dinheiro e zerados por parcela, mudança, escolha da parcela + uma criança a mais, mapa por parcela, zerados mas
+vacinando bem; redesenham ao abrir). Saíram o gráfico por terço da natalidade e o gráfico por município (virou o
+cartão). Regra A: 160 ganham / 408 perdem / 77 iguais; R$ 256,4 mi nas duas; zerados em ao menos uma parcela 344 → 60.
+Regra atual contra ela mesma: frase própria ("Esta é a regra atual…"). Regra com parcelas sem valor (R0s): a soma usa
+só as parcelas com valor nas duas regras (7). Teste: para todo preset, frase = mapa = barras = 645.
+Revisão independente (agente, 09/11): números conferidos por script próprio (A 160/408/77, B 152/442/51, R3m 257/292/96,
+R0s 332/196/117, R1 230/54/361, atual 0/0/645), URL, idioma, seleção em sincronia, 375 px sem estouro, nada de
+`trabalho/` publicado, sem erros no console. Corrigido: título/subtítulo neutros com a regra atual escolhida; frase
+dos zerados diz o período (8 ou as parcelas comparadas); nota do cartão com o período certo; diferença do cartão a
+partir dos valores arredondados; "in reais" → "in money terms"/"in BRL"; lista de sugestões do cartão fecha ao
+escolher; "Grande ABC". Não mexido: cores do mapa em RGB (cópia de --sobe/--desce), "Sep 26" nos gráficos (da v1),
+mapa só com mouse (a busca cobre o teclado). Teste 1577/0.
+
 **Achado: as Regras A e B tiram dinheiro dos municípios pequenos.** Nas 8 parcelas de set/2024 a dez/2026 (período do
 orçamento do artigo, mesmo dinheiro nas três regras, R$ 256,4 mi), os pequenos (< 20 mil hab., 384) recebem
 R$ 41,5 mi na regra atual, R$ 35,1 mi na A (−15,5%) e R$ 32,3 mi na B (−22,1%); os grandes (> 100 mil, 81) ganham
@@ -169,3 +189,5 @@ Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o or�
   teste 1481/0 (v1 972/0).
 - 2026-11-09: worktree movida para `COORTE/wt/simulacao-igm-sp-v2`; maquete da seção Monte sua regra; Regra A preferida;
   preset Regra A + margem para pequenos; teste 1545/0.
+- 2026-11-09 (tarde): seção #monte nova ligada (8 parcelas, ±5%, Regra A padrão); trabalho/ fora do site; revisão
+  independente aplicada; teste 1577/0.

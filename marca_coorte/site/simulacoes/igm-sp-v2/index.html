@@ -770,7 +770,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
   }
   function escolher(i) {
     st.mun = i;
-    $('#busca').value = titulo(nomes[i]); $('#sug').classList.remove('on'); $('#limpa').hidden = false;
+    $('#busca').value = titulo(nomes[i]); $('#sug').classList.remove('on'); $('#mSug').classList.remove('on'); $('#limpa').hidden = false;
     paths.forEach((p, k) => p.classList.toggle('sel', k === i));
     $('#mapa').classList.add('dim');
     const p = paths[i]; p.parentNode.appendChild(p);
@@ -1320,7 +1320,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     $('#tMMun').textContent = i === null ? L('Dinheiro das vacinas do estado, parcela a parcela', 'State vaccine money, payment by payment') : L('Dinheiro das vacinas, parcela a parcela', 'Vaccine money, payment by payment');
     const vR = MRef.map(z => i === null ? z.total : z.rs[i]), vM = MR.map(z => z.nd ? null : (i === null ? z.total : z.rs[i]));
     $('#gMMun').innerHTML = grafPag('#gMMun', ehAtual ? [sMin(vM)] : [sRef(vR), sMin(vM)], {fmt: (v, t) => t ? (i === null ? mi(v) : rs(v)) : fmtR(v), oco: true, l: 54, h: 220}) +
-      `<p class="nota-g">${L('Os totais ao lado somam set/24 a dez/26; 2027 é projeção e fica de fora.', 'The totals alongside add up Sep 2024 to Dec 2026; 2027 is a projection and is left out.')}</p>`;
+      `<p class="nota-g">${MC.parcelas.length === P8.length ? L('Os totais ao lado somam as 8 parcelas de set/24 a dez/26; 2027 é projeção e fica de fora.', 'The totals alongside add up the 8 payments from Sep 2024 to Dec 2026; 2027 is a projection and is left out.') : L(`Os totais ao lado somam as ${MC.parcelas.length} parcelas com valor entre set/24 e dez/26; 2027 é projeção e fica de fora.`, `The totals alongside add up the ${MC.parcelas.length} payments with a value from Sep 2024 to Dec 2026; 2027 is a projection and is left out.`)}</p>`;
   }
 
   /* ===== Resultados de "Monte sua regra": o que muda se a regra escolhida substituir a atual =====
@@ -1334,12 +1334,14 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     if (a >= 1e3) return L(`R$ ${nf(Math.round(a / 1e3))} mil`, `BRL ${nf(Math.round(a / 1e3))}k`);
     return `${MOEDA()} ${nf(Math.round(a))}`; };
   const pathsH = [];
+  /* o valor como rsC o mostra (para a diferença do cartão bater com os dois valores mostrados) */
+  const arred = x => { const v = Math.abs(x), s = Math.sign(x); return s * (v >= 999500 ? Math.round(v / 1e5) * 1e5 : v >= 1e3 ? Math.round(v / 1e3) * 1e3 : Math.round(v)); };
   function vComparacao(nomeM, ehAtual) {
     nomeM = nomeM.replace(/ \((preferida|preferred)\)$/, '');   // na frase, só o nome
     // "com a Regra A", "com a sua regra", "com a regra “Faixas com corte de 90%”" / "with Rule A", "with your rule"…
     const prC = presetDe(MS);
     const comA = !prC ? L('a sua regra', 'your rule') : /^Regra [AB]\b/.test(nomeM) || /^Rule [AB]\b/.test(nomeM) ? nomeM
-      : /^Regra atual/.test(nomeM) ? L('a ' + nomeM.toLowerCase(), 'the ' + nomeM.toLowerCase()) : L(`a regra “${nomeM}”`, `the “${nomeM}” rule`);
+      : /^(Regra atual|Current rule)/.test(nomeM) ? L('a ' + nomeM.toLowerCase(), 'the ' + nomeM.toLowerCase()) : L(`a regra “${nomeM}”`, `the “${nomeM}” rule`);
     const comA2 = L(/^Regra [AB]\b/.test(nomeM) ? 'a ' + nomeM : comA, comA);
     const C = MC = IGMcomp.comparar(B, MR, MRef, P8), n = C.n, np = C.parcelas.length;
     const periodo = np === P8.length ? L('nas 8 parcelas de set/24 a dez/26', 'over the 8 payments from Sep 2024 to Dec 2026')
@@ -1357,16 +1359,16 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
         : L(`O estado paga ${rsC(C.totalMinha)} ${periodo}, contra ${rsC(C.totalAtual)} na regra atual.`, `The state pays ${rsC(C.totalMinha)} ${periodo}, against ${rsC(C.totalAtual)} under the current rule.`);
       const perda = C.medPerda === null ? null : Math.max(5, Math.round(C.medPerda * 20) * 5);
       const fr2 = perda === null ? '' : L(` Quem perde, perde em geral perto de <b>${perda}%</b> do que recebe hoje.`, ` Those who lose typically lose about <b>${perda}%</b> of what they get today.`);
-      const fr3 = L(` Na regra atual, <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina em pelo menos uma parcela; com ${nm}, <b>${nf(C.zeradosMinha)}</b>.`, ` Under the current rule, <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in at least one payment; with ${nm}, <b>${nf(C.zeradosMinha)}</b>.`);
+      const fr3 = L(` Na regra atual, <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina em pelo menos uma ${np === P8.length ? 'das 8 parcelas' : `das ${np} parcelas comparadas`}; com ${nm}, <b>${nf(C.zeradosMinha)}</b>.`, ` Under the current rule, <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in at least one of the ${np === P8.length ? '8 payments' : `${np} payments compared`}; with ${nm}, <b>${nf(C.zeradosMinha)}</b>.`);
       const fr4 = C.dif[C.maiorPerda] < 0 && C.dif[C.maiorGanho] > 0 ? L(` A maior perda em reais é de ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); o maior ganho, de ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`,
-        ` The largest loss in reais is ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); the largest gain, ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`) : '';
+        ` The largest loss in money terms is ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); the largest gain, ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`) : '';
       $('#mLead').innerHTML = fr1 + fr2 + fr3 + fr4;
     }
     const cls = [['ganham', 'var(--sobe)', L('ganham', 'gain')], ['iguais', 'var(--igual)', L('praticamente iguais', 'about the same')], ['perdem', 'var(--desce)', L('perdem', 'lose')]];
     $('#mStack').innerHTML = cls.map(([k, c, l]) => n[k] ? `<i style="flex:${n[k]};background:${c}" title="${n[k]} ${l}"></i>` : '').join('');
     $('#mStackl').innerHTML = cls.map(([k, c, l]) => `<span><b style="color:${k === 'iguais' ? 'var(--t2)' : c}">${nf(n[k])}</b> ${l}</span>`).join('');
     // 2. mapa de ganho e perda
-    $('#tMHero').textContent = L(`Quem ganha e quem perde com ${comA2}`, `Who gains and who loses with ${comA2}`);
+    $('#tMHero').textContent = ehAtual ? L('Regra atual: escolha outra regra para comparar', 'Current rule: pick another rule to compare') : L(`Quem ganha e quem perde com ${comA2}`, `Who gains and who loses with ${comA2}`);
     $('#sMHero').textContent = L(`diferença para a regra atual, ${periodo} · clique para ver o município`, `difference from the current rule, ${periodo} · click to see the municipality`);
     if (!pathsH.length) {
       const M = D.mapa;
@@ -1395,7 +1397,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     $('#legMHero').innerHTML = `<span><i style="background:var(--sobe)"></i>${L('ganha', 'gains')}</span><span><i style="background:var(--igual)"></i>${L('praticamente igual', 'about the same')}</span><span><i style="background:var(--desce)"></i>${L('perde', 'loses')}</span><span style="color:var(--t3)">${L('cor mais forte = mudança maior, até metade do que recebe hoje', 'stronger colour = larger change, up to half of what it gets today')}</span>`;
     // 3. por porte
     $('#tMPorte').textContent = L('Por tamanho do município', 'By size of municipality');
-    $('#sMPorte').textContent = L('municípios em cada grupo · e o saldo em reais do grupo', 'municipalities in each group · and the group\'s net change in reais');
+    $('#sMPorte').textContent = L('municípios em cada grupo · e o saldo em reais do grupo', 'municipalities in each group · and the group\'s net change in BRL');
     const NP = [L('Pequenos', 'Small'), L('Médios', 'Medium'), L('Grandes', 'Large')];
     const FP = [L('até 20 mil hab.', 'up to 20k inhab.'), L('20 a 100 mil hab.', '20k to 100k inhab.'), L('mais de 100 mil hab.', 'over 100k inhab.')];
     const sb = {ganham: 0, perdem: 0, iguais: 0};
@@ -1410,7 +1412,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     // 4. seu município
     const i = st.mun;
     $('#tMSeu').textContent = L('Seu município', 'Your municipality');
-    $('#sMSeu').textContent = L(`regra atual × ${nomeM}, ${periodo}`, `current rule × ${nomeM}, ${periodo}`);
+    $('#sMSeu').textContent = ehAtual ? L(`regra atual, ${periodo}`, `current rule, ${periodo}`) : L(`regra atual × ${nomeM}, ${periodo}`, `current rule × ${nomeM}, ${periodo}`);
     $('#mBusca').placeholder = L('Procure seu município…', 'Find your municipality…');
     $('#mBusca').value = i === null ? '' : titulo(nomes[i]); $('#mLimpa').hidden = i === null;
     const a = i === null ? C.totalAtual : C.atual[i], b = i === null ? C.totalMinha : C.minha[i], d = b - a, k = i === null ? null : C.classe[i];
@@ -1419,9 +1421,9 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       : k === 0 ? L('Praticamente igual (diferença de até 5%).', 'About the same (a difference of 5% or less).')
       : k > 0 ? L('Ganha com a regra escolhida.', 'Gains with the chosen rule.') : L('Perde com a regra escolhida.', 'Loses with the chosen rule.');
     $('#mSeuNum').innerHTML = `<div class="nome">${i === null ? L('Estado inteiro', 'Whole state') : esc(titulo(nomes[i]))}</div>
-      <p style="margin:6px 0 0;font:400 12px/1.5 var(--mono);color:var(--t3)">${i === null ? L('645 municípios · procure o seu ou clique no mapa', '645 municipalities · search for yours or click the map') : esc(PORTE(MUN[i].porte)) + ' · ' + esc(titulo(MUN[i].regiao))}</p>
+      <p style="margin:6px 0 0;font:400 12px/1.5 var(--mono);color:var(--t3)">${i === null ? L('645 municípios · procure o seu ou clique no mapa', '645 municipalities · search for yours or click the map') : esc(PORTE(MUN[i].porte)) + ' · ' + esc(titulo(MUN[i].regiao).replace(/\bAbc\b/, 'ABC').replace(/\bDrs\b/g, 'DRS'))}</p>
       <div class="antes"><div><span>${L('Regra atual', 'Current rule')}</span><b style="color:var(--atual)">${rsC(a)}</b></div>${ehAtual ? '' : `<div class="seta">→</div><div><span>${esc(nomeM)}</span><b style="color:var(--minha)">${rsC(b)}</b></div>`}</div>
-      ${ehAtual ? '' : `<p class="mdelta" style="color:${cor}">${Math.abs(d) < 0.5 ? L('sem diferença', 'no difference') : sinal(d, rsC) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}<small>${veredito}</small></p>`}`;
+      ${ehAtual ? '' : `<p class="mdelta" style="color:${cor}">${Math.abs(d) < 0.5 ? L('sem diferença', 'no difference') : sinal(d, x => rsC(Math.abs(arred(b) - arred(a)) || x)) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}<small>${veredito}</small></p>`}`;
     // 5. como a frase conta
     $('#mComo').innerHTML = L(`Para cada município somamos o que ele recebe ${periodo} na regra atual e na regra escolhida: é o período do orçamento do artigo (R$ 32,0 mi por parcela), em que a regra atual e as regras com o mesmo orçamento pagam o mesmo total. Ganha ou perde quem muda mais de 5% do que recebe hoje; o resto fica "praticamente igual", e quem hoje não recebe nada e passa a receber conta como ganho. A frase, o mapa, as barras e o cartão usam a mesma conta. Portes pela população de 2026: pequenos até 20 mil habitantes (384), médios de 20 a 100 mil (180), grandes acima de 100 mil (81). "Sem nenhum dinheiro de vacina" = parte variável abaixo de R$ 0,005 numa parcela. Dinheiro de 2026 em todas as parcelas, antes do teto de 10 pontos; dez/26 é previsão. Os gráficos abaixo mostram as 11 parcelas, com 2027 projetado.`,
       `For each municipality we add up what it gets ${periodo} under the current rule and under the chosen rule: this is the paper's budget period (BRL 32.0 million per payment), in which the current rule and the rules with the same budget pay the same total. A municipality gains or loses if it changes by more than 5% of what it gets today; the rest are "about the same", and one that gets nothing today and would get something counts as a gain. The sentence, the map, the bars and the card use the same sum. Sizes by 2026 population: small up to 20,000 inhabitants (384), medium 20,000 to 100,000 (180), large over 100,000 (81). "No vaccine money at all" = variable part below BRL 0.005 in a payment. 2026 money in every payment, before the 10-point cap; Dec 2026 is a forecast. The charts below show the 11 payments, with 2027 projected.`);
