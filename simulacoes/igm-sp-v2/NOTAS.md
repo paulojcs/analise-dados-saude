@@ -34,8 +34,8 @@ Definições novas (não estão no README da exportação):
 - **Zerados mas vacinando bem**: zerados na regra atual na parcela escolhida; piso = o piso da rampa da regra montada
   (80 se for de faixas e ninguém mexeu); "pagos" = parte variável ≥ R$ 0,005.
 
-URL: `?preset=atual|atual12|A|B|R1|R2|R3|R4&medida=acum|c12&regra=faixas|rampa&corte=mediana|50–95&piso=&alvo=&aloc=hab|crianca&fixo=0–100&orc=sem|atual|<R$ mi>&sv27=50–100&parc=<AAAA-MM>`,
-além de `?m=` e `?lang=en`. Parâmetro inválido volta ao padrão sem aviso. Padrão = Regra B.
+URL: `?preset=atual|atual12|A|B|Am|R1|R2|R3|R4&medida=acum|c12&regra=faixas|rampa&corte=mediana|50–95&piso=&alvo=&aloc=hab|crianca&fixo=0–100&orc=sem|atual|<R$ mi>&sv27=50–100&margem=100–300&parc=<AAAA-MM>`,
+além de `?m=` e `?lang=en`. Parâmetro inválido volta ao padrão sem aviso. Padrão = Regra A (preferida desde 09/11/2026; antes, Regra B).
 
 ## R0s (regra atual com 12 meses): PROVISÓRIO
 
@@ -78,7 +78,7 @@ artigo se ela diz "of these 128" / "of the 155".
 
 ## Revisão de 08/11/2026: as figuras finais do artigo
 
-Decisões de Paulo: o artigo tem só três regras, **regra atual, Regra A (R3b) e Regra B (R4v, preferida)**; R1, R2, R4 e
+Decisões de Paulo: o artigo tem só três regras, **regra atual, Regra A (R3b) e Regra B (R4v)** (em 08/11 a B era a preferida; em 09/11 Paulo passou a preferir a **A**, ver abaixo); R1, R2, R4 e
 a regra atual com 12 meses (R0s) ficam como presets secundários em "Outras (fora do artigo)". R0s fica com a mediana
 por vacina (19 zerados em jun/2026). "% do máximo" é antes de repartir o orçamento, e A e B são **uma linha só**
 ("Regras A e B (mesma pontuação)"). Orçamento próprio em 2027 (×1,2 com a parte variável): não decidido, deixado como
@@ -113,6 +113,41 @@ projetados até ago/2026) não está na exportação, e o motor deixa as duas pa
 artigo, ficou assim. Figura 3A: % do máximo bate com o CSV do artigo a menos de 0,001 ponto (vp arredondado a 5 casas
 na exportação; o teste usa essa tolerância).
 
+## Revisão de 09/11/2026: resultados por porte, Regra A preferida, margem para pequenos
+
+Pedido: a seção "Monte sua regra" mostrava oito saídas e não respondia, para um leigo, "o que muda se usarmos a minha
+regra em vez da atual?". Maquete (`mock-monte.html`, sem mexer na seção `#monte`): frase ao vivo
+(ganham / perdem / praticamente iguais), mapa de ganho e perda, barras por porte, cartão "Seu município" com a linha
+pelas parcelas e "ver detalhes" para o resto. A comparação está em `comparar.js` (usado pela maquete e pelo teste).
+
+Decisões de Paulo (09/11): **praticamente igual = diferença de até 5% do que o município recebe na regra atual**
+(no mesmo período); a frase usa **o período todo** (sem escolher parcela); **Regra A é a preferida** (o artigo nunca
+disse qual preferia; Paulo apagou "we prefer rule B" do Google Doc); a maquete compara A × atual.
+
+**Achado: as Regras A e B tiram dinheiro dos municípios pequenos.** Nas 8 parcelas de set/2024 a dez/2026 (período do
+orçamento do artigo, mesmo dinheiro nas três regras, R$ 256,4 mi), os pequenos (< 20 mil hab., 384) recebem
+R$ 41,5 mi na regra atual, R$ 35,1 mi na A (−15,5%) e R$ 32,3 mi na B (−22,1%); os grandes (> 100 mil, 81) ganham
+6,9 e 10,6 mi. Por habitante e ano, pequenos ÷ grandes: 3,26× hoje, 2,63× na A (= a razão do próprio per capita,
+2,61×) e 2,37× na B (os pequenos têm menos nascidos por habitante: 9,6 contra 10,5 por mil). Nas 11 parcelas da
+maquete: 3,44×, 2,66×, 2,39×. O per capita fica; o que sai é a vantagem que a pontuação atual dá aos pequenos (parte
+média do próprio máximo 63,9% contra 52,8% dos grandes; nas Regras A/B 77,9 contra 78,0). A vantagem vem em parte do
+acaso: o valor acumulado do ano dos pequenos se afasta 18,5 pontos, em média, da cobertura de 12 meses (5,8 nos
+grandes), e as faixas pagam cheio quando esse valor passa de 95% ou sobe; em parte é cobertura real (63% dos pares
+dos pequenos com 12 meses ≥ 95%, contra 41%). Decomposição dos pequenos (8 parcelas): orçamento fixo +1,3; rampa
+−3,7; 12 meses −4,0 (= Regra A); por criança −2,7 (= Regra B).
+
+**Regra A + margem para pequenos** (preset `Am` = R3m; campo novo `margem` no motor, padrão 1; na URL
+`margem=100–300`, em %): a Regra A com o peso de repartição dos municípios com menos de 20 mil habitantes
+multiplicado por 1,25 (com orçamento, o mesmo orçamento repartido de novo; sem orçamento, o máximo deles sobe 25%).
+1,25 foi escolhido porque devolve aos pequenos, nas 11 parcelas, o que recebem hoje (60,7 contra 60,6 mi); nas 8
+parcelas, 42,4 contra 41,5 mi. Quem paga: os médios (−2,7 mi nas 8 parcelas, −3,9%); os grandes ainda ganham
+1,8 mi. Fica fora dos Resultados do artigo; só a Discussão a cita.
+
+Números para o artigo: `node tamanho_municipio.js` (8 parcelas) e `node tamanho_municipio.js todas` (11). Texto
+proposto: `paper_tamanho_municipio.md` (também em `orchestrator/handoffs/coorte-igm-paper-size-paragraph-2026-11-09.md`).
+Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o orçamento, = A × fator com os pequenos
+× 1,25; totais por porte e ganham/perdem/iguais nos dois períodos; classes do mapa = frase).
+
 ## Perguntas abertas para Paulo
 
 1. Orçamento próprio em 2027 (cresce ×1,2 com a parte variável)? Não decidido.
@@ -132,3 +167,5 @@ na exportação; o teste usa essa tolerância).
   não há c12 faltando em nenhuma parcela.
 - 2026-11-08: figuras finais do artigo (1C, 2A, 2B, 3A, 3B/C), três regras do artigo, 164 publicados, BRL em inglês;
   teste 1481/0 (v1 972/0).
+- 2026-11-09: worktree movida para `COORTE/wt/simulacao-igm-sp-v2`; maquete da seção Monte sua regra; Regra A preferida;
+  preset Regra A + margem para pequenos; teste 1545/0.

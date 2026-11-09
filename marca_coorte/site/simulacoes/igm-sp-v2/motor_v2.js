@@ -15,6 +15,10 @@
      orc:    'sem' (sem orçamento: cada município recebe a sua parte do seu máximo)
            | 'atual' (mesmo orçamento da regra atual: B50/B60) | número (R$ por parcela, base 50% variável)
      sv27:   parte variável em 2027 (padrão 0,6)
+     margem: peso extra dos municípios pequenos (< 20 mil hab.) na repartição, 1 = nenhum (padrão).
+             "Regra A + margem para pequenos" = Regra A com margem 1,25 (decisão de Paulo, 09/11/2026): o peso de
+             repartição (população × per capita, ou nascidos × per capita ÷ 30) dos pequenos é multiplicado pela
+             margem; com orçamento, o mesmo orçamento é repartido de novo; sem orçamento, o máximo deles sobe.
    } */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -26,6 +30,7 @@
   const MAX_PONTOS = PONTO_VAC * 4;   // 5,2 dos 10 pontos
   const ZERO = 0.005;                 // R$: abaixo disto conta como "sem dinheiro de vacina"
   const META = 95;                    // meta fixa das faixas da CIB 25/2026
+  const PEQUENO = new Set(['<5 mil', '5-10 mil', '10-20 mil']);   // portes de municipios.csv abaixo de 20 mil hab.
 
   /* ---------- leitura dos CSVs (texto já descomprimido) ---------- */
   function csv(txt) {
@@ -43,7 +48,7 @@
   function montar(t) {
     const muns = csv(t.municipios).map(r => ({
       mun: +r.mun, ibge7: +r.ibge7, nome: r.municipio, drs: r.drs, regiao: r.regiao_saude,
-      porte: r.porte, pop: +r.pop, pc: +r.percapita, ordem: +r.ordem_painel,
+      porte: r.porte, pequeno: PEQUENO.has(r.porte), pop: +r.pop, pc: +r.percapita, ordem: +r.ordem_painel,
     })).sort((a, b) => a.ordem - b.ordem);
     const idx = new Map(muns.map((m, i) => [m.mun, i]));
     const N = muns.length;
@@ -110,7 +115,7 @@
   }
 
   /* ---------- a regra parametrizada ---------- */
-  const PADRAO = { medida: 'c12', pont: 'rampa', corte: 'mediana', piso: 80, alvo: 95, aloc: 'crianca', fixo: 0, orc: 'atual', sv27: 0.6 };
+  const PADRAO = { medida: 'c12', pont: 'rampa', corte: 'mediana', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', sv27: 0.6, margem: 1 };
   const completa = s => Object.assign({}, PADRAO, s || {});
 
   /* Valor do ponto por parcela, com a parte variável de 2027 escolhida (padrão: o vp exportado, sem tocar). */
@@ -166,7 +171,7 @@
   function calcular(B, spec, ctx) {
     spec = completa(spec);
     ctx = ctx || contexto(B, spec.sv27);
-    const VP = ctx.vp, N = B.N, f = +spec.fixo;
+    const VP = ctx.vp, N = B.N, f = +spec.fixo, mg = +spec.margem || 1;
     const out = [];
     for (let p = 0; p < B.P; p++) {
       // 1. partes de cada vacina
@@ -190,7 +195,7 @@
       const S = new Float64Array(N), a = new Float64Array(N);
       for (let m = 0; m < N; m++) {
         S[m] = partes[0][m] + partes[1][m] + partes[2][m] + partes[3][m];
-        a[m] = spec.aloc === 'hab' ? VP[p][m] * PONTO_VAC : B.peso[p][m] * B.muns[m].pc / 30;
+        a[m] = (spec.aloc === 'hab' ? VP[p][m] * PONTO_VAC : B.peso[p][m] * B.muns[m].pc / 30) * (mg !== 1 && B.muns[m].pequeno ? mg : 1);
       }
       const rs = new Float64Array(N), varRs = new Float64Array(N), unidade = new Float64Array(N);
       let maximo, k;
@@ -198,7 +203,7 @@
       if (spec.orc === 'sem') {
         // Sem orçamento: cada município tem um máximo (por habitante: 5,2 × valor do ponto; por criança: o mesmo
         // total do estado repartido pelo peso) e recebe parte fixa + parte variável × fração.
-        let Mtot = 0; for (let m = 0; m < N; m++) Mtot += MAX_PONTOS * VP[p][m];
+        let Mtot = 0; for (let m = 0; m < N; m++) Mtot += spec.aloc === 'hab' ? MAX_PONTOS * a[m] / PONTO_VAC : MAX_PONTOS * VP[p][m];
         maximo = Mtot;
         for (let m = 0; m < N; m++) {
           const u = spec.aloc === 'hab' ? a[m] : Mtot * a[m] / sa / 4;     // R$ por uma vacina cheia, sem a parte fixa
@@ -274,6 +279,7 @@
     R3b: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual' },
     R4: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'crianca', fixo: 0.5, orc: 'atual' },
     R4v: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'crianca', fixo: 0, orc: 'atual' },
+    R3m: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', margem: 1.25 },
   };
   Object.keys(PRESETS).forEach(k => { PRESETS[k] = completa(PRESETS[k]); });
 

@@ -279,5 +279,56 @@ for (const [cod, kids, salto, umA, umB] of [[354330, 33, 40702, 214, 149], [3554
   confere(`Figura 3B/C ${cod}: uma criança, Regra B`, Math.round(res.R4v[iSet].unidade[m] * p12 / 15), umB, 0);
 }
 
+/* 8. Regra A + margem para pequenos (R3m, 09/11/2026) e a comparação por porte (comparar.js, maquete e artigo). */
+const CMP = require('./comparar.js');
+const R3m = IGM.calcular(B, IGM.PRESETS.R3m, ctx);
+confere('margem 1 == Regra A (exato)', igualSerie(IGM.calcular(B, Object.assign({}, IGM.PRESETS.R3b, {margem: 1}), ctx), res.R3b), true, 0);
+R3m.forEach((o, i) => {
+  const pg = B.pags[i].id;
+  confere(`R3m soma = orçamento ${pg}`, Math.abs(o.total - ctx.orc[i]) < 0.01, true, 0);
+  confere(`R3m zerados = Regra A ${pg}`, o.zero, res.R3b[i].zero, 0);
+  // fora dos pequenos, R3m = Regra A × um fator por parcela; nos pequenos, o mesmo fator × 1,25
+  let c = null, ok1 = true;
+  for (let m = 0; m < B.N; m++) {
+    if (res.R3b[i].rs[m] < 1) continue;
+    const q = o.rs[m] / res.R3b[i].rs[m] / (B.muns[m].pequeno ? 1.25 : 1);
+    if (c === null) c = q; else if (Math.abs(q / c - 1) > 1e-9) ok1 = false;
+  }
+  confere(`R3m = Regra A × fator (pequenos × 1,25) ${pg}`, ok1, true, 0);
+});
+confere('pequenos (< 20 mil hab.) = 384', B.muns.filter(m => m.pequeno).length, 384, 0);
+{ // sem orçamento e por habitante: o máximo dos pequenos sobe 25%
+  const o = IGM.calcular(B, Object.assign({}, IGM.PRESETS.R3, {margem: 1.25}), ctx)[iSet];
+  let mx = 0; for (let m = 0; m < B.N; m++) mx += IGM.MAX_PONTOS * ctx.vp[iSet][m] * (B.muns[m].pequeno ? 1.25 : 1);
+  confere('R3 sem orçamento com margem: máximo', Math.abs(o.maximo - mx) < 0.01, true, 0);
+}
+// Por porte, no período do artigo (8 parcelas, set/2024–dez/2026) e no da maquete (11 parcelas). Números de
+// paper_tamanho_municipio.md (tamanho_municipio.js). Faixa praticamente igual = ±5% do que recebe na regra atual.
+const P8 = B.pags.map((p, i) => i).filter(i => B.pags[i].sv === 0.5), P11 = B.pags.map((p, i) => i);
+const porPorte = (r, P) => { const t = [0, 0, 0]; for (let m = 0; m < B.N; m++) for (const p of P) t[CMP.PORTE3[B.muns[m].porte]] += r[p].rs[m]; return t.map(x => r1(x / 1e6)); };
+const espPorte = {
+  R0: [[41.5, 69.5, 145.3], [60.6, 101.7, 201.2]], R3b: [[35.1, 69.1, 152.2], [50.2, 97.8, 215.5]],
+  R4v: [[32.3, 68.1, 155.9], [46.2, 96.3, 221.0]], R3m: [[42.4, 66.8, 147.2], [60.7, 94.5, 208.3]],
+};
+const RR = {R0: res.R0, R3b: res.R3b, R4v: res.R4v, R3m};
+for (const [k, [e8, e11]] of Object.entries(espPorte)) {
+  confere(`${k} por porte, 8 parcelas`, JSON.stringify(porPorte(RR[k], P8)), JSON.stringify(e8), 0);
+  confere(`${k} por porte, 11 parcelas`, JSON.stringify(porPorte(RR[k], P11)), JSON.stringify(e11), 0);
+}
+const cont = {
+  '8 R3b': [160, 408, 77, [[52, 288, 44], [71, 85, 24], [37, 35, 9]]], '8 R4v': [152, 442, 51, [[49, 315, 20], [62, 94, 24], [41, 33, 7]]],
+  '8 R3m': [257, 292, 96, [[163, 159, 62], [60, 94, 26], [34, 39, 8]]],
+  '11 R3b': [124, 432, 89, [[30, 301, 53], [59, 95, 26], [35, 36, 10]]], '11 R4v': [118, 465, 62, [[37, 328, 19], [43, 106, 31], [38, 31, 12]]],
+};
+for (const [k, [g, l, s, pp]] of Object.entries(cont)) {
+  const [per, nome] = k.split(' '), C = CMP.comparar(B, RR[nome], res.R0, per === '8' ? P8 : P11);
+  confere(`${k}: ganham/perdem/iguais`, `${C.n.ganham}/${C.n.perdem}/${C.n.iguais}`, `${g}/${l}/${s}`, 0);
+  confere(`${k}: soma 645`, C.n.ganham + C.n.perdem + C.n.iguais, 645, 0);
+  confere(`${k}: por porte`, JSON.stringify(C.porte.map(x => [x.ganham, x.perdem, x.iguais])), JSON.stringify(pp), 0);
+  // as classes do mapa (classe por município) somam o mesmo que a frase
+  const cl = [0, 0, 0]; C.classe.forEach(c => { cl[c > 0 ? 0 : c < 0 ? 1 : 2]++; });
+  confere(`${k}: classes do mapa = frase`, cl.join('/'), `${g}/${l}/${s}`, 0);
+}
+
 console.log(`${ok} conferências ok, ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);

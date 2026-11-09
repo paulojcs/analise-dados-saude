@@ -136,11 +136,11 @@ details.mais ul{margin:8px 0 0;padding-left:20px}
 <main class="wrap">
 <section class="view" id="monte">
   <div class="vh"><h2><span class="pt">Monte sua regra</span><span class="en">Build your own rule</span></h2></div>
-  <p class="aviso"><span class="pt">Maquete para comentar, com números reais do motor (motor_v2.js). Mostra só o que fica embaixo do construtor de regras, com uma regra fixa: a Regra B contra a regra atual. A seção da página ainda não mudou.</span><span class="en">Mock-up for comments, with real numbers from the engine (motor_v2.js). It shows only what sits under the rule builder, with one fixed rule: Rule B against the current rule. The page section has not changed yet.</span></p>
+  <p class="aviso"><span class="pt">Maquete para comentar, com números reais do motor (motor_v2.js). Mostra só o que fica embaixo do construtor de regras, com uma regra fixa: a Regra A (a preferida) contra a regra atual. A seção da página ainda não mudou.</span><span class="en">Mock-up for comments, with real numbers from the engine (motor_v2.js). It shows only what sits under the rule builder, with one fixed rule: Rule A (the preferred one) against the current rule. The page section has not changed yet.</span></p>
 
   <div class="builder">
     <p><span class="pt">[ o construtor de regras fica aqui, como hoje ]</span><span class="en">[ the rule builder sits here, as now ]</span></p>
-    <p><b><span class="pt">Regra B (preferida)</span><span class="en">Rule B (preferred)</span></b> · <span class="pt">cobertura de 12 meses, rampa de 80% a 95%, por criança, parte fixa 0%, o mesmo orçamento da regra atual.</span><span class="en">12-month coverage, a ramp from 80% to 95%, per child, fixed part 0%, the current rule's budget.</span></p>
+    <p><b><span class="pt">Regra A (preferida)</span><span class="en">Rule A (preferred)</span></b> · <span class="pt">cobertura de 12 meses, rampa de 80% a 95%, por habitante, parte fixa 0%, o mesmo orçamento da regra atual.</span><span class="en">12-month coverage, a ramp from 80% to 95%, per inhabitant, fixed part 0%, the current rule's budget.</span></p>
   </div>
 
   <p class="manchete" id="manchete" aria-live="polite"></p>
@@ -231,10 +231,10 @@ document.addEventListener('scroll', semDica, {passive: true});
   const ctx = IGM.contexto(B);
   const N = B.N, MUN = B.muns, nomes = MUN.map(m => m.nome);
   const MRef = IGM.calcular(B, IGM.PRESETS.R0, ctx);    // regra atual
-  const MR = IGM.calcular(B, IGM.PRESETS.R4v, ctx);     // Regra B
+  const MR = IGM.calcular(B, IGM.PRESETS.R3b, ctx);     // Regra A (preferida desde 09/11/2026)
   const iSet = B.pags.findIndex(p => p.id === '2026-09');
   const TODAS = B.pags.map((_, i) => i);
-  const NOME = () => L('Regra B', 'Rule B');
+  const NOME = () => L('Regra A', 'Rule A');
   const st = {per: 'todas', mun: null};
   try { const q = new URLSearchParams(location.search);
     const m = B.idx.get(+q.get('m')); if (m !== undefined) st.mun = m; } catch (e) {}
