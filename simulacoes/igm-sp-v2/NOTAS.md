@@ -168,6 +168,24 @@ proposto: `trabalho/paper_tamanho_municipio.md` (também em `orchestrator/handof
 Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o orçamento, = A × fator com os pequenos
 × 1,25; totais por porte e ganham/perdem/iguais nos dois períodos; classes do mapa = frase).
 
+## Revisão de 09/11/2026 (noite): regra de 2026 aplicada para trás, maio, denominador misto de 2027
+
+Verificação (sessão do orquestrador): a coluna "regra atual" é a regra de 2026 (CIB 24 e 25/2026) aplicada a todas as
+parcelas com o dinheiro de 2026; em 2024–25 o estado pagou pela CIB 117/2023 (nascidos do mesmo ano, outra parte
+variável). As parcelas são pagas no 5º dia útil de maio, setembro e dezembro. Mudanças na página:
+- Rótulo da primeira parcela do ano: **mai** (os ids dos dados continuam `AAAA-06`; `PAG_L` troca só o rótulo), e
+  os textos "junho / jun / June" das parcelas viraram maio/May.
+- Métodos (PT e EN, "Outras regras"): uma frase dizendo que a "regra atual" é a regra de 2026 aplicada a todas as
+  parcelas, que 2024–25 seguiram a CIB 117/2023 e que essas parcelas mostram o que os municípios teriam recebido.
+- Métodos ("Previsões, projeções e aproximações"): nota sobre o **denominador misto de 2027** (meses de 2026 no SINASC
+  2024, de 2027 no SINASC 2025). Na projeção à parte (PrefSaoCaetano `docs/simulacao_estadual/Projecao_2027_tamanho.md`),
+  só essa mistura leva a perda dos pequenos na Regra A de cerca de −16% (um único ano de nascidos) para −20,5%.
+  **Recomendação:** alinhar 2027 a um único ano de nascidos (SINASC 2024, como o painel lido em 19/09 e como o
+  cenário principal do artigo; o SINASC 2025 é preliminar e não tem data de troca). Ainda não feito: precisa
+  reexportar `cobertura.csv.gz` de 2027 no PrefSaoCaetano e atualizar `referencia.json` e o teste.
+Texto do artigo reformulado (contrafactual + projeção de 2027 como confirmação): `trabalho/paper_tamanho_municipio_v2.md`
+(página para colar: `orchestrator/handoffs/coorte-igm-paper-size-v2-2026-11-09.html`).
+
 ## Perguntas abertas para Paulo
 
 1. Orçamento próprio em 2027 (cresce ×1,2 com a parte variável)? Não decidido.
@@ -193,3 +211,5 @@ Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o or�
   independente aplicada; teste 1577/0.
 - 2026-11-09 (noite): "(preferida)" tirado da página (definições, métodos, botão do preset); a Regra A continua o padrão,
   sem ser chamada de preferida (decisão de Paulo).
+- 2026-11-09 (noite): maio no rótulo da 1ª parcela; métodos dizem que a regra atual é a de 2026 aplicada para trás;
+  nota do denominador misto de 2027; teste 1577/0.
