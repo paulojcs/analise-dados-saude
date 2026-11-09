@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<script>try{var q=new URLSearchParams(location.search).get('lang'),g=q||localStorage.getItem('igm-sp-lang');if(g==='en')document.documentElement.lang='en';}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Monte sua regra · maquete · Coorte</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo+Narrow:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Maquete da seção "Monte sua regra" redesenhada (09/11/2026): só os resultados, uma regra fixa (Regra B).
+   Mesma paleta e mesmas fontes de index.html. */
+:root{
+  color-scheme:light;
+  --bg:#EDF1F5; --bg-2:#E2E8EF; --bg-hi:#F6F8FA;
+  --ink:#101318;
+  --t2:rgba(16,19,24,.68); --t3:rgba(16,19,24,.46); --t4:rgba(16,19,24,.34);
+  --rule:rgba(16,19,24,.14); --rule-2:rgba(16,19,24,.09);
+  --klein:#002FA7; --klein-wash:rgba(0,47,167,.05); --on-klein:#EEF2FA;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --narrow:"Archivo Narrow","Archivo",sans-serif;
+  --atual:#E5622E; --prop:#2A78D6;
+  --sobe:#2A78D6; --desce:#E5622E; --igual:#D6DBE2;
+  --minha:#0E8A6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:"Archivo",Helvetica,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--narrow);font-weight:700;margin:0;letter-spacing:-.005em}
+p{margin:0}
+a{color:var(--klein);text-decoration:none}
+button{font:inherit;color:inherit}
+html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
+
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 28px;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px)}
+.top .brand{font:700 20px/1 var(--narrow);letter-spacing:.06em;color:var(--ink)}
+.top .brand span{color:var(--klein)}
+.tag{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--atual);border:1px dashed var(--atual);padding:6px 8px}
+.lang{all:unset;cursor:pointer;font:500 12px/1 var(--mono);letter-spacing:.1em;border:1px solid var(--rule);padding:7px 9px;color:var(--t2)}
+.lang:hover{border-color:var(--klein);color:var(--klein)}
+@media(max-width:760px){.top{padding:10px 16px}}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+@media(max-width:760px){.wrap{padding:0 16px}}
+.view{padding:36px 0 40px}
+.vh h2{font-size:clamp(26px,3vw,36px);line-height:1.05}
+.h4{font:500 12px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:0 0 8px}
+.aviso{max-width:80ch;font-size:15px;line-height:1.55;color:var(--t2);background:var(--bg-hi);border:1px dashed var(--atual);padding:12px 14px;margin:14px 0 22px}
+.builder{border:1px dashed var(--rule);background:var(--bg-hi);padding:16px 18px;color:var(--t3);font:400 13px/1.5 var(--mono)}
+.builder b{color:var(--minha);font:700 17px/1.2 var(--narrow);letter-spacing:0}
+.builder p+p{margin-top:6px}
+
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule)}
+.seg button{all:unset;cursor:pointer;padding:8px 12px;font-size:14px;border-right:1px solid var(--rule);background:var(--bg-hi)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.periodo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:24px 0 14px}
+.periodo small{font:400 12px/1.4 var(--mono);color:var(--atual)}
+
+/* a resposta */
+.manchete{font:700 clamp(26px,3.4vw,40px)/1.12 var(--narrow);max-width:30ch;text-wrap:balance}
+.manchete .g{color:var(--sobe)} .manchete .p{color:var(--desce)} .manchete .i{color:var(--t2)}
+.lead{margin-top:12px;font-size:18px;line-height:1.5;color:var(--t2);max-width:68ch}
+.lead b{color:var(--ink);font-weight:600}
+.stack{display:flex;height:24px;gap:2px;margin-top:20px;max-width:900px}
+.stack i{display:block;border-radius:2px}
+.stackl{display:flex;justify-content:space-between;gap:8px;font-size:15px;margin-top:6px;max-width:900px}
+.stackl b{font:700 22px/1 var(--narrow);font-variant-numeric:tabular-nums}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);gap:22px;align-items:start;margin-top:26px}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--bg-hi);border:1px solid var(--rule);padding:18px 18px 16px}
+.card h3{font-size:22px;line-height:1.15;margin-bottom:4px}
+.card .sub{font:400 12px/1.5 var(--mono);color:var(--t3);margin-bottom:12px;letter-spacing:.03em}
+#mapa svg{display:block;width:100%;height:auto}
+#mapa path{stroke:var(--bg-hi);stroke-width:.5;cursor:pointer}
+#mapa path.sel{stroke:var(--ink);stroke-width:2}
+.leg{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;font:400 12.5px/1.4 var(--mono);color:var(--t2);margin-top:10px}
+.leg i{display:inline-block;width:14px;height:10px;vertical-align:-1px;margin-right:5px}
+
+/* barras por porte */
+.porte{margin-top:6px}
+.porte .row{margin-bottom:18px}
+.porte .nm{display:flex;justify-content:space-between;gap:8px;font:600 16px/1.2 var(--narrow)}
+.porte .nm small{font:400 12px/1.4 var(--mono);color:var(--t3);font-weight:400}
+.porte .bar{display:flex;height:26px;gap:2px;margin-top:6px}
+.porte .bar i{display:flex;align-items:center;justify-content:center;font:700 14px/1 var(--narrow);font-style:normal;color:#fff;border-radius:2px;min-width:0;overflow:hidden}
+.porte .bar i.ig{color:var(--t2)}
+.porte .rs{font:400 12.5px/1.5 var(--mono);color:var(--t2);margin-top:5px}
+
+/* seu município */
+.find{position:relative;margin-bottom:14px;max-width:460px}
+.find input{width:100%;font:400 18px/1.2 "Archivo",sans-serif;padding:12px 38px 12px 40px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);outline:none}
+.find input:focus{border-color:var(--klein)}
+.find svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--t3)}
+.find ul{position:absolute;z-index:20;top:100%;left:0;right:0;margin:2px 0 0;padding:0;list-style:none;background:var(--bg-hi);border:1px solid var(--rule);max-height:300px;overflow:auto;display:none;box-shadow:0 10px 30px rgba(16,19,24,.12)}
+.find ul.on{display:block}
+.find li{padding:9px 14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.find li small{font:400 11.5px/1.7 var(--mono);color:var(--t3)}
+.find li.act,.find li:hover{background:var(--klein-wash);color:var(--klein)}
+#limpa{all:unset;cursor:pointer;position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;font:500 18px/1 var(--mono);color:var(--t2)}
+#limpa[hidden]{display:none}
+.mun{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:22px;align-items:start}
+@media(max-width:760px){.mun{grid-template-columns:minmax(0,1fr)}}
+.mun h3{font-size:28px;text-transform:uppercase;line-height:1.05}
+.antes{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-top:14px}
+.antes div span{display:block;font:400 12px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--t2)}
+.antes div b{display:block;font:700 34px/1.05 var(--narrow);font-variant-numeric:tabular-nums}
+.antes .seta{font:400 28px/1 var(--narrow);color:var(--t3);padding-bottom:4px}
+.delta{margin-top:10px;font:700 22px/1.2 var(--narrow)}
+.delta small{font:400 13px/1.5 "Archivo",sans-serif;color:var(--t2);display:block;margin-top:2px;font-weight:400}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--t2)}
+
+details.mais{margin-top:26px;border-top:1px solid var(--rule);padding-top:14px}
+details.mais summary{cursor:pointer;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+details.mais .corpo{margin-top:14px;max-width:80ch;font-size:15.5px;line-height:1.6;color:var(--t2)}
+details.mais .corpo p+p{margin-top:10px}
+details.mais ul{margin:8px 0 0;padding-left:20px}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:var(--on-klein);padding:9px 11px;font:400 12.5px/1.5 var(--mono);max-width:290px;opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+.tip b{font:700 15px/1.2 var(--narrow);display:block;text-transform:uppercase;margin-bottom:3px}
+#erro{color:var(--atual);font:400 14px/1.5 var(--mono)}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">COORTE <span>·</span> IGM SP v2</span>
+  <span class="tag"><span class="pt">maquete</span><span class="en">mock-up</span></span>
+  <button class="lang" id="lang" aria-label="Mudar idioma / switch language">EN</button>
+</div>
+
+<main class="wrap">
+<section class="view" id="monte">
+  <div class="vh"><h2><span class="pt">Monte sua regra</span><span class="en">Build your own rule</span></h2></div>
+  <p class="aviso"><span class="pt">Maquete para comentar, com números reais do motor (motor_v2.js). Mostra só o que fica embaixo do construtor de regras, com uma regra fixa: a Regra B contra a regra atual. A seção da página ainda não mudou.</span><span class="en">Mock-up for comments, with real numbers from the engine (motor_v2.js). It shows only what sits under the rule builder, with one fixed rule: Rule B against the current rule. The page section has not changed yet.</span></p>
+
+  <div class="builder">
+    <p><span class="pt">[ o construtor de regras fica aqui, como hoje ]</span><span class="en">[ the rule builder sits here, as now ]</span></p>
+    <p><b><span class="pt">Regra B (preferida)</span><span class="en">Rule B (preferred)</span></b> · <span class="pt">cobertura de 12 meses, rampa de 80% a 95%, por criança, parte fixa 0%, o mesmo orçamento da regra atual.</span><span class="en">12-month coverage, a ramp from 80% to 95%, per child, fixed part 0%, the current rule's budget.</span></p>
+  </div>
+
+  <div class="periodo">
+    <span class="h4" style="margin:0"><span class="pt">Comparar</span><span class="en">Compare</span></span>
+    <div class="seg" id="per"></div>
+    <small><span class="pt">pergunta da maquete: qual período a frase usa?</span><span class="en">mock-up question: which period should the sentence use?</span></small>
+  </div>
+
+  <p class="manchete" id="manchete" aria-live="polite"></p>
+  <p class="lead" id="lead"></p>
+  <div class="stack" id="stack"></div>
+  <div class="stackl" id="stackl"></div>
+
+  <div class="grid">
+    <div class="card">
+      <h3 id="tMapa"></h3>
+      <p class="sub" id="sMapa"></p>
+      <div id="mapa" role="img"></div>
+      <div class="leg" id="legMapa"></div>
+    </div>
+    <div class="card">
+      <h3 id="tPorte"></h3>
+      <p class="sub" id="sPorte"></p>
+      <div class="porte" id="porte"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:22px">
+    <h3 id="tMun"></h3>
+    <p class="sub" id="sMun"></p>
+    <div class="find">
+      <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
+      <input id="busca" autocomplete="off" aria-label="Escolher município / choose a municipality">
+      <button id="limpa" hidden aria-label="Voltar ao estado / back to the state">×</button>
+      <ul id="sug" role="listbox"></ul>
+    </div>
+    <div class="mun">
+      <div id="munNum"></div>
+      <div><div class="h4" id="tLinha"></div><div class="chart" id="gLinha"></div><div class="leg" id="legLinha"></div></div>
+    </div>
+  </div>
+
+  <details class="mais">
+    <summary><span class="pt">Ver detalhes</span><span class="en">See details</span></summary>
+    <div class="corpo" id="detalhes"></div>
+  </details>
+  <p id="erro"></p>
+  <div id="check" hidden></div>
+</section>
+</main>
+<div class="tip" id="tip"></div>
+
+<script src="motor_v2.js"></script>
+<script src="comparar.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+let LG = 'pt';
+try { const q = new URLSearchParams(location.search).get('lang'); LG = q === 'en' ? 'en' : q === 'pt' ? 'pt' : (localStorage.getItem('igm-sp-lang') || 'pt'); } catch (e) {}
+const L = (pt, en) => (LG === 'en' ? en : pt);
+const nf = (x, d = 0) => new Intl.NumberFormat(LG === 'en' ? 'en-US' : 'pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d}).format(x);
+const MOEDA = () => L('R$', 'BRL');
+/* reais em números que ficam: R$ 4,7 mi · R$ 35 mil · R$ 820 */
+const rsC = x => { const a = Math.abs(x);
+  if (a >= 999500) return L(`R$ ${nf(a / 1e6, 1)} mi`, `BRL ${nf(a / 1e6, 1)} million`);
+  if (a >= 1e3) return L(`R$ ${nf(Math.round(a / 1e3))} mil`, `BRL ${nf(Math.round(a / 1e3))}k`);
+  return `${MOEDA()} ${nf(Math.round(a))}`; };
+const sinal = (x, f) => (x < 0 ? '−' : x > 0 ? '+' : '') + f(Math.abs(x));
+const MES = () => L(['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'], ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+const PAG_L = p => MES()[+p.slice(5) - 1] + L('/', ' ') + p.slice(2, 4);
+const PORTE = p => L(p + ' hab.', p.replace(/ mil/g, 'k') + ' inhab.');
+const titulo = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()).replace(/\b(D[aeo]s?|E)\b/g, w => w.toLowerCase());
+const larg = (sel, max, min = 300) => Math.max(min, Math.min(max, Math.round(document.querySelector(sel).clientWidth || max)));
+async function texto(f) {
+  const r = await fetch('dados/' + f);
+  if (!r.ok) throw new Error(f + ': ' + r.status);
+  const b = new Uint8Array(await r.arrayBuffer());
+  if (b[0] === 0x1f && b[1] === 0x8b) return new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+  return new TextDecoder().decode(b);
+}
+const tip = $('#tip');
+function dica(e, html) { tip.innerHTML = html; tip.classList.add('on'); const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = Math.max(8, x) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; }
+const semDica = () => tip.classList.remove('on');
+document.addEventListener('scroll', semDica, {passive: true});
+
+(async function () {
+  const [D, mu, pg, mdn, cob, mp] = await Promise.all([
+    texto('dados_simulacao_igm.json').then(JSON.parse),
+    texto('municipios.csv'), texto('pagamentos.csv'), texto('medianas.csv'),
+    texto('cobertura.csv.gz'), texto('municipio_pagamento.csv.gz'),
+  ]);
+  const B = IGM.montar({municipios: mu, pagamentos: pg, medianas: mdn, cobertura: cob, municipio_pagamento: mp});
+  const ctx = IGM.contexto(B);
+  const N = B.N, MUN = B.muns, nomes = MUN.map(m => m.nome);
+  const MRef = IGM.calcular(B, IGM.PRESETS.R0, ctx);    // regra atual
+  const MR = IGM.calcular(B, IGM.PRESETS.R4v, ctx);     // Regra B
+  const iSet = B.pags.findIndex(p => p.id === '2026-09');
+  const TODAS = B.pags.map((_, i) => i);
+  const NOME = () => L('Regra B', 'Rule B');
+  const st = {per: 'todas', mun: null};
+  try { const q = new URLSearchParams(location.search); if (q.get('per') === 'set26') st.per = 'set26';
+    const m = B.idx.get(+q.get('m')); if (m !== undefined) st.mun = m; } catch (e) {}
+  let C = null;
+
+  /* mapa */
+  const M = D.mapa;
+  $('#mapa').innerHTML = `<svg viewBox="0 0 ${M.w} ${M.h}">${M.d.map((d, i) => `<path d="${d}" data-i="${i}"/>`).join('')}</svg>`;
+  const paths = [...document.querySelectorAll('#mapa path')];
+  const claro = [232, 236, 241], mix = (base, t) => `rgb(${base.map((c, k) => Math.round(claro[k] + (c - claro[k]) * t))})`;
+  $('#mapa').addEventListener('mousemove', e => {
+    const i = e.target.dataset && e.target.dataset.i; if (i === undefined) return semDica();
+    const d = C.dif[i], a = C.atual[i];
+    dica(e, `<b>${esc(titulo(nomes[i]))}</b>${L('Regra atual', 'Current rule')}: ${rsC(a)}<br>${NOME()}: ${rsC(C.minha[i])}<br>${C.classe[i] === 0 ? L('praticamente igual', 'about the same') : sinal(d, rsC) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}`);
+  });
+  $('#mapa').addEventListener('mouseleave', semDica);
+  $('#mapa').addEventListener('click', e => { const i = e.target.dataset && e.target.dataset.i; if (i !== undefined) escolher(+i); });
+
+  function periodoTxt() { return st.per === 'todas' ? L('nas 11 parcelas de set/24 a dez/27', 'over the 11 payments from Sep 2024 to Dec 2027') : L('em set/26', 'in Sep 2026'); }
+
+  function tudo() {
+    C = IGMcomp.comparar(B, MR, MRef, st.per === 'todas' ? TODAS : [iSet]);
+    const n = C.n;
+    document.documentElement.lang = LG === 'en' ? 'en' : 'pt-BR';
+    $('#lang').textContent = LG === 'en' ? 'PT' : 'EN';
+    $('#busca').placeholder = L('Procure seu município…', 'Find your municipality…');
+    const segP = [['todas', L('Todas as parcelas (set/24 – dez/27)', 'All payments (Sep 2024 – Dec 2027)')], ['set26', L('Só set/26', 'Sep 2026 only')]];
+    $('#per').innerHTML = segP.map(([v, l]) => `<button data-v="${v}" aria-pressed="${v === st.per}">${l}</button>`).join('');
+
+    // 1. a frase
+    const quando = st.per === 'todas' ? '' : L('Em set/26, c', 'In Sep 2026, w');
+    $('#manchete').innerHTML = L(
+      `${quando || 'C'}om a ${NOME()}, <span class="g">${nf(n.ganham)}</span> municípios ganham, <span class="p">${nf(n.perdem)}</span> perdem e <span class="i">${nf(n.iguais)}</span> ficam praticamente iguais.`,
+      `${quando || 'W'}ith ${NOME()}, <span class="g">${nf(n.ganham)}</span> municipalities gain, <span class="p">${nf(n.perdem)}</span> lose and <span class="i">${nf(n.iguais)}</span> stay about the same.`);
+    const mesmo = Math.abs(C.totalMinha / C.totalAtual - 1) < 0.005;
+    const fr1 = mesmo
+      ? L(`É o mesmo dinheiro no total (${rsC(C.totalAtual)} ${periodoTxt()}), repartido de outro jeito.`, `It is the same money in total (${rsC(C.totalAtual)} ${periodoTxt()}), shared out differently.`)
+      : L(`O estado paga ${rsC(C.totalMinha)} ${periodoTxt()}, contra ${rsC(C.totalAtual)} na regra atual.`, `The state pays ${rsC(C.totalMinha)} ${periodoTxt()}, against ${rsC(C.totalAtual)} under the current rule.`);
+    const perda = C.medPerda === null ? null : Math.max(5, Math.round(C.medPerda * 20) * 5);
+    const fr2 = perda === null ? '' : L(` Quem perde, perde em geral perto de <b>${perda}%</b> do que recebe hoje.`, ` Those who lose typically lose about <b>${perda}%</b> of what they get today.`);
+    const zz = st.per === 'todas'
+      ? L(` Na regra atual, <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina em pelo menos uma parcela; com a ${NOME()}, <b>${nf(C.zeradosMinha)}</b>.`, ` Under the current rule, <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in at least one payment; with ${NOME()}, <b>${nf(C.zeradosMinha)}</b>.`)
+      : L(` Na regra atual, <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina nessa parcela; com a ${NOME()}, <b>${nf(C.zeradosMinha)}</b>.`, ` Under the current rule, <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in that payment; with ${NOME()}, <b>${nf(C.zeradosMinha)}</b>.`);
+    const ext = L(` A maior perda em reais é de ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); o maior ganho, de ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`,
+      ` The largest loss in reais is ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); the largest gain, ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`);
+    $('#lead').innerHTML = fr1 + fr2 + zz + ext;
+    const cls = [['ganham', 'var(--sobe)', L('ganham', 'gain')], ['iguais', 'var(--igual)', L('praticamente iguais', 'about the same')], ['perdem', 'var(--desce)', L('perdem', 'lose')]];
+    $('#stack').innerHTML = cls.map(([k, c, l]) => `<i style="flex:${n[k]};background:${c}" title="${n[k]} ${l}"></i>`).join('');
+    $('#stackl').innerHTML = cls.map(([k, c, l]) => `<span><b style="color:${k === 'iguais' ? 'var(--t2)' : c}">${nf(n[k])}</b> ${l}</span>`).join('');
+
+    // 2. mapa
+    $('#tMapa').textContent = L(`Quem ganha e quem perde com a ${NOME()}`, `Who gains and who loses with ${NOME()}`);
+    $('#sMapa').textContent = L(`diferença para a regra atual, ${periodoTxt()} · clique para ver o município`, `difference from the current rule, ${periodoTxt()} · click to see the municipality`);
+    const cont = {ganham: 0, perdem: 0, iguais: 0};
+    paths.forEach((p, i) => {
+      const k = C.classe[i];
+      let cor = 'var(--igual)';
+      if (k !== 0) { const t = C.atual[i] > 0 ? Math.min(1, Math.abs(C.dif[i]) / C.atual[i] / 0.5) : 1; cor = mix(k < 0 ? [229, 98, 46] : [42, 120, 214], 0.35 + 0.65 * t); }
+      p.setAttribute('fill', cor); p.dataset.c = k; cont[k > 0 ? 'ganham' : k < 0 ? 'perdem' : 'iguais']++;
+      p.classList.toggle('sel', st.mun === i);
+    });
+    if (st.mun !== null) paths[st.mun].parentNode.appendChild(paths[st.mun]);
+    $('#legMapa').innerHTML = `<span><i style="background:var(--sobe)"></i>${L('ganha', 'gains')}</span><span><i style="background:var(--igual)"></i>${L('praticamente igual', 'about the same')}</span><span><i style="background:var(--desce)"></i>${L('perde', 'loses')}</span><span style="color:var(--t3)">${L('cor mais forte = mudança maior, até metade do que recebe hoje', 'stronger colour = larger change, up to half of what it gets today')}</span>`;
+    $('#mapa').setAttribute('aria-label', L('Mapa dos municípios de São Paulo: quem ganha e quem perde com a regra escolhida', 'Map of São Paulo municipalities: who gains and who loses with the chosen rule'));
+
+    // 3. por porte
+    $('#tPorte').textContent = L('Por tamanho do município', 'By size of municipality');
+    $('#sPorte').textContent = L('municípios em cada grupo · e o saldo em reais do grupo', 'municipalities in each group · and the group\'s net change in reais');
+    const NP = [L('Pequenos', 'Small'), L('Médios', 'Medium'), L('Grandes', 'Large')];
+    const FP = [L('até 20 mil hab.', 'up to 20k inhab.'), L('20 a 100 mil hab.', '20k to 100k inhab.'), L('mais de 100 mil hab.', 'over 100k inhab.')];
+    $('#porte').innerHTML = C.porte.map((g, k) => `<div class="row">
+      <div class="nm"><span>${NP[k]} <small>${FP[k]}</small></span><small>${nf(g.n)}</small></div>
+      <div class="bar">${cls.map(([c, cor, l]) => g[c] ? `<i class="${c === 'iguais' ? 'ig' : ''}" style="flex:${g[c]};background:${cor}" title="${g[c]} ${l}">${g[c] / g.n >= 0.08 ? nf(g[c]) : ''}</i>` : '').join('')}</div>
+      <div class="rs">${L(`${nf(g.ganham)} ganham, ${nf(g.perdem)} perdem · saldo ${sinal(g.dif, rsC)}`, `${nf(g.ganham)} gain, ${nf(g.perdem)} lose · net ${sinal(g.dif, rsC)}`)}</div></div>`).join('') +
+      `<div class="leg">${cls.map(([, c, l]) => `<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
+
+    // 4. seu município
+    cartao();
+
+    // 5. detalhes
+    $('#detalhes').innerHTML = L(
+      `<p><b>Como a frase conta.</b> Para cada município somamos o que ele recebe ${periodoTxt()} na regra atual e na ${NOME()}. Ganha ou perde quem muda mais do que <b>R$ 1 mil ou 2% do que recebe hoje</b> (o que for maior); o resto fica "praticamente igual". Assim um trocado num município pequeno, ou alguns milhares de reais numa cidade grande, não contam como ganho nem perda. A mesma regra vale para a frase, o mapa e as barras. "Sem nenhum dinheiro de vacina" = parte variável abaixo de R$ 0,005 numa parcela. Mesmo dinheiro de 2026 em todas as parcelas, antes do teto de 10 pontos; dez/26 é previsão e 2027 projeção sem mudança na vacinação. Portes: os de municipios.csv, agrupados em até 20 mil, 20 a 100 mil e mais de 100 mil habitantes.</p>
+       <p><b>O que fica aqui dentro</b> (a página de hoje mostra tudo isso de saída; na versão nova, só depois do clique):</p>
+       <ul><li>dinheiro das vacinas em cada parcela, em % do máximo ou em R$ milhões;</li><li>municípios sem nenhum dinheiro de vacina, parcela a parcela;</li><li>quanto a parte do máximo muda de uma parcela para a outra;</li><li>uma criança a mais, com a escolha da parcela;</li><li>zerados na regra atual, mas vacinando bem;</li><li>o mapa de cada município numa parcela (parte do máximo).</li></ul>
+       <p>O gráfico por terço da natalidade sai; as barras por tamanho do município ficam no lugar dele.</p>`,
+      `<p><b>How the sentence counts.</b> For each municipality we add up what it gets ${periodoTxt()} under the current rule and under ${NOME()}. It gains or loses if it changes by more than <b>BRL 1k or 2% of what it gets today</b> (whichever is larger); the rest are "about the same". So small change in a small town, or a few thousand reais in a large city, does not count as a gain or a loss. The same rule applies to the sentence, the map and the bars. "No vaccine money at all" = variable part below BRL 0.005 in a payment. 2026 money in every payment, before the 10-point cap; Dec 2026 is a forecast and 2027 a projection with no change in vaccination. Sizes: those in municipios.csv, grouped into up to 20k, 20k to 100k and over 100k inhabitants.</p>
+       <p><b>What goes in here</b> (today's page shows all of it up front; in the new version, only after the click):</p>
+       <ul><li>vaccine money in each payment, as % of the maximum or in BRL million;</li><li>municipalities with no vaccine money at all, payment by payment;</li><li>how much the share of the maximum changes from one payment to the next;</li><li>one more child, with the payment picker;</li><li>paid nothing under the current rule, but vaccinating well;</li><li>the map of each municipality in one payment (share of maximum).</li></ul>
+       <p>The birth-rate thirds chart goes; the size bars take its place.</p>`);
+
+    // conferência (lida pelo teste sem navegador): frase × mapa × barras
+    const sb = C.porte.reduce((a, g) => ({ganham: a.ganham + g.ganham, perdem: a.perdem + g.perdem, iguais: a.iguais + g.iguais}), {ganham: 0, perdem: 0, iguais: 0});
+    $('#check').innerHTML = `<span id="ck" data-per="${st.per}" data-frase="${n.ganham},${n.perdem},${n.iguais}" data-mapa="${cont.ganham},${cont.perdem},${cont.iguais}" data-barras="${sb.ganham},${sb.perdem},${sb.iguais}" data-zerados="${C.zeradosAtual},${C.zeradosMinha}" data-total="${Math.round(C.totalAtual)},${Math.round(C.totalMinha)}" data-ext="${MUN[C.maiorPerda].mun}:${Math.round(C.dif[C.maiorPerda])},${MUN[C.maiorGanho].mun}:${Math.round(C.dif[C.maiorGanho])}" data-perda="${perda}" data-largura="${innerWidth},${document.documentElement.scrollWidth}"></span>`;
+    url();
+  }
+
+  function cartao() {
+    const i = st.mun;
+    $('#tMun').textContent = L('Seu município', 'Your municipality');
+    $('#sMun').textContent = L(`regra atual × ${NOME()}, ${periodoTxt()}`, `current rule × ${NOME()}, ${periodoTxt()}`);
+    const a = i === null ? C.totalAtual : C.atual[i], b = i === null ? C.totalMinha : C.minha[i], d = b - a;
+    const k = i === null ? null : C.classe[i];
+    const cor = k === null ? 'var(--ink)' : k > 0 ? 'var(--sobe)' : k < 0 ? 'var(--desce)' : 'var(--t2)';
+    const veredito = i === null
+      ? (Math.abs(d) < 0.005 * a ? L('O mesmo dinheiro, repartido de outro jeito.', 'The same money, shared out differently.') : '')
+      : k === 0 ? L('Praticamente igual (menos de R$ 1 mil ou 2%).', 'About the same (under BRL 1k or 2%).')
+      : k > 0 ? L('Ganha com a regra escolhida.', 'Gains with the chosen rule.') : L('Perde com a regra escolhida.', 'Loses with the chosen rule.');
+    $('#munNum').innerHTML = `<h3>${i === null ? L('Estado inteiro', 'Whole state') : esc(titulo(nomes[i]))}</h3>
+      <p class="sub" style="margin:6px 0 0">${i === null ? L('645 municípios · procure o seu ou clique no mapa', '645 municipalities · search for yours or click the map') : esc(PORTE(MUN[i].porte)) + ' · ' + esc(titulo(MUN[i].regiao))}</p>
+      <div class="antes"><div><span>${L('Regra atual', 'Current rule')}</span><b style="color:var(--atual)">${rsC(a)}</b></div><div class="seta">→</div><div><span>${NOME()}</span><b style="color:var(--minha)">${rsC(b)}</b></div></div>
+      <p class="delta" style="color:${cor}">${Math.abs(d) < 0.5 ? L('sem diferença', 'no difference') : sinal(d, rsC) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}<small>${veredito}</small></p>`;
+    // linha pelas parcelas
+    $('#tLinha').textContent = i === null ? L('Dinheiro das vacinas do estado, parcela a parcela', 'State vaccine money, payment by payment') : L('Dinheiro das vacinas, parcela a parcela', 'Vaccine money, payment by payment');
+    const sA = MRef.map(o => o.nd ? null : (i === null ? o.total : o.rs[i])), sB = MR.map(o => o.nd ? null : (i === null ? o.total : o.rs[i]));
+    const w = larg('#gLinha', 620), h = 200, l = 52, r = 10, t = 14, bt = 30, P = B.P;
+    const passo = (v => { const e = 10 ** Math.floor(Math.log10(v)), f = v / e; return [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].find(k => f <= k) * e; })(Math.max(1, ...sA, ...sB) / 2), mx = Math.max(2 * passo, Math.max(1, ...sA, ...sB) * 1.08), x = p => l + (w - l - r) * p / (P - 1), y = v => t + (h - t - bt) * (1 - v / mx);
+    const iPrev = B.pags.findIndex(p => p.status !== 'observed');
+    const linha = (s, c, sw) => `<path d="${s.map((v, p) => v === null ? '' : `${p && s[p - 1] !== null ? 'L' : 'M'}${x(p).toFixed(1)},${y(v).toFixed(1)}`).join('')}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round"/>` +
+      s.map((v, p) => v === null ? '' : `<circle cx="${x(p)}" cy="${y(v)}" r="3" fill="${c}"><title>${PAG_L(B.pags[p].id)}: ${rsC(v)}</title></circle>`).join('');
+    const tk = [0, passo, 2 * passo], curto = v => v >= 1e6 ? L(`${nf(v / 1e6)} mi`, `${nf(v / 1e6)}M`) : v >= 1e3 ? L(`${nf(v / 1e3)} mil`, `${nf(v / 1e3)}k`) : nf(v);
+    $('#gLinha').innerHTML = `<svg viewBox="0 0 ${w} ${h}">
+      <rect x="${x(iPrev) - (w - l - r) / (P - 1) / 2}" y="${t}" width="${w - r - x(iPrev) + (w - l - r) / (P - 1) / 2}" height="${h - t - bt}" fill="var(--bg-2)"/>
+      <text x="${w - r - 4}" y="${t + 12}" text-anchor="end">${L('previsão e projeção', 'forecast and projection')}</text>
+      ${tk.map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${curto(v)}</text>`).join('')}
+      ${st.per === 'set26' ? `<line x1="${x(iSet)}" x2="${x(iSet)}" y1="${t}" y2="${h - bt}" stroke="var(--ink)" stroke-dasharray="3 3"/>` : ''}
+      ${linha(sA, 'var(--atual)', 2.5)}${linha(sB, 'var(--minha)', 3.5)}
+      ${B.pags.map((p, k) => (k % 2 === 0 || w > 520) ? `<text x="${x(k)}" y="${h - 10}" text-anchor="middle">${PAG_L(p.id)}</text>` : '').join('')}
+    </svg>`;
+    $('#legLinha').innerHTML = `<span><i style="background:var(--atual)"></i>${L('Regra atual', 'Current rule')}</span><span><i style="background:var(--minha)"></i>${NOME()}</span>`;
+  }
+
+  /* busca (mesmo padrão da página) */
+  const sem = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const chave = nomes.map(sem);
+  const inp = $('#busca'), ul = $('#sug');
+  let act = 0, res = [];
+  const pinta = () => { ul.innerHTML = res.map((i, k) => `<li class="${k === act ? 'act' : ''}" data-i="${i}">${esc(titulo(nomes[i]))}<small>${esc(PORTE(MUN[i].porte))}</small></li>`).join(''); ul.classList.toggle('on', res.length > 0); };
+  inp.addEventListener('input', () => { const q = sem(inp.value.trim()); res = q ? chave.map((c, i) => [c.indexOf(q), i]).filter(x => x[0] >= 0).sort((a, b) => a[0] - b[0] || chave[a[1]].localeCompare(chave[b[1]])).slice(0, 8).map(x => x[1]) : []; act = 0; pinta(); });
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { act = Math.min(act + 1, res.length - 1); pinta(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { act = Math.max(act - 1, 0); pinta(); e.preventDefault(); }
+    else if (e.key === 'Enter' && res.length) { escolher(res[act]); inp.blur(); }
+    else if (e.key === 'Escape') ul.classList.remove('on');
+  });
+  ul.addEventListener('mousedown', e => { const li = e.target.closest('li'); if (li) escolher(+li.dataset.i); });
+  inp.addEventListener('blur', () => setTimeout(() => ul.classList.remove('on'), 120));
+  function escolher(i) {
+    st.mun = i; inp.value = titulo(nomes[i]); ul.classList.remove('on'); $('#limpa').hidden = false;
+    paths.forEach((p, k) => p.classList.toggle('sel', k === i)); paths[i].parentNode.appendChild(paths[i]);
+    cartao(); url();
+  }
+  $('#limpa').onclick = () => { st.mun = null; inp.value = ''; $('#limpa').hidden = true; paths.forEach(p => p.classList.remove('sel')); cartao(); url(); };
+  if (st.mun !== null) { inp.value = titulo(nomes[st.mun]); $('#limpa').hidden = false; }
+
+  function url() {
+    try {
+      const u = new URL(location.href), sp = u.searchParams;
+      if (st.mun === null) sp.delete('m'); else sp.set('m', MUN[st.mun].mun);
+      if (st.per === 'todas') sp.delete('per'); else sp.set('per', st.per);
+      if (LG === 'en') sp.set('lang', 'en'); else sp.delete('lang');
+      history.replaceState(null, '', u);
+    } catch (e) {}
+  }
+  $('#per').onclick = e => { const b = e.target.closest('button'); if (!b) return; st.per = b.dataset.v; tudo(); };
+  $('#lang').onclick = () => { LG = LG === 'en' ? 'pt' : 'en'; try { localStorage.setItem('igm-sp-lang', LG); } catch (e) {} tudo(); if (st.mun !== null) inp.value = titulo(nomes[st.mun]); };
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(cartao, 150); });
+  tudo();
+})().catch(e => { document.getElementById('erro').textContent = 'Erro ao carregar os dados: ' + e.message; console.error(e); });
+</script>
+</body>
+</html>
