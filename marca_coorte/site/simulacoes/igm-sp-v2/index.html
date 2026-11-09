@@ -210,7 +210,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 .top .topfind input{font-size:15px;padding:8px 34px 8px 36px}
 .top .topfind ul{max-height:60vh}
 #limpa{all:unset;cursor:pointer;position:absolute;right:4px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;font:500 18px/1 var(--mono);color:var(--t2)}
-#limpa:hover{color:var(--klein)}
+#limpa:hover,.xlimpa:hover{color:var(--klein)}
 @media(max-width:760px){.top{gap:10px}.top .logo{height:18px}}
 
 /* v3: gráficos simples */
@@ -258,6 +258,43 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 .mmapa path{stroke:var(--bg);stroke-width:.5;cursor:pointer}
 .mmapa path.sel{stroke:var(--ink);stroke-width:2}
 #mCrK,#mZb{grid-template-columns:1fr 1fr}
+/* v2: resultados de "Monte sua regra" (frase, mapa de ganho e perda, porte, seu município; o resto em "ver detalhes") */
+.manchete{font:700 clamp(26px,3.4vw,40px)/1.12 var(--narrow);max-width:30ch;text-wrap:balance;margin-top:30px}
+.manchete .g{color:var(--sobe)} .manchete .p{color:var(--desce)} .manchete .i{color:var(--t2)}
+.lead{margin-top:12px;font-size:18px;line-height:1.5;color:var(--t2);max-width:68ch}
+.lead b{color:var(--ink);font-weight:600}
+.mstack{max-width:900px}
+.stack.mstack{height:24px;margin-top:20px}
+.stackl.mstack{font-size:15px}
+.stackl.mstack b{font-size:22px}
+.mgrid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr);gap:22px;align-items:start;margin-top:26px}
+@media(max-width:900px){.mgrid{grid-template-columns:minmax(0,1fr)}}
+.mcard{background:var(--bg-hi);border:1px solid var(--rule);padding:18px 18px 16px;min-width:0}
+.mcard h3{font-size:22px;line-height:1.15;margin-bottom:4px}
+.mcard .sub{font:400 12px/1.5 var(--mono);color:var(--t3);margin-bottom:12px;letter-spacing:.03em}
+.porte .row{margin:6px 0 18px}
+.porte .nm{display:flex;justify-content:space-between;gap:8px;font:600 16px/1.2 var(--narrow)}
+.porte .nm small{font:400 12px/1.4 var(--mono);color:var(--t3)}
+.porte .bar{display:flex;height:26px;gap:2px;margin-top:6px}
+.porte .bar i{display:flex;align-items:center;justify-content:center;font:700 14px/1 var(--narrow);font-style:normal;color:#fff;border-radius:2px;min-width:0;overflow:hidden}
+.porte .bar i.ig{color:var(--t2)}
+.porte .rs{font:400 12.5px/1.5 var(--mono);color:var(--t2);margin-top:5px}
+.mfind{max-width:460px}
+.mfind input{background:var(--bg)}
+.xlimpa{all:unset;cursor:pointer;position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:grid;place-items:center;font:500 18px/1 var(--mono);color:var(--t2)}
+.xlimpa[hidden]{display:none}
+.mseu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:22px;align-items:start}
+@media(max-width:760px){.mseu{grid-template-columns:minmax(0,1fr)}}
+.mseu .nome{font:700 28px/1.05 var(--narrow);text-transform:uppercase}
+.antes{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-top:14px}
+.antes div span{display:block;font:400 12px/1.4 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--t2)}
+.antes div b{display:block;font:700 34px/1.05 var(--narrow);font-variant-numeric:tabular-nums}
+.antes .seta{font:400 28px/1 var(--narrow);color:var(--t3);padding-bottom:4px}
+.mdelta{margin-top:10px;font:700 22px/1.2 var(--narrow)}
+.mdelta small{font:400 13px/1.5 "Archivo",sans-serif;color:var(--t2);display:block;margin-top:2px}
+details.mais{margin-top:26px;border-top:1px solid var(--rule);padding-top:14px}
+details.mais>summary{cursor:pointer;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein)}
+.mcomo{margin-top:14px;max-width:80ch;font-size:15px;line-height:1.6;color:var(--t2)}
 @media(max-width:420px){#mCrK,#mZb{grid-template-columns:1fr}}
 .ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .ex.um{grid-template-columns:minmax(0,1fr);max-width:780px}
@@ -426,35 +463,68 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
   <div class="bld" id="bld"></div>
   <p class="regra-txt" id="regraTxt"></p>
 
-  <div class="duo" style="margin-top:26px">
-    <div><div class="h4" id="tMDin" style="margin-top:0"></div><div class="seg mini" id="mDinModo"></div><div class="chart" id="gMDin"></div></div>
-    <div><div class="h4" id="tMZero" style="margin-top:0"></div><div class="chart" id="gMZero"></div></div>
-  </div>
-  <div class="duo" style="margin-top:26px">
-    <div><div class="h4" id="tMMud" style="margin-top:0"></div><div class="chart" id="gMMud"></div></div>
-    <div>
-      <div class="h4" id="tMParc" style="margin-top:0"></div>
-      <div class="pick" id="mParc" style="margin-top:4px"></div>
-      <div class="kpis" id="mCrK" style="margin-top:10px"></div>
-      <div class="h4" id="tMTerc"></div>
-      <div class="chart" id="gMTerc"></div>
+  <!-- resultados: o que muda se a regra escolhida substituir a atual (maquete aprovada em 09/11/2026) -->
+  <p class="manchete" id="mManchete" aria-live="polite"></p>
+  <p class="lead" id="mLead"></p>
+  <div class="stack mstack" id="mStack"></div>
+  <div class="stackl mstack" id="mStackl"></div>
+  <div class="mgrid">
+    <div class="mcard">
+      <h3 id="tMHero"></h3>
+      <p class="sub" id="sMHero"></p>
+      <div id="mHero" class="mmapa" role="img"></div>
+      <div class="leg" id="legMHero"></div>
+    </div>
+    <div class="mcard">
+      <h3 id="tMPorte"></h3>
+      <p class="sub" id="sMPorte"></p>
+      <div class="porte" id="mPorte"></div>
     </div>
   </div>
-  <div class="duo" style="margin-top:26px">
-    <div>
-      <div class="h4" id="tMMapa" style="margin-top:0"></div>
-      <div class="seg mini" id="mMapaModo"></div>
-      <div id="mMapa" class="mmapa" role="img"></div>
-      <div class="leg" id="legMMapa"></div>
+  <div class="mcard" style="margin-top:22px">
+    <h3 id="tMSeu"></h3>
+    <p class="sub" id="sMSeu"></p>
+    <div class="find mfind">
+      <svg viewBox="0 0 16 16" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5.5"/><path d="M11 11l4 4"/></svg>
+      <input id="mBusca" autocomplete="off" aria-label="Escolher município / choose a municipality">
+      <button id="mLimpa" class="xlimpa" hidden aria-label="Voltar ao estado / back to the state">×</button>
+      <ul id="mSug" role="listbox"></ul>
     </div>
-    <div>
-      <div class="h4" id="tMZb" style="margin-top:0"></div>
-      <div class="kpis" id="mZb"></div>
-      <p class="nota-g" id="mZbNota"></p>
-      <div class="h4" id="tMMun"></div>
-      <div class="chart" id="gMMun"></div>
+    <div class="mseu">
+      <div id="mSeuNum"></div>
+      <div><div class="h4" id="tMMun" style="margin-top:0"></div><div class="chart" id="gMMun"></div></div>
     </div>
   </div>
+
+  <details class="mais" id="mMais">
+    <summary><span class="pt">Ver detalhes</span><span class="en">See details</span></summary>
+    <p class="mcomo" id="mComo"></p>
+    <div class="duo" style="margin-top:22px">
+      <div><div class="h4" id="tMDin" style="margin-top:0"></div><div class="seg mini" id="mDinModo"></div><div class="chart" id="gMDin"></div></div>
+      <div><div class="h4" id="tMZero" style="margin-top:0"></div><div class="chart" id="gMZero"></div></div>
+    </div>
+    <div class="duo" style="margin-top:26px">
+      <div><div class="h4" id="tMMud" style="margin-top:0"></div><div class="chart" id="gMMud"></div></div>
+      <div>
+        <div class="h4" id="tMParc" style="margin-top:0"></div>
+        <div class="pick" id="mParc" style="margin-top:4px"></div>
+        <div class="kpis" id="mCrK" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div class="duo" style="margin-top:26px">
+      <div>
+        <div class="h4" id="tMMapa" style="margin-top:0"></div>
+        <div class="seg mini" id="mMapaModo"></div>
+        <div id="mMapa" class="mmapa" role="img"></div>
+        <div class="leg" id="legMMapa"></div>
+      </div>
+      <div>
+        <div class="h4" id="tMZb" style="margin-top:0"></div>
+        <div class="kpis" id="mZb"></div>
+        <p class="nota-g" id="mZbNota"></p>
+      </div>
+    </div>
+  </details>
 </section>
 
 <!-- 6. Uma criança a mais -->
@@ -534,7 +604,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
       <p>CIB-SP Resolutions 24/2026 and 25/2026; SS Resolutions 111/2026 and 185/2026. IGM SUS Paulista public panel (São Paulo State Health Department), extracted 30 Sep 2026. Ministry of Health vaccination coverage panel, re-read 19 Sep 2026. SINASC 2023, 2024 and 2025 preliminary (DATASUS). IBGE municipal mesh. SI-PNI/RNDS vaccination open data.</p>
     </div>
     <h3 class="pt">Arquivos</h3><h3 class="en">Files</h3>
-    <p class="files"><a href="dados/README.md">dados/README.md</a> · <a href="dados/cobertura.csv.gz">cobertura.csv.gz</a> · <a href="dados/municipio_pagamento.csv.gz">municipio_pagamento.csv.gz</a> · <a href="dados/municipios.csv">municipios.csv</a> · <a href="dados/pagamentos.csv">pagamentos.csv</a> · <a href="dados/medianas.csv">medianas.csv</a> · <a href="dados/nascidos.csv.gz">nascidos.csv.gz</a> · <a href="dados/cobertura_alternativas_2026.csv.gz">cobertura_alternativas_2026.csv.gz</a> · <a href="dados/pontos_publicados_2026.csv">pontos_publicados_2026.csv</a> · <a href="dados/municipios.geojson">municipios.geojson</a> · <a href="dados/referencia.json">referencia.json</a> · <a href="motor_v2.js">motor_v2.js</a> · <a href="teste_referencia_v2.js">teste_referencia_v2.js</a></p>
+    <p class="files"><a href="dados/README.md">dados/README.md</a> · <a href="dados/cobertura.csv.gz">cobertura.csv.gz</a> · <a href="dados/municipio_pagamento.csv.gz">municipio_pagamento.csv.gz</a> · <a href="dados/municipios.csv">municipios.csv</a> · <a href="dados/pagamentos.csv">pagamentos.csv</a> · <a href="dados/medianas.csv">medianas.csv</a> · <a href="dados/nascidos.csv.gz">nascidos.csv.gz</a> · <a href="dados/cobertura_alternativas_2026.csv.gz">cobertura_alternativas_2026.csv.gz</a> · <a href="dados/pontos_publicados_2026.csv">pontos_publicados_2026.csv</a> · <a href="dados/municipios.geojson">municipios.geojson</a> · <a href="dados/referencia.json">referencia.json</a> · <a href="motor_v2.js">motor_v2.js</a> · <a href="comparar.js">comparar.js</a> · <a href="teste_referencia_v2.js">teste_referencia_v2.js</a></p>
   </div>
 </section>
 
@@ -546,6 +616,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 <div class="tip" id="tip"></div>
 
 <script src="motor_v2.js"></script>
+<script src="comparar.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -680,6 +751,8 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     inp.addEventListener('blur', () => setTimeout(() => ul.classList.remove('on'), 120));
   }
   busca($('#busca'), $('#sug'));
+  busca($('#mBusca'), $('#mSug'));   // a mesma busca no cartão "Seu município"
+  $('#mLimpa').onclick = () => $('#limpa').onclick();
   $('#limpa').onclick = () => {
     st.mun = null; $('#busca').value = ''; $('#limpa').hidden = true;
     paths.forEach(p => p.classList.remove('sel')); $('#mapa').classList.remove('dim');
@@ -1163,6 +1236,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     const sRef = (v, x) => Object.assign({v, cor: 'var(--atual)', lbl: L('Regra atual', 'Current rule'), sw: 2.5}, x || {});
     const sMin = (v, x) => Object.assign({v, cor: 'var(--minha)', lbl: nomeM, sw: 3.5, nd: MR.map(o => o.nd)}, x || {});
     const ehAtual = pr === 'atual';
+    vComparacao(nomeM, ehAtual);
     // a. dinheiro: parte do máximo ou R$
     seg($('#mDinModo'), [['pct', L('% do máximo', '% of maximum')], ['rs', L('R$ milhões', 'BRL million')]], mDinModo, v => { mDinModo = v; vSaidas(); });
     const pc = o => o.nd ? null : 100 * o.partMax, tm = o => o.nd ? null : o.total / 1e6;
@@ -1197,22 +1271,6 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       return `<div><b style="color:${cor}">${mg.mediana === null ? '—' : rs(mg.mediana)}</b><span>${esc(nome)}: ${L(`por criança a mais (mediana), em ${nf(mg.pctPares, 0)}% dos pares município × vacina, os que estão na rampa. Fora dela, R$ 0.`, `per extra child (median), in the ${nf(mg.pctPares, 0)}% of municipality × vaccine pairs on the ramp. Off the ramp, BRL 0.`)}</span></div>`;
     };
     $('#mCrK').innerHTML = (ehAtual ? '' : tile(mgR, L('Regra atual', 'Current rule'), 'var(--atual)')) + tile(mgM, nomeM, 'var(--minha)');
-    $('#tMTerc').textContent = L('O mesmo, por terço da natalidade (nascidos por 1.000 habitantes)', 'The same, by third of the birth rate (births per 1,000 inhabitants)');
-    (() => {
-      const S = [[mgR, 'var(--atual)', L('regra atual: salto perto de um corte', 'current rule: jump near a cut-off')]];
-      if (mgM && !ehAtual) S.push([mgM, 'var(--minha)', mgM.tipo === 'faixas' ? L(`${nomeM}: salto perto de um corte`, `${nomeM}: jump near a cut-off`) : L(`${nomeM}: por criança na rampa`, `${nomeM}: per child on the ramp`)]);
-      const w = larg('#gMTerc', 560), h = 210, l = 50, r = 6, t = 18, b = 40, gw = (w - l - r) / 3, bw = gw / (S.length + 1.2);
-      const vals = S.flatMap(([mg]) => mg.porTerco.map(z => z.mediana || 0)), mx = Math.max(100, ...vals) * 1.15, y = v => t + (h - t - b) * (1 - v / mx);
-      const NL = D.cr.natLim, TL = [L('baixa', 'low'), L('média', 'middle'), L('alta', 'high')];
-      let g = [0, mx / 2].map(v => `<line x1="${l}" x2="${w - r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule-2)"/><text x="${l - 6}" y="${y(v) + 4}" text-anchor="end">${fmtR(v)}</text>`).join('');
-      [0, 1, 2].forEach(tt => {
-        S.forEach(([mg, cor], j) => { const v = mg.porTerco[tt].mediana || 0, x0 = l + tt * gw + bw * .6 + j * bw;
-          g += `<rect x="${x0}" y="${y(v)}" width="${bw - 3}" height="${h - b - y(v)}" fill="${cor}" rx="2"><title>${TL[tt]}: ${rs(v)} (${mg.porTerco[tt].n} ${L('pares', 'pairs')})</title></rect><text x="${x0 + (bw - 3) / 2}" y="${y(v) - 4}" text-anchor="middle" style="font-size:10.5px">${rs(v).replace('R$ ', '')}</text>`; });
-        g += `<text class="lbl" x="${l + tt * gw + gw / 2}" y="${h - 22}" text-anchor="middle">${TL[tt]}</text><text x="${l + tt * gw + gw / 2}" y="${h - 7}" text-anchor="middle" style="font-size:10px">${nf(NL[tt][0], 1)}–${nf(NL[tt][1], 1)}</text>`;
-      });
-      $('#gMTerc').innerHTML = `<svg viewBox="0 0 ${w} ${h}">${g}</svg><div class="leg">${S.map(([, cor, lb]) => `<span><i style="background:${cor}"></i>${esc(lb)}</span>`).join('')}</div>
-        <p class="nota-g">${L('R$ por criança, mediana dos pares município × vacina que uma criança mexe. Terços fixos: nascidos de 2024 por 1.000 habitantes de 2026, como na Figura H do artigo. Pago por criança, a criança vale parecido nos três terços; pago por habitante, vale mais onde nascem menos crianças.', 'BRL per child, median over the municipality × vaccine pairs one child moves. Fixed thirds: 2024 births per 1,000 inhabitants in 2026, as in the paper\'s Figure H. Paid per child, a child is worth about the same in all three; paid per inhabitant, more where fewer children are born.')}</p>`;
-    })();
     // e. mapa da regra escolhida
     const o = MR[mParc], oR = MRef[mParc];
     $('#tMMapa').textContent = L(`Cada município em ${PAG_L(B.pags[mParc].id)}`, `Each municipality in ${PAG_L(B.pags[mParc].id)}`);
@@ -1257,18 +1315,123 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       <div><b>${medC === null ? '—' : nf(medC, 1) + '%'}</b><span>${L('mediana dos 12 meses das vacinas deles (todos os zerados)', 'median 12-month coverage of their vaccines (all of them)')}</span></div>
       <div><b style="color:var(--minha)">${pagos === null ? 'n/d' : nf(pagos.length)}</b><span>${pagos === null ? L('a regra escolhida não tem valor nesta parcela', 'the chosen rule has no value in this payment') : L(`deles recebem na ${ehAtual ? 'regra atual' : 'regra escolhida'} (${nf(pagosB.length)} dos ${nf(bons.length)} que vacinam bem)`, `of them get money under the ${ehAtual ? 'current' : 'chosen'} rule (${nf(pagosB.length)} of the ${nf(bons.length)} vaccinating well)`)}</span></div>`;
     $('#mZbNota').textContent = medF === null ? '' : L(`Os que recebem ficam, na mediana, com ${nf(100 * medF, 0)}% do próprio máximo na regra escolhida. O piso é o da regra (80% se ela for de faixas). Em jun e set/2026 os zerados são os do pagamento publicado pela SES (set: 164; a reconstrução dá 163); nas outras parcelas, a reconstrução.`, `Those paid get a median ${nf(100 * medF, 0)}% of their own maximum under the chosen rule. The floor is the rule's (80% if it uses bands). In Jun and Sep 2026 the zeroed municipalities are those of the payment published by the state (Sep: 164; the reconstruction gives 163); in the other payments, the reconstruction.`);
-    // g. o município escolhido, parcela a parcela
+    // g. o município escolhido (ou o estado), parcela a parcela, no cartão "Seu município"
     const i = st.mun;
-    $('#tMMun').textContent = i === null ? L('Escolha um município no topo (ou no mapa) para ver o dele, parcela a parcela', 'Choose a municipality at the top (or on the map) to see its own, payment by payment') : L(`${titulo(nomes[i])}, parcela a parcela`, `${titulo(nomes[i])}, payment by payment`);
-    if (i === null) { $('#gMMun').innerHTML = ''; return; }
-    const vR = MRef.map(z => z.rs[i]), vM = MR.map(z => z.nd ? null : z.rs[i]);
-    $('#gMMun').innerHTML = grafPag('#gMMun', ehAtual ? [sMin(vM)] : [sRef(vR), sMin(vM)], {fmt: (v, t) => t ? rs(v) : fmtR(v), oco: true, l: 54, h: 220}) +
-      `<p class="nota-g">${L(`Mudança mediana da parte do máximo: na escolhida ${nf(IGM.mediana(MR.filter(z => !z.nd).map((z, k, a) => k ? Math.abs(z.fracao[i] - a[k - 1].fracao[i]) * 100 : null).filter(z => z !== null)) || 0, 1)} pontos, na atual ${nf(IGM.mediana(MRef.map((z, k) => k ? Math.abs(z.fracao[i] - MRef[k - 1].fracao[i]) * 100 : null).filter(z => z !== null)), 1)}.`, `Median change in share of maximum: chosen rule ${nf(IGM.mediana(MR.filter(z => !z.nd).map((z, k, a) => k ? Math.abs(z.fracao[i] - a[k - 1].fracao[i]) * 100 : null).filter(z => z !== null)) || 0, 1)} points, current ${nf(IGM.mediana(MRef.map((z, k) => k ? Math.abs(z.fracao[i] - MRef[k - 1].fracao[i]) * 100 : null).filter(z => z !== null)), 1)}.`)}</p>`;
+    $('#tMMun').textContent = i === null ? L('Dinheiro das vacinas do estado, parcela a parcela', 'State vaccine money, payment by payment') : L('Dinheiro das vacinas, parcela a parcela', 'Vaccine money, payment by payment');
+    const vR = MRef.map(z => i === null ? z.total : z.rs[i]), vM = MR.map(z => z.nd ? null : (i === null ? z.total : z.rs[i]));
+    $('#gMMun').innerHTML = grafPag('#gMMun', ehAtual ? [sMin(vM)] : [sRef(vR), sMin(vM)], {fmt: (v, t) => t ? (i === null ? mi(v) : rs(v)) : fmtR(v), oco: true, l: 54, h: 220}) +
+      `<p class="nota-g">${L('Os totais ao lado somam set/24 a dez/26; 2027 é projeção e fica de fora.', 'The totals alongside add up Sep 2024 to Dec 2026; 2027 is a projection and is left out.')}</p>`;
+  }
+
+  /* ===== Resultados de "Monte sua regra": o que muda se a regra escolhida substituir a atual =====
+     Período: as 8 parcelas de set/2024 a dez/2026 (o orçamento do artigo, R$ 32,0 mi por parcela; mesmo dinheiro
+     nas regras com orçamento). "Praticamente igual" = diferença de até 5% do que o município recebe na regra atual
+     (comparar.js). A frase, o mapa, as barras por porte e o cartão usam a mesma comparação. */
+  const P8 = B.pags.map((p, k) => k).filter(k => B.pags[k].sv === 0.5);
+  let MC = null;
+  const rsC = x => { const a = Math.abs(x);
+    if (a >= 999500) return L(`R$ ${nf(a / 1e6, 1)} mi`, `BRL ${nf(a / 1e6, 1)} million`);
+    if (a >= 1e3) return L(`R$ ${nf(Math.round(a / 1e3))} mil`, `BRL ${nf(Math.round(a / 1e3))}k`);
+    return `${MOEDA()} ${nf(Math.round(a))}`; };
+  const pathsH = [];
+  function vComparacao(nomeM, ehAtual) {
+    nomeM = nomeM.replace(/ \((preferida|preferred)\)$/, '');   // na frase, só o nome
+    // "com a Regra A", "com a sua regra", "com a regra “Faixas com corte de 90%”" / "with Rule A", "with your rule"…
+    const prC = presetDe(MS);
+    const comA = !prC ? L('a sua regra', 'your rule') : /^Regra [AB]\b/.test(nomeM) || /^Rule [AB]\b/.test(nomeM) ? nomeM
+      : /^Regra atual/.test(nomeM) ? L('a ' + nomeM.toLowerCase(), 'the ' + nomeM.toLowerCase()) : L(`a regra “${nomeM}”`, `the “${nomeM}” rule`);
+    const comA2 = L(/^Regra [AB]\b/.test(nomeM) ? 'a ' + nomeM : comA, comA);
+    const C = MC = IGMcomp.comparar(B, MR, MRef, P8), n = C.n, np = C.parcelas.length;
+    const periodo = np === P8.length ? L('nas 8 parcelas de set/24 a dez/26', 'over the 8 payments from Sep 2024 to Dec 2026')
+      : L(`nas ${np} parcelas com valor entre set/24 e dez/26`, `over the ${np} payments with a value from Sep 2024 to Dec 2026`);
+    const nm = esc(comA2);
+    // 1. a frase
+    if (ehAtual) {
+      $('#mManchete').innerHTML = L('Esta é a regra atual. Escolha outra regra acima para ver quem ganha e quem perde.', 'This is the current rule. Pick another rule above to see who gains and who loses.');
+      $('#mLead').innerHTML = L(`Na regra atual, o estado paga ${rsC(C.totalAtual)} ${periodo}, e <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina em pelo menos uma parcela.`, `Under the current rule, the state pays ${rsC(C.totalAtual)} ${periodo}, and <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in at least one payment.`);
+    } else {
+      $('#mManchete').innerHTML = L(`Com ${nm}, <span class="g">${nf(n.ganham)}</span> municípios ganham, <span class="p">${nf(n.perdem)}</span> perdem e <span class="i">${nf(n.iguais)}</span> ficam praticamente iguais.`,
+        `With ${nm}, <span class="g">${nf(n.ganham)}</span> municipalities gain, <span class="p">${nf(n.perdem)}</span> lose and <span class="i">${nf(n.iguais)}</span> stay about the same.`);
+      const mesmo = C.totalAtual > 0 && Math.abs(C.totalMinha / C.totalAtual - 1) < 0.005;
+      const fr1 = mesmo ? L(`É o mesmo dinheiro no total (${rsC(C.totalAtual)} ${periodo}), repartido de outro jeito.`, `It is the same money in total (${rsC(C.totalAtual)} ${periodo}), shared out differently.`)
+        : L(`O estado paga ${rsC(C.totalMinha)} ${periodo}, contra ${rsC(C.totalAtual)} na regra atual.`, `The state pays ${rsC(C.totalMinha)} ${periodo}, against ${rsC(C.totalAtual)} under the current rule.`);
+      const perda = C.medPerda === null ? null : Math.max(5, Math.round(C.medPerda * 20) * 5);
+      const fr2 = perda === null ? '' : L(` Quem perde, perde em geral perto de <b>${perda}%</b> do que recebe hoje.`, ` Those who lose typically lose about <b>${perda}%</b> of what they get today.`);
+      const fr3 = L(` Na regra atual, <b>${nf(C.zeradosAtual)}</b> municípios ficam sem nenhum dinheiro de vacina em pelo menos uma parcela; com ${nm}, <b>${nf(C.zeradosMinha)}</b>.`, ` Under the current rule, <b>${nf(C.zeradosAtual)}</b> municipalities get no vaccine money at all in at least one payment; with ${nm}, <b>${nf(C.zeradosMinha)}</b>.`);
+      const fr4 = C.dif[C.maiorPerda] < 0 && C.dif[C.maiorGanho] > 0 ? L(` A maior perda em reais é de ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); o maior ganho, de ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`,
+        ` The largest loss in reais is ${esc(titulo(nomes[C.maiorPerda]))} (${sinal(C.dif[C.maiorPerda], rsC)}); the largest gain, ${esc(titulo(nomes[C.maiorGanho]))} (${sinal(C.dif[C.maiorGanho], rsC)}).`) : '';
+      $('#mLead').innerHTML = fr1 + fr2 + fr3 + fr4;
+    }
+    const cls = [['ganham', 'var(--sobe)', L('ganham', 'gain')], ['iguais', 'var(--igual)', L('praticamente iguais', 'about the same')], ['perdem', 'var(--desce)', L('perdem', 'lose')]];
+    $('#mStack').innerHTML = cls.map(([k, c, l]) => n[k] ? `<i style="flex:${n[k]};background:${c}" title="${n[k]} ${l}"></i>` : '').join('');
+    $('#mStackl').innerHTML = cls.map(([k, c, l]) => `<span><b style="color:${k === 'iguais' ? 'var(--t2)' : c}">${nf(n[k])}</b> ${l}</span>`).join('');
+    // 2. mapa de ganho e perda
+    $('#tMHero').textContent = L(`Quem ganha e quem perde com ${comA2}`, `Who gains and who loses with ${comA2}`);
+    $('#sMHero').textContent = L(`diferença para a regra atual, ${periodo} · clique para ver o município`, `difference from the current rule, ${periodo} · click to see the municipality`);
+    if (!pathsH.length) {
+      const M = D.mapa;
+      $('#mHero').innerHTML = `<svg viewBox="0 0 ${M.w} ${M.h}">${M.d.map((d, k) => `<path d="${d}" data-i="${k}"/>`).join('')}</svg>`;
+      pathsH.push(...document.querySelectorAll('#mHero path'));
+      $('#mHero').addEventListener('mousemove', e => {
+        const k = e.target.dataset && e.target.dataset.i; if (k === undefined) return semDica();
+        const d = MC.dif[k], a = MC.atual[k], nmR = presetDe(MS) ? preL(presetDe(MS)) : L('Sua regra', 'Your rule');
+        dica(e, `<b>${esc(titulo(nomes[k]))}</b>${L('Regra atual', 'Current rule')}: ${rsC(a)}<br>${esc(nmR)}: ${rsC(MC.minha[k])}<br>${MC.classe[k] === 0 ? L('praticamente igual', 'about the same') : sinal(d, rsC) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}`);
+      });
+      $('#mHero').addEventListener('mouseleave', semDica);
+      $('#mHero').addEventListener('click', e => { const k = e.target.dataset && e.target.dataset.i; if (k !== undefined) escolher(+k); });
+    }
+    const claro = [232, 236, 241], mix = (base, t) => `rgb(${base.map((c, k) => Math.round(claro[k] + (c - claro[k]) * t))})`;
+    const cont = {ganham: 0, perdem: 0, iguais: 0};
+    pathsH.forEach((p, k) => {
+      const c = C.classe[k];
+      let cor = 'var(--igual)';
+      if (c !== 0) { const t = C.atual[k] > 0 ? Math.min(1, Math.abs(C.dif[k]) / C.atual[k] / 0.5) : 1; cor = mix(c < 0 ? [229, 98, 46] : [42, 120, 214], 0.35 + 0.65 * t); }
+      p.setAttribute('fill', cor); p.dataset.c = c; cont[c > 0 ? 'ganham' : c < 0 ? 'perdem' : 'iguais']++;
+      p.classList.toggle('sel', st.mun === k);
+    });
+    if (st.mun !== null) pathsH[st.mun].parentNode.appendChild(pathsH[st.mun]);
+    $('#mHero').dataset.classes = `${cont.ganham},${cont.perdem},${cont.iguais}`;
+    $('#mHero').setAttribute('aria-label', L('Mapa dos municípios de São Paulo: quem ganha e quem perde com a regra escolhida, contra a regra atual', 'Map of São Paulo municipalities: who gains and who loses with the chosen rule, against the current rule'));
+    $('#legMHero').innerHTML = `<span><i style="background:var(--sobe)"></i>${L('ganha', 'gains')}</span><span><i style="background:var(--igual)"></i>${L('praticamente igual', 'about the same')}</span><span><i style="background:var(--desce)"></i>${L('perde', 'loses')}</span><span style="color:var(--t3)">${L('cor mais forte = mudança maior, até metade do que recebe hoje', 'stronger colour = larger change, up to half of what it gets today')}</span>`;
+    // 3. por porte
+    $('#tMPorte').textContent = L('Por tamanho do município', 'By size of municipality');
+    $('#sMPorte').textContent = L('municípios em cada grupo · e o saldo em reais do grupo', 'municipalities in each group · and the group\'s net change in reais');
+    const NP = [L('Pequenos', 'Small'), L('Médios', 'Medium'), L('Grandes', 'Large')];
+    const FP = [L('até 20 mil hab.', 'up to 20k inhab.'), L('20 a 100 mil hab.', '20k to 100k inhab.'), L('mais de 100 mil hab.', 'over 100k inhab.')];
+    const sb = {ganham: 0, perdem: 0, iguais: 0};
+    $('#mPorte').innerHTML = C.porte.map((g, k) => { ['ganham', 'perdem', 'iguais'].forEach(c => { sb[c] += g[c]; });
+      return `<div class="row">
+      <div class="nm"><span>${NP[k]} <small>${FP[k]}</small></span><small>${nf(g.n)}</small></div>
+      <div class="bar">${cls.map(([c, cor, l]) => g[c] ? `<i class="${c === 'iguais' ? 'ig' : ''}" style="flex:${g[c]};background:${cor}" title="${g[c]} ${l}">${g[c] / g.n >= 0.08 ? nf(g[c]) : ''}</i>` : '').join('')}</div>
+      <div class="rs">${L(`${nf(g.ganham)} ganham, ${nf(g.perdem)} perdem · saldo ${Math.abs(g.dif) < 500 ? 'R$ 0' : sinal(g.dif, rsC)}`, `${nf(g.ganham)} gain, ${nf(g.perdem)} lose · net ${Math.abs(g.dif) < 500 ? 'BRL 0' : sinal(g.dif, rsC)}`)}</div></div>`; }).join('') +
+      `<div class="leg">${cls.map(([, c, l]) => `<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
+    $('#mPorte').dataset.classes = `${sb.ganham},${sb.perdem},${sb.iguais}`;
+    $('#mManchete').dataset.classes = `${n.ganham},${n.perdem},${n.iguais}`;
+    // 4. seu município
+    const i = st.mun;
+    $('#tMSeu').textContent = L('Seu município', 'Your municipality');
+    $('#sMSeu').textContent = L(`regra atual × ${nomeM}, ${periodo}`, `current rule × ${nomeM}, ${periodo}`);
+    $('#mBusca').placeholder = L('Procure seu município…', 'Find your municipality…');
+    $('#mBusca').value = i === null ? '' : titulo(nomes[i]); $('#mLimpa').hidden = i === null;
+    const a = i === null ? C.totalAtual : C.atual[i], b = i === null ? C.totalMinha : C.minha[i], d = b - a, k = i === null ? null : C.classe[i];
+    const cor = k === null ? 'var(--ink)' : k > 0 ? 'var(--sobe)' : k < 0 ? 'var(--desce)' : 'var(--t2)';
+    const veredito = ehAtual ? '' : i === null ? (a > 0 && Math.abs(d) < 0.005 * a ? L('O mesmo dinheiro, repartido de outro jeito.', 'The same money, shared out differently.') : '')
+      : k === 0 ? L('Praticamente igual (diferença de até 5%).', 'About the same (a difference of 5% or less).')
+      : k > 0 ? L('Ganha com a regra escolhida.', 'Gains with the chosen rule.') : L('Perde com a regra escolhida.', 'Loses with the chosen rule.');
+    $('#mSeuNum').innerHTML = `<div class="nome">${i === null ? L('Estado inteiro', 'Whole state') : esc(titulo(nomes[i]))}</div>
+      <p style="margin:6px 0 0;font:400 12px/1.5 var(--mono);color:var(--t3)">${i === null ? L('645 municípios · procure o seu ou clique no mapa', '645 municipalities · search for yours or click the map') : esc(PORTE(MUN[i].porte)) + ' · ' + esc(titulo(MUN[i].regiao))}</p>
+      <div class="antes"><div><span>${L('Regra atual', 'Current rule')}</span><b style="color:var(--atual)">${rsC(a)}</b></div>${ehAtual ? '' : `<div class="seta">→</div><div><span>${esc(nomeM)}</span><b style="color:var(--minha)">${rsC(b)}</b></div>`}</div>
+      ${ehAtual ? '' : `<p class="mdelta" style="color:${cor}">${Math.abs(d) < 0.5 ? L('sem diferença', 'no difference') : sinal(d, rsC) + (a > 0 ? ` (${sinal(Math.round(100 * d / a), v => nf(v))}%)` : '')}<small>${veredito}</small></p>`}`;
+    // 5. como a frase conta
+    $('#mComo').innerHTML = L(`Para cada município somamos o que ele recebe ${periodo} na regra atual e na regra escolhida: é o período do orçamento do artigo (R$ 32,0 mi por parcela), em que a regra atual e as regras com o mesmo orçamento pagam o mesmo total. Ganha ou perde quem muda mais de 5% do que recebe hoje; o resto fica "praticamente igual", e quem hoje não recebe nada e passa a receber conta como ganho. A frase, o mapa, as barras e o cartão usam a mesma conta. Portes pela população de 2026: pequenos até 20 mil habitantes (384), médios de 20 a 100 mil (180), grandes acima de 100 mil (81). "Sem nenhum dinheiro de vacina" = parte variável abaixo de R$ 0,005 numa parcela. Dinheiro de 2026 em todas as parcelas, antes do teto de 10 pontos; dez/26 é previsão. Os gráficos abaixo mostram as 11 parcelas, com 2027 projetado.`,
+      `For each municipality we add up what it gets ${periodo} under the current rule and under the chosen rule: this is the paper's budget period (BRL 32.0 million per payment), in which the current rule and the rules with the same budget pay the same total. A municipality gains or loses if it changes by more than 5% of what it gets today; the rest are "about the same", and one that gets nothing today and would get something counts as a gain. The sentence, the map, the bars and the card use the same sum. Sizes by 2026 population: small up to 20,000 inhabitants (384), medium 20,000 to 100,000 (180), large over 100,000 (81). "No vaccine money at all" = variable part below BRL 0.005 in a payment. 2026 money in every payment, before the 10-point cap; Dec 2026 is a forecast. The charts below show the 11 payments, with 2027 projected.`);
   }
   let tAg = 0;
   const agendar = () => { clearTimeout(tAg); tAg = setTimeout(() => { vPresets(); vRegraTxt(); vSaidas(); url(); }, 40); };
   function mudou() { vPresets(); vControles(); vRegraTxt(); vSaidas(); url(); }
   function vMonte() { vPresets(); vControles(); vRegraTxt(); vSaidas(); }
+  // Os gráficos de "ver detalhes" se desenham na largura real: redesenha ao abrir.
+  $('#mMais').addEventListener('toggle', () => { if ($('#mMais').open) vSaidas(); });
 
   /* ===== idioma e início ===== */
   function tudo() {

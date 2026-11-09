@@ -3,7 +3,7 @@
 Text for Paulo to copy into the final Google Doc "IGM_SUS_Paulista_revisado_controle_alteracoes"
 (id 1GhRZOVoprdDYtbdG8iID4qfT25p-6ArQAp19Pb--R_Q, read again on 2026-11-09). Nothing was edited in the Doc.
 
-Every number comes from `node tamanho_municipio.js` (the paper's period). The simulator mock uses all 11 payments
+Every number comes from `node simulacoes/igm-sp-v2/trabalho/tamanho_municipio.js` (the paper's period). The simulator mock uses all 11 payments
 instead: `node tamanho_municipio.js todas`. Both sets are checked in section 8 of `teste_referencia_v2.js`.
 
 ## Period and definitions
@@ -124,10 +124,10 @@ Replacement: "The rules we propose keep the program's budget, its 95% target, it
 
 ## Reproducing
 
-From the worktree folder `marca_coorte/site/simulacoes/igm-sp-v2/`:
+From `simulacoes/igm-sp-v2/trabalho/` (outside the published site):
 
 - `node tamanho_municipio.js` prints every number in this file.
   - It also prints the step-by-step decomposition for small municipalities over the eight payments: fixed budget
     +1.3, ramp −3.7, 12-month coverage −4.0 (= rule A), per child −2.7 (= rule B).
 - `node tamanho_municipio.js todas` gives the same numbers over the mock's 11 payments.
-- `node teste_referencia_v2.js` checks these numbers (section 8).
+- `node marca_coorte/site/simulacoes/igm-sp-v2/teste_referencia_v2.js` checks these numbers (section 8).

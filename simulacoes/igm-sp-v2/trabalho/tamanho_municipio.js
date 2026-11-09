@@ -1,5 +1,6 @@
 /* Dinheiro por porte de município: regra atual × Regra A × Regra B × Regra A + margem para pequenos.
    Números do parágrafo e da tabela do artigo (paper_tamanho_municipio.md, 09/11/2026).
+   Arquivo de trabalho (fora de marca_coorte/site, não publicado).
    Rodar:  node tamanho_municipio.js            (período do artigo: as 8 parcelas de set/2024 a dez/2026,
                                                   orçamento R$ 32,0 mi por parcela, mesmo dinheiro nas três regras)
            node tamanho_municipio.js todas      (as 11 parcelas, set/2024 a dez/2027, como a maquete)
@@ -7,8 +8,9 @@
    Ganha/perde/praticamente igual: diferença de mais de 5% do que o município recebe na regra atual (comparar.js). */
 'use strict';
 const fs = require('fs'), path = require('path'), zlib = require('zlib');
-const IGM = require('./motor_v2.js'), CMP = require('./comparar.js');
-const D = path.join(__dirname, 'dados');
+const SITE = path.join(__dirname, '..', '..', '..', 'marca_coorte', 'site', 'simulacoes', 'igm-sp-v2');   // a página publicada
+const IGM = require(path.join(SITE, 'motor_v2.js')), CMP = require(path.join(SITE, 'comparar.js'));
+const D = path.join(SITE, 'dados');
 const ler = f => { const b = fs.readFileSync(path.join(D, f)); return (b[0] === 0x1f && b[1] === 0x8b ? zlib.gunzipSync(b) : b).toString('utf8'); };
 const B = IGM.montar({municipios: ler('municipios.csv'), pagamentos: ler('pagamentos.csv'), medianas: ler('medianas.csv'),
   cobertura: ler('cobertura.csv.gz'), municipio_pagamento: ler('municipio_pagamento.csv.gz')});

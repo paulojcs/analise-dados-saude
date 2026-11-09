@@ -116,7 +116,7 @@ na exportação; o teste usa essa tolerância).
 ## Revisão de 09/11/2026: resultados por porte, Regra A preferida, margem para pequenos
 
 Pedido: a seção "Monte sua regra" mostrava oito saídas e não respondia, para um leigo, "o que muda se usarmos a minha
-regra em vez da atual?". Maquete (`mock-monte.html`, sem mexer na seção `#monte`): frase ao vivo
+regra em vez da atual?". Maquete (`trabalho/mock-monte.html`, sem mexer na seção `#monte`): frase ao vivo
 (ganham / perdem / praticamente iguais), mapa de ganho e perda, barras por porte, cartão "Seu município" com a linha
 pelas parcelas e "ver detalhes" para o resto. A comparação está em `comparar.js` (usado pela maquete e pelo teste).
 
@@ -143,8 +143,8 @@ multiplicado por 1,25 (com orçamento, o mesmo orçamento repartido de novo; sem
 parcelas, 42,4 contra 41,5 mi. Quem paga: os médios (−2,7 mi nas 8 parcelas, −3,9%); os grandes ainda ganham
 1,8 mi. Fica fora dos Resultados do artigo; só a Discussão a cita.
 
-Números para o artigo: `node tamanho_municipio.js` (8 parcelas) e `node tamanho_municipio.js todas` (11). Texto
-proposto: `paper_tamanho_municipio.md` (também em `orchestrator/handoffs/coorte-igm-paper-size-paragraph-2026-11-09.md`).
+Números para o artigo: `node simulacoes/igm-sp-v2/trabalho/tamanho_municipio.js` (8 parcelas; `todas` = 11). Texto
+proposto: `trabalho/paper_tamanho_municipio.md` (também em `orchestrator/handoffs/coorte-igm-paper-size-paragraph-2026-11-09.md`).
 Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o orçamento, = A × fator com os pequenos
 × 1,25; totais por porte e ganham/perdem/iguais nos dois períodos; classes do mapa = frase).
 

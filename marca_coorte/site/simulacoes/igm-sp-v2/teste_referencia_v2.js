@@ -303,7 +303,7 @@ confere('pequenos (< 20 mil hab.) = 384', B.muns.filter(m => m.pequeno).length, 
   confere('R3 sem orçamento com margem: máximo', Math.abs(o.maximo - mx) < 0.01, true, 0);
 }
 // Por porte, no período do artigo (8 parcelas, set/2024–dez/2026) e no da maquete (11 parcelas). Números de
-// paper_tamanho_municipio.md (tamanho_municipio.js). Faixa praticamente igual = ±5% do que recebe na regra atual.
+// simulacoes/igm-sp-v2/trabalho/paper_tamanho_municipio.md (trabalho/tamanho_municipio.js, fora do site). Faixa praticamente igual = ±5% do que recebe na regra atual.
 const P8 = B.pags.map((p, i) => i).filter(i => B.pags[i].sv === 0.5), P11 = B.pags.map((p, i) => i);
 const porPorte = (r, P) => { const t = [0, 0, 0]; for (let m = 0; m < B.N; m++) for (const p of P) t[CMP.PORTE3[B.muns[m].porte]] += r[p].rs[m]; return t.map(x => r1(x / 1e6)); };
 const espPorte = {
@@ -328,6 +328,20 @@ for (const [k, [g, l, s, pp]] of Object.entries(cont)) {
   // as classes do mapa (classe por município) somam o mesmo que a frase
   const cl = [0, 0, 0]; C.classe.forEach(c => { cl[c > 0 ? 0 : c < 0 ? 1 : 2]++; });
   confere(`${k}: classes do mapa = frase`, cl.join('/'), `${g}/${l}/${s}`, 0);
+}
+
+// Seção "Monte sua regra" (index.html): para TODO preset, a frase, o mapa e as barras por porte vêm da mesma comparação
+// nas 8 parcelas de set/2024 a dez/2026 e somam 645; a regra atual contra ela mesma = 645 praticamente iguais.
+for (const [nome, sp] of Object.entries(IGM.PRESETS)) {
+  const r = nome === 'R0' ? res.R0 : IGM.calcular(B, sp, ctx), C = CMP.comparar(B, r, res.R0, P8);
+  const fr = [C.n.ganham, C.n.perdem, C.n.iguais];
+  const mapa = [0, 0, 0]; C.classe.forEach(c => { mapa[c > 0 ? 0 : c < 0 ? 1 : 2]++; });
+  const barras = [0, 0, 0]; C.porte.forEach(g => { barras[0] += g.ganham; barras[1] += g.perdem; barras[2] += g.iguais; });
+  confere(`Monte ${nome}: frase soma 645`, fr[0] + fr[1] + fr[2], 645, 0);
+  confere(`Monte ${nome}: frase = mapa = barras`, `${fr}|${mapa}|${barras}`, `${fr}|${fr}|${fr}`, 0);
+  confere(`Monte ${nome}: parcelas com valor`, C.parcelas.length, nome === 'R0s' ? 7 : 8, 0);
+  if (nome === 'R0') confere('Monte R0 × R0 = 645 iguais', fr.join('/'), '0/0/645', 0);
+  if (sp.orc === 'atual') confere(`Monte ${nome}: mesmo total`, Math.abs(C.totalMinha - C.totalAtual) < 1, true, 0);
 }
 
 console.log(`${ok} conferências ok, ${falhas} falhas`);
