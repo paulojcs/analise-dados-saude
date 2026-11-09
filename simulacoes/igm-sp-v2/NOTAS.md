@@ -35,7 +35,7 @@ Definições novas (não estão no README da exportação):
   (80 se for de faixas e ninguém mexeu); "pagos" = parte variável ≥ R$ 0,005.
 
 URL: `?preset=atual|atual12|A|B|Am|R1|R2|R3|R4&medida=acum|c12&regra=faixas|rampa&corte=mediana|50–95&piso=&alvo=&aloc=hab|crianca&fixo=0–100&orc=sem|atual|<R$ mi>&sv27=50–100&margem=100–300&parc=<AAAA-MM>`,
-além de `?m=` e `?lang=en`. Parâmetro inválido volta ao padrão sem aviso. Padrão = Regra A (preferida desde 09/11/2026; antes, Regra B).
+além de `?m=` e `?lang=en`. Parâmetro inválido volta ao padrão sem aviso. Padrão = Regra A (preset padrão desde 09/11/2026; antes, Regra B).
 
 ## R0s (regra atual com 12 meses): PROVISÓRIO
 
@@ -78,7 +78,7 @@ artigo se ela diz "of these 128" / "of the 155".
 
 ## Revisão de 08/11/2026: as figuras finais do artigo
 
-Decisões de Paulo: o artigo tem só três regras, **regra atual, Regra A (R3b) e Regra B (R4v)** (em 08/11 a B era a preferida; em 09/11 Paulo passou a preferir a **A**, ver abaixo); R1, R2, R4 e
+Decisões de Paulo: o artigo tem só três regras, **regra atual, Regra A (R3b) e Regra B (R4v)** (em 08/11 a B era o padrão; em 09/11 a **A** passou a ser o padrão, ver abaixo); R1, R2, R4 e
 a regra atual com 12 meses (R0s) ficam como presets secundários em "Outras (fora do artigo)". R0s fica com a mediana
 por vacina (19 zerados em jun/2026). "% do máximo" é antes de repartir o orçamento, e A e B são **uma linha só**
 ("Regras A e B (mesma pontuação)"). Orçamento próprio em 2027 (×1,2 com a parte variável): não decidido, deixado como
@@ -113,7 +113,7 @@ projetados até ago/2026) não está na exportação, e o motor deixa as duas pa
 artigo, ficou assim. Figura 3A: % do máximo bate com o CSV do artigo a menos de 0,001 ponto (vp arredondado a 5 casas
 na exportação; o teste usa essa tolerância).
 
-## Revisão de 09/11/2026: resultados por porte, Regra A preferida, margem para pequenos
+## Revisão de 09/11/2026: resultados por porte, Regra A como padrão, margem para pequenos
 
 Pedido: a seção "Monte sua regra" mostrava oito saídas e não respondia, para um leigo, "o que muda se usarmos a minha
 regra em vez da atual?". Maquete (`trabalho/mock-monte.html`, sem mexer na seção `#monte`): frase ao vivo
@@ -121,12 +121,12 @@ regra em vez da atual?". Maquete (`trabalho/mock-monte.html`, sem mexer na seç�
 pelas parcelas e "ver detalhes" para o resto. A comparação está em `comparar.js` (usado pela maquete e pelo teste).
 
 Decisões de Paulo (09/11): **praticamente igual = diferença de até 5% do que o município recebe na regra atual**
-(no mesmo período); a frase usa **o período todo** (sem escolher parcela); **Regra A é a preferida** (o artigo nunca
+(no mesmo período); a frase usa **o período todo** (sem escolher parcela); **Regra A é o padrão** (o artigo nunca
 disse qual preferia; Paulo apagou "we prefer rule B" do Google Doc); a maquete compara A × atual.
 
 Depois (09/11, aprovado): a comparação usa **as 8 parcelas de set/2024 a dez/2026** (o período do orçamento do artigo,
-R$ 256,4 mi; não as 11 da maquete); o artigo **não** dirá que a A é a preferida (o rótulo "Regra A (preferida)" fica na
-página por enquanto, a decidir); arquivos de trabalho fora de `marca_coorte/site`, em `simulacoes/igm-sp-v2/trabalho/`.
+R$ 256,4 mi; não as 11 da maquete); o artigo **não** dirá que a A é a preferida, e a página
+também não (o rótulo "(preferida)" saiu em 09/11; a A é só o padrão); arquivos de trabalho fora de `marca_coorte/site`, em `simulacoes/igm-sp-v2/trabalho/`.
 
 **Seção #monte (passos 2–5 da handoff, 09/11).** Embaixo do construtor: frase ao vivo, mapa de ganho e perda
 (azul ganha, laranja perde, cinza praticamente igual; clique escolhe o município), barras por porte, cartão "Seu
@@ -187,7 +187,9 @@ Teste: seção 8 do `teste_referencia_v2.js` (margem 1 = Regra A; R3m soma o or�
   não há c12 faltando em nenhuma parcela.
 - 2026-11-08: figuras finais do artigo (1C, 2A, 2B, 3A, 3B/C), três regras do artigo, 164 publicados, BRL em inglês;
   teste 1481/0 (v1 972/0).
-- 2026-11-09: worktree movida para `COORTE/wt/simulacao-igm-sp-v2`; maquete da seção Monte sua regra; Regra A preferida;
+- 2026-11-09: worktree movida para `COORTE/wt/simulacao-igm-sp-v2`; maquete da seção Monte sua regra; Regra A como padrão;
   preset Regra A + margem para pequenos; teste 1545/0.
 - 2026-11-09 (tarde): seção #monte nova ligada (8 parcelas, ±5%, Regra A padrão); trabalho/ fora do site; revisão
   independente aplicada; teste 1577/0.
+- 2026-11-09 (noite): "(preferida)" tirado da página (definições, métodos, botão do preset); a Regra A continua o padrão,
+  sem ser chamada de preferida (decisão de Paulo).
