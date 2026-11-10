@@ -254,3 +254,24 @@ Teste seção 9: R3t e as variantes calibradas da s12 (V2_taper, V2_tier, V2_w) 
   nota do denominador misto de 2027; teste 1577/0.
 - 2026-11-10: pesos por tamanho no motor (margemMed, afina); presets peso decrescente, pesos por porte, peso único;
   teste 1625/0.
+
+## Merge e deploy (preparado em 10/11/2026; NADA feito: esperando o OK explícito de Paulo)
+
+Estado: `origin/main` = f84939e; `feat/simulacao-igm-sp-v2` está à frente dele, sem commits novos em `origin/main`
+(merge = fast-forward, sem conflitos). Fora de `simulacoes/igm-sp/`, o merge leva: links para o simulador na página
+inicial, em Publicações e no Atlas (`marca_coorte/site/index.html`, `publicacoes.html`, `atlas/index.html`,
+`atlas/web/index.src.html`, da v1), a entrada no `sitemap.xml` e o `_redirects` novo. O deploy é o Cloudflare Workers
+Builds: todo push em `main` publica (README da raiz, "Publicação").
+
+1. Conferir: `git -C wt/simulacao-igm-sp-v2 fetch origin` e `git rev-list --count HEAD..origin/main` = 0 (se não for 0:
+   `git rebase origin/main` na worktree e rodar o teste de novo); `node marca_coorte/site/simulacoes/igm-sp/teste_referencia_v2.js`
+   = 0 falhas; olhar http://127.0.0.1:8791/simulacoes/igm-sp/ no celular.
+2. (Opcional, cópia de segurança) `git push origin feat/simulacao-igm-sp-v2`.
+3. Publicar: `git push origin feat/simulacao-igm-sp-v2:main` (fast-forward de main; a worktree principal fica em
+   `feat/simulacao-igm-sp` e não precisa mudar). Depois `git fetch origin main:main` para o main local.
+4. Depois do deploy (alguns minutos): `curl -sI https://coorte.io/simulacoes/igm-sp/` = 200;
+   `curl -sI https://coorte.io/simulacoes/igm-sp-v2/` = 301 para `/simulacoes/igm-sp/` (se der 404, o `_redirects` não
+   foi aplicado: sem problema, a v2 nunca foi pública); `https://coorte.io/simulacoes/igm-sp/dados/cobertura.csv.gz` = 200;
+   abrir a página (PT e EN, celular), ver o og (cartão de compartilhamento) e pedir a indexação no Search Console.
+5. Desfazer, se preciso: no painel do Cloudflare, Workers → coorte → Deployments → voltar para a versão anterior; ou
+   `git push --force-with-lease origin f84939e:main` (só com o OK de Paulo).
