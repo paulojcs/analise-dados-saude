@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Maquete de 09/11/2026 (superada pela seção #monte de index.html). Arquivo de trabalho, fora do site:
-     servir a raiz do repositório e abrir /simulacoes/igm-sp-v2/trabalho/mock-monte.html. -->
+     servir a raiz do repositório e abrir /simulacoes/igm-sp/trabalho/mock-monte.html. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
@@ -189,8 +189,8 @@ details.mais ul{margin:8px 0 0;padding-left:20px}
 </main>
 <div class="tip" id="tip"></div>
 
-<script src="../../../marca_coorte/site/simulacoes/igm-sp-v2/motor_v2.js"></script>
-<script src="../../../marca_coorte/site/simulacoes/igm-sp-v2/comparar.js"></script>
+<script src="../../../marca_coorte/site/simulacoes/igm-sp/motor_v2.js"></script>
+<script src="../../../marca_coorte/site/simulacoes/igm-sp/comparar.js"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -212,7 +212,7 @@ const PORTE = p => L(p + ' hab.', p.replace(/ mil/g, 'k') + ' inhab.');
 const titulo = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()).replace(/\b(D[aeo]s?|E)\b/g, w => w.toLowerCase());
 const larg = (sel, max, min = 300) => Math.max(min, Math.min(max, Math.round(document.querySelector(sel).clientWidth || max)));
 async function texto(f) {
-  const r = await fetch('../../../marca_coorte/site/simulacoes/igm-sp-v2/dados/' + f);
+  const r = await fetch('../../../marca_coorte/site/simulacoes/igm-sp/dados/' + f);
   if (!r.ok) throw new Error(f + ': ' + r.status);
   const b = new Uint8Array(await r.arrayBuffer());
   if (b[0] === 0x1f && b[1] === 0x8b) return new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text();

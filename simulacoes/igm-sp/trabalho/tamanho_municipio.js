@@ -8,7 +8,7 @@
    Ganha/perde/praticamente igual: diferença de mais de 5% do que o município recebe na regra atual (comparar.js). */
 'use strict';
 const fs = require('fs'), path = require('path'), zlib = require('zlib');
-const SITE = path.join(__dirname, '..', '..', '..', 'marca_coorte', 'site', 'simulacoes', 'igm-sp-v2');   // a página publicada
+const SITE = path.join(__dirname, '..', '..', '..', 'marca_coorte', 'site', 'simulacoes', 'igm-sp');   // a página publicada
 const IGM = require(path.join(SITE, 'motor_v2.js')), CMP = require(path.join(SITE, 'comparar.js'));
 const D = path.join(SITE, 'dados');
 const ler = f => { const b = fs.readFileSync(path.join(D, f)); return (b[0] === 0x1f && b[1] === 0x8b ? zlib.gunzipSync(b) : b).toString('utf8'); };

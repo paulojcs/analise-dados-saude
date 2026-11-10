@@ -1,7 +1,7 @@
 /* Motor v2 das regras de pagamento das vacinas do IGM SUS Paulista: UMA regra parametrizada,
    da qual todas as regras do artigo (R0–R4v) e a "regra atual com 12 meses" (R0s) são casos particulares.
    O mesmo arquivo roda na página (window.IGM) e no teste em Node (require). Regras e campos: dados/README.md;
-   o que a v2 acrescenta: simulacoes/igm-sp-v2/NOTAS.md.
+   o que a v2 acrescenta: simulacoes/igm-sp/NOTAS.md.
 
    Uma regra = {
      medida: 'acum'  valores acumulados desde janeiro, como a SES (c0 comparação, c1 avaliado)

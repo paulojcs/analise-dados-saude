@@ -1,6 +1,6 @@
 # IGM SUS Paulista vaccine-money simulator: data export
 
-Version 1.2 (2026-11-01). Public data behind the state simulator page (`../index.html`), exported so that another front end can
+Version 1.2 (2026-11-10). Public data behind the state simulator page (`../index.html`), exported so that another front end can
 rebuild the page and recompute the payment rules in the browser with user-chosen parameters. Everything here is public
 and aggregated to the municipality (no person-level data). All 645 municipalities of the state of São Paulo.
 
@@ -54,11 +54,10 @@ medians over those municipalities, uncapped), `corte_c0`, `corte_c1` (= min(medi
 Per `pagamento` x `mun` x `vacina`:
 - `c0`, `c1`: SES-style "official accumulated" coverage of the comparison and evaluated blocks: doses recorded from
   January to the end of the block, over the SINASC births of the same months of the PREVIOUS year (2024 blocks:
-  SINASC 2023; 2025 and 2026 blocks: SINASC 2024, as SES did; 2027 blocks: SINASC 2025). Exception: 2023-Q3 (the
+  SINASC 2023; 2025 and 2026 blocks: SINASC 2024, as SES did; 2027 blocks: SINASC 2024 too, see note 3). Exception: 2023-Q3 (the
   comparison of Sep 2024) uses SINASC 2023 because SINASC 2022 was not loaded.
 - `c12`: 12-month coverage, doses of the 12 months ending at `janela12_fim` over the federal panel's own
-  denominator for those months (projection months: the SINASC month of SINASC 2024 for 2026 months and SINASC 2025
-  for 2027 months).
+  denominator for those months (projection months, 2026 and 2027: the SINASC month of SINASC 2024).
 - `nasc_aval`: births in the denominator of c1. `den12`: denominator of c12 (may be fractional).
 Values are full-precision doubles. Parse them exactly (JS `parseFloat`/`Number` does; in pandas use
 `float_precision="round_trip"`) and do NOT round before comparing: see caveat 6.
@@ -161,8 +160,9 @@ municipalities of |share this payment - share previous payment| x 100. `maximo_m
 1. **Sep 2024 is approximate**: its comparison block (2023-Q3) uses SINASC 2023 instead of 2022.
 2. **Dec 2026 is a forecast**: Jan-Aug 2026 = Jan-Apr 2026 pace kept to August (also in its 12-month window).
 3. **2027 is a projection with no change in vaccination**: every municipality keeps its 2025 monthly doses, flat,
-   from Jan 2026; the panel is assumed to keep SINASC 2024 for 2026 months and switch to SINASC 2025 for 2027
-   months; variable share 60%. Differences between the three 2027 payments come only from denominators.
+   from Jan 2026, over SINASC 2024 births for every 2026 and 2027 month (data 1.3, 2026-11-10: a single birth year;
+   data 1.2 switched to SINASC 2025 for 2027 months, which mixed two birth years inside the same payment); variable
+   share 60%. Births for the per-child weight in 2027 are also SINASC 2024.
 4. **SINASC 2025 is preliminary.**
 5. Coverages above 100% are real (doses to children born elsewhere or recorded late) and are kept.
 6. **Float ties in 2027.** In Jun and Sep 2027, 56 municipality x vaccine pairs have c1 = c0 in exact arithmetic
@@ -171,6 +171,7 @@ municipalities of |share this payment - share previous payment| x 100. `maximo_m
    about R$ 9 thousand in each of those payments (R1 R$ 7-13 thousand, R2 R$ 14-24 thousand; B60, and so R3b/R4/R4v
    in 2027, shift by R$ 6 thousand); no count of municipalities with zero changes.
 7. These are simulations under a constant money basis, not amounts the state paid, except where marked as paid.
+
 
 ## Added on the website (COORTE)
 

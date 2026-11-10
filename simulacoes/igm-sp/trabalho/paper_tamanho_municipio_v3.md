@@ -133,7 +133,7 @@ The Abstract has no number on the proposed rules or on municipality size, and no
 
 ## Sources of every number
 
-**Table 2 and the two Results paragraphs** (totals, % changes, counts, R$ per inhabitant, 3.3/2.6/2.4 and the 2.6 per capita ratio, 9.6 vs 10.5 births per 1,000, 64% vs 53% and the 78% scores, 18.5 vs 5.8 points, 63% vs 41%): `node simulacoes/igm-sp-v2/trabalho/tamanho_municipio.js` in the COORTE worktree, checked in section 8 of `teste_referencia_v2.js`.
+**Table 2 and the two Results paragraphs** (totals, % changes, counts, R$ per inhabitant, 3.3/2.6/2.4 and the 2.6 per capita ratio, 9.6 vs 10.5 births per 1,000, 64% vs 53% and the 78% scores, 18.5 vs 5.8 points, 63% vs 41%): `node simulacoes/igm-sp/trabalho/tamanho_municipio.js` in the COORTE worktree, checked in section 8 of `teste_referencia_v2.js`.
 
 **First two 2026 payments, 16.2% → 13.9%, −14%:** motor_v2.js, the 2026 rule (R0) against rule A (R3b) over the 2026-06 and 2026-09 payments, recomputed 2026-11-09 (16.20 → 13.92, −14.1%).
 

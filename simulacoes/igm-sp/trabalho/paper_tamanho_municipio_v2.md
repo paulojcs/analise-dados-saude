@@ -147,7 +147,7 @@ One more thing to check: Figure 3A's 2027 values come from the simulator's deter
 
 ## Sources of every number
 
-**Panel A and the backward Results sentences:** `node simulacoes/igm-sp-v2/trabalho/tamanho_municipio.js` (COORTE worktree), checked in section 8 of `teste_referencia_v2.js`.
+**Panel A and the backward Results sentences:** `node simulacoes/igm-sp/trabalho/tamanho_municipio.js` (COORTE worktree), checked in section 8 of `teste_referencia_v2.js`.
 
 **Two 2026 payments, 16.2% → 13.9%, −14%:** motor_v2.js, R0 vs R3b over the first two 2026 payments (recomputed 2026-11-09; with the December 2026 forecast added, −10%).
 

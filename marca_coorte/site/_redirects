@@ -1,0 +1,4 @@
+# Cloudflare Workers static assets: redirects (https://developers.cloudflare.com/workers/static-assets/redirects/)
+# A versão 2 do simulador IGM SP foi desenvolvida em /simulacoes/igm-sp-v2/ e substituiu a v1 no endereço do artigo.
+/simulacoes/igm-sp-v2/* /simulacoes/igm-sp/:splat 301
+/simulacoes/igm-sp-v2 /simulacoes/igm-sp/ 301

@@ -103,7 +103,7 @@ for (const cod of Object.keys(ref.municipios)) {
    [pagamento, % do máximo (antes do teto, base 2026), municípios sem dinheiro de vacina]. */
 const R0S_PROVISORIO = [
   ['2024-12', 73.7, 28], ['2025-06', 65.0, 48], ['2025-09', 52.6, 22], ['2025-12', 38.9, 46], ['2026-06', 57.0, 20],
-  ['2026-09', 56.1, 37], ['2026-12', 59.0, 28], ['2027-09', 65.1, 58], ['2027-12', 42.4, 107],
+  ['2026-09', 56.1, 37], ['2026-12', 59.0, 28],   // set/27 (65,1 e 58) e dez/27 (42,4 e 107) saíram: dados 1.3 mudam 2027
 ];
 /* Achado (07/11/2026): com a mediana POR VACINA (como a regra atual, a definição pedida), 6 dos 9 batem e três não:
    dez/2025 41,4% e 45, jun/2026 58,9% e 19, dez/2027 42,7% e 107. São justamente as parcelas em que a mediana de
@@ -119,7 +119,7 @@ for (const [pg, pct, z] of R0S_PROVISORIO) {
   confere(`R0s % do máximo ${pg}`, r1(100 * o.total / o.maximo), pctV, 0.1);
   confere(`R0s zerados ${pg}`, o.zero, zV, 0);
 }
-r0s.forEach((o, i) => { if (!o.nd && o.mudanca !== null) confere(`R0s mudança ${B.pags[i].id} é 12,5 ou 25`, o.mudanca === 12.5 || o.mudanca === 25, true, 0); });
+r0s.forEach((o, i) => { if (!o.nd && o.mudanca !== null && !B.pags[i].id.startsWith('2027')) confere(`R0s mudança ${B.pags[i].id} é 12,5 ou 25`, o.mudanca === 12.5 || o.mudanca === 25, true, 0); });
 // A rodada provisória reproduzida exatamente com um corte único (mediana das quatro vacinas juntas, limitada a 95).
 (function () {
   for (const [pg, pct, z] of R0S_PROVISORIO) {
@@ -232,8 +232,11 @@ const FIG3 = [ // pag, atual %, zerados, A %, zerados A, B %, municípios com sb
   ['2025-06', 61.2077461660158, 25, 84.60025002637786, 10, 84.47060104918255, 10], ['2025-09', 40.27477302567396, 112, 81.1895348741505, 11, 80.87037749341728, 11],
   ['2025-12', 62.34964801749671, 14, 74.17631310655794, 5, 73.84653170065552, 5], ['2026-06', 67.57863000496498, 14, 77.08124432678798, 12, 76.934836077455, 12],
   ['2026-09', 37.43032181068392, 163, 77.38495925375244, 13, 77.168333991484, 13], ['2026-12', 70.9634904589511, 28, 77.45530791734306, 21, 77.46038532105607, 21],
-  ['2027-06', 71.0289711633484, 16, 77.08124432696513, 12, 76.934836077455, 12], ['2027-09', 35.76945227505899, 222, 81.94640767405697, 13, 82.16330907722478, 13],
-  ['2027-12', 43.307211907569005, 98, 76.97636592716295, 11, 76.82488257331723, 11]];
+  ['2027-06', 71.0289711633484, 16, 77.08124432696513, 12, 76.934836077455, 12],
+  // Dados 1.3 (10/11/2026): 2027 com SINASC 2024 em todos os meses. set e dez/2027 deixam de bater com fig3_series_full.csv
+  // do artigo (convenção antiga: SINASC 2025 nos meses de 2027; era atual 35,77% e 222, 43,31% e 98). Valores novos:
+  ['2027-09', 29.263394903117586, 237, 77.08122563415381, 12, 76.93490965741215, 12],
+  ['2027-12', 64.73637511400555, 35, 77.08122563415381, 12, 76.93490965741215, 12]];
 for (const [pg, cur, cz, a, az, b, bz] of FIG3) {
   const p = ip(pg);
   confere(`Figura 3A atual ${pg}`, 100 * res.R0[p].partMax, cur, 1e-3);
@@ -303,12 +306,12 @@ confere('pequenos (< 20 mil hab.) = 384', B.muns.filter(m => m.pequeno).length, 
   confere('R3 sem orçamento com margem: máximo', Math.abs(o.maximo - mx) < 0.01, true, 0);
 }
 // Por porte, no período do artigo (8 parcelas, set/2024–dez/2026) e no da maquete (11 parcelas). Números de
-// simulacoes/igm-sp-v2/trabalho/paper_tamanho_municipio.md (trabalho/tamanho_municipio.js, fora do site). Faixa praticamente igual = ±5% do que recebe na regra atual.
+// simulacoes/igm-sp/trabalho/paper_tamanho_municipio.md (trabalho/tamanho_municipio.js, fora do site). Faixa praticamente igual = ±5% do que recebe na regra atual.
 const P8 = B.pags.map((p, i) => i).filter(i => B.pags[i].sv === 0.5), P11 = B.pags.map((p, i) => i);
 const porPorte = (r, P) => { const t = [0, 0, 0]; for (let m = 0; m < B.N; m++) for (const p of P) t[CMP.PORTE3[B.muns[m].porte]] += r[p].rs[m]; return t.map(x => r1(x / 1e6)); };
 const espPorte = {
-  R0: [[41.5, 69.5, 145.3], [60.6, 101.7, 201.2]], R3b: [[35.1, 69.1, 152.2], [50.2, 97.8, 215.5]],
-  R4v: [[32.3, 68.1, 155.9], [46.2, 96.3, 221.0]], R3m: [[42.4, 66.8, 147.2], [60.7, 94.5, 208.3]],
+  R0: [[41.5, 69.5, 145.3], [60.8, 101.4, 211.9]], R3b: [[35.1, 69.1, 152.2], [51.6, 100.7, 221.9]],   // 11 parcelas: dados 1.3
+  R4v: [[32.3, 68.1, 155.9], [47.5, 99.2, 227.4]], R3m: [[42.4, 66.8, 147.2], [62.3, 97.3, 214.5]],
 };
 const RR = {R0: res.R0, R3b: res.R3b, R4v: res.R4v, R3m};
 for (const [k, [e8, e11]] of Object.entries(espPorte)) {
@@ -318,7 +321,7 @@ for (const [k, [e8, e11]] of Object.entries(espPorte)) {
 const cont = {
   '8 R3b': [160, 408, 77, [[52, 288, 44], [71, 85, 24], [37, 35, 9]]], '8 R4v': [152, 442, 51, [[49, 315, 20], [62, 94, 24], [41, 33, 7]]],
   '8 R3m': [257, 292, 96, [[163, 159, 62], [60, 94, 26], [34, 39, 8]]],
-  '11 R3b': [124, 432, 89, [[30, 301, 53], [59, 95, 26], [35, 36, 10]]], '11 R4v': [118, 465, 62, [[37, 328, 19], [43, 106, 31], [38, 31, 12]]],
+  '11 R3b': [160, 399, 86, [[53, 283, 48], [71, 82, 27], [36, 34, 11]]], '11 R4v': [148, 437, 60, [[46, 315, 23], [61, 90, 29], [41, 32, 8]]],   // dados 1.3
 };
 for (const [k, [g, l, s, pp]] of Object.entries(cont)) {
   const [per, nome] = k.split(' '), C = CMP.comparar(B, RR[nome], res.R0, per === '8' ? P8 : P11);
@@ -372,6 +375,31 @@ for (const [nome, sp] of Object.entries(IGM.PRESETS)) {
   [R3t, R3p].forEach((r, j) => r.forEach((o, i) => confere(`${j ? 'R3p' : 'R3t'} soma = orçamento ${B.pags[i].id}`, Math.abs(o.total - ctx.orc[i]) < 0.01, true, 0)));
   const w = m => IGM.pesoTamanho(IGM.PRESETS.R3t, m);
   confere('peso decrescente: 1,30 até 10 mil, 1,15 em 20 mil, 1 em 30 mil', [w({pop: 8000}), w({pop: 20000}), w({pop: 30000}), w({pop: 90000})].map(x => x.toFixed(4)).join(' '), '1.3000 1.1500 1.0000 1.0000', 0);
+}
+
+/* 10. Página reorganizada (10/11/2026): uma criança a mais (card de Duas regras e linha do cartão Seu município) e o
+   denominador único de 2027 (dados 1.3). A linha do cartão usa a mesma conta do card: valor de uma vacina cheia na
+   regra × 100 ÷ denominador de 12 meses ÷ (alvo − piso), Penta, set/2026. */
+{
+  const v = IGM.VAC.indexOf('Penta'), um = (r, m) => r[iSet].unidade[m] * (100 / B.cob[iSet].den12[v][m]) / 15;
+  const RP = B.idx.get(354330), TT = B.idx.get(355400);
+  confere('uma criança a mais, Ribeirão Pires, Regra A (artigo: R$ 214)', Math.round(um(res.R3b, RP)), 214, 0);
+  confere('uma criança a mais, Tatuí, Regra A (artigo: R$ 122)', Math.round(um(res.R3b, TT)), 122, 0);
+  confere('uma criança a mais, Ribeirão Pires, Regra B (artigo: R$ 149)', Math.round(um(res.R4v, RP)), 149, 0);
+  confere('uma criança a mais, Tatuí, Regra B (artigo: R$ 149)', Math.round(um(res.R4v, TT)), 149, 0);
+  // a linha do cartão para o estado: mediana dos municípios na rampa (só Penta)
+  const xs = []; for (let m = 0; m < B.N; m++) { const c = B.cob[iSet].c12[v][m]; if (c >= 80 && c < 95) xs.push(um(res.R3b, m)); }
+  confere('uma criança a mais, Regra A, mediana dos municípios na rampa (Penta, set/2026) = R$ 263', Math.round(IGM.mediana(xs)), 263, 0);
+  // regra atual: na card, 34% dos municípios a uma criança de um corte em set/2026 e salto mediano R$ 2.349
+  const mg0 = IGM.margem(B, IGM.PRESETS.R0, res.R0, iSet);
+  confere('regra atual set/2026: % a uma criança de um corte', Math.round(mg0.pctMun), 34, 0);
+  confere('regra atual set/2026: salto mediano', Math.round(mg0.mediana), 2349, 0);
+  // 2027: um único ano de nascidos (SINASC 2024) em comparação e avaliação; com ritmo plano, a Regra A é igual nas três parcelas
+  IGM.csv(ler('pagamentos.csv')).filter(r => r.pagamento.startsWith('2027')).forEach(r =>
+    confere(`pagamentos.csv ${r.pagamento}: SINASC 2024 na comparação e na avaliação`, `${r.sinasc_ano_comp}/${r.sinasc_ano_aval}`, '2024/2024', 0));
+  const i27 = B.pags.map((p, i) => i).filter(i => B.pags[i].id.startsWith('2027'));
+  confere('2027: Regra A sem orçamento igual nas três parcelas (ritmo plano, um só denominador)', i27.every(i => Math.abs(res.R3[i].total - res.R3[i27[0]].total) < 1), true, 0);
+  confere('orçamento B60 com SINASC 2024 = R$ 39,25 mi', r2(ctx.orc[i27[0]] / 1e6), 39.25, 0.005);
 }
 
 console.log(`${ok} conferências ok, ${falhas} falhas`);
