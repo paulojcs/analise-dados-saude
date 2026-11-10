@@ -276,7 +276,7 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 .bld .sl{display:grid;grid-template-columns:72px minmax(100px,1fr) 56px;align-items:center;gap:10px}
 .bld .sl input[type=range]{width:100%;margin:0;accent-color:var(--minha)}
 .bld .sl b{font:400 15px/1 "Archivo",sans-serif;font-variant-numeric:tabular-nums;text-align:right}
-.bld .sll{font:400 12.5px/1.25 var(--mono);color:var(--t2)}
+.bld .sll{font:400 14px/1.25 "Archivo",sans-serif;color:var(--t2)}
 .bld .sll::first-letter{text-transform:uppercase}
 /* blocos do construtor: rótulo -> controle -> ajuda, todos alinhados pelo topo */
 .bld .ctl{display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -1172,7 +1172,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     const bt = g => PRE.filter(p => p[4] === g).map(p => `<button data-v="${p[0]}" aria-pressed="${pr === p[0]}">${L(p[2], p[3])}</button>`).join('');
     $('#presets').innerHTML = `<div class="ctl"><span>${L('Regras do artigo', 'The paper\'s rules')}</span><div class="seg">${bt(0)}</div></div>
       <div class="ctl"><span>${L('Outras (fora do artigo)', 'Other (not in the paper)')}</span><div class="seg">${bt(1)}</div></div>
-      ${pr ? '' : `<span class="minha-tag">${L('regra sua', 'your own rule')}</span>`}`;
+      ${pr ? '' : `<span class="minha-tag">${L('sua regra', 'your own rule')}</span>`}`;
   }
   $('#presets').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
