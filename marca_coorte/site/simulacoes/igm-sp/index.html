@@ -269,15 +269,40 @@ html[lang="en"] .pt, html[lang="pt-BR"] .en{display:none!important}
 .presets{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:flex-end;margin-bottom:16px}
 .presets .seg button{font-size:14px;padding:8px 11px}
 .minha-tag{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--minha);border:1px solid var(--minha);padding:7px 9px}
-.bld{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px 30px;padding:18px;background:var(--bg-hi);border:1px solid var(--rule)}
+.bld{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 30px;padding:20px;background:var(--bg-hi);border:1px solid var(--rule);align-items:start}
 @media(max-width:760px){.bld{padding:14px;grid-template-columns:minmax(0,1fr)}}
-.bld .ctl small{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--t2);max-width:46ch}
+.bld .ctl small{display:block;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--t2);max-width:52ch}
 .bld .seg button{font-size:14px;padding:8px 10px}
-.bld .sl input[type=range]{width:150px;accent-color:var(--minha)}
-.bld .dois{display:flex;flex-wrap:wrap;gap:6px 18px}
+.bld .sl{display:grid;grid-template-columns:72px minmax(100px,1fr) 56px;align-items:center;gap:10px}
+.bld .sl input[type=range]{width:100%;margin:0;accent-color:var(--minha)}
+.bld .sl b{font:400 15px/1 "Archivo",sans-serif;font-variant-numeric:tabular-nums;text-align:right}
+.bld .sll{font:400 12.5px/1.25 var(--mono);color:var(--t2)}
+.bld .sll::first-letter{text-transform:uppercase}
+/* blocos do construtor: rótulo -> controle -> ajuda, todos alinhados pelo topo */
+.bld .ctl{display:flex;flex-direction:column;gap:10px;min-width:0}
+.bld .ctl>.cl{display:flex;align-items:center;gap:8px;margin:0}
+.bld .ctl small{margin-top:0}
+.bld .gn{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--minha);color:#fff;font:600 11px/1 var(--mono);letter-spacing:0;flex:none}
+.bld .grps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 30px}
+/* opções do construtor: uma por linha, largura toda, mesma altura; a escolhida preenchida */
+.bld .seg{display:flex;flex-direction:column;gap:6px;border:0}
+.bld .seg button,.bld .seg button:last-child{display:block;width:100%;box-sizing:border-box;text-align:left;border:1px solid var(--rule);padding:9px 12px;font-size:14.5px;line-height:1.25;white-space:normal}
+.bld .seg button[aria-pressed="true"]{border-color:var(--ink)}
+.bld .seg button:hover:not([aria-pressed="true"]){border-color:var(--t3)}
+/* regras prontas: botões que crescem até encher cada linha, sem caixa com sobra */
+.presets .seg{display:flex;flex-wrap:wrap;gap:6px;border:0}
+.presets .seg button,.presets .seg button:last-child{flex:1 1 auto;text-align:center;border:1px solid var(--rule)}
+.presets .seg button[aria-pressed="true"]{border-color:var(--ink)}
+.presets .seg button:hover:not([aria-pressed="true"]){border-color:var(--t3)}
+.presets .ctl{min-width:0;flex:1 1 auto}
+#tMonte{margin-bottom:12px}
+@media(max-width:1024px){.bld,.bld .grps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.bld,.bld .grps{grid-template-columns:minmax(0,1fr)}}
+.bld .dois{display:flex;flex-direction:column;gap:10px}
+.bld .valor{display:flex;align-items:center;gap:8px;font-size:14.5px;color:var(--t2)}
 .bld input[type=number]{font:400 16px/1.2 "Archivo",sans-serif;width:96px;padding:7px 9px;border:1px solid var(--rule);background:var(--bg);color:var(--ink)}
-.bld details{grid-column:1/-1;border-top:1px solid var(--rule-2);padding-top:10px}
-.bld summary{cursor:pointer;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:12px}
+.bld details{grid-column:1/-1;border-top:1px solid var(--rule);padding-top:12px}
+.bld summary{cursor:pointer;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--klein);margin-bottom:16px}
 .seg.mini{margin-bottom:10px}.seg.mini button{padding:6px 10px;font-size:13px}
 .regra-txt{margin-top:12px;font-size:15px;line-height:1.5;color:var(--t2);max-width:90ch}
 .mmapa svg{display:block;width:100%;height:auto}
@@ -574,8 +599,8 @@ details.mais>summary{cursor:pointer;font:500 13px/1 var(--mono);letter-spacing:.
 <section class="view" id="como">
   <div class="vh"><h2><span class="pt">Como contamos</span><span class="en">Methods</span></h2></div>
   <div class="box">
-    <p class="pt"><b>Para citar.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis of São Paulo's primary care incentive. Faculdade de Medicina da Universidade de São Paulo (FMUSP). Manuscrito em preparação, 2026. Esta página acompanha o artigo; versão 1.2 dos dados, 01/11/2026.</p>
-    <p class="en"><b>How to cite.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis of São Paulo's primary care incentive. Faculdade de Medicina da Universidade de São Paulo (FMUSP). Manuscript in preparation, 2026. This page accompanies the paper; data version 1.2, 1 November 2026.</p>
+    <p class="pt"><b>Para citar.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Faculdade de Medicina da Universidade de São Paulo (FMUSP). Manuscrito em preparação, 2026. Esta página acompanha o artigo; versão 1.3 dos dados, 10/11/2026.</p>
+    <p class="en"><b>How to cite.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Faculdade de Medicina da Universidade de São Paulo (FMUSP). Manuscript in preparation, 2026. This page accompanies the paper; data version 1.3, 10 November 2026.</p>
     <p class="pt"><b>Conflito de interesse.</b> Alguns autores trabalham na gestão da saúde de um município paulista que recebe os repasses analisados aqui.</p>
     <p class="en"><b>Conflict of interest.</b> Some authors work in the health management of a São Paulo municipality that receives the transfers analysed here.</p>
     <p class="pt"><b>Dados.</b> Só dados públicos, agregados por município; nenhum dado de pessoa. Os arquivos desta página, com a descrição de cada campo, estão abaixo.</p>
@@ -1155,9 +1180,11 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     Object.assign(MS, IGM.PRESETS[p[1]]); msTocou = true; mudou();
   });
   function vControles() {
-    const ctl = (lab, html, expl) => `<div class="ctl"><span>${lab}</span>${html}<small>${expl}</small></div>`;
+    let nCtl = 0;
+    const ctl = (lab, html, expl) => `<div class="ctl"><span class="cl"><b class="gn">${++nCtl}</b>${lab}</span>${html}<small>${expl}</small></div>`;
     const sg = (k, itens, v) => `<div class="seg" data-k="${k}">${itens.map(([val, l]) => `<button data-v="${val}" aria-pressed="${String(val) === String(v)}">${l}</button>`).join('')}</div>`;
-    const sl = (k, a, b, st, v, suf, lab) => `<div class="sl"><input type="range" data-k="${k}" min="${a}" max="${b}" step="${st}" value="${v}" aria-label="${lab}"><b>${nf(v)}${suf}</b></div>`;
+    const sl = (k, a, b, st, v, suf, lab) => `<div class="sl"><span class="sll">${lab}</span><input type="range" data-k="${k}" min="${a}" max="${b}" step="${st}" value="${v}" aria-label="${lab}"><b>${nf(v)}${suf}</b></div>`;
+    /* Cada escolha é um bloco numerado: rótulo -> controle -> ajuda; seis na grade principal, três em Avançado. */
     const orcModo = typeof MS.orc === 'number' ? 'proprio' : MS.orc;
     const corteModo = MS.corte === 'mediana' ? 'mediana' : 'fixo';
     let h = '';
@@ -1178,19 +1205,19 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
     h += ctl(L('Como o dinheiro se reparte', 'How the money is shared'), sg('aloc', [['hab', L('Por habitante (como hoje)', 'Per inhabitant (as today)')], ['crianca', L('Por criança', 'Per child')]], MS.aloc),
       MS.aloc === 'hab' ? L('O valor de cada município segue a população × o per capita do estado.', 'Each municipality\'s value follows population × the state\'s per capita value.')
         : L('O valor segue os nascidos × o per capita do estado ÷ 30: onde nascem mais crianças por habitante, vem mais dinheiro.', 'The value follows births × the state\'s per capita value ÷ 30: where more children are born per inhabitant, more money comes.'));
-    h += ctl(L('Parte fixa', 'Fixed part'), sl('fixo', 0, 100, 5, Math.round(MS.fixo * 100), '%', L('parte fixa', 'fixed part')),
+    h += ctl(L('Parte fixa', 'Fixed part'), sl('fixo', 0, 100, 5, Math.round(MS.fixo * 100), '%', L('fixa', 'fixed')),
       L('Quanto vai a todos sem depender da cobertura. Regra B: 0%; a variante R4: 50%.', 'How much goes to everyone regardless of coverage. Rule B: 0%; the R4 variant: 50%.'));
     h += ctl(L('Orçamento', 'Budget'), sg('orcmodo', [['sem', L('Sem orçamento', 'No budget')], ['atual', L('Mesmo da regra atual', 'Same as current rule')], ['proprio', L('Valor próprio', 'Own amount')]], orcModo) +
-      (orcModo === 'proprio' ? `<div class="sl" style="margin-top:8px"><span style="font-size:15px">${MOEDA()}</span><input type="number" data-k="orc" min="0.1" step="0.1" value="${+(MS.orc / 1e6).toFixed(2)}" aria-label="${L('milhões por parcela', 'million per payment')}"><span style="font-size:15px">${L('mi por parcela', 'million per payment')}</span></div>` : ''),
+      (orcModo === 'proprio' ? `<div class="valor"><span>${MOEDA()}</span><input type="number" data-k="orc" min="0.1" step="0.1" value="${+(MS.orc / 1e6).toFixed(2)}" aria-label="${L('milhões por parcela', 'million per payment')}"><span>${L('mi por parcela', 'million per payment')}</span></div>` : ''),
       orcModo === 'sem' ? L('Cada município recebe a sua parte do próprio máximo; o total do estado sobe e desce.', 'Each municipality gets its share of its own maximum; the state total rises and falls.')
         : orcModo === 'atual' ? L(`Cada parcela reparte a média do que a regra atual pagou: ${mi(ctx.orc[0])} até 2026, ${mi(IGM.contexto(B, MS.sv27).orc[B.P - 1])} em 2027.`, `Each payment shares out the mean of what the current rule paid: ${mi(ctx.orc[0])} up to 2026, ${mi(IGM.contexto(B, MS.sv27).orc[B.P - 1])} in 2027.`)
           : L('Valor de cada parcela até 2026; em 2027 cresce com a parte variável (como o máximo).', 'Amount per payment up to 2026; in 2027 it grows with the variable share (as the maximum does).'));
-    const slk = (k, a, b, st, v, lab) => `<div class="sl"><input type="range" data-k="${k}" min="${a}" max="${b}" step="${st}" value="${v}" aria-label="${lab}"><b>${nf(v)}${L(' mil', 'k')}</b></div>`;
+    const slk = (k, a, b, st, v, lab) => `<div class="sl"><span class="sll">${lab}</span><input type="range" data-k="${k}" min="${a}" max="${b}" step="${st}" value="${v}" aria-label="${lab}"><b>${nf(v)}${L(' mil', 'k')}</b></div>`;
     const pesos = MS.margem !== 1 || MS.margemMed !== 1 || MS.afina !== 1;
-    h += `<details${MS.sv27 !== 0.6 || pesos ? ' open' : ''}><summary>${L('Avançado', 'Advanced')}</summary>` + ctl(L('Pesos por tamanho do município', 'Weights by size of municipality'), `<div class="dois">${sl('margem', 100, 200, 1, Math.round(MS.margem * 100), '%', L('peso dos pequenos', 'weight of small municipalities'))}${sl('margemMed', 100, 200, 1, Math.round(MS.margemMed * 100), '%', L('peso dos médios', 'weight of medium municipalities'))}</div>`,
-      L('Peso na repartição dos municípios pequenos (menos de 20 mil habitantes, primeiro controle) e dos médios (20 a 100 mil, segundo); 100% = nenhum. Com orçamento, os outros recebem um pouco menos. "Peso único para pequenos" usa 125%; "Pesos por porte" usa 124% e 105%, o que mantém cada grupo de tamanho com o que recebe na regra atual nas 8 parcelas. Os pesos criam degraus em 20 mil e 100 mil habitantes.', 'Allocation weight of small municipalities (under 20,000 inhabitants, first control) and medium ones (20,000 to 100,000, second); 100% = none. With a budget, the others get a little less. "Single small-town weight" uses 125%; "Size-band weights" uses 124% and 105%, which keeps each size group at what it gets under the current rule over the 8 payments. The weights create steps at 20,000 and 100,000 inhabitants.')) + ctl(L('Peso decrescente pela população', 'Weight tapering with population'), `<div class="dois">${sl('afina', 100, 200, 1, Math.round(MS.afina * 100), '%', L('peso máximo', 'maximum weight'))}${slk('afP1', 5, 50, 5, MS.afP1 / 1000, L('até', 'up to'))}${slk('afP2', 10, 100, 5, MS.afP2 / 1000, L('chega a 100% em', 'reaches 100% at'))}</div>`,
-      L('O peso máximo vale até a primeira população e cai em linha reta até 100% na segunda; sem degrau. "Peso decrescente para pequenos" usa 130% até 10 mil habitantes, caindo até 100% em 30 mil.', 'The maximum weight applies up to the first population and falls in a straight line to 100% at the second; no step. "Tapered small-town weight" uses 130% up to 10,000 inhabitants, falling to 100% at 30,000.')) + ctl(L('Parte variável em 2027', 'Variable share in 2027'), sl('sv27', 50, 100, 5, Math.round(MS.sv27 * 100), '%', L('parte variável em 2027', 'variable share in 2027')),
-      L('A CIB 24/2026 sobe de 50% para 60% em 2027. Muda o valor do ponto de 2027 para todas as regras, inclusive a atual.', 'CIB 24/2026 raises it from 50% to 60% in 2027. It changes the 2027 point value for every rule, the current one included.')) + `</details>`;
+    h += `<details${MS.sv27 !== 0.6 || pesos ? ' open' : ''}><summary>${L('Avançado', 'Advanced')}</summary><div class="grps">` + ctl(L('Pesos por porte', 'Size-band weights'), `<div class="dois">${sl('margem', 100, 200, 1, Math.round(MS.margem * 100), '%', L('pequenos', 'small'))}${sl('margemMed', 100, 200, 1, Math.round(MS.margemMed * 100), '%', L('médios', 'medium'))}</div>`,
+      L('Peso na repartição dos municípios pequenos (menos de 20 mil habitantes, primeiro controle) e dos médios (20 a 100 mil, segundo); 100% = nenhum. Com orçamento, os outros recebem um pouco menos. "Peso único para pequenos" usa 125%; "Pesos por porte" usa 124% e 105%, o que mantém cada grupo de tamanho com o que recebe na regra atual nas 8 parcelas. Os pesos criam degraus em 20 mil e 100 mil habitantes.', 'Allocation weight of small municipalities (under 20,000 inhabitants, first control) and medium ones (20,000 to 100,000, second); 100% = none. With a budget, the others get a little less. "Single small-town weight" uses 125%; "Size-band weights" uses 124% and 105%, which keeps each size group at what it gets under the current rule over the 8 payments. The weights create steps at 20,000 and 100,000 inhabitants.')) + ctl(L('Peso decrescente pela população', 'Weight tapering with population'), `<div class="dois">${sl('afina', 100, 200, 1, Math.round(MS.afina * 100), '%', L('máximo', 'maximum'))}${slk('afP1', 5, 50, 5, MS.afP1 / 1000, L('até', 'up to'))}${slk('afP2', 10, 100, 5, MS.afP2 / 1000, L('100% em', '100% at'))}</div>`,
+      L('O peso máximo vale até a primeira população e cai em linha reta até 100% na segunda; sem degrau. "Peso decrescente para pequenos" usa 130% até 10 mil habitantes, caindo até 100% em 30 mil.', 'The maximum weight applies up to the first population and falls in a straight line to 100% at the second; no step. "Tapered small-town weight" uses 130% up to 10,000 inhabitants, falling to 100% at 30,000.')) + ctl(L('Parte variável em 2027', 'Variable share in 2027'), sl('sv27', 50, 100, 5, Math.round(MS.sv27 * 100), '%', L('em 2027', 'in 2027')),
+      L('A CIB 24/2026 sobe de 50% para 60% em 2027. Muda o valor do ponto de 2027 para todas as regras, inclusive a atual.', 'CIB 24/2026 raises it from 50% to 60% in 2027. It changes the 2027 point value for every rule, the current one included.')) + `</div></details>`;
     $('#bld').innerHTML = h;
   }
   $('#bld').addEventListener('click', e => {
@@ -1222,7 +1249,7 @@ const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-
       : L(`rampa de ${nf(MS.piso)}% a ${nf(MS.alvo)}%`, `a ramp from ${nf(MS.piso)}% to ${nf(MS.alvo)}%`);
     const al = MS.aloc === 'hab' ? L('por habitante', 'per inhabitant') : L('por criança', 'per child');
     const orc = typeof MS.orc === 'number' ? L(`orçamento de ${mi(MS.orc)} por parcela`, `a budget of ${mi(MS.orc)} per payment`) : MS.orc === 'atual' ? L('o mesmo orçamento da regra atual', 'the current rule\'s budget') : L('sem orçamento fixo', 'no fixed budget');
-    $('#regraTxt').innerHTML = `<b style="color:var(--minha)">${pr ? esc(preL(pr)) : L('Sua regra', 'Your rule')}</b>: ${med}, ${pont}, ${al}, ${L('parte fixa', 'fixed part')} ${nf(Math.round(MS.fixo * 100))}%, ${orc}${MS.sv27 !== 0.6 ? L(`, ${nf(Math.round(MS.sv27 * 100))}% variável em 2027`, `, ${nf(Math.round(MS.sv27 * 100))}% variable in 2027`) : ''}${MS.margem !== 1 ? L(`, peso ${nf(Math.round(MS.margem * 100))}% para municípios com menos de 20 mil habitantes`, `, ${nf(Math.round(MS.margem * 100))}% weight for municipalities under 20,000 inhabitants`) : ''}${MS.margemMed !== 1 ? L(`, peso ${nf(Math.round(MS.margemMed * 100))}% para os de 20 a 100 mil`, `, ${nf(Math.round(MS.margemMed * 100))}% for those of 20,000 to 100,000`) : ''}${MS.afina !== 1 ? L(`, peso ${nf(Math.round(MS.afina * 100))}% até ${nf(MS.afP1 / 1000)} mil habitantes, caindo até 100% em ${nf(MS.afP2 / 1000)} mil`, `, ${nf(Math.round(MS.afina * 100))}% weight up to ${nf(MS.afP1 / 1000)}k inhabitants, falling to 100% at ${nf(MS.afP2 / 1000)}k`) : ''}.`;
+    $('#regraTxt').innerHTML = `<b style="color:var(--minha)">${pr ? esc(preL(pr)) : L('Sua regra', 'Your rule')}</b>: ${med}, ${pont}, ${al}, ${L('fixa', 'fixed')} ${nf(Math.round(MS.fixo * 100))}%, ${orc}${MS.sv27 !== 0.6 ? L(`, ${nf(Math.round(MS.sv27 * 100))}% variável em 2027`, `, ${nf(Math.round(MS.sv27 * 100))}% variable in 2027`) : ''}${MS.margem !== 1 ? L(`, peso ${nf(Math.round(MS.margem * 100))}% para municípios com menos de 20 mil habitantes`, `, ${nf(Math.round(MS.margem * 100))}% weight for municipalities under 20,000 inhabitants`) : ''}${MS.margemMed !== 1 ? L(`, peso ${nf(Math.round(MS.margemMed * 100))}% para os de 20 a 100 mil`, `, ${nf(Math.round(MS.margemMed * 100))}% for those of 20,000 to 100,000`) : ''}${MS.afina !== 1 ? L(`, peso ${nf(Math.round(MS.afina * 100))}% até ${nf(MS.afP1 / 1000)} mil habitantes, caindo até 100% em ${nf(MS.afP2 / 1000)} mil`, `, ${nf(Math.round(MS.afina * 100))}% weight up to ${nf(MS.afP1 / 1000)}k inhabitants, falling to 100% at ${nf(MS.afP2 / 1000)}k`) : ''}.`;
   }
 
   /* Resultados da regra escolhida, sempre com a regra atual ao lado. */
