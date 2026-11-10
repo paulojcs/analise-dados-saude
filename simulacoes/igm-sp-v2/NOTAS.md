@@ -186,6 +186,23 @@ variável). As parcelas são pagas no 5º dia útil de maio, setembro e dezembro
 Texto do artigo reformulado (contrafactual + projeção de 2027 como confirmação): `trabalho/paper_tamanho_municipio_v2.md`
 (página para colar: `orchestrator/handoffs/coorte-igm-paper-size-v2-2026-11-09.html`).
 
+## Revisão de 10/11/2026: pesos que protegem os municípios pequenos
+
+Decisão de Paulo: o artigo mostra só que as Regras A e B, como propostas, tiram dinheiro dos pequenos (contrafactual das
+8 parcelas); a projeção de 2027 sai do artigo; as formas de proteger os pequenos vão para a Discussão e para presets.
+Motor: campos novos `margemMed` (peso dos médios, 20–100 mil) e `afina`/`afP1`/`afP2` (peso decrescente pela população
+de 2026: `afina` até afP1, linear até 1 em afP2); `pesoTamanho()` multiplica os três pesos. URL: `margemMed=100–300`,
+`afina=100–300` (%), `afP1`/`afP2` em mil habitantes. Controles em Avançado. Presets (fonte: PrefSaoCaetano
+`src/vacinacao/s12_variantes_pequenos.py`, `outputs/vacinacao/variantes_pequenos/`, commit a9207f7):
+- `At` = R3t, **Regra A + peso decrescente para pequenos**: 1,30 até 10 mil, 1 em 30 mil (a V2_taper30 que a s12
+  recomenda). 8 parcelas: pequenos +2,26%, médios −2,81%, grandes +0,70%; 268/267/110 (reproduz a s12 exatamente).
+- `Ap` = R3p, **Regra A + pesos por porte**: 1,24 / 1,05 = os pesos calibrados **para trás** (1,239 / 1,054), não os
+  para a frente (1,271 / 1,107), porque o artigo e a página usam as 8 parcelas. Com o arredondamento: +0,14 / −0,28 /
+  +0,09%; 250/293/102. (Os para a frente, nas 8 parcelas, dariam +0,8 / +3,2 / −1,8%.)
+- `Am` = R3m, renomeado **Regra A + peso único para pequenos** (1,25): +2,1 / −3,9 / +1,3%.
+Teste seção 9: R3t e as variantes calibradas da s12 (V2_taper, V2_tier, V2_w) batem com o resumo.csv da s12 a menos de
+0,01 ponto; pesos = 1 é a Regra A; orçamento fecha; para todo preset frase = mapa = barras = 645. Teste 1625/0.
+
 ## Perguntas abertas para Paulo
 
 1. Orçamento próprio em 2027 (cresce ×1,2 com a parte variável)? Não decidido.
@@ -213,3 +230,5 @@ Texto do artigo reformulado (contrafactual + projeção de 2027 como confirmaç�
   sem ser chamada de preferida (decisão de Paulo).
 - 2026-11-09 (noite): maio no rótulo da 1ª parcela; métodos dizem que a regra atual é a de 2026 aplicada para trás;
   nota do denominador misto de 2027; teste 1577/0.
+- 2026-11-10: pesos por tamanho no motor (margemMed, afina); presets peso decrescente, pesos por porte, peso único;
+  teste 1625/0.

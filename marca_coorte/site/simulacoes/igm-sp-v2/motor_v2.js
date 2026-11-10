@@ -15,10 +15,15 @@
      orc:    'sem' (sem orçamento: cada município recebe a sua parte do seu máximo)
            | 'atual' (mesmo orçamento da regra atual: B50/B60) | número (R$ por parcela, base 50% variável)
      sv27:   parte variável em 2027 (padrão 0,6)
-     margem: peso extra dos municípios pequenos (< 20 mil hab.) na repartição, 1 = nenhum (padrão).
-             "Regra A + margem para pequenos" = Regra A com margem 1,25 (decisão de Paulo, 09/11/2026): o peso de
-             repartição (população × per capita, ou nascidos × per capita ÷ 30) dos pequenos é multiplicado pela
-             margem; com orçamento, o mesmo orçamento é repartido de novo; sem orçamento, o máximo deles sobe.
+     Pesos por tamanho (multiplicam o peso de repartição, população × per capita ou nascidos × per capita ÷ 30; com
+     orçamento, o mesmo orçamento é repartido de novo; sem orçamento, o máximo de quem tem peso > 1 sobe):
+     margem:    peso dos municípios pequenos (< 20 mil hab., porte de municipios.csv); 1 = nenhum (padrão)
+     margemMed: peso dos médios (20–100 mil hab.); 1 = nenhum (padrão)
+     afina, afP1, afP2: peso decrescente pela população de 2026: `afina` até afP1 habitantes, caindo em linha reta
+                até 1 em afP2 (padrão afina = 1, nenhum; afP1 = 10.000, afP2 = 30.000). Os três pesos se multiplicam.
+     Presets (PrefSaoCaetano s12_variantes_pequenos.py, 09/11/2026): R3m = peso único 1,25 para pequenos; R3t = peso
+     decrescente 1,30 de 10 mil a 30 mil hab. (a variante recomendada pela s12); R3p = pesos por porte 1,24 / 1,05
+     (os calibrados para trás, 1,239 / 1,054, arredondados).
    } */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -115,7 +120,20 @@
   }
 
   /* ---------- a regra parametrizada ---------- */
-  const PADRAO = { medida: 'c12', pont: 'rampa', corte: 'mediana', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', sv27: 0.6, margem: 1 };
+  const PADRAO = { medida: 'c12', pont: 'rampa', corte: 'mediana', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', sv27: 0.6,
+    margem: 1, margemMed: 1, afina: 1, afP1: 10000, afP2: 30000 };
+  const MEDIO = new Set(['20-50 mil', '50-100 mil']);
+  /* Peso por tamanho de um município na regra (1 = nenhum). */
+  function pesoTamanho(spec, m) {
+    let w = 1;
+    if (+spec.margem !== 1 && m.pequeno) w *= +spec.margem;
+    if (+spec.margemMed !== 1 && MEDIO.has(m.porte)) w *= +spec.margemMed;
+    if (+spec.afina !== 1) {
+      const t = Math.min(1, Math.max(0, (spec.afP2 - m.pop) / (spec.afP2 - spec.afP1)));
+      w *= 1 + (spec.afina - 1) * t;
+    }
+    return w;
+  }
   const completa = s => Object.assign({}, PADRAO, s || {});
 
   /* Valor do ponto por parcela, com a parte variável de 2027 escolhida (padrão: o vp exportado, sem tocar). */
@@ -171,7 +189,8 @@
   function calcular(B, spec, ctx) {
     spec = completa(spec);
     ctx = ctx || contexto(B, spec.sv27);
-    const VP = ctx.vp, N = B.N, f = +spec.fixo, mg = +spec.margem || 1;
+    const VP = ctx.vp, N = B.N, f = +spec.fixo;
+    const W = B.muns.map(m => pesoTamanho(spec, m));
     const out = [];
     for (let p = 0; p < B.P; p++) {
       // 1. partes de cada vacina
@@ -195,7 +214,7 @@
       const S = new Float64Array(N), a = new Float64Array(N);
       for (let m = 0; m < N; m++) {
         S[m] = partes[0][m] + partes[1][m] + partes[2][m] + partes[3][m];
-        a[m] = (spec.aloc === 'hab' ? VP[p][m] * PONTO_VAC : B.peso[p][m] * B.muns[m].pc / 30) * (mg !== 1 && B.muns[m].pequeno ? mg : 1);
+        a[m] = (spec.aloc === 'hab' ? VP[p][m] * PONTO_VAC : B.peso[p][m] * B.muns[m].pc / 30) * W[m];
       }
       const rs = new Float64Array(N), varRs = new Float64Array(N), unidade = new Float64Array(N);
       let maximo, k;
@@ -280,6 +299,8 @@
     R4: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'crianca', fixo: 0.5, orc: 'atual' },
     R4v: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'crianca', fixo: 0, orc: 'atual' },
     R3m: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', margem: 1.25 },
+    R3t: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', afina: 1.3, afP1: 10000, afP2: 30000 },
+    R3p: { medida: 'c12', pont: 'rampa', piso: 80, alvo: 95, aloc: 'hab', fixo: 0, orc: 'atual', margem: 1.24, margemMed: 1.05 },
   };
   Object.keys(PRESETS).forEach(k => { PRESETS[k] = completa(PRESETS[k]); });
 
@@ -322,5 +343,5 @@
   }
 
   return { VAC, PONTO_VAC, MAX_PONTOS, ZERO, META, PADRAO, csv, montar, faixa, proporcional, calcular, margem, completa,
-    contexto, PRESETS, PRESETS_V1, regra, criancaAMais, mediana, soma };
+    contexto, PRESETS, PRESETS_V1, pesoTamanho, regra, criancaAMais, mediana, soma };
 }));

@@ -344,5 +344,35 @@ for (const [nome, sp] of Object.entries(IGM.PRESETS)) {
   if (sp.orc === 'atual') confere(`Monte ${nome}: mesmo total`, Math.abs(C.totalMinha - C.totalAtual) < 1, true, 0);
 }
 
+/* 9. Pesos por tamanho (10/11/2026): peso decrescente (R3t) e pesos por porte (R3p) contra a análise de variantes do
+   PrefSaoCaetano (s12_variantes_pequenos.py, outputs/vacinacao/variantes_pequenos/resumo.csv, base BACK = 8 parcelas). */
+{
+  const pctPorte = (r) => { const t0 = [0, 0, 0], t1 = [0, 0, 0];
+    for (let m = 0; m < B.N; m++) { const z = CMP.PORTE3[B.muns[m].porte]; for (const p of P8) { t0[z] += res.R0[p].rs[m]; t1[z] += r[p].rs[m]; } }
+    return t1.map((x, z) => 100 * (x / t0[z] - 1)); };
+  const run = sp => IGM.calcular(B, Object.assign({}, IGM.PRESETS.R3b, sp), ctx);
+  // s12 V2_taper30 (c = 0,30): +2,2649 / −2,8100 / +0,6980; contagens 169/137/78 · 66/90/24 · 33/40/8
+  const R3t = IGM.calcular(B, IGM.PRESETS.R3t, ctx), pt = pctPorte(R3t);
+  [[2.2649, 0], [-2.81, 1], [0.698, 2]].forEach(([e, k]) => confere(`R3t por porte ${k} = s12 V2_taper30`, Math.abs(pt[k] - e) < 0.01, true, 0));
+  const Ct = CMP.comparar(B, R3t, res.R0, P8);
+  confere('R3t ganham/perdem/iguais por porte = s12', JSON.stringify(Ct.porte.map(g => [g.ganham, g.perdem, g.iguais])), JSON.stringify([[169, 137, 78], [66, 90, 24], [33, 40, 8]]), 0);
+  // s12 V2_taper calibrado (c = 0,26043): 0 / −2,5318 / +1,2113
+  const pc = pctPorte(run({afina: 1.26043}));
+  [[0, 0], [-2.5318, 1], [1.2113, 2]].forEach(([e, k]) => confere(`afina 1,26043 por porte ${k} = s12 V2_taper`, Math.abs(pc[k] - e) < 0.01, true, 0));
+  // s12 V2_tier calibrado (1,23945 / 1,05389): 0 / 0 / 0; o preset arredonda para 1,24 / 1,05 (fica a menos de 0,5%)
+  const px = pctPorte(run({margem: 1.23945, margemMed: 1.05389}));
+  px.forEach((x, k) => confere(`pesos por porte calibrados ${k} = 0`, Math.abs(x) < 0.01, true, 0));
+  const R3p = IGM.calcular(B, IGM.PRESETS.R3p, ctx);
+  pctPorte(R3p).forEach((x, k) => confere(`R3p (1,24 / 1,05) por porte ${k} perto de 0`, Math.abs(x) < 0.5, true, 0));
+  // s12 V2_w (1,21892): 0 / −3,5165 / +1,6824
+  const pw = pctPorte(run({margem: 1.21892}));
+  [[0, 0], [-3.5165, 1], [1.6824, 2]].forEach(([e, k]) => confere(`peso único 1,21892 por porte ${k} = s12 V2_w`, Math.abs(pw[k] - e) < 0.01, true, 0));
+  // pesos = 1 é a Regra A; orçamento fecha; os pequenos com peso decrescente: 1,30 até 10 mil, 1 a partir de 30 mil
+  confere('afina 1 e margemMed 1 == Regra A (exato)', igualSerie(run({afina: 1, margemMed: 1, afP1: 5000, afP2: 50000}), res.R3b), true, 0);
+  [R3t, R3p].forEach((r, j) => r.forEach((o, i) => confere(`${j ? 'R3p' : 'R3t'} soma = orçamento ${B.pags[i].id}`, Math.abs(o.total - ctx.orc[i]) < 0.01, true, 0)));
+  const w = m => IGM.pesoTamanho(IGM.PRESETS.R3t, m);
+  confere('peso decrescente: 1,30 até 10 mil, 1,15 em 20 mil, 1 em 30 mil', [w({pop: 8000}), w({pop: 20000}), w({pop: 30000}), w({pop: 90000})].map(x => x.toFixed(4)).join(' '), '1.3000 1.1500 1.0000 1.0000', 0);
+}
+
 console.log(`${ok} conferências ok, ${falhas} falhas`);
 process.exit(falhas ? 1 : 0);
