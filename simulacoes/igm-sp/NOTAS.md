@@ -6,6 +6,24 @@ A versão 2 **substituiu a v1** no endereço do artigo, `marca_coorte/site/simul
 **ainda não publicada**: nada disto está no ar (coorte.io/simulacoes/igm-sp/ dá 404 até o merge em `main`).
 Arquivos de trabalho (maquete, textos e números do artigo) ficam em `simulacoes/igm-sp/trabalho/`, fora do site.
 
+## Antes de publicar (10/11/2026, noite): dados só mediante solicitação, métodos curtos
+
+- **Nada para baixar.** A página busca um único arquivo, `dados/sim.json.gz` (JSON compactado, ~1,1 MB), gerado por
+  `node simulacoes/igm-sp/trabalho/gerar_pacote.js` a partir de `trabalho/dados_completos/` (a exportação do
+  PrefSaoCaetano, que saiu do site). O pacote leva só o que a página usa (o objeto D, municípios sem `rras`, pagamentos,
+  cobertura, valor do ponto, pontos publicados e nascidos por ano). Ninguém o linka; não há README, lista de arquivos nem
+  JSON-LD "Dataset" (agora "WebPage"). Linha nova: "Dados disponíveis mediante solicitação: contato@coorte.io".
+  O teste (`trabalho/teste_referencia_v2.js`) roda dos dados completos e confere que o pacote dá o mesmo motor (seção 11).
+- **Como contamos** virou um painel (`<dialog id="como">`), aberto pelo menu, pelo link do topo e pelo rodapé (e por
+  `#como` no endereço): cinco frases (fonte, período, regra de 2026 aplicada a todas as parcelas, base de 2026, 2027
+  projeção), a linha dos dados, "Para citar" (título atual do artigo, manuscrito em preparação, dados 1.3, sem DOI) e o
+  conflito de interesse. A seção longa saiu.
+- **Substack:** quando o texto estiver no ar, pôr o endereço na constante `SUBSTACK_URL` no começo do `<script>`
+  principal de `marca_coorte/site/simulacoes/igm-sp/index.html`; o link "Leia o texto no Substack" (`#substack`,
+  escondido até lá) aparece em Como contamos.
+- Publicados em `marca_coorte/site/simulacoes/igm-sp/`: `index.html`, `motor_v2.js`, `comparar.js`, `dados/sim.json.gz`,
+  `og-igm-sp-1200x630.png` (+ `marca_coorte/site/_redirects`).
+
 ## Página reorganizada (10/11/2026)
 
 - **Parte 1, Os dados**: mapa (415 de 645), calendário, denominador, acaso e atraso. **Parte 2, A simulação**: Duas
@@ -264,7 +282,7 @@ inicial, em Publicações e no Atlas (`marca_coorte/site/index.html`, `publicaco
 Builds: todo push em `main` publica (README da raiz, "Publicação").
 
 1. Conferir: `git -C wt/simulacao-igm-sp-v2 fetch origin` e `git rev-list --count HEAD..origin/main` = 0 (se não for 0:
-   `git rebase origin/main` na worktree e rodar o teste de novo); `node marca_coorte/site/simulacoes/igm-sp/teste_referencia_v2.js`
+   `git rebase origin/main` na worktree e rodar o teste de novo); `node simulacoes/igm-sp/trabalho/teste_referencia_v2.js`
    = 0 falhas; olhar http://127.0.0.1:8791/simulacoes/igm-sp/ no celular.
 2. (Opcional, cópia de segurança) `git push origin feat/simulacao-igm-sp-v2`.
 3. Publicar: `git push origin feat/simulacao-igm-sp-v2:main` (fast-forward de main; a worktree principal fica em
