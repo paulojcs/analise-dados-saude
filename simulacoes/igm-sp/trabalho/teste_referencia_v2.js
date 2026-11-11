@@ -4,9 +4,11 @@
    Sai com código 1 se qualquer número divergir além das tolerâncias. */
 'use strict';
 const fs = require('fs'), path = require('path'), zlib = require('zlib');
-const IGM = require('./motor_v2.js');
+// Fora do site (dados completos só mediante solicitação); o motor e a comparação vêm da página publicada.
+const SITE = path.join(__dirname, '..', '..', '..', 'marca_coorte', 'site', 'simulacoes', 'igm-sp');
+const IGM = require(path.join(SITE, 'motor_v2.js'));
 
-const D = path.join(__dirname, 'dados');
+const D = path.join(__dirname, 'dados_completos');
 const ler = f => {
   const b = fs.readFileSync(path.join(D, f));
   return (b[0] === 0x1f && b[1] === 0x8b ? zlib.gunzipSync(b) : b).toString('utf8');
@@ -283,7 +285,7 @@ for (const [cod, kids, salto, umA, umB] of [[354330, 33, 40702, 214, 149], [3554
 }
 
 /* 8. Regra A + margem para pequenos (R3m, 09/11/2026) e a comparação por porte (comparar.js, maquete e artigo). */
-const CMP = require('./comparar.js');
+const CMP = require(path.join(SITE, 'comparar.js'));
 const R3m = IGM.calcular(B, IGM.PRESETS.R3m, ctx);
 confere('margem 1 == Regra A (exato)', igualSerie(IGM.calcular(B, Object.assign({}, IGM.PRESETS.R3b, {margem: 1}), ctx), res.R3b), true, 0);
 R3m.forEach((o, i) => {
@@ -400,6 +402,23 @@ for (const [nome, sp] of Object.entries(IGM.PRESETS)) {
   const i27 = B.pags.map((p, i) => i).filter(i => B.pags[i].id.startsWith('2027'));
   confere('2027: Regra A sem orçamento igual nas três parcelas (ritmo plano, um só denominador)', i27.every(i => Math.abs(res.R3[i].total - res.R3[i27[0]].total) < 1), true, 0);
   confere('orçamento B60 com SINASC 2024 = R$ 39,25 mi', r2(ctx.orc[i27[0]] / 1e6), 39.25, 0.005);
+}
+
+/* 11. O pacote publicado (dados/sim.json.gz, gerar_pacote.js) dá o mesmo motor que os dados completos. */
+{
+  const PK = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(SITE, 'dados', 'sim.json.gz'))).toString('utf8'));
+  const B2 = IGM.montar({municipios: PK.municipios, pagamentos: PK.pagamentos, cobertura: PK.cobertura, municipio_pagamento: PK.municipio_pagamento});
+  let igual = B2.N === B.N && B2.P === B.P;
+  for (let p = 0; p < B.P && igual; p++) for (let v = 0; v < 4 && igual; v++) for (const k of ['c0', 'c1', 'c12', 'nasc', 'den12'])
+    for (let m = 0; m < B.N; m++) { const x = B.cob[p][k][v][m], y = B2.cob[p][k][v][m]; if (!(x === y || (Number.isNaN(x) && Number.isNaN(y)))) { igual = false; break; } }
+  for (let p = 0; p < B.P && igual; p++) for (let m = 0; m < B.N; m++) if (B.vp[p][m] !== B2.vp[p][m] || B.peso[p][m] !== B2.peso[p][m]) { igual = false; break; }
+  confere('pacote publicado = dados completos (cobertura, valor do ponto, nascidos do peso)', igual, true, 0);
+  const R2 = IGM.calcular(B2, IGM.PRESETS.R3b, IGM.contexto(B2));
+  confere('pacote: Regra A, totais por parcela iguais', R2.every((o, i) => Math.abs(o.total - res.R3b[i].total) < 1e-6), true, 0);
+  confere('pacote: o objeto D é o da exportação', JSON.stringify(PK.D) === JSON.stringify(J), true, 0);
+  const somaMes = {}; IGM.csv(ler('nascidos.csv.gz')).forEach(r => { const k = r.mun + ',' + r.ano; somaMes[k] = (somaMes[k] || 0) + +r.nv; });
+  const na = IGM.csv(PK.nascidos);
+  confere('pacote: nascidos por ano = soma dos meses', na.length === Object.keys(somaMes).length && na.every(r => somaMes[r.mun + ',' + r.ano] === +r.nv), true, 0);
 }
 
 console.log(`${ok} conferências ok, ${falhas} falhas`);

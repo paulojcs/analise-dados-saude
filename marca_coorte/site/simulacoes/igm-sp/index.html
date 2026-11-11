@@ -683,8 +683,10 @@ const STAT = s => ({forecast: L('previsão', 'forecast'), projection: L('projeç
 const titulo = s => s.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase()).replace(/\b(D[aeo]s?|E)\b/g, w => w.toLowerCase());
 
 /* ---------- dados ---------- */
+/* Um só arquivo de dados (gerado por simulacoes/igm-sp/trabalho/gerar_pacote.js, fora do site). Os dados completos
+   não são publicados: ficam disponíveis mediante solicitação. */
 async function texto(f) {
-  const r = await fetch('dados/' + f);
+  const r = await fetch(f);
   if (!r.ok) throw new Error(f + ': ' + r.status);
   const b = new Uint8Array(await r.arrayBuffer());
   // Alguns servidores já descomprimem o .gz no caminho; só descomprime se ainda for gzip.
@@ -708,12 +710,9 @@ const larg = (sel, max, min = 320) => Math.max(min, Math.min(max, Math.round(doc
 const pressiona = (el, v) => [...el.children].forEach(x => x.setAttribute('aria-pressed', String(x.dataset.v ?? x.dataset.i) === String(v)));
 
 (async function () {
-  const [D, mu, pg, mdn, cob, mp, pub, nas] = await Promise.all([
-    texto('dados_simulacao_igm.json').then(JSON.parse),
-    texto('municipios.csv'), texto('pagamentos.csv'), texto('medianas.csv'),
-    texto('cobertura.csv.gz'), texto('municipio_pagamento.csv.gz'), texto('pontos_publicados_2026.csv'), texto('nascidos.csv.gz'),
-  ]);
-  const B = IGM.montar({municipios: mu, pagamentos: pg, medianas: mdn, cobertura: cob, municipio_pagamento: mp});
+  const PK = JSON.parse(await texto('dados/sim.json.gz'));
+  const D = PK.D, pub = PK.pontos, nas = PK.nascidos;
+  const B = IGM.montar({municipios: PK.municipios, pagamentos: PK.pagamentos, cobertura: PK.cobertura, municipio_pagamento: PK.municipio_pagamento});
   const ctx = IGM.contexto(B);
   const N = B.N, MUN = B.muns, nomes = MUN.map(m => m.nome);
   const iSet = B.pags.findIndex(p => p.id === '2026-09');

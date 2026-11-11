@@ -10,7 +10,7 @@
 const fs = require('fs'), path = require('path'), zlib = require('zlib');
 const SITE = path.join(__dirname, '..', '..', '..', 'marca_coorte', 'site', 'simulacoes', 'igm-sp');   // a página publicada
 const IGM = require(path.join(SITE, 'motor_v2.js')), CMP = require(path.join(SITE, 'comparar.js'));
-const D = path.join(SITE, 'dados');
+const D = path.join(__dirname, 'dados_completos');
 const ler = f => { const b = fs.readFileSync(path.join(D, f)); return (b[0] === 0x1f && b[1] === 0x8b ? zlib.gunzipSync(b) : b).toString('utf8'); };
 const B = IGM.montar({municipios: ler('municipios.csv'), pagamentos: ler('pagamentos.csv'), medianas: ler('medianas.csv'),
   cobertura: ler('cobertura.csv.gz'), municipio_pagamento: ler('municipio_pagamento.csv.gz')});
