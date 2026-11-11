@@ -21,6 +21,9 @@ Arquivos de trabalho (maquete, textos e números do artigo) ficam em `simulacoes
 - **Substack:** quando o texto estiver no ar, pôr o endereço na constante `SUBSTACK_URL` no começo do `<script>`
   principal de `marca_coorte/site/simulacoes/igm-sp/index.html`; o link "Leia o texto no Substack" (`#substack`,
   escondido até lá) aparece em Como contamos.
+  **11/11/2026: definido** (`https://paulosuen1.substack.com/p/o-financiamento-da-atencao-primaria-a5d`); o link
+  aparece, abre em nova aba (`rel="noopener"`). "Para citar" e o JSON-LD passaram a "Suen et al." (sem nomes dos
+  coautores nos arquivos publicados; o município Sabino-SP aparece nos dados, não é autor).
 - Publicados em `marca_coorte/site/simulacoes/igm-sp/`: `index.html`, `motor_v2.js`, `comparar.js`, `dados/sim.json.gz`,
   `og-igm-sp-1200x630.png` (+ `marca_coorte/site/_redirects`).
 

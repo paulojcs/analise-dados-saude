@@ -34,7 +34,7 @@
 <meta property="og:image:alt" content="Mapa dos municípios de São Paulo em laranja e azul com o título: 415 de 645 municípios perderam pontos de vacina">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "WebPage", "name": "Vacinas no IGM SUS Paulista: simulador das regras de pagamento", "description": "Simulador das regras de pagamento das quatro vacinas do primeiro ano no IGM SUS Paulista, nos 645 municípios de São Paulo, de setembro de 2024 a dezembro de 2027. Acompanha o artigo 'Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy' (manuscrito em preparação).", "url": "https://coorte.io/simulacoes/igm-sp/", "inLanguage": ["pt-BR", "en"], "isAccessibleForFree": true, "version": "2.0", "publisher": {"@type": "Organization", "name": "Coorte", "url": "https://coorte.io/"}, "author": [{"@type": "Person", "name": "Paulo Suen"}, {"@type": "Person", "name": "Marcio Oikawa"}, {"@type": "Person", "name": "Ana Maria Malik"}, {"@type": "Person", "name": "Ester Sabino"}, {"@type": "Person", "name": "Fabio Leal"}], "spatialCoverage": {"@type": "Place", "name": "Estado de São Paulo, Brasil"}}
+{"@context": "https://schema.org", "@type": "WebPage", "name": "Vacinas no IGM SUS Paulista: simulador das regras de pagamento", "description": "Simulador das regras de pagamento das quatro vacinas do primeiro ano no IGM SUS Paulista, nos 645 municípios de São Paulo, de setembro de 2024 a dezembro de 2027. Acompanha o artigo 'Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy' (manuscrito em preparação).", "url": "https://coorte.io/simulacoes/igm-sp/", "inLanguage": ["pt-BR", "en"], "isAccessibleForFree": true, "version": "2.0", "publisher": {"@type": "Organization", "name": "Coorte", "url": "https://coorte.io/"}, "author": [{"@type": "Person", "name": "Paulo Suen"}], "spatialCoverage": {"@type": "Place", "name": "Estado de São Paulo, Brasil"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -611,8 +611,8 @@ details.mais>summary{cursor:pointer;font:500 13px/1 var(--mono);letter-spacing:.
   <p class="en">The figures come from the Ministry of Health's vaccination coverage panel, read on 19 Sep 2026, SINASC live births, and the per capita values the state assigns to each municipality. They cover 11 payments, from September 2024 to December 2027. The comparison column is the 2026 rule (CIB-SP Resolutions 24 and 25/2026) applied to every payment, so for 2024 and 2025 it shows what municipalities would have received, not what they were paid. All money is on the 2026 basis (2026 population and per capita values), before the 10-point limit. December 2026 is a forecast, and 2027 is a projection with each municipality's vaccination kept at its 2025 pace.</p>
   <p class="dados"><span class="pt">Dados disponíveis mediante solicitação: <a href="mailto:contato@coorte.io">contato@coorte.io</a></span><span class="en">Data available on request: <a href="mailto:contato@coorte.io">contato@coorte.io</a></span></p>
   <div class="cita">
-    <p class="pt"><b>Para citar.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Manuscrito em preparação, 2026. Esta página acompanha o artigo; versão 1.3 dos dados, 10/11/2026.</p>
-    <p class="en"><b>How to cite.</b> Suen P, Oikawa M, Malik AM, Sabino E, Leal F. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Manuscript in preparation, 2026. This page accompanies the paper; data version 1.3, 10 November 2026.</p>
+    <p class="pt"><b>Para citar.</b> Suen et al. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Manuscrito em preparação, 2026. Esta página acompanha o artigo; versão 1.3 dos dados, 10/11/2026.</p>
+    <p class="en"><b>How to cite.</b> Suen et al. Do vaccination incentives pay for vaccination? A statewide analysis and interpretation of São Paulo's primary care incentive policy. Manuscript in preparation, 2026. This page accompanies the paper; data version 1.3, 10 November 2026.</p>
     <p class="substack" id="substack" hidden><a id="substackLink" href="#" target="_blank" rel="noopener"><span class="pt">Leia o texto no Substack</span><span class="en">Read the Substack post</span></a></p>
   </div>
   <p class="coi"><span class="pt">Conflito de interesse: alguns autores trabalham na gestão da saúde de um município paulista que recebe estes repasses.</span><span class="en">Conflict of interest: some authors work in the health management of a São Paulo municipality that receives these transfers.</span></p>
@@ -628,7 +628,7 @@ details.mais>summary{cursor:pointer;font:500 13px/1 var(--mono);letter-spacing:.
 <script>
 'use strict';
 /* Texto no Substack: quando estiver no ar, pôr o endereço aqui; o link aparece em "Como contamos". */
-const SUBSTACK_URL = '';
+const SUBSTACK_URL = 'https://paulosuen1.substack.com/p/o-financiamento-da-atencao-primaria-a5d';
 const $ = s => document.querySelector(s);
 if (SUBSTACK_URL) { $('#substackLink').href = SUBSTACK_URL; $('#substack').hidden = false; }
 document.addEventListener('click', e => {
